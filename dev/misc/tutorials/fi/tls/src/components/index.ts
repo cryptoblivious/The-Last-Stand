@@ -1,3 +1,6 @@
+import App from "./App";
+
+import ErrorPage from "./ErrorPage";
 import Game from "./Game";
 import GameLobby from "./GameLobby";
 import Heroes from "./Heroes";
@@ -10,6 +13,9 @@ import LoginMenu from "./LoginMenu";
 import RegisterMenu from "./RegisterMenu";
 
 export {
+    App,
+    
+    ErrorPage,
     Game,
     GameLobby,
     Heroes,
