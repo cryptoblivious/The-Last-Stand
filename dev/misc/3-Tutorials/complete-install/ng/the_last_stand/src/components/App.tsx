@@ -39,12 +39,36 @@
 // ---------------------------------------
 
 import React from 'react'
-import { IApp } from '../common/Interfaces'
+import styles from '../common/styles'
+
+import { IApp } from '../common/interfaces'
 
 const App = () => (
   <div className="bg-primary w-full overflow-hidden">
-    <h1>App</h1>
+    <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+      <div className={`${styles.boxWidth}`}>
+        Navbar
+      </div>
     </div>
+
+    <div className={` bg-primary ${styles.flexStart} ${styles.flexCenter}`}>
+      <div className={`${styles.boxWidth}`}>
+        Hero
+      </div>
+    </div>
+
+    <div className={` bg-primary ${styles.paddingX} ${styles.flexStart}`}>
+      <div className={`${styles.boxWidth}`}>
+        Login
+        Home
+        Lobby
+        Heroes
+        Stages
+        Stats
+      </div>
+    </div>
+
+  </div>
 );
 
 export default App

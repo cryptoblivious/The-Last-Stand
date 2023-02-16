@@ -1,4 +1,11 @@
-import { people01, people02, people03, facebook, instagram, linkedin, twitter, airbnb, binance, coinbase, dropbox, send, shield, star  } from "../assets";
+import { people01, people02, people03, facebook, instagram, linkedin, twitter, airbnb, binance, coinbase, dropbox, send, shield, star  } from "../assets/assets";
+
+export const attributions = [
+  {
+    id: "attribution-1",
+    content: "Icon made by Freepik from www.flaticon.com",
+  },
+];
 
 export const navLinks = [
   {
