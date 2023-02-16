@@ -40,35 +40,42 @@
 
 import React from 'react'
 import styles from '../common/styles'
-
+import { useState } from 'react'
 import { IApp } from '../common/interfaces'
 
-const App = () => (
-  <div className="bg-primary w-full overflow-hidden">
-    <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
-        Navbar
-      </div>
-    </div>
+import {
+  GamePage,
+  GameLobbyPage,
+  HomePage,
+  HeroesPage,
+  LoginPage,
+  StagesPage,
+  StatsPage,
+} from '../components'
 
-    <div className={` bg-primary ${styles.flexStart} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
-        Hero
-      </div>
-    </div>
+const App = () => {
 
+  const [activePage, setActivePage] = useState(LoginPage);
+
+  const handlePageChange = (pageName) => {
+    setActivePage(pageName);
+  };
+
+  return (
     <div className={` bg-primary ${styles.paddingX} ${styles.flexStart}`}>
       <div className={`${styles.boxWidth}`}>
-        Login
-        Home
-        Lobby
-        Heroes
-        Stages
-        Stats
+        <{activePage} />
+        <GamePage />
+        <GameLobbyPage />
+        <HomePage />
+        <HeroesPage />
+        <LoginPage />
+        <StagesPage />
+        <StatsPage />
       </div>
     </div>
+  );
+}
 
-  </div>
-);
 
-export default App
+export default App;
