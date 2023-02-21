@@ -19,4 +19,16 @@ export const references = [
         id: 'reference-5',
         link: 'https://reactrouter.com/en/main/start/tutorial',
     },
+	{
+		id : 'ref-6',
+		link : 'https://www.youtube.com/watch?v=OJxEcs0w_kE&t=119s'
+	},
+	{
+		id : 'ref-7',
+		link : 'https://phaser.io/docs/2.4.4/Phaser.QuadTree.html'
+	},
+	{
+		id : 'ref-8',
+		link : 'https://github.com/photonstorm/phaser/blob/v2.4.4/src/math/QuadTree.js'
+	},
 ];
