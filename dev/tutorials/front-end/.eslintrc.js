@@ -1,5 +1,6 @@
 module.exports = {
   parserOptions: {
+    project: './tsconfig.json',
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
@@ -7,10 +8,11 @@ module.exports = {
     },
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-  extends: ['prettier/@typescript-eslint', 'plugin:prettier/recommended'],
+  plugins: ['@typescript-eslint', 'prettier'],
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   rules: {
     '@typescipt-eslint/interface-name-prefix': ['always'],
     'no-underscore-dangle': 'error',
+    'no-unused-vars': 'error',
   },
 };
