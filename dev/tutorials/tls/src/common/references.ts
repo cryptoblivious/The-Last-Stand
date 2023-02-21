@@ -35,4 +35,8 @@ export const references = [
 		id: 'ref-9',
 		link: 'https://github.com/photonstorm/phaser/blob/v2.4.4/src/math/QuadTree.js',
 	},
+	{
+		id: 'ref-10',
+		link: 'https://fr.wikipedia.org/wiki/Quadtree',
+	},
 ];
