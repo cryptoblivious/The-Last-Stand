@@ -1,19 +1,33 @@
 module.exports = {
   parserOptions: {
     project: './tsconfig.json',
-    // ecmaVersion: 6,
+    ecmaVersion: 6,
     sourceType: 'module',
-    //ecmaFeatures: { jsx: true,},
+    ecmaFeatures: { jsx: true },
   },
   parser: '@typescript-eslint/parser',
   plugins: ['prettier'],
   extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   rules: {
-    '@typescript-eslint/interface-name-prefix': [
+    // Errors
+    '@typescript-eslint/naming-convention': [
       'error',
-      { prefixWithI: 'always' },
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        custom: {
+          regex: '^I[A-Z]',
+          match: true,
+        },
+      },
     ],
     'no-underscore-dangle': 'error',
-    'no-unused-vars': 'error',
+    'no-console': 'off',
+    'prettier/prettier': 'error',
+
+    // Warnings
+    '@typescript-eslint/no-unused-vars': 'warn',
+
+    // Offs
   },
 };

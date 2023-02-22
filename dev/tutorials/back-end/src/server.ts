@@ -6,8 +6,8 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.json({ foo: 'bar' });
 });
 
-let port = 3000;
+const port = 3000;
 
 app.listen(port, () => {
-  console.log('Server started, listening on port ' + port);
+  console.log(`Server started, listening on port ${port}`);
 });

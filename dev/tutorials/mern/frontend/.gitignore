@@ -1,0 +1,24 @@
+# ignore node_modules and package-lock.json
+node_modules/
+package-lock.json
+
+# ignore build output
+build/
+
+# ignore environment variables
+.env
+
+# ignore user uploads
+public/uploads/
+
+# ignore editor and IDE files
+.vscode/
+.idea/
+
+# ignore logs
+logs/
+
+# ignore backup files
+*.bak
+*.backup
+*.swp
