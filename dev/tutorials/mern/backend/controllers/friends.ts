@@ -1,7 +1,8 @@
 import Friend from '../models/friend';
+import mongoose from 'mongoose';
 
 // GET all friends
-export const getFriends = async (req: any, res: any) => {
+export const readFriends = async (req: any, res: any) => {
   try {
     const friends = await Friend.find({}).sort({ username: -1 });
     res.status(200).json(friends);
@@ -11,7 +12,7 @@ export const getFriends = async (req: any, res: any) => {
 };
 
 // GET one friend
-export const getFriend = async (req: any, res: any) => {
+export const readFriend = async (req: any, res: any) => {
   try {
     const email = req.params.email;
     const friend = await Friend.findOne({ email });

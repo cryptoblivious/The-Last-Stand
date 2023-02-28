@@ -1,13 +1,13 @@
 import express from 'express';
-import { createFriend, getFriends, getFriend } from '../controllers/friends';
+import { createFriend, readFriends, readFriend } from '../controllers/friends';
 
 const router = express.Router();
 
 // GET all friends
-router.get('/', getFriends);
+router.get('/', readFriends);
 
 // GET one friend
-router.get('/:email', getFriend);
+router.get('/:email', readFriend);
 
 // POST a new friend
 router.post('/', createFriend);
