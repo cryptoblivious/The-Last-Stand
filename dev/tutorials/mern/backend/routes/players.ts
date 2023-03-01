@@ -3,8 +3,8 @@ import { createPlayer, deletePlayerByEmail, updatePlayerByEmail, readPlayers, re
 
 const router = express.Router();
 
-// POST a new player
-router.post('/', createPlayer);
+// DELETE a player
+router.delete('/:email', deletePlayerByEmail);
 
 // GET all players
 router.get('/', readPlayers);
@@ -15,7 +15,7 @@ router.get('/:email', readPlayerByEmail);
 // UPDATE a player
 router.patch('/:email', updatePlayerByEmail);
 
-// DELETE a player
-router.delete('/:email', deletePlayerByEmail);
+// POST a new player
+router.post('/', createPlayer);
 
 export default router;

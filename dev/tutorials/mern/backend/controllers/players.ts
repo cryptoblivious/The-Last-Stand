@@ -46,9 +46,8 @@ export const readPlayerByEmail = async (req: any, res: any) => {
 // PATCH a player
 export const updatePlayerByEmail = async (req: any, res: any) => {
   const email = req.params.email;
-  const { username, userNo, title, avatar, isOnline, lastOnline } = req.body;
   try {
-    const player = await Player.findOneAndUpdate({ email }, { email, username, userNo, title, avatar, isOnline, lastOnline }, { new: true });
+    const player = await Player.findOneAndUpdate({ email }, { ...req.body }, { new: true });
     if (!player) {
       return res.status(404).json({ err: 'Player not found' });
     }
