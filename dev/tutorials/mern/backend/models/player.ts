@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const friendSchema = new Schema(
+const playerSchema = new Schema(
   {
     email: {
       type: String,
@@ -11,6 +11,11 @@ const friendSchema = new Schema(
     username: {
       type: String,
       required: true,
+    },
+    userNo: {
+      type: String,
+      required: true,
+      match: /^[0-9]{4}$/,
     },
     title: {
       type: String,
@@ -34,6 +39,6 @@ const friendSchema = new Schema(
   }
 );
 
-const friendModel = model('Friend', friendSchema);
+const playerModel = model('Player', playerSchema);
 
-export default friendModel;
+export default playerModel;

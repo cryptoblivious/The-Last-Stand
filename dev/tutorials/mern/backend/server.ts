@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import friends from './routes/friends';
+import players from './routes/players';
 
 const app = express();
 mongoose.set('strictQuery', false);
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.use('/api/friends', friends);
+app.use('/api/players', players);
 
 // Connect to MongoDB
 mongoose
