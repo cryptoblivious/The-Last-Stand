@@ -5,7 +5,7 @@ const Home = () => {
 
   return (
     <>
-      <div>Home</div>
+      <h1>Home</h1>
       <button
         className='bg-primary h-full w-full text-white'
         onClick={() => {

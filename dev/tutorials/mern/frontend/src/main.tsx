@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.css';
+import './fonts/cyberpunks/Cyberpunks.ttf';
+
 import { Error, Home, Lobby, Login, Match } from './pages';
 import { App } from './components';
 //import { loader as contactLoader } from './routes/contact';

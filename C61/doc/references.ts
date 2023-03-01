@@ -43,4 +43,8 @@ export const references = [
     id: 'ref-11',
     link: 'https://www.youtube.com/watch?v=8DploTqLstE&t=196s',
   },
+  {
+    id: 'ref-12',
+    link: 'https://www.youtube.com/watch?v=MEab_a19ZGk',
+  },
 ];
