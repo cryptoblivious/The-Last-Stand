@@ -7,16 +7,23 @@ export class MyRoom extends Room<MyRoomState> {
     this.setState(new MyRoomState());
 
     // onMessage handler for "keydown" message that we created in the client "FirstGame" class
-    this.onMessage("keydown", (client, message) => {
-      this.broadcast("keydown", message, {
-        except: client
+    this.onMessage("action", (client, message) => {
+      const action_map : Record<integer,string> = {
+        0: 'up',
+        1: 'left',
+        2: 'down',
+        3: 'right',
+      }
+      this.broadcast("action", action_map[message], {
+        //except: client
       });
       //
       // handle "type" message
       //
     });
-
   }
+
+  // this.onMessage("action", (client, message) => {
 
   onJoin (client: Client, options: any) {
     console.log(client.sessionId, "joined!");

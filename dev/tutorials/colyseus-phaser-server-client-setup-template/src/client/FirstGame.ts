@@ -29,13 +29,22 @@ export default class FirstGame extends Phaser.Scene
         console.log(room.sessionId)
 
         // onMessage handler for "keydown" message that we created in the server "MyRoom" class
-        room.onMessage('keydown', ( message) => {
+        room.onMessage('action', ( message) => {
             console.log(message)
         })
      
         // on key down send the key to the server
         this.input.keyboard.on('keydown' , (event: KeyboardEvent) => {
-            room.send('keydown', event.key)
+            // translate key to action and send to server
+            // ClientInputHandler
+            const action_map : Record<string,integer> = {
+                'w': 0,
+                'a': 1,
+                's': 2,
+                'd': 3,
+            }
+            
+            room.send('action', action_map[event.key])
         })
 	}
 
