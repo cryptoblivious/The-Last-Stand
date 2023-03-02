@@ -6,7 +6,7 @@ const Navbar = () => {
     <header>
       <div className='container'>
         <Link to='/home'>
-          <h1 className='logo'>Forward Arrow</h1>
+          <h1>Forward Arrow</h1>
         </Link>
       </div>
     </header>
