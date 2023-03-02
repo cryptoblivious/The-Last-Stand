@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import type Server from '../services/Server';
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -15,9 +16,11 @@ export default class Game extends Phaser.Scene {
 
     }
 
-    create()
+    create(data : { server : Server})
     {
-        console.log("game scene");
+        //game recieves server instance from bootstrap scene
+        const { server } = data
+        server.join()
     }
 
     update() 
