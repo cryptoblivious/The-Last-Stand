@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 
 const Login = () => {
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<null | any[]>(null);
 
   useEffect(() => {
     const fetchPlayers = async () => {
-      const response = await fetch('localhost:4000/api/players');
+      const response = await fetch('http://localhost:4000/api/players');
       const data = await response.json();
 
       if (response.ok) {
+        console.log(data);
         setPlayers(data);
       }
     };
@@ -25,7 +26,7 @@ const Login = () => {
         {players &&
           players.map((player: any) => (
             <div key={player._id}>
-              <h2>{player.name}</h2>
+              <h2>{player.username}</h2>
             </div>
           ))}
       </main>
