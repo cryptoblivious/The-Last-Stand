@@ -1,3 +1,3 @@
 {
-  "eslint.workingDirectories": ["./dev/tutorials/back-end", "./dev/tutorials/front-end"]
+  "eslint.workingDirectories": ["./dev/tutorials/back-end", "./dev/tutorials/front-end", "./C61/sprint1/doc/the-last-stand"]
 }
