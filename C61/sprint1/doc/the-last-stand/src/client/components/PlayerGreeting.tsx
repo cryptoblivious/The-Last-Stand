@@ -1,3 +1,4 @@
+import React from 'react';
 interface IPlayerGreeting {
   player: {
     username: string;

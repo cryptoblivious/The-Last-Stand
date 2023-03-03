@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+
+import React ,{ useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlayerGreeting, SendFriendRequestForm } from '../components';
 
@@ -9,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchPlayers = async () => {
-      const response = await fetch('http://localhost:4000/api/players');
+      const response = await fetch('http://localhost:9001/api/players');
       const data = await response.json();
 
       if (response.ok) {
