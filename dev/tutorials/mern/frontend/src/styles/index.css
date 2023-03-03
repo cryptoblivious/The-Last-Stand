@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;500;600;700;800;900&family=Tilt+Neon&display=swap');
 @font-face {
   font-family: Cyberpunks;
   src: url(../fonts/cyberpunks/Cyberpunks.ttf);
@@ -10,7 +9,9 @@
 @tailwind utilities;
 
 :root {
-  font-family: Cyberpunks, sans-serif;
+  font-family: 'Tilt Neon', cursive;
+  font-family: 'Orbitron', sans-serif;
+  font-family: 'Audiowide', cursive;
   line-height: 1.5;
   font-weight: 400;
 
@@ -77,4 +78,31 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#login {
+  background-image: url('../assets/wallpapers/DALL·E 2023-02-03 17.27.01 - Wallpaper.png');
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0 1em;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0 1em;
 }

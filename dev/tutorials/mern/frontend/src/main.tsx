@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './styles/index.css';
 import './fonts/cyberpunks/Cyberpunks.ttf';
 
@@ -15,33 +15,40 @@ import { App } from './components';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <div className='pages'>
-        <Routes>
-          <Route
-            path='/'
-            element={<App />}
-            errorElement={<Error />}>
-            <Route errorElement={<Error />}>
-              <Route
-                index
-                element={<Login />}
-              />
-              <Route
-                path='home'
-                element={<Home />}
-              />
-              <Route
-                path='lobby/:lobbyId'
-                element={<Lobby />}
-              />
-              <Route
-                path='match/:matchId'
-                element={<Match />}
-              />
-            </Route>
+      <Routes>
+        <Route
+          path='login'
+          element={<Login />}
+        />
+        <Route
+          path='/'
+          element={
+            <Navigate
+              replace
+              to='login'
+            /> //ref:https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb
+          }
+        />
+        <Route
+          path='/'
+          element={<App />}
+          errorElement={<Error />}>
+          <Route errorElement={<Error />}>
+            <Route
+              path='home'
+              element={<Home />}
+            />
+            <Route
+              path='lobby/:lobbyId'
+              element={<Lobby />}
+            />
+            <Route
+              path='match/:matchId'
+              element={<Match />}
+            />
           </Route>
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

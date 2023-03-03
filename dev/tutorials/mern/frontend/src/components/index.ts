@@ -1,8 +1,8 @@
 import App from './App';
-
 import LoginMenu from './LoginMenu';
 import RegisterMenu from './RegisterMenu';
-import Player from './Player';
-import Navbar from './Navbar';
+import Header from './Header';
+import SendFriendRequestForm from './SendFriendRequestForm';
+import PlayerGreeting from './PlayerGreeting';
 
-export { App, LoginMenu, Navbar, Player, RegisterMenu };
+export { SendFriendRequestForm, App, LoginMenu, Header, RegisterMenu, PlayerGreeting };
