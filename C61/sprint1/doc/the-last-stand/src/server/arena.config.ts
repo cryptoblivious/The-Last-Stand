@@ -1,49 +1,74 @@
-import Arena from "@colyseus/arena";
-import { monitor } from "@colyseus/monitor";
+// Colyseus imports
+import Arena from '@colyseus/arena';
+import { monitor } from '@colyseus/monitor';
+
+// Express imports
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import express from 'express';
+
+import players from './routes/players';
+
+mongoose.set('strictQuery', false);
+dotenv.config();
+const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Banane';
 
 /**
  * Import your Room files
  */
-import { MyRoom } from "./rooms/MyRoom";
-import { TicTacToe } from "./rooms/TicTacToe";
+import { MyRoom } from './rooms/MyRoom';
+import { TicTacToe } from './rooms/TicTacToe';
 export default Arena({
-    getId: () => "Your Colyseus App",
+  getId: () => 'Your Colyseus App',
 
-    initializeGameServer: (gameServer) => {
-        /**
-         * Define your room handlers:
-         */
-        gameServer.define('my_room', MyRoom);
-        
-        //create a tic-tac-toe room
-        gameServer.define('tic-tac-toe', TicTacToe);
+  initializeGameServer: (gameServer: any) => {
+    /**
+     * Define your room handlers:
+     */
+    gameServer.define('my_room', MyRoom);
 
-    },
+    //create a tic-tac-toe room
+    gameServer.define('tic-tac-toe', TicTacToe);
+  },
 
-    initializeExpress: (app) => {
-        /**
-         * Bind your custom express routes here:
-         */
-        app.get("/", (req, res) => {
-            res.send("It's time to kick ass and chew bubblegum!");
-        });
+  initializeExpress: (app: any) => {
+    // Middlewares
+    app.use(cors());
+    app.use(express.json());
+    app.use((req, res, next) => {
+      console.log(req.path, req.method);
+      next();
+    });
 
-        app.get("/hello", (req, res) => {
-            res.send("Hello, world!");
-        });
+    // Dummy route
+    app.get('/', (req, res) => {
+      res.json({ msg: "It's time to kick ass and chew bubblegum!" });
+    });
 
-        /**
-         * Bind @colyseus/monitor
-         * It is recommended to protect this route with a password.
-         * Read more: https://docs.colyseus.io/tools/monitor/
-         */
-        app.use("/colyseus", monitor());
-    },
+    // Routes
+    app.use('/api/players', players);
 
+    // Connect to MongoDB
+    console.log(mongoUri);
+    mongoose
+      .connect(mongoUri, { useNewUrlParser: true })
+      .then(() => {
+        console.log(`Connected to MongoDB`);
+      })
+      .catch((err) => console.log(err));
 
-    beforeListen: () => {
-        /**
-         * Before before gameServer.listen() is called.
-         */
-    }
+    /**
+     * Bind @colyseus/monitor
+     * It is recommended to protect this route with a password.
+     * Read more: https://docs.colyseus.io/tools/monitor/
+     */
+    app.use('/colyseus', monitor());
+  },
+
+  beforeListen: () => {
+    /**
+     * Before before gameServer.listen() is called.
+     */
+  },
 });
