@@ -1,4 +1,4 @@
-import ErrorPage from './ErrorPage';
+import Error from './Error';
 import Match from './Match';
 import Lobby from './Lobby';
 import Heroes from './Heroes';
@@ -7,4 +7,4 @@ import Login from '../pages/Login';
 import Stages from './Stages';
 import Stats from './Stats';
 
-export { ErrorPage as Error, Match, Lobby, Heroes, Home, Login, Stages, Stats };
+export { Error, Match, Lobby, Heroes, Home, Login, Stages, Stats };

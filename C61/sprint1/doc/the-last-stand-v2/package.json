@@ -1,9 +1,8 @@
 {
-  "name": "the-last-stand",
+  "name": "the-last-stand-v2",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "lib/index.js",
   "scripts": {
     "client": "vite",
     "server": "ts-node-dev --respawn --transpile-only --project tsconfig.server.json src/server/index.ts",
