@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';
-import Game from '../match/scenes/Game';
+import MatchScene from '../match/scenes/MatchScene';
 
 // const config: Phaser.Types.Core.GameConfig = {
 //   type: Phaser.AUTO,
@@ -34,7 +34,7 @@ const Match = () => {
             gravity: { y: 200 },
           },
         },
-        scene: [Bootstrap, Game],
+        scene: [Bootstrap, MatchScene],
       };
       const newGame = new Phaser.Game(config);
       setGame(newGame);

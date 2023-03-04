@@ -18,7 +18,7 @@ const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Banane';
  * Import your Room files
  */
 import { MyRoom } from './rooms/MyRoom';
-import { TicTacToe } from './rooms/TicTacToe';
+import { MatchRoom } from './rooms/MatchRoom';
 export default Arena({
   getId: () => 'Your Colyseus App',
 
@@ -29,7 +29,7 @@ export default Arena({
     gameServer.define('my_room', MyRoom);
 
     //create a tic-tac-toe room
-    gameServer.define('tic-tac-toe', TicTacToe);
+    gameServer.define('match_room', MatchRoom);
   },
 
   initializeExpress: (app: any) => {
