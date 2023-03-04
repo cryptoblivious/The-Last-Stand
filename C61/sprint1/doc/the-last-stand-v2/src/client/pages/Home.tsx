@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { PlayerGreeting, SendFriendRequestForm } from '../components';
 import { PORT } from '../common/constants';
 
@@ -39,6 +39,9 @@ const Home = () => {
             player={player}
           />
         ))}
+      <Link to='/match/123'>
+        <button className='bg-primary h-screen w-screen text-white'>Play</button>
+      </Link>
       <SendFriendRequestForm />
     </main>
   );

@@ -28,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               to='login'
             /> //ref:https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb
           }
+          errorElement={<Error />}
         />
         <Route
           path='/'

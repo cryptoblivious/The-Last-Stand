@@ -1,9 +1,5 @@
-import React from 'react'
-
 const Heroes = () => {
-  return (
-    <div>Heroes</div>
-  )
-}
+  return <div>Heroes</div>;
+};
 
-export default Heroes
+export default Heroes;
