@@ -9,6 +9,7 @@ import cors from 'cors';
 import express from 'express';
 
 import players from './routes/players';
+import auth from './routes/auth';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -42,12 +43,13 @@ export default Arena({
     });
 
     // Dummy route
-    app.get('/', (req, res) => {
+    app.get('/', (req: any, res: any) => {
       res.json({ msg: "It's time to kick ass and chew bubblegum!" });
     });
 
     // Routes
     app.use('/api/players', players);
+    app.use('/auth', auth);
 
     // Connect to MongoDB
     console.log(mongoUri);

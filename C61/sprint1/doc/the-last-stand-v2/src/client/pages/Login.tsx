@@ -1,4 +1,4 @@
-import { Header } from '../components';
+import { Header, SignUpMenu } from '../components';
 import { login } from '../assets/';
 
 const Login = () => {
@@ -8,6 +8,7 @@ const Login = () => {
       className='bg-cover bg-center bg-no-repeat'
       style={{ backgroundImage: `url(${login})` }}>
       <Header />
+      <SignUpMenu />
     </main>
   );
 };
