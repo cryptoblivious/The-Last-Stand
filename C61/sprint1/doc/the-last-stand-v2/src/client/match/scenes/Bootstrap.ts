@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import Server from '../services/Server'
+import Server from '../../services/Server'
 
 //holds logic for switching between scenes
 

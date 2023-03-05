@@ -1,6 +1,6 @@
 import { Client } from 'colyseus.js';
 import Phaser from 'phaser';
-import IMatchState from '../../../types/IMatchState';
+import IMatchState from '../../types/IMatchState';
 
 //dotenv.config();
 //const port: string = process.env.PORT?.toString() ?? '';

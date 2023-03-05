@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import type Server from '../services/Server';
+import type Server from '../../services/Server';
 import IMatchState from '../../../types/IMatchState';
 
 export default class MatchScene extends Phaser.Scene {
@@ -20,25 +20,33 @@ export default class MatchScene extends Phaser.Scene {
         const { server } = data
         server.join()
 
-        server.onceStateChanged(this.createBoard, this)
+        //once state changes, re create the board
+        server.onceStateChanged((state) => {
+            this.createBoard(state)
+        }
+        )
     }
 
     update() {
 
     }
 
+    // create board using match state data
     private createBoard(state : IMatchState)
     {
-        let x = 100
-        let y = 100
+        const { width, height } = this.scale
+        const cellSize = 128 
+
+        let x = (width * 0.5) - cellSize
+        let y = (height * 0.5) - cellSize 
         state.board.forEach((cellState, index) => {
-            this.add.rectangle(x,y,64,64,0xffffff)
-            x += 64 + 5
+            this.add.rectangle(x,y,cellSize,cellSize,0xffffff)
+            x += cellSize + 5
 
             if(index % 3 === 2)
             {
-                x = 100
-                y += 64 + 5
+                x = (width * 0.5) - cellSize
+                y += cellSize + 5
             }
         });
     }
