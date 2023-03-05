@@ -1,8 +1,13 @@
 import Phaser from "phaser";
 import type Server from '../../services/Server';
 import IMatchState from '../../../types/IMatchState';
+import { Cell } from '../../../types/IMatchState';
 
 export default class MatchScene extends Phaser.Scene {
+
+    private server?: Server;
+    private cells: { display : Phaser.GameObjects.Rectangle, value : Cell}[] = [];
+
     constructor() {
         super("game");
     }
@@ -18,13 +23,20 @@ export default class MatchScene extends Phaser.Scene {
     async create(data: { server: Server }) {
         //game recieves server instance from bootstrap scene
         const { server } = data
-        server.join()
+
+        this.server = server
+
+        if (!this.server) {
+            throw new Error('server not found')
+        }
+
+        await this.server.join()
 
         //once state changes, re create the board
-        server.onceStateChanged((state) => {
+        this.server.onceStateChanged((state) => {
             this.createBoard(state)
-        }
-        )
+        })
+        
     }
 
     update() {
@@ -39,8 +51,20 @@ export default class MatchScene extends Phaser.Scene {
 
         let x = (width * 0.5) - cellSize
         let y = (height * 0.5) - cellSize 
+
+        // iterate in the board array and create a rectangle for each cell
         state.board.forEach((cellState, index) => {
-            this.add.rectangle(x,y,cellSize,cellSize,0xffffff)
+            const cell = this.add.rectangle(x, y, cellSize, cellSize, 0xffffff)
+            .setInteractive()
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+                this.server?.makeSelection(index)
+            })
+
+            this.cells.push({
+                display : cell,
+                value : cellState
+            })
+
             x += cellSize + 5
 
             if(index % 3 === 2)
@@ -49,6 +73,23 @@ export default class MatchScene extends Phaser.Scene {
                 y += cellSize + 5
             }
         });
+
+        this.server?.onBoardChange((board) => {
+            this.handleBoardChange(board)
+        })
+    }
+
+    private handleBoardChange(board: number[])
+    {
+        board.forEach((cellState, index) => {
+            const cell = this.cells[index]
+
+            if(cell.value !== cellState)
+            {
+                this.add.star(cell.display.x, cell.display.y, 5, 10, 5, 0x000000)
+            }
+           
+        })
     }
 
 }

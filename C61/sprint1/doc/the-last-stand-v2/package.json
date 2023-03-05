@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@colyseus/arena": "^0.14.22",
+    "@colyseus/command": "^0.2.1",
     "@colyseus/monitor": "^0.14.20",
     "autoprefixer": "^10.4.13",
     "colyseus": "^0.14.20",

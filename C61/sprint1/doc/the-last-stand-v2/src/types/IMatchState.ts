@@ -1,6 +1,15 @@
+export enum Cell 
+{
+    Empty,
+    X,
+    O
+}
+
+
 export interface IMatchState {
 
-    board : number[];
+
+    board : Cell[];
     activePlayer : number;
 
 }
