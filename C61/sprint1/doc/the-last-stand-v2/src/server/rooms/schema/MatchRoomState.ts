@@ -4,11 +4,10 @@ import IMatchState from '../../../types/IMatchState';
 export class MatchRoomState extends Schema implements IMatchState{
 
     //state setup for tic tac toe game 
-    @type('string')
-    name = "The-Last-Stand match room";
+    @type('string') name : string = "The-Last-Stand match room";
 
-    @type(['number'])
-    board =  ArraySchema<number>
+    @type(['number'] )
+    board : ArraySchema<number>
 
     @type('number')
     activePlayer = 0 

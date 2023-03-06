@@ -29,7 +29,7 @@ export default Arena({
      */
     gameServer.define('my_room', MyRoom);
 
-    //create a tic-tac-toe room
+    //create a match room
     gameServer.define('match_room', MatchRoom);
   },
 

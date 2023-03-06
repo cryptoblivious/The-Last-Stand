@@ -58,6 +58,7 @@ export default class MatchScene extends Phaser.Scene {
             .setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
                 this.server?.makeSelection(index)
+                // console.log('cell clicked', index)
             })
 
             this.cells.push({
@@ -84,6 +85,7 @@ export default class MatchScene extends Phaser.Scene {
         board.forEach((cellState, index) => {
             const cell = this.cells[index]
 
+            
             if(cell.value !== cellState)
             {
                 this.add.star(cell.display.x, cell.display.y, 5, 10, 5, 0x000000)

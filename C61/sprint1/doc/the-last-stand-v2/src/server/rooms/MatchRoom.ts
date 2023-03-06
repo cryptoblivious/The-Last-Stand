@@ -13,11 +13,13 @@ export class MatchRoom extends Room<MatchRoomState> {
         // set initial room state
         this.setState(new MatchRoomState())
 
-        this.onMessage(Message.PlayerSelection, (client, message) => {
+        this.onMessage(Message.PlayerSelection, (client, message : { index : number}) => {
+
             this.dispatcher.dispatch(new PlayerSelectionCommand(), {
                 client: client,
                 index: message.index
             });
+            // console.log(Message.PlayerSelection, client.sessionId, message.index)
         })
     }
 

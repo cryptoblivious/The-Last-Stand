@@ -18,8 +18,11 @@ export default class PlayerSelectionCommand extends Command<Room<IMatchState>, P
         const cellValue = clientIndex === 0 ? Cell.X : Cell.O
 
         this.room.state.board[index] = cellValue
+
+        console.log(this.room.state.board)
         
-        console.log(index, cellValue)
+        
+        // console.log(this.room + " " + clientIndex)
 
     }
 }

@@ -9,7 +9,7 @@ import { Schema } from '@colyseus/schema'
 
 export default class Server {
   private client: Client;
-  private events = new Phaser.Events.EventEmitter();
+  private events : Phaser.Events.EventEmitter;
   private room?: Room<IMatchState & Schema>;
 
 
@@ -27,16 +27,26 @@ export default class Server {
       this.events.emit('once-state-change', state);
     });
 
-  
-   
+
+
+    // need to check if the state is changing
+    // this.room.onStateChange((state) => {
+    //   console.log(state)
+    //   if (state.board) {
+    //     this.events.emit('board-change', state.board);
+    //     console.log('board change')
+    //   }
+    // });
+    
+    
     this.room.state.onChange = (changes) => {
+      console.log(changes)
       changes.forEach((change) => {
         const { field, value } = change;
-
-        switch (field) {
-          case 'board':
-            this.events.emit('board-change', value);
-            break;
+        console.log(field + ' changed to ' + value)
+        if (field === 'board') {
+          this.events.emit('board-change', value);
+          console.log('board change')
         }
       });
     }
