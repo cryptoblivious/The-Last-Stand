@@ -1,4 +1,4 @@
-import Player from '../models/player';
+import { playerModel as Player } from '../models/player';
 
 // POST a new player
 export const createPlayer = async (req: any, res: any) => {
