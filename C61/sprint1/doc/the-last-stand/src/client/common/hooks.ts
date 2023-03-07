@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react';
 
-import { PageName } from '../common/enums';
+import { PageName } from './enums';
 
 export const useComponentChange = (pageName: PageName): [PageName, (pageName: PageName) => void] => {
   const [activePage, setActivePage] = useState<PageName>(pageName);

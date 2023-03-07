@@ -9,6 +9,7 @@ import cors from 'cors';
 import express from 'express';
 
 import players from './routes/players';
+import auth from './routes/auth';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -18,7 +19,7 @@ const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Banane';
  * Import your Room files
  */
 import { MyRoom } from './rooms/MyRoom';
-import { TicTacToe } from './rooms/TicTacToe';
+import { MatchRoom } from './rooms/MatchRoom';
 export default Arena({
   getId: () => 'Your Colyseus App',
 
@@ -28,8 +29,8 @@ export default Arena({
      */
     gameServer.define('my_room', MyRoom);
 
-    //create a tic-tac-toe room
-    gameServer.define('tic-tac-toe', TicTacToe);
+    //create a match room
+    gameServer.define('match_room', MatchRoom);
   },
 
   initializeExpress: (app: any) => {
@@ -42,12 +43,13 @@ export default Arena({
     });
 
     // Dummy route
-    app.get('/', (req, res) => {
+    app.get('/', (req: any, res: any) => {
       res.json({ msg: "It's time to kick ass and chew bubblegum!" });
     });
 
     // Routes
     app.use('/api/players', players);
+    app.use('/auth', auth);
 
     // Connect to MongoDB
     console.log(mongoUri);

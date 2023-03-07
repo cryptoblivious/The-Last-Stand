@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const playerSchema = new Schema(
+export const playerSchema = new Schema(
   {
     email: {
       type: String,
@@ -39,6 +39,4 @@ const playerSchema = new Schema(
   }
 );
 
-const playerModel = model('Player', playerSchema);
-
-export default playerModel;
+export const playerModel = model('Player', playerSchema);

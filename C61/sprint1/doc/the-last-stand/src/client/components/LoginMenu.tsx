@@ -1,9 +1,5 @@
-import React from 'react'
-
 const LoginMenu = () => {
-  return (
-    <div>LoginMenu</div>
-  )
-}
+  return <div>LoginMenu</div>;
+};
 
-export default LoginMenu
+export default LoginMenu;

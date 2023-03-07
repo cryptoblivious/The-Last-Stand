@@ -1,7 +1,7 @@
-
-import React ,{ useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { PlayerGreeting, SendFriendRequestForm } from '../components';
+import { PORT } from '../common/constants';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchPlayers = async () => {
-      const response = await fetch('http://localhost:9001/api/players');
+      const response = await fetch(`http://localhost:${PORT}/api/players`);
       const data = await response.json();
 
       if (response.ok) {
@@ -39,6 +39,9 @@ const Home = () => {
             player={player}
           />
         ))}
+      <Link to='/match/123'>
+        <button className='bg-primary h-screen w-screen text-white'>Play</button>
+      </Link>
       <SendFriendRequestForm />
     </main>
   );
