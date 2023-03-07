@@ -4,6 +4,7 @@
   src: url(../fonts/cyberpunks/Cyberpunks.ttf);
 }
 
+@import './tailwind.config.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
