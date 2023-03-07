@@ -4,7 +4,7 @@ const SignUpMenu = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    window.location.href = `http://localhost:${PORT}/auth/signin/google`;
+    window.location.href = `http://localhost:${PORT}/auth/google`;
   };
 
   return (

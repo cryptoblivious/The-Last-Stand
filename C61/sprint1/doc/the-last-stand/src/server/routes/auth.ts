@@ -5,6 +5,8 @@ import { initializeGoogleOAuthStrategy } from '../controllers/auth';
 const router = express.Router();
 
 initializeGoogleOAuthStrategy();
-router.get('/signin/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 export default router;
