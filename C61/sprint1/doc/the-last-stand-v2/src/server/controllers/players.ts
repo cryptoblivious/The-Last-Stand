@@ -7,7 +7,7 @@ export const createPlayer = async (req: any, res: any) => {
     const player = await Player.create({
       email,
       username,
-      userNo,
+      userNo
       title,
       avatar,
       isOnline,
