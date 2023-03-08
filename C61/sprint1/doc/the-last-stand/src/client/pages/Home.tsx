@@ -25,13 +25,11 @@ const Home = () => {
   return (
     <main>
       <button
-        className='bg-primary h-full w-full text-white'
         onClick={() => {
           navigate(-1);
         }}>
         ⥢
       </button>
-      <h1>Home</h1>
       {players &&
         players.map((player: any) => (
           <PlayerGreeting
@@ -40,7 +38,7 @@ const Home = () => {
           />
         ))}
       <Link to='/match/123'>
-        <button className='bg-primary h-screen w-screen text-white'>Play</button>
+        <button>Play</button>
       </Link>
       <SendFriendRequestForm />
     </main>

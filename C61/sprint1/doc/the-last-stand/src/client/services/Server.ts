@@ -1,17 +1,16 @@
 import { Client, Room } from 'colyseus.js';
 import Phaser from 'phaser';
-import IMatchState from '../../types/IMatchState';
-import { Message } from '../../types/messages';
-import { Schema } from '@colyseus/schema'
+import IMatchState from '../../typescript/interfaces/IMatchState';
+import { EMessage } from '../../typescript/enumerations/EMessage';
+import { Schema } from '@colyseus/schema';
 
 //dotenv.config();
 //const port: string = process.env.PORT?.toString() ?? '';
 
 export default class Server {
   private client: Client;
-  private events : Phaser.Events.EventEmitter;
+  private events: Phaser.Events.EventEmitter;
   private room?: Room<IMatchState & Schema>;
-
 
   // create a client instance
   constructor() {
@@ -21,13 +20,11 @@ export default class Server {
 
   async join() {
     // join room "match_room"
-    this.room = await this.client.joinOrCreate<IMatchState & Schema> ('match_room');
+    this.room = await this.client.joinOrCreate<IMatchState & Schema>('match_room');
     // listen to state changes
     this.room.onStateChange.once((state) => {
       this.events.emit('once-state-change', state);
     });
-
-
 
     // need to check if the state is changing
     // this.room.onStateChange((state) => {
@@ -37,28 +34,26 @@ export default class Server {
     //     console.log('board change')
     //   }
     // });
-    
-    
+
     this.room.state.onChange = (changes) => {
-      console.log(changes)
+      console.log(changes);
       changes.forEach((change) => {
         const { field, value } = change;
-        console.log(field + ' changed to ' + value)
+        console.log(field + ' changed to ' + value);
         if (field === 'board') {
           this.events.emit('board-change', value);
-          console.log('board change')
+          console.log('board change');
         }
       });
-    }
-
+    };
   }
 
   makeSelection(index: number) {
     if (!this.room) {
       console.log('room not found');
-      return
+      return;
     }
-    this.room.send(Message.PlayerSelection, {index :index } )
+    this.room.send(EMessage.PlayerSelection, { index: index });
   }
 
   onceStateChanged(callback: (state: IMatchState) => void, context?: any) {
@@ -68,5 +63,4 @@ export default class Server {
   onBoardChange(callback: (board: number[]) => void, context?: any) {
     this.events.on('board-change', callback, context);
   }
-
 }

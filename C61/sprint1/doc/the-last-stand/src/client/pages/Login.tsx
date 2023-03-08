@@ -1,14 +1,14 @@
-import { Header, SignUpMenu } from '../components';
+import LoginNavbar from '../components/LoginNavbar';
 import { login } from '../assets/';
+import '../styles/index.css';
 
 const Login = () => {
   return (
     <main
       id='login'
-      className='bg-cover bg-center bg-no-repeat'
+      className='w-full h-screen bg-center bg-no-repeat bg-no-resize bg-purple-900' //ref: ChatGPT
       style={{ backgroundImage: `url(${login})` }}>
-      <Header />
-      <SignUpMenu />
+      <LoginNavbar />
     </main>
   );
 };
