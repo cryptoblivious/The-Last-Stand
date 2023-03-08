@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
+import session from 'express-session';
 
 import players from './routes/players';
 import auth from './routes/auth';

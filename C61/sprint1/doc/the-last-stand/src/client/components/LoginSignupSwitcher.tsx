@@ -5,7 +5,7 @@ import SignupMenu from './SignupMenu';
 const LoginSignupSwitcher = () => {
   const [loginMenu, setLoginMenu] = useState(true);
 
-  const handleSignupClick = () => {
+  const toggleMenu = () => {
     setLoginMenu(!loginMenu);
   };
 
@@ -14,12 +14,12 @@ const LoginSignupSwitcher = () => {
       {loginMenu ? (
         <LoginMenu
           className={`opacity-100 ${loginMenu ? '' : 'opacity-0'}`}
-          patate={handleSignupClick}
+          onClick={toggleMenu}
         />
       ) : (
         <SignupMenu
           className={`opacity-100 ${loginMenu ? 'opacity-0' : ''}`}
-          patate={handleSignupClick}
+          onClick={toggleMenu}
         />
       )}
     </div>

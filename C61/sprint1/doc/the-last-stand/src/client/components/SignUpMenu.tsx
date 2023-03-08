@@ -1,10 +1,10 @@
-import { PORT } from '../common/constants';
 import { Link } from 'react-router-dom';
-import { IPatate } from '../../typescript/interfaces/IPatate';
+import { IStyledClickableComponent } from '../../typescript/interfaces/IStyledClickableComponent';
 
-const SignupMenu = (props: IPatate) => {
+const SignupMenu = ({ className, onClick }: IStyledClickableComponent) => {
+  const toggleMenu = onClick;
   return (
-    <div className='text-white flex flex-col rounded-xl justify-start gap-4 bg-gray-800 p-4 mr-4 w-80 h-96'>
+    <div className={`text-white flex flex-col rounded-xl justify-start gap-4 bg-gray-800 p-4 mr-4 w-80 h-96 border-gray-400 border-2 ${className}`}>
       <input
         className='bg-gray-200 rounded-xl p-3'
         type='text'
@@ -22,7 +22,7 @@ const SignupMenu = (props: IPatate) => {
       />
       <a
         className='cursor-pointer text-blue-500 hover:underline'
-        onClick={props.patate}>
+        onClick={toggleMenu}>
         Back to Login
       </a>
       <Link to='/home'>
