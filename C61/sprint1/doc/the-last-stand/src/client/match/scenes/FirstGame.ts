@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
 import * as Colyseus from 'colyseus.js'
-import Input from '../../../../vite/Jo/react-ts/src/components/Input';
 
 export default class FirstGame extends Phaser.Scene
 {
