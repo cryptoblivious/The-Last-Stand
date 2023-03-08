@@ -22,7 +22,6 @@ import MatchScene from '../match/scenes/MatchScene';
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Phaser.Game | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (gameRef.current) {
@@ -30,7 +29,6 @@ const Match = () => {
         type: Phaser.AUTO,
         width: window.innerWidth,
         height: window.innerHeight,
-        parent: 'match-canvas',
         physics: {
           default: 'arcade',
           arcade: {
@@ -48,17 +46,7 @@ const Match = () => {
     }
   }, [gameRef]);
 
-  return (
-    <>
-      <div ref={gameRef} />
-      <button
-        onClick={() => {
-          navigate(-1);
-        }}>
-        ⥢
-      </button>
-    </>
-  );
+  return <div ref={gameRef} />;
 };
 
 export default Match;

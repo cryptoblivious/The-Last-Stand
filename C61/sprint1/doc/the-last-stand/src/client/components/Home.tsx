@@ -23,7 +23,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main>
+    <main className='bg-black text-white min-h-screen'>
       <button
         onClick={() => {
           navigate(-1);
