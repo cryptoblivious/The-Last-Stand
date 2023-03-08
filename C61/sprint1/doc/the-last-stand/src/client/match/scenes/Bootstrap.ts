@@ -19,8 +19,9 @@ export default class Bootstrap extends Phaser.Scene {
 
     create() 
     {
+        console.log
         //launch game scene from here and pass server instance to it
-        this.scene.launch('game', {
+        this.scene.launch('first-game', {
             server: this.server
         })
     }

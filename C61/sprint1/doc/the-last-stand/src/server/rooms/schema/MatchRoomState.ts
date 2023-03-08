@@ -1,7 +1,6 @@
 import { Schema, type, ArraySchema } from '@colyseus/schema';
-import IMatchState from '../../../typescript/interfaces/IMatchState';
 
-export class MatchRoomState extends Schema implements IMatchState {
+export class MatchRoomState extends Schema  {
   //state setup for tic tac toe game
   @type('string') name: string = 'The-Last-Stand match room';
 

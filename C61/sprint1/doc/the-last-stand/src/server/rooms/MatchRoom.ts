@@ -1,23 +1,40 @@
-import { Client, Room } from 'colyseus';
-import { MatchRoomState } from './schema/MatchRoomState';
-import { EMessage } from '../../typescript/enumerations/EMessage';
-import { Dispatcher } from '@colyseus/command';
-import PlayerSelectionCommand from '../commands/PlayerSelectionCommands';
+import { Room, Client } from "colyseus";
+import { MyRoomState } from "./schema/Archives";
 
-// export default didnt work here but classic export did
-export class MatchRoom extends Room<MatchRoomState> {
-  private dispatcher = new Dispatcher(this);
+export class MatchRoom extends Room<MyRoomState> {
 
-  onCreate() {
-    // set initial room state
-    this.setState(new MatchRoomState());
+  onCreate (options: any) {
+    this.setState(new MyRoomState());
 
-    this.onMessage(EMessage.PlayerSelection, (client, message: { index: number }) => {
-      this.dispatcher.dispatch(new PlayerSelectionCommand(), {
-        client: client,
-        index: message.index,
+    // onMessage handler for "keydown" message that we created in the client "FirstGame" class
+    this.onMessage("action", (client, message) => {
+      const action_map : Record<integer,string> = {
+        0: 'up',
+        1: 'left',
+        2: 'down',
+        3: 'right',
+      }
+      this.broadcast("action", action_map[message], {
+        //except: client
       });
-      // console.log(Message.PlayerSelection, client.sessionId, message.index)
+      //
+      // handle "type" message
+      //
     });
   }
+
+  // this.onMessage("action", (client, message) => {
+
+  onJoin (client: Client, options: any) {
+    console.log(client.sessionId, "joined!");
+  }
+
+  onLeave (client: Client, consented: boolean) {
+    console.log(client.sessionId, "left!");
+  }
+
+  onDispose() {
+    console.log("room", this.roomId, "disposing...");
+  }
+
 }
