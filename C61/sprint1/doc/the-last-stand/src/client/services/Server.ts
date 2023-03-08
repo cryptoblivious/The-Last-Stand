@@ -20,7 +20,7 @@ export default class Server {
 
   async join() {
     // join room "match_room"
-    this.room = await this.client.joinOrCreate<IMatchState & Schema>('');
+    this.room = await this.client.joinOrCreate<IMatchState & Schema>('my_room');
     // listen to state changes
     this.room.onStateChange.once((state) => {
       this.events.emit('once-state-change', state);

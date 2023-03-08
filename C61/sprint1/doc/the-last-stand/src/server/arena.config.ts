@@ -18,7 +18,6 @@ const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Banane';
 /**
  * Import your Room files
  */
-import { MyRoom } from './rooms/MyRoom';
 import { MatchRoom } from './rooms/MatchRoom';
 export default Arena({
   getId: () => 'Your Colyseus App',
@@ -27,7 +26,6 @@ export default Arena({
     /**
      * Define your room handlers:
      */
-    gameServer.define('my_room', MyRoom);
 
     //create a match room
     gameServer.define('match_room', MatchRoom);
