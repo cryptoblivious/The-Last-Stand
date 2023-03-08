@@ -8,13 +8,21 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import passport from 'passport';
 
 import players from './routes/players';
 import auth from './routes/auth';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
-const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Banane';
+const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Invalid mongo uri';
+const sessionSecret: string = process.env.SESSION_SECRET?.toString() ?? 'Invalid mongo uri';
+
+const store = new MongoStore({
+  mongoUrl: process.env.MONGO_URI,
+  collectionName: 'sessions',
+});
 
 /**
  * Import your Room files
@@ -36,10 +44,20 @@ export default Arena({
     // Middlewares
     app.use(cors());
     app.use(express.json());
-    app.use((req, res, next) => {
-      console.log(req.path, req.method);
-      next();
-    });
+    app.use(
+      session({
+        secret: sessionSecret,
+        resave: false,
+        saveUninitialized: false,
+        store: store,
+      })
+    );
+    app.use(passport.authenticate('session'));
+
+    // app.use((req, res, next) => {
+    //   console.log(req.path, req.method);
+    //   next();
+    // });
 
     // Dummy route
     app.get('/', (req: any, res: any) => {
