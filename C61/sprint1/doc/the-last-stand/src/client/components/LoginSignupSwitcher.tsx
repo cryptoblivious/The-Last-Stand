@@ -11,7 +11,6 @@ const LoginSignupSwitcher = () => {
 
   return (
     <div className='transition-opacity duration-500 ease-in-out'>
-      {' '}
       {loginMenu ? (
         <LoginMenu
           className={`opacity-100 ${loginMenu ? '' : 'opacity-0'}`}

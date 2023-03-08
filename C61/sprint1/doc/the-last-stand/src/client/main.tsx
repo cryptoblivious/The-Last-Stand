@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, RouterProvider, createBrowserRo
 import './styles/index.css';
 // import './fonts/cyberpunks/Cyberpunks.ttf';
 
-import { Error, Home, Lobby, Login, Match } from './pages';
+import { Error, Home, Lobby, Login, Match } from './components';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
