@@ -1,6 +1,6 @@
 import { Schema, type, ArraySchema } from '@colyseus/schema';
 
-export class MatchRoomState extends Schema  {
+export class ArchivesRoomState extends Schema  {
   //state setup for tic tac toe game
   @type('string') name: string = 'The-Last-Stand match room';
 

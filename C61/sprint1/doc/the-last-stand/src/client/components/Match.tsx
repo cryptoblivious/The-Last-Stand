@@ -1,7 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';
-import MatchScene from '../match/scenes/MatchScene';
+import MatchScene from '../match/scenes/ClientMatch';
+
+// const config: Phaser.Types.Core.GameConfig = {
+//   type: Phaser.AUTO,
+//   width: 800,
+//   height: 600,
+//   physics: {
+//     default: 'arcade',
+//     arcade: {
+//       gravity: { y: 200 },
+//     },
+//   },
+//   scene: [Bootstrap, Game],
+// };
+
+// export default new Phaser.Game(config);
 
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);

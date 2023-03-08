@@ -7,10 +7,18 @@ import { Schema } from '@colyseus/schema';
 //dotenv.config();
 //const port: string = process.env.PORT?.toString() ?? '';
 
-export default class Server {
+export default class LocalServer {
   private client: Client;
   private events: Phaser.Events.EventEmitter;
-  private room?: Room<IMatchState & Schema>;
+  private room?: Room;
+
+  public action_map : Record<string,integer> = 
+  {
+    'w': 0,
+    'a': 1,
+    's': 2,
+    'd': 3,
+  }
 
   // create a client instance
   constructor() {
@@ -20,32 +28,25 @@ export default class Server {
 
   async join() {
     // join room "match_room"
-    this.room = await this.client.joinOrCreate<IMatchState & Schema>('my_room');
+    this.room = await this.client.joinOrCreate('match_room');
+    console.log(this.room);
     // listen to state changes
-    this.room.onStateChange.once((state) => {
-      this.events.emit('once-state-change', state);
-    });
-
-    // need to check if the state is changing
-    // this.room.onStateChange((state) => {
-    //   console.log(state)
-    //   if (state.board) {
-    //     this.events.emit('board-change', state.board);
-    //     console.log('board change')
-    //   }
+    // this.room.onStateChange.once((state) => {
+    //   this.events.emit('once-state-change', state);
     // });
+    // this.room.onMessage('action', (message) => {
+    //   console.log(message);
+    // });s
 
-    this.room.state.onChange = (changes) => {
-      console.log(changes);
-      changes.forEach((change) => {
-        const { field, value } = change;
-        console.log(field + ' changed to ' + value);
-        if (field === 'board') {
-          this.events.emit('board-change', value);
-          console.log('board change');
-        }
-      });
-    };
+  }
+
+  clientInputHandler(key : integer) {
+    if (!this.room) {
+      console.log('room not found');
+      return;
+    }
+    console.log(this.room)
+    this.room.send("action", { key: key });
   }
 
   makeSelection(index: number) {

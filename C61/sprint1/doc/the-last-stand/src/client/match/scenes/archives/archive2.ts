@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
-import type Server from '../../../services/Server';
+import type LocalServer from '../../../services/ClientSideInputHandler';
 import IMatchState from '../../../../typescript/interfaces/IMatchState';
 import { ECell } from '../../../../typescript/enumerations/ECell';
 
 export default class MatchScene extends Phaser.Scene {
-  private server?: Server;
+  private server?: LocalServer;
   private cells: { display: Phaser.GameObjects.Rectangle; value: ECell }[] = [];
 
   constructor() {
@@ -15,7 +15,7 @@ export default class MatchScene extends Phaser.Scene {
 
   preload() {}
 
-  async create(data: { server: Server }) {
+  async create(data: { server: LocalServer }) {
     //game recieves server instance from bootstrap scene
     const { server } = data;
 
