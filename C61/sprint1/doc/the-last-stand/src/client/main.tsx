@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Navigate, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import './styles/index.css';
-// import './fonts/cyberpunks/Cyberpunks.ttf';
-
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Error, Home, Lobby, Login, Match } from './components';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

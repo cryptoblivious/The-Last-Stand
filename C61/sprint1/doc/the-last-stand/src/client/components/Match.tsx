@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';
 import MatchScene from '../match/scenes/MatchScene';
@@ -21,13 +22,15 @@ import MatchScene from '../match/scenes/MatchScene';
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Phaser.Game | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (gameRef.current) {
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
-        width: 800,
-        height: 600,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        parent: 'match-canvas',
         physics: {
           default: 'arcade',
           arcade: {
@@ -45,7 +48,17 @@ const Match = () => {
     }
   }, [gameRef]);
 
-  return <div ref={gameRef} />;
+  return (
+    <>
+      <div ref={gameRef} />
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}>
+        ⥢
+      </button>
+    </>
+  );
 };
 
 export default Match;

@@ -6,7 +6,7 @@ const Login = () => {
   return (
     <main
       id='login'
-      className='w-full h-screen bg-center bg-no-repeat bg-no-resize bg-purple-900' //ref: ChatGPT
+      className='w-full h-screen bg-center bg-no-repeat bg-cover bg-purple-900' //ref: ChatGPT
       style={{ backgroundImage: `url(${login})` }}>
       <LoginNavbar />
     </main>
