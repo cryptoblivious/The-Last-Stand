@@ -1,24 +1,25 @@
 import express from 'express';
-import { createUser, deleteUserByEmail, updateUserByEmail, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
-import { isAuthenticated, isAdmin } from '../controllers/auth';
-const router = express.Router();
+import { isAuthenticated, isAdmin, createUser, deleteUserByEmail, updateUserByEmail, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
+
+const usersRouter = express.Router();
 
 // DELETE a player
-router.delete('/:email', deleteUserByEmail);
+usersRouter.delete('/:email', deleteUserByEmail);
 
 // GET current user
-router.get('/current', isAuthenticated, readCurrentUser);
+usersRouter.get('/current', isAuthenticated, readCurrentUser);
+//usersRouter.get('/current', isAuthenticated, readCurrentUser);
 
 // GET all players
-router.get('/', readUsers);
+usersRouter.get('/', readUsers);
 
 // GET one player
-router.get('/:email', readUserByEmail);
+usersRouter.get('/:email', readUserByEmail);
 
 // UPDATE a player
-router.patch('/:email', updateUserByEmail);
+usersRouter.patch('/:email', updateUserByEmail);
 
 // POST a new player
-router.post('/', createUser);
+usersRouter.post('/', createUser);
 
-export default router;
+export default usersRouter;

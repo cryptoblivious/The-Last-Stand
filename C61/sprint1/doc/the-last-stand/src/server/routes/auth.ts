@@ -2,12 +2,21 @@ import express from 'express';
 import passport from 'passport';
 import { initializeGoogleOAuthStrategy } from '../controllers/auth';
 
-const router = express.Router();
+const authRouter = express.Router();
 
 initializeGoogleOAuthStrategy();
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get(
+// authRouter.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function (req, res) {
+//   // Serialize user object into session
+//   req.login(req.user, function (err) {
+//     if (err) console.log(err);
+//     // Redirect to home page
+//     res.redirect('http://localhost:5173/home');
+//   });
+// });
+
+authRouter.get(
   '/google/callback',
   passport.authenticate('google', {
     successRedirect: `http://localhost:5173/home`,
@@ -15,4 +24,4 @@ router.get(
   })
 );
 
-export default router;
+export default authRouter;

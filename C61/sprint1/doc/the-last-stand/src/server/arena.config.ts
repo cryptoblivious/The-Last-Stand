@@ -3,16 +3,18 @@ import Arena from '@colyseus/arena';
 import { monitor } from '@colyseus/monitor';
 
 // Express imports
+import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import express from 'express';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 
-import users from './routes/users';
-import auth from './routes/auth';
+import { userModel as User } from './models/user';
+
+import authRouter from './routes/auth';
+import usersRouter from './routes/users';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -40,9 +42,27 @@ export default Arena({
     gameServer.define('match_observer', MatchObserver);
   },
 
+  // Define your express/koa middlewares (they are applied in the order you define)
   initializeExpress: (app: any) => {
     // Middlewares
+    passport.serializeUser((user, done) => {
+      done(null, user.id);
+    });
+
+    passport.deserializeUser((id, done) => {
+      console.log('deserializeUser called with id:', id);
+      User.findById(id, (err, user) => {
+        console.log('user found:', user);
+        done(err, user);
+      });
+    });
+
     app.use(cors());
+    app.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+      res.header('Access-Control-Allow-Credentials', 'true');
+      next();
+    });
     app.use(express.json());
     app.use(
       session({
@@ -55,14 +75,14 @@ export default Arena({
     app.use(passport.session());
     app.use(passport.authenticate('session'));
 
+    // Routes
+    app.use('/auth', authRouter);
+    app.use('/users', usersRouter);
+
     // Dummy route
     app.get('/', (req: any, res: any) => {
       res.json({ msg: "It's time to kick ass and chew bubblegum!" });
     });
-
-    // Routes
-    app.use('/api/users', users);
-    app.use('/auth', auth);
 
     // Connect to MongoDB
     console.log(mongoUri);

@@ -6,21 +6,37 @@ const UserGreetings = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch(`http://localhost:${SERVER_PORT}/api/users/current`);
+      const response = await fetch(`http://localhost:${SERVER_PORT}/users/current`, {
+        credentials: 'include',
+      });
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
         setUser(data);
-      } else {
-        console.log(data);
       }
+      console.log(data);
     };
+    //   const fetchUser = async () => {
+    //     const cookie = "mycookie=123"; // replace with your cookie name and value
+    //     const options = {
+    //       headers: {
+    //         "Cookie": cookie
+    //       }
+    //     };
+
+    //     const response = await fetch(`http://localhost:${SERVER_PORT}/users/current`, options);
+    //     const data = await response.json();
+
+    //     if (response.ok) {
+    //       setUser(data);
+    //     }
+    //     console.log(data);
+    //   };
+    // };
 
     fetchUser();
   }, []);
-  return <div>{user}</div>;
-  //return <div>{user && <h4>{`Welcome, ${user.username}#${user.userNo}, ${user.title !== undefined && user.title}!!!`}</h4>}</div>;
+  return <div>{user && <h4>{`Welcome, ${user.username}#${user.userNo ?? '0000'}, ${user.title ?? ''}!!!`}</h4>}</div>;
 };
 
 export default UserGreetings;
