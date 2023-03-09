@@ -3,6 +3,7 @@ import { ServerMatch } from "./schema/ServerMatch";
 import Jumper from '../game/game_components/Jumper';
 import GameEntity from '../game/GameEntity';
 import { Index } from '../../../../../../../dev/tutorials/react-router/src/routes/index';
+import { onStateChange } from '../../../../../../../dev/tutorials/colyseus-get-started/loadtest/example';
 
 export class MatchObserver extends Room<ServerMatch> {
 
@@ -52,8 +53,16 @@ export class MatchObserver extends Room<ServerMatch> {
     // console.log(client.sessionId, "Tabarnak!");
     console.log(client.id, "Tabarnak!");
     const index = this.clients.indexOf(client);
-    const entity = new GameEntity(index , 'player', this.positionHandler[index], { width: 32, height: 32 });
-    console.log(entity);
+    const entity = new GameEntity(index , client.sessionId, this.positionHandler[index], { width: 32, height: 32 });
+    // console.log(entity);
+    this.state.entities.push(entity);
+    // console.log(this.state.entities);
+
+    this.state.entities.forEach((entity) => {
+      console.log(entity);
+    })
+
+    client.send('entities', this.state.entities.toArray());
   }
 
   onLeave(client: Client, consented: boolean) {
