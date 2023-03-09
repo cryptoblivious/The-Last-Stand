@@ -1,11 +1,11 @@
-import { PORT } from '../common/constants';
+import { SERVER_PORT } from '../../common/constants';
 import { Link } from 'react-router-dom';
 import { IStyledClickableComponent } from '../../typescript/interfaces/IStyledClickableComponent';
 
 const LoginMenu = ({ className, onClick }: IStyledClickableComponent) => {
   const toggleMenu = onClick;
   const handleGoogleAuthClick = () => {
-    window.location.href = `http://localhost:${PORT}/auth/google`;
+    window.location.href = `http://localhost:${SERVER_PORT}/auth/google`;
   };
 
   return (

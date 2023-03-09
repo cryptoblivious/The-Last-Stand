@@ -7,13 +7,11 @@ const router = express.Router();
 initializeGoogleOAuthStrategy();
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-//router.get('/google/callback', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: '/home',
-    failureRedirect: '/login',
+    successRedirect: `http://localhost:5173/home`,
+    failureRedirect: 'http://localhost:5173/home',
   })
 );
 

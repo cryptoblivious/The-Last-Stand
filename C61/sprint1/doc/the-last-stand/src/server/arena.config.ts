@@ -11,7 +11,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 
-import players from './routes/players';
+import users from './routes/users';
 import auth from './routes/auth';
 
 mongoose.set('strictQuery', false);
@@ -52,6 +52,7 @@ export default Arena({
         store: store,
       })
     );
+    app.use(passport.session());
     app.use(passport.authenticate('session'));
 
     // Dummy route
@@ -60,7 +61,7 @@ export default Arena({
     });
 
     // Routes
-    app.use('/api/players', players);
+    app.use('/api/users', users);
     app.use('/auth', auth);
 
     // Connect to MongoDB

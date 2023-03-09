@@ -1,6 +1,7 @@
-import { login, facebook, instagram, twitter, linkedin } from '../assets/';
+import { login, facebook, instagram, twitter, linkedin } from '../client/assets';
 
-export const PORT = 9001;
+export const SERVER_PORT = 9001;
+export const CLIENT_PORT = 5173;
 
 export const attributions = [
   {

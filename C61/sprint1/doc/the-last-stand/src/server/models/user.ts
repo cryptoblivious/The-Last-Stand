@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-export const playerSchema = new Schema(
+export const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -11,26 +11,21 @@ export const playerSchema = new Schema(
     username: {
       type: String,
       required: true,
+      match: /^[a-zA-Z0-9]{2,}$/,
     },
     userNo: {
       type: String,
       required: true,
-      match: /^[0-9]{4}$/,
+      match: /^\d{4}$/,
     },
     title: {
       type: String,
-      required: true,
     },
     avatar: {
       type: String,
-      required: true,
-    },
-    isOnline: {
-      type: Boolean,
-      required: true,
     },
     lastOnline: {
-      type: Date,
+      type: Schema.Types.Mixed, // Date or 'now'
       required: true,
     },
   },
@@ -39,4 +34,6 @@ export const playerSchema = new Schema(
   }
 );
 
-export const playerModel = model('Player', playerSchema);
+userSchema.index({ username: 1, userNo: 1 }, { unique: true } as any); // create a compound index on username and userNo fields
+
+export const userModel = model('User', userSchema);
