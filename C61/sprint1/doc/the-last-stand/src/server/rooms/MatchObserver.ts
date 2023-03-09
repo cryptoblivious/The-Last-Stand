@@ -7,6 +7,7 @@ import { onStateChange } from '../../../../../../../dev/tutorials/colyseus-get-s
 
 export class MatchObserver extends Room<ServerMatch> {
 
+  maxClients: number = 4;
   // private gameEntity: GameEntity = new GameEntity(0, 'player', { x: 0, y: 0 }, { width: 32, height: 32 });
   
   private positionHandler: Record<number, {x:number,y:number}> = {
@@ -58,19 +59,28 @@ export class MatchObserver extends Room<ServerMatch> {
     this.state.entities.push(entity);
     // console.log(this.state.entities);
 
-    this.state.entities.forEach((entity) => {
-      console.log(entity);
-    })
-
     client.send('entities', this.state.entities.toArray());
+
+    console.log(this.state.entities.length);
   }
 
   onLeave(client: Client, consented: boolean) {
     console.log(client.sessionId, "left!");
+    // delete the entity related to the client 
+    for (let i = 0; i < this.state.entities.length; i++) {
+      if (this.state.entities[i].name === client.sessionId) {
+        this.state.entities.splice(i, 1);
+      }
+    }
+    console.log(this.state.entities.length);
+    client.send('entities', this.state.entities.toArray());
+
+    
   }
 
   onDispose() {
     console.log("room", this.roomId, "disposing...");
   }
+
 
 }

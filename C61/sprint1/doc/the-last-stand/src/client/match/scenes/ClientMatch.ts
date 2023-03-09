@@ -4,11 +4,12 @@ import { Room } from 'colyseus';
 import { IServerMatch } from '../../../typescript/interfaces/IServerMatch';
 import GameEntity from '../../../server/game/GameEntity';
 import { ServerMatch } from '../../../server/rooms/schema/ServerMatch';
-import { clients } from '../../common/constants';
+import { onStateChange, onJoin } from '../../../../../../../../dev/tutorials/colyseus-get-started/loadtest/example';
 
 export default class ClientMatch extends Phaser.Scene {
     private client?: Client
     private entities: GameEntity[] = []
+    private rectangles: Phaser.GameObjects.Rectangle[] = []
     private inputHandler: Record<string, number> =
         {
             ' ': 0,
@@ -22,7 +23,6 @@ export default class ClientMatch extends Phaser.Scene {
             'u': 7,
             'i': 8,
             'o': 9
-
         }
 
     constructor() {
@@ -61,6 +61,7 @@ export default class ClientMatch extends Phaser.Scene {
 
         })
 
+
         // on key down send the key to the server
         this.input.keyboard.on('keydown', (event: KeyboardEvent) => {
             // translate key to action and send to server
@@ -69,15 +70,18 @@ export default class ClientMatch extends Phaser.Scene {
             }
         })
 
-        room.onStateChange((state: ServerMatch) => {
-            console.log(state)
-        })
+        // room.onStateChange((state: ServerMatch) => {
+        //     console.log(state)
+        // })
 
 
 
         // // listen to state changes
 
-
+        room.onStateChange((state: ServerMatch) => {
+            this.entities = state.entities
+            // console.log(state.entities.length)
+        })
         // room.onStateChange((state) => {
         //     console.log(state)
         //     for (const entity of state.entities) {
@@ -87,13 +91,38 @@ export default class ClientMatch extends Phaser.Scene {
 
     }
 
+    render_players(entities: GameEntity[]) {
 
-    update() {
-        for (const entity of this.entities) {
-            const rect = this.add.rectangle(entity.position.x, entity.position.y, entity.size.width, entity.size.height, 0x00ff00);
+        const activeEntitiesNames = entities.map(entity => entity.name)
+        const rectToRemove = this.rectangles.filter(rect => !activeEntitiesNames.includes(rect.name))
+        for (const rect of rectToRemove) {
+            rect.destroy()
+            const index = this.rectangles.indexOf(rect)
+            if (index !== -1) {
+                this.rectangles.splice(index, 1)
+            }
+        }
+
+        for (const entity of entities) {
+            const existingRect = this.rectangles.find(rect => rect.name === entity.name)
+            if (!existingRect) {
+                const rect = this.add.rectangle(entity.position.x, entity.position.y, entity.size.width, entity.size.height, 0x00ff00)
+                rect.name = entity.name
+                this.rectangles.push(rect)
+            }
+            // console.log(this.rectangles.length)
         }
 
     }
+
+
+    update() {
+        this.render_players(this.entities)
+        // console.log(this.entities.length)
+
+    }
+
+
 
 }
 
