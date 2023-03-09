@@ -3,9 +3,6 @@ import GameEntity from "../../game/GameEntity";
 
 export class ServerMatch extends Schema {
 
-
-
-  @type({ array: GameEntity }) entities: ArraySchema<GameEntity> = new ArraySchema<GameEntity>();
-
+  @type({ map: GameEntity }) entities: MapSchema<GameEntity> = new MapSchema<GameEntity>();
 
 }
