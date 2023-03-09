@@ -30,7 +30,7 @@ export class MatchOrchestrer extends Room<ServerMatch> {
     this.onMessage("req_action", (client, message) => {
       
       this.state.entities.get(client.sessionId)?.components.get(this.inputHandler[message])?.execute(message);
-      console.log(this.state.entities.get(client.sessionId)?.position.x, this.state.entities.get(client.sessionId)?.position.y);
+      // console.log(this.state.entities.get(client.sessionId)?.position.x, this.state.entities.get(client.sessionId)?.position.y);
       this.broadcast("res_action", message,  {
         
         //except: client

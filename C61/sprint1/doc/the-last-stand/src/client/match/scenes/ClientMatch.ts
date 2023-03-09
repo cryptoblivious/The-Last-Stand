@@ -73,11 +73,13 @@ export default class ClientMatch extends Phaser.Scene {
             rect.destroy()
             this.players.delete(rect.name)
         }
+        const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00];
 
         for (const entity of entities.values()) {
             const existingRect = this.players.get(entity.name)
+            
             if (!existingRect) {
-                const rect = this.add.rectangle(entity.position.x , entity.position.y, entity.size.width, entity.size.height, 0x00ff00)
+                const rect = this.add.rectangle(entity.position.x , entity.position.y, entity.size.width, entity.size.height, colors[entity.id])
                 rect.name = entity.name
                 this.players.set(entity.name, rect)
             }

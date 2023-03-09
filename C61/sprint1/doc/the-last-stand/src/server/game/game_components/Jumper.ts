@@ -16,7 +16,7 @@ export default class Jumper extends GameComponent
     maxJumpNumber: number;
     jumpCount: number;
     
-    constructor(gameEntity : GameEntity, name: string = 'jumper', velocity: number = -260, maxJumpNumber: number = 2, jumpCount: number = 0) {
+    constructor(gameEntity : GameEntity, name: string = 'jumper', velocity: number = -10, maxJumpNumber: number = 2, jumpCount: number = 0) {
         super(name, gameEntity);
         this.velocity = velocity;
         this.maxJumpNumber = maxJumpNumber;

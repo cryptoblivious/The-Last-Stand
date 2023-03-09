@@ -51,14 +51,14 @@ export default Arena({
 
     passport.deserializeUser((id, done) => {
       console.log('deserializeUser called with id:', id);
-      User.findById(id, (err, user) => {
+      User.findById(id, (err: any, user: boolean | Express.User | null | undefined) => {
         console.log('user found:', user);
         done(err, user);
       });
     });
 
     app.use(cors());
-    app.use((req, res, next) => {
+    app.use((req: any, res: { header: (arg0: string, arg1: string) => void; }, next: () => void) => {
       res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
       res.header('Access-Control-Allow-Credentials', 'true');
       next();
