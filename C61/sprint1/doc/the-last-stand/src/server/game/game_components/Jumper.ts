@@ -1,13 +1,16 @@
-import { IExecutable } from '../../../typescript/interfaces/Iexecutable';
+// import { IExecutable } from '../../../typescript/interfaces/Iexecutable';
 import GameComponent from './GameComponent';
 
-interface iJumper {
-    velocity: number;
-    maxJumpNumber: number;
-    jumpCount: number;
-}
+// interface iJumper {
+//     velocity: number;
+//     maxJumpNumber: number;
+//     jumpCount: number;
+// }
 
-export default class Jumper extends GameComponent implements IExecutable, iJumper {
+export default class Jumper extends GameComponent
+//  implements IExecutable
+// , iJumper
+ {
     velocity: number;
     maxJumpNumber: number;
     jumpCount: number;
