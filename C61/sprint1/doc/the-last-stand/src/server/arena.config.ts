@@ -54,11 +54,6 @@ export default Arena({
     );
     app.use(passport.authenticate('session'));
 
-    // app.use((req, res, next) => {
-    //   console.log(req.path, req.method);
-    //   next();
-    // });
-
     // Dummy route
     app.get('/', (req: any, res: any) => {
       res.json({ msg: "It's time to kick ass and chew bubblegum!" });
