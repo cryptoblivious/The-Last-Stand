@@ -2,11 +2,11 @@ import { Room, Client } from "colyseus";
 import { ServerMatch } from "./schema/ServerMatch";
 import Jumper from '../game/game_components/Jumper';
 import GameEntity from '../game/GameEntity';
-import { Index } from '../../../../../../../dev/tutorials/react-router/src/routes/index';
-import { onStateChange } from '../../../../../../../dev/tutorials/colyseus-get-started/loadtest/example';
+import Mover from '../game/game_components/Mover';
 
-export class MatchObserver extends Room<ServerMatch> {
+export class MatchOrchestrer extends Room<ServerMatch> {
 
+  maxClients: number = 4;
   // private gameEntity: GameEntity = new GameEntity(0, 'player', { x: 0, y: 0 }, { width: 32, height: 32 });
   
   private positionHandler: Record<number, {x:number,y:number}> = {
@@ -17,56 +17,51 @@ export class MatchObserver extends Room<ServerMatch> {
   }
 
   private inputHandler: Record<number, any> = {
-
     0: "jumper",
+    1: "mover",
+    2: "mover",
+    3: "mover"
   }
 
   onCreate(options: any) {
     this.setState(new ServerMatch());
 
-    // this.gameEntity.addComponent('jumper', new Jumper());
-
     // onMessage handler for "keydown" message that we created in the client "MatchScene" class
     this.onMessage("req_action", (client, message) => {
-      // const action = this.inputHandler[message];
-      // this.inputHandler[message].execute();
-
       
-      let msg  
-      // const component =  this.gameEntity.components.get(this.inputHandler[message])?.execute();
-      
-      const index = this.clients.indexOf(client);
-      
+      this.state.entities.get(client.sessionId)?.components.get(this.inputHandler[message])?.execute(message);
+      console.log(this.state.entities.get(client.sessionId)?.position.x, this.state.entities.get(client.sessionId)?.position.y);
       this.broadcast("res_action", message,  {
         
         //except: client
-      });
-      
-      // handle "type" message
-      
+      });    
+     
     });
   }
 
   // this.onMessage("action", (client, message) => {
 
   onJoin(client: Client, options: any) {
-    // console.log(client.sessionId, "Tabarnak!");
     console.log(client.id, "Tabarnak!");
+
     const index = this.clients.indexOf(client);
+
     const entity = new GameEntity(index , client.sessionId, this.positionHandler[index], { width: 32, height: 32 });
-    // console.log(entity);
-    this.state.entities.push(entity);
-    // console.log(this.state.entities);
+    const jumper = new Jumper(entity);
+    entity.addComponent(jumper.name, jumper);
 
-    this.state.entities.forEach((entity) => {
-      console.log(entity);
-    })
+    const mover = new Mover(entity);
+    entity.addComponent(mover.name, mover);
 
-    client.send('entities', this.state.entities.toArray());
+    this.state.entities.set(client.sessionId, entity);
+
   }
 
   onLeave(client: Client, consented: boolean) {
     console.log(client.sessionId, "left!");
+
+    this.state.entities.delete(client.sessionId);
+  
   }
 
   onDispose() {

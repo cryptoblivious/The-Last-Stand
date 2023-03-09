@@ -29,7 +29,7 @@ const store = new MongoStore({
 /**
  * Import your Room files
  */
-import { MatchObserver } from './rooms/MatchObserver';
+import { MatchOrchestrer } from './rooms/MatchOrchestrer';
 export default Arena({
   getId: () => 'Your Colyseus App',
 
@@ -39,7 +39,7 @@ export default Arena({
      */
 
     //create a match room
-    gameServer.define('match_observer', MatchObserver);
+    gameServer.define('match_observer', MatchOrchestrer);
   },
 
   // Define your express/koa middlewares (they are applied in the order you define)
