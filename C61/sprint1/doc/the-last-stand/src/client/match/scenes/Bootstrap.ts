@@ -1,11 +1,12 @@
 import Phaser from 'phaser'
-import Server from '../../services/Server'
+import LocalServer from '../../services/ClientSideInputHandler'
+import { Client } from 'colyseus.js'
 
 //holds logic for switching between scenes
 
 export default class Bootstrap extends Phaser.Scene {
 
-    private server!: Server
+    private client? : Client
 
     constructor() 
     {
@@ -13,16 +14,15 @@ export default class Bootstrap extends Phaser.Scene {
     }
 
     init(){
-        this.server = new Server()
-    }
+        this.client = new Client('ws://localhost:9001')
 
+    }
 
     create() 
     {
-        console.log
         //launch game scene from here and pass server instance to it
-        this.scene.launch('first-game', {
-            server: this.server
+        this.scene.launch('the-last-stand', {
+            client : this.client
         })
     }
 }

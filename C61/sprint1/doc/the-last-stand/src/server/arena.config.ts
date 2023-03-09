@@ -27,7 +27,7 @@ const store = new MongoStore({
 /**
  * Import your Room files
  */
-import { MatchRoom } from './rooms/MatchRoom';
+import { MatchObserver } from './rooms/MatchObserver';
 export default Arena({
   getId: () => 'Your Colyseus App',
 
@@ -37,7 +37,7 @@ export default Arena({
      */
 
     //create a match room
-    gameServer.define('match_room', MatchRoom);
+    gameServer.define('match_observer', MatchObserver);
   },
 
   initializeExpress: (app: any) => {
