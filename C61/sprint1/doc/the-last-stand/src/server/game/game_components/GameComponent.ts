@@ -1,11 +1,12 @@
+import { type, Schema } from '@colyseus/schema';
 
-
-export default class GameComponent {
+export default class GameComponent extends Schema {
     execute() {
       throw new Error("Method not implemented.");
     }
-    name: string;
+    @type('string') name: string;
     constructor(name: string) {
+        super();
         this.name = name;
     }
 }
