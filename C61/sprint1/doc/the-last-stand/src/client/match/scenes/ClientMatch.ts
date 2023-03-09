@@ -56,10 +56,10 @@ export default class ClientMatch extends Phaser.Scene {
             console.log(message)
         })
 
-        room.onMessage('entities', (entities) => {
-            this.entities = entities
+        // room.onMessage('entities', (entities) => {
+        //     this.entities = entities
 
-        })
+        // })
 
 
         // on key down send the key to the server

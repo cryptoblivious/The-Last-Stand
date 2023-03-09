@@ -59,7 +59,7 @@ export class MatchObserver extends Room<ServerMatch> {
     this.state.entities.push(entity);
     // console.log(this.state.entities);
 
-    client.send('entities', this.state.entities.toArray());
+    // client.send('entities', this.state.entities.toArray());
 
     console.log(this.state.entities.length);
   }
@@ -73,7 +73,7 @@ export class MatchObserver extends Room<ServerMatch> {
       }
     }
     console.log(this.state.entities.length);
-    client.send('entities', this.state.entities.toArray());
+    // client.send('entities', this.state.entities.toArray());
 
     
   }
