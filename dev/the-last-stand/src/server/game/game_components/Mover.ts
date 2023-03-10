@@ -4,7 +4,7 @@ import GameEntity from '../GameEntity';
 export default class Mover extends GameComponent {
   velocity: number;
 
-  constructor({ gameEntity, name = 'mover', velocity = 5 }: { gameEntity: GameEntity; name: string; velocity: number }) {
+  constructor({ gameEntity, name = 'mover', velocity = 5 }: { gameEntity: GameEntity; name?: string; velocity?: number }) {
     super(name, gameEntity);
     this.velocity = velocity;
   }

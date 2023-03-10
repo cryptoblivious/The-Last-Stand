@@ -12,6 +12,7 @@ export default class GameEntityFactory {
     this.gameEntityPrefabs = new Map<string, IGameEntityProducer>();
 
     this.gameEntityPrefabs.set('solana', this.produceSolana);
+    this.gameEntityPrefabs.set('square', this.produceSquare);
     //this.gameEntityPrefabs.set(); // add more prefabs here
   }
 
@@ -23,8 +24,9 @@ export default class GameEntityFactory {
       size: { width: 0, height: 0 },
     });
 
-    solana.addComponent('mover', new Mover({ gameEntity: solana, name: 'mover', velocity: 1 }));
-    solana.addComponent('jumper', new Jumper({ gameEntity: solana, name: 'jumper', velocity: 1, maxJumps: 2 }));
+    //solana.addComponent('renderer', new Renderer({ gameEntity: solana, name: 'renderer', spritesheets: [['moveLeft', 'solanaMoveLeft.png'], ['moveRight', 'solanaMoveRight.png'], ['jump', 'solanaJump']] }));
+    solana.addComponent('mover', new Mover({ gameEntity: solana, name: 'mover', velocity: 10 }));
+    solana.addComponent('jumper', new Jumper({ gameEntity: solana, name: 'jumper', velocity: 20, maxJumps: 2 }));
     //solana.addComponent(); // add more components here
 
     return solana;
