@@ -4,5 +4,3 @@ export interface IMatchState {
   board: ECell[];
   activePlayer: number;
 }
-
-export default IMatchState;
