@@ -16,7 +16,7 @@ export default class Jumper extends GameComponent {
   }
 
   execute(): any {
-    if (this.jumpCount < this.maxJumps) {
+    if (this.jumpCount < this.maxJumps || this.maxJumps === -1) {
       this.gameEntity.position.y += this.velocity;
       this.jumpCount++;
     }

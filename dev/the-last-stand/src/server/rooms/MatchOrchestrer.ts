@@ -46,7 +46,7 @@ export class MatchOrchestrer extends Room<ServerMatch> {
     const index = this.clients.indexOf(client);
 
     const entity = new GameEntity({ id: index, name: client.sessionId, position: this.positionHandler[index], size: { width: 32, height: 32 } });
-    const jumper = new Jumper({ gameEntity: entity });
+    const jumper = new Jumper({ gameEntity: entity, maxJumps: -1 });
     entity.addComponent(jumper.name, jumper);
 
     const mover = new Mover({ gameEntity: entity });
