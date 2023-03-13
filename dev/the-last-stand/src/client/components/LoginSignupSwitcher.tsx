@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import LoginMenu from './LoginMenu';
-import SignupMenu from './SignupMenu';
+import SignupMenus from './SignupMenus';
 
 const LoginSignupSwitcher = () => {
   const [loginMenu, setLoginMenu] = useState(true);
@@ -16,7 +16,7 @@ const LoginSignupSwitcher = () => {
         onClick={toggleMenu}
         current={loginMenu}
       />
-      <SignupMenu
+      <SignupMenus
         className={`${loginMenu ? '' : 'z-10'}`}
         onClick={toggleMenu}
         current={!loginMenu}

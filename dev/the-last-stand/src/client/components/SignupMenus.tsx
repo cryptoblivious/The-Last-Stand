@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { IStyledClickableCurrentComponent } from '../../typescript/interfaces/IStyledClickableCurrentComponent';
 
-const SignupMenu = ({ className, onClick, current }: IStyledClickableCurrentComponent) => {
+const SignupMenus = ({ className, onClick, current }: IStyledClickableCurrentComponent) => {
   const toggleMenu = onClick;
 
   return current ? (
@@ -35,4 +35,4 @@ const SignupMenu = ({ className, onClick, current }: IStyledClickableCurrentComp
   );
 };
 
-export default SignupMenu;
+export default SignupMenus;
