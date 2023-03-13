@@ -20,15 +20,14 @@ const SignupMenu = ({ className, onClick }: IStyledClickableComponent) => {
         type='confirmPassword'
         placeholder='Confirm Password'
       />
+      <Link to='/home'>
+        <button className='bg-purple-900 rounded-xl p-3 border-4 border-purple-300 hover:bg-violet-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-125'>Signup</button>
+      </Link>
       <a
         className='cursor-pointer text-blue-500 hover:underline'
         onClick={toggleMenu}>
         Back to Login
       </a>
-      <Link to='/home'>
-        <button className='bg-purple-900 rounded-xl p-3 border-4 border-purple-300 hover:bg-violet-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-125'>Signup</button>
-      </Link>
-      <p></p>
     </div>
   );
 };

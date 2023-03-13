@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import { userModel as User } from '../models/user';
+import { roleModel as Role } from '../models/role';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../utils/maths';
 
 dotenv.config();
@@ -61,4 +62,31 @@ export const initializeGoogleOAuthStrategy = () => {
       }
     )
   );
+};
+
+// Verify if user is authenticated for a React Router route
+export const checkAuth = (req: any, res: any, next: any) => {
+  if (req.isAuthenticated()) {
+    return res.status(200).json({ message: 'Authorized' });
+  }
+};
+
+// Verify if user is authenticated for an Express route
+export const isAuthenticated = (req: any, res: any, next: any) => {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+};
+
+// Verify if user is admin for an Express route
+export const isAdmin = async (req: any, res: any, next: any) => {
+  const isAdmin = await Role.findOne({ username: req.user.username, role: 'admin' });
+
+  if (req.isAuthenticated() && isAdmin) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
 };

@@ -1,5 +1,6 @@
 import express from 'express';
-import { isAuthenticated, createUser, deleteUserByEmail, updateUserByEmail, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
+import { createUser, deleteUserByEmail, updateUserByEmail, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
+import { isAuthenticated } from '../controllers/auth';
 
 const usersRouter = express.Router();
 
@@ -8,7 +9,6 @@ usersRouter.delete('/:email', deleteUserByEmail);
 
 // GET current user
 usersRouter.get('/current', isAuthenticated, readCurrentUser);
-//usersRouter.get('/current', isAuthenticated, readCurrentUser);
 
 // GET all players
 usersRouter.get('/', readUsers);

@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { checkAuth } from '../controllers/auth';
 
 const authRouter = express.Router();
 
@@ -12,5 +13,7 @@ authRouter.get(
     failureRedirect: 'http://localhost:5173/login',
   })
 );
+
+authRouter.get('/check', checkAuth);
 
 export default authRouter;

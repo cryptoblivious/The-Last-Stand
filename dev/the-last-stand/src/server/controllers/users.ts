@@ -1,26 +1,6 @@
 import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
 
-// Verify if user is authenticated
-export const isAuthenticated = (req: any, res: any, next: any) => {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-};
-
-// Verify if user is admin
-export const isAdmin = async (req: any, res: any, next: any) => {
-  const isAdmin = await Role.findOne({ username: req.user.username, role: 'admin' });
-
-  if (req.isAuthenticated() && isAdmin) {
-    return next();
-  } else {
-    res.redirect('/login');
-  }
-};
-
 // POST a new user
 export const createUser = async (req: any, res: any) => {
   const { email, username, userNo, title, lastOnline } = req.body;
