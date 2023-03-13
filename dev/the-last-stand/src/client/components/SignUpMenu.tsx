@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { IStyledClickableComponent } from '../../typescript/interfaces/IStyledClickableComponent';
+import { IStyledClickableCurrentComponent } from '../../typescript/interfaces/IStyledClickableCurrentComponent';
 
-const SignupMenu = ({ className, onClick }: IStyledClickableComponent) => {
+const SignupMenu = ({ className, onClick, current }: IStyledClickableCurrentComponent) => {
   const toggleMenu = onClick;
-  return (
-    <div className={`text-white flex flex-col rounded-xl justify-start gap-4 bg-gray-800 p-4 mr-4 w-80 h-96 border-gray-400 border-2 ${className}`}>
+
+  return current ? (
+    <div className={`text-white flex flex-col rounded-xl justify-evenly gap-5 bg-gray-800 p-4 mr-4 w-80 h-fit border-gray-400 border-2 ${className}`}>
       <input
         className='bg-gray-200 rounded-xl p-3'
         type='text'
@@ -20,7 +21,7 @@ const SignupMenu = ({ className, onClick }: IStyledClickableComponent) => {
         type='confirmPassword'
         placeholder='Confirm Password'
       />
-      <button className='bg-purple-900 rounded-xl p-3 border-4 border-purple-300 hover:bg-violet-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-125'>
+      <button className='bg-purple-900 rounded-xl p-3 border-4 border-purple-300 hover:bg-violet-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'>
         <Link to='/home'>Signup</Link>
       </button>
       <a
@@ -29,6 +30,8 @@ const SignupMenu = ({ className, onClick }: IStyledClickableComponent) => {
         Back to Login
       </a>
     </div>
+  ) : (
+    <></>
   );
 };
 

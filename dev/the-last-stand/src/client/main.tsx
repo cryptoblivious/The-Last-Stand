@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
-import { Route, Navigate, createBrowserRouter, RouterProvider, createRoutesFromElements } from 'react-router-dom';
+import { Route, createBrowserRouter, RouterProvider, createRoutesFromElements } from 'react-router-dom';
 import { Error, Home, Lobby, Login, Match } from './components';
 import { ProtectedRoute } from './routes/components/ProtectedRoute';
 

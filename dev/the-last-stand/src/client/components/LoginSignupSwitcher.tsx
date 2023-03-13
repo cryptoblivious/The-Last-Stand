@@ -10,14 +10,16 @@ const LoginSignupSwitcher = () => {
   };
 
   return (
-    <div className={`relative w-96 ${loginMenu ? 'h-96' : 'h-80'}`}>
+    <div className={`relative w-96 ${loginMenu ? 'h-fit' : 'h-80'}`}>
       <LoginMenu
-        className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out ${loginMenu ? 'opacity-100 block z-10' : 'opacity-0'}`}
+        className={`${loginMenu ? 'z-10' : ''}`}
         onClick={toggleMenu}
+        current={loginMenu}
       />
       <SignupMenu
-        className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out ${loginMenu ? 'opacity-0' : 'opacity-100 z-10'}`}
+        className={`${loginMenu ? '' : 'z-10'}`}
         onClick={toggleMenu}
+        current={!loginMenu}
       />
     </div>
   );
