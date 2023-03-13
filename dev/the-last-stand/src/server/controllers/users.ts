@@ -3,12 +3,10 @@ import { roleModel as Role } from '../models/role';
 
 // Verify if user is authenticated
 export const isAuthenticated = (req: any, res: any, next: any) => {
-  console.log('isAuthenticated returned', req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   } else {
     return res.status(401).json({ message: 'Unauthorized' });
-    //res.redirect(`http://localhost:${process.env.CLIENT_PORT}/login`);
   }
 };
 
@@ -81,7 +79,6 @@ export const updateUserByEmail = async (req: any, res: any) => {
 // DELETE a user
 export const deleteUserByEmail = async (req: any, res: any) => {
   const email = req.params.email;
-  console.log('email', email);
   try {
     const user = await User.findOneAndDelete({ email });
     if (!user) {
@@ -95,13 +92,9 @@ export const deleteUserByEmail = async (req: any, res: any) => {
 
 // GET current user
 export const readCurrentUser = (req, res) => {
-  // Passport does magic to add the user to the request between the time the request is sent and here.
-  console.log('readCurrentUser', req.user);
   if (req.user) {
     res.status(200).json(req.user);
   } else {
-    req.user = { username: 'Guest' };
-    res.status(200).json(req.user);
-    //res.status(404).json({ error: 'Vachier' });
+    res.status(404).json({ error: 'User not found.' });
   }
 };

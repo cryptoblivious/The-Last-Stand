@@ -15,7 +15,6 @@ export default class Bootstrap extends Phaser.Scene {
 
     init(){
         this.client = new Client('ws://localhost:9001')
-
     }
 
     create() 

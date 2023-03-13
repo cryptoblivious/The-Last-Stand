@@ -13,6 +13,8 @@ import passport from 'passport';
 
 import { userModel as User } from './models/user';
 
+import { initializeGoogleOAuthStrategy } from './controllers/auth';
+
 import authRouter from './routes/auth';
 import usersRouter from './routes/users';
 
@@ -50,15 +52,15 @@ export default Arena({
     });
 
     passport.deserializeUser((id, done) => {
-      console.log('deserializeUser called with id:', id);
       User.findById(id, (err: any, user: boolean | Express.User | null | undefined) => {
-        console.log('user found:', user);
         done(err, user);
       });
     });
 
+    initializeGoogleOAuthStrategy();
+
     app.use(cors());
-    app.use((req: any, res: { header: (arg0: string, arg1: string) => void; }, next: () => void) => {
+    app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
       res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
       res.header('Access-Control-Allow-Credentials', 'true');
       next();
@@ -85,7 +87,6 @@ export default Arena({
     });
 
     // Connect to MongoDB
-    console.log(mongoUri);
     mongoose
       .connect(mongoUri, { useNewUrlParser: true })
       .then(() => {
