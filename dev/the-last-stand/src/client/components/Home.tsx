@@ -1,5 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { UserGreetings, SendFriendRequestForm } from '../components';
+import UserGreetings from './UserGreetings';
+import SendFriendRequestForm from './SendFriendRequestForm';
 
 const Home = () => {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import LoginNavbar from '../components/LoginNavbar';
+import LoginNavbar from './LoginNavbar';
 import { login } from '../assets/';
 import '../styles/index.css';
 
