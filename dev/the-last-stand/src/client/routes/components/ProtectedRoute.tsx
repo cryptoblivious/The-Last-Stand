@@ -8,10 +8,11 @@ export const ProtectedRoute = ({ element }) => {
 
   useEffect(() => {
     const fetchAuth = async () => {
-      const authenticated = await isAuth();
-      setIsAuthenticated(authenticated);
+      const { status, data } = await isAuth();
+      setIsAuthenticated(status);
       setIsLoading(false);
-      console.log('authenticated: ', authenticated);
+      console.log('authenticated: ', status);
+      if (data.message) console.log(data.message);
     };
     fetchAuth();
   }, [isAuthenticated]);
