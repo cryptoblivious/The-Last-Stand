@@ -7,17 +7,17 @@ const SignupMenu = ({ className, onClick, current }: IStyledClickableCurrentComp
   return current ? (
     <div className={`text-white flex flex-col rounded-xl justify-evenly gap-5 bg-gray-800 p-4 w-80 h-fit border-gray-400 border-2 ${className}`}>
       <input
-        className='bg-gray-200 rounded-xl p-3 text-green-900'
+        className='bg-gray-200 rounded-xl p-3 text-green-900 placeholder-green-900 placeholder-opacity-50'
         type='text'
         placeholder='Username'
       />
       <input
-        className='bg-gray-200 rounded-xl p-3 text-green-900'
+        className='bg-gray-200 rounded-xl p-3 text-green-900 placeholder-green-900 placeholder-opacity-50'
         type='password'
         placeholder='Password'
       />
       <input
-        className='bg-gray-200 rounded-xl p-3 text-green-900'
+        className='bg-gray-200 rounded-xl p-3 text-green-900 placeholder-green-900 placeholder-opacity-50'
         type='confirmPassword'
         placeholder='Confirm Password'
       />

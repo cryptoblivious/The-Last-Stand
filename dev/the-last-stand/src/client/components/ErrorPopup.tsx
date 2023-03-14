@@ -4,11 +4,21 @@ import { GiAzulFlake } from 'react-icons/gi';
 
 function ErrorPopup(props: IErrorPopupProps) {
   const { message, onClick } = props;
-  let text = '';
+  let title = '';
+  let text;
 
   if (message === 'Server error') {
-    text = 'There was an error communicating with the server. Please try again later.';
+    title = 'Server Error';
+    text = (
+      <>
+        <p>There was an error communicating with the server.</p> <p>Please try again later.</p>
+      </>
+    );
+  } else if (message === 'Unauthorized') {
+    title = 'Login Error';
+    text = 'There was an issue with the authentication process. Please try again.';
   }
+
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
       <div className='bg-gray-800 text-white flex flex-col gap-4 rounded-lg border-gray-900 border-2 p-6 text-left relative'>
@@ -23,8 +33,8 @@ function ErrorPopup(props: IErrorPopupProps) {
             />
           }
         />
-        <h2 className='text-xl font-bold underline'>Error</h2>
-        <p>{text}</p>
+        <h2 className='text-xl font-bold underline'>{title}</h2>
+        <div>{text}</div>
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import { useState } from 'react';
 const Login = (props: any) => {
   const { data } = props;
   const [popupOpen, setPopupOpen] = useState(data.message);
-  console.log('dataInComp: ', data.message);
 
   const closePopup = () => {
     setPopupOpen(false);

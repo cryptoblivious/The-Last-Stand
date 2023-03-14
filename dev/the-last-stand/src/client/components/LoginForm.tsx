@@ -4,12 +4,12 @@ const LoginForm = () => {
   return (
     <form className='flex flex-col gap-4'>
       <input
-        className='bg-gray-200 rounded-xl p-3 text-purple-900'
+        className='bg-gray-200 rounded-xl p-3 text-purple-900 placeholder-purple-900 placeholder-opacity-50'
         type='text'
         placeholder='Username'
       />
       <input
-        className='bg-gray-200 rounded-xl p-3 text-purple-900'
+        className='bg-gray-200 rounded-xl p-3 text-purple-900 placeholder-purple-900 placeholder-opacity-50'
         type='password'
         placeholder='Password'
       />
