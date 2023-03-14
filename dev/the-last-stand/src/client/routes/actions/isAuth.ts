@@ -13,9 +13,9 @@ export const isAuth = () => {
       const data = await response.json();
 
       if (data.message === 'Authorized') {
-        return { status: true, data };
+        return { status: true, data: { message: 'Authorized' } };
       } else {
-        return { status: false, data };
+        return { status: false, data: { message: 'Unauthorized' } };
       }
     } catch (error) {
       console.log(error);

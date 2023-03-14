@@ -12,14 +12,14 @@ const LoginMenu = ({ className, onClick, current }: IStyledClickableCurrentCompo
   };
 
   return current ? (
-    <div className={`text-white flex flex-col rounded-xl justify-start h-fit gap-4 bg-gray-800 p-4 mr-4 w-80 border-gray-400 border-2 ${className}`}>
+    <div className={`text-white flex flex-col rounded-xl justify-start h-fit gap-4 bg-gray-800 p-4 w-80 border-gray-400 border-2 ${className}`}>
       <button
-        className=' bg-purple-900 rounded-xl p-3 border-4 border-purple-300 hover:bg-violet-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
+        className=' bg-purple-900 rounded-xl p-3 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
         onClick={handleGoogleAuthClick}>
         Sign Up With Google
       </button>
       <button
-        className=' bg-purple-900 rounded-xl p-3 border-4 border-purple-300 hover:bg-violet-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
+        className=' bg-purple-900 rounded-xl p-3 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
         onClick={handleFacebookAuthClick}>
         Sign Up With Facebook
       </button>
@@ -28,7 +28,7 @@ const LoginMenu = ({ className, onClick, current }: IStyledClickableCurrentCompo
       <p>
         Don't have an account yet?{' '}
         <a
-          className='cursor-pointer text-blue-500 hover:underline'
+          className='cursor-pointer text-green-500 hover:underline'
           onClick={toggleMenu}>
           Sign Up
         </a>

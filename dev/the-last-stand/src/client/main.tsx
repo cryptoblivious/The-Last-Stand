@@ -14,7 +14,13 @@ const router = createBrowserRouter(
     <Route errorElement={<Error />}>
       <Route
         path='login'
-        element={<Login />}
+        element={
+          <ProtectedRoute
+            element={<Login />}
+            userAuth={false}
+            redirects='/home'
+          />
+        }
       />
       <Route
         path='/'
