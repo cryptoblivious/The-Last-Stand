@@ -2,6 +2,6 @@
   "name": "my-project",
   "version": "0.1.0",
   "scripts": {
-    "build": "yarn --cwd ./dev/the-last-stand build-yolo"
+    "build": "yarn --cwd ./dev/the-last-stand server"
   }
 }
