@@ -1,6 +1,5 @@
 import { IErrorPopupProps } from '../../typescript/interfaces/IErrorPopupProps';
 import Button from './Button';
-import { useState } from 'react';
 import { GiAzulFlake } from 'react-icons/gi';
 
 function ErrorPopup(props: IErrorPopupProps) {
