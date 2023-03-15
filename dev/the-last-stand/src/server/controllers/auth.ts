@@ -68,6 +68,8 @@ export const initializeGoogleOAuthStrategy = () => {
 export const checkAuth = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return res.status(200).json({ message: 'Authorized' });
+  } else {
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 };
 
