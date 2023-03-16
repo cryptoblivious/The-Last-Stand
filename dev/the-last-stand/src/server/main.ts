@@ -115,6 +115,6 @@ gameServer.listen(9001);
 
 // Listen to your remote server through the http server
 //httpServer.listen(9001, 'localhost', () => {
-httpServer.listen(9001, HOSTNAME, () => {
-  console.log('Listening to remote server 123.456.789.0 on port 9001');
+httpServer.listen(9001, '54.210.205.37', () => {
+  console.log('Listening to remote server 54.210.205.37 on port 9001');
 });

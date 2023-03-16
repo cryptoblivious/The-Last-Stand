@@ -2,7 +2,7 @@ import { login, facebook, instagram, twitter, linkedin } from '../client/assets'
 
 export const SERVER_PORT = 9001;
 export const CLIENT_PORT = 5173;
-export const HOSTNAME = `54.210.205.37`;
+export const HOSTNAME = '54.210.205.37';
 
 export const attributions = [
   {
