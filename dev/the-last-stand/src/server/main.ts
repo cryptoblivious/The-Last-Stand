@@ -98,12 +98,12 @@ mongoose
  */
 app.use('/colyseus', monitor());
 
-// Create an http server that will listen to your remote server
-const httpServer = http.createServer(app);
+// // Create an http server that will listen to your remote server
+// const httpServer = http.createServer(app);
 
 // Create a Colyseus server
 const gameServer = new Server({
-  server: httpServer, // Pass in the http server we created
+  server: app.listen(9001), // Pass in the http server we created
   transport: new WebSocketTransport(),
 });
 
@@ -111,10 +111,10 @@ const gameServer = new Server({
 gameServer.define('match_orchestrer', MatchOrchestrer);
 
 // Listen for incoming connections on the Colyseus server
-gameServer.listen(9001);
+//gameServer.listen(9001);
 
 // Listen to your remote server through the http server
 //httpServer.listen(9001, 'localhost', () => {
-httpServer.listen(9001, '0.0.0.0', () => {
-  console.log('Listening to remote server 54.210.205.37 on port 9001');
-});
+// httpServer.listen(9001, '0.0.0.0', () => {
+//   console.log('Listening to remote server 54.210.205.37 on port 9001');
+// });
