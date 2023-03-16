@@ -9,8 +9,10 @@ authRouter.get('/google', passport.authenticate('google', { scope: ['profile', '
 authRouter.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: `http://localhost:5173/home`,
-    failureRedirect: 'http://localhost:5173/login',
+    successRedirect: `https://tls.woodchuckgames.com/home`,
+    failureRedirect: 'https://tls.woodchuckgames.com/login',
+    //successRedirect: `http://localhost:5173/home`,
+    //failureRedirect: 'http://localhost:5173/login',
   })
 );
 

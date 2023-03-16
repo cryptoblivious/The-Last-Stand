@@ -6,7 +6,8 @@ const UserGreetings = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch(`http://localhost:${SERVER_PORT}/users/current`, {
+      const response = await fetch(`http://54.210.205.37/${SERVER_PORT}/users/current`, {
+        //const response = await fetch(`http://localhost:${SERVER_PORT}/users/current`, {
         credentials: 'include',
       });
       const data = await response.json();

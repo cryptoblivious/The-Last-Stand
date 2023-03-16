@@ -7,7 +7,8 @@ interface IAuth {
 export const isAuth = () => {
   const fetchAuth: IAuth = async () => {
     try {
-      const response = await fetch(`http://localhost:${SERVER_PORT}/auth/check`, {
+      const response = await fetch(`http://54.210.205.37/${SERVER_PORT}/auth/check`, {
+        //const response = await fetch(`http://localhost:${SERVER_PORT}/auth/check`, {
         credentials: 'include',
       });
       const data = await response.json();
