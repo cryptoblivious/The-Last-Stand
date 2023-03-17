@@ -17,6 +17,12 @@ function ErrorPopup(props: IErrorPopupProps) {
   } else if (message === 'Unauthorized') {
     title = 'Login Error';
     text = 'There was an issue with the authentication process. Please try again.';
+  } else if (message === 'No server monitoring') {
+    title = 'No Server Monitoring';
+    text = 'This road is unprotected and thus not monitoring the server state.';
+  } else {
+    title = 'Unknown Error';
+    text = 'There was an unknown error. Please try again.';
   }
 
   return (
