@@ -18,7 +18,7 @@ import { initializeGoogleOAuthStrategy } from './controllers/auth';
 import authRouter from './routes/auth';
 import usersRouter from './routes/users';
 
-import { HOSTNAME } from '../common/constants';
+import { HOST_NAME } from '../common/constants';
 
 mongoose.set('strictQuery', false);
 dotenv.config();

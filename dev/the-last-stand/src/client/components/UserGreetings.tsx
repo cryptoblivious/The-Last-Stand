@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { SERVER_PORT } from '../../common/constants';
+import { HOST_URL, HOST_PORT } from '../config';
 
 const UserGreetings = () => {
   const [user, setUser] = useState<null | any[]>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch(`http://54.210.205.37/${SERVER_PORT}/users/current`, {
-        //const response = await fetch(`http://localhost:${SERVER_PORT}/users/current`, {
+      const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
         credentials: 'include',
       });
       const data = await response.json();

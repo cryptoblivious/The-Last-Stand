@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { isAuth } from '../actions/isAuth';
+import { isAuth } from '../controllers/isAuth';
 import { IProtectedRouteProps } from '../../../typescript/interfaces/IProtectedRouteProps';
 
 export const ProtectedRoute = ({ element: Component, userAuth = true, redirects = '/login' }: IProtectedRouteProps) => {

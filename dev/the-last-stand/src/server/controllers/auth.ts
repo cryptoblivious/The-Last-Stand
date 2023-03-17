@@ -6,14 +6,15 @@ import { roleModel as Role } from '../models/role';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../utils/maths';
 
 dotenv.config();
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST_URL, HOST_PORT } = process.env;
 
 export const initializeGoogleOAuthStrategy = () => {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID!,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL: `http://localhost:${process.env.PORT}/auth/google/callback`,
+        clientID: GOOGLE_CLIENT_ID!,
+        clientSecret: GOOGLE_CLIENT_SECRET!,
+        callbackURL: `${HOST_URL}:${HOST_PORT}/auth/google/callback`,
         passReqToCallback: true,
       },
       async (req, accessToken, refreshToken, profile, done) => {

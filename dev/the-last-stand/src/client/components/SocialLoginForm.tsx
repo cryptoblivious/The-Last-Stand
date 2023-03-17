@@ -1,11 +1,11 @@
-import { SERVER_PORT } from '../../common/constants';
+import { HOST_URL, HOST_PORT } from '../config';
 
 const SocialLoginForm = () => {
   const handleGoogleAuthClick = () => {
-    window.location.href = `http://localhost:${SERVER_PORT}/auth/google`;
+    window.location.href = `${HOST_URL.toString()}:${HOST_PORT}/auth/google`;
   };
   const handleFacebookAuthClick = () => {
-    window.location.href = `http://localhost:${SERVER_PORT}/auth/facebook`;
+    window.location.href = `${HOST_URL.toString()}:${HOST_PORT}/auth/facebook`;
   };
 
   return (
