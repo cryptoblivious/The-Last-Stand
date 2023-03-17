@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Lobby from './components/Lobby';
 import Login from './components/Login';
 import Match from './components/Match';
+import Heroes from './components/Heroes';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,10 @@ const router = createBrowserRouter(
       <Route
         path='match/:matchId'
         element={<ProtectedRoute element={<Match />} />}
+      />
+      <Route
+        path='/heroes'
+        element={<ProtectedRoute element={<Heroes />} />}
       />
     </Route>
   )
