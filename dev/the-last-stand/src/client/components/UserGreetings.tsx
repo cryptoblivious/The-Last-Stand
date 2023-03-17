@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { HOST_URL, HOST_PORT } from '../config';
+import { HOST_URL, HOST_PORT } from '../domain_config';
 
 const UserGreetings = () => {
   const [user, setUser] = useState<null | any[]>(null);

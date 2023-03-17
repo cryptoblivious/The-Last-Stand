@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import UserGreetings from './UserGreetings';
 import SendFriendRequestForm from './SendFriendRequestForm';
-import { HOST_NAME, HOST_PORT } from '../config';
+import { HOST_NAME, HOST_PORT } from '../domain_config';
 
 const Home = () => {
   const navigate = useNavigate();

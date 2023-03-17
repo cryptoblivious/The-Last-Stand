@@ -20,7 +20,7 @@ import usersRouter from './routes/users';
 mongoose.set('strictQuery', false);
 dotenv.config();
 
-const { MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT } = process.env as Record<string, string>;
+const { MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT, HOST_PORT } = process.env as Record<string, string>;
 
 //const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Invalid mongo uri';
 //const sessionSecret: string = process.env.SESSION_SECRET?.toString() ?? 'Invalid mongo uri';
@@ -108,7 +108,7 @@ const gameServer = new Server({
 gameServer.define('match_orchestrator', MatchOrchestrator);
 
 // Attach the express instance to the Colyseus server
-gameServer.attach({ server: app.listen(9001) });
+gameServer.attach({ server: app.listen(HOST_PORT) });
 // Listen for incoming connections on the Colyseus server
 //gameServer.listen(9001);
 

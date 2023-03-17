@@ -12,17 +12,18 @@ export default class LocalServer {
   private events: Phaser.Events.EventEmitter;
   private room?: Room;
 
-  public action_map : Record<string,integer> = 
-  {
-    'w': 0,
-    'a': 1,
-    's': 2,
-    'd': 3,
-  }
+  public action_map: Record<string, integer> = {
+    w: 0,
+    a: 1,
+    s: 2,
+    d: 3,
+  };
 
   // create a client instance
   constructor() {
-    this.client = new Client('ws://localhost:9001');
+    //this.client = new Client('ws://localhost:9001');
+    this.client = new Client('ws://localhost:80');
+
     this.events = new Phaser.Events.EventEmitter();
   }
 
@@ -37,16 +38,15 @@ export default class LocalServer {
     // this.room.onMessage('action', (message) => {
     //   console.log(message);
     // });s
-
   }
 
-  clientInputHandler(key : integer) {
+  clientInputHandler(key: integer) {
     if (!this.room) {
       console.log('room not found');
       return;
     }
-    console.log(this.room)
-    this.room.send("action", { key: key });
+    console.log(this.room);
+    this.room.send('action', { key: key });
   }
 
   makeSelection(index: number) {
