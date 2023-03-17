@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const Login = (props: any) => {
   const { data } = props;
-  const message = data !== undefined ? data.message : 'No data';
+  const message = data !== undefined ? data.message : 'No server monitoring';
 
   const [popupOpen, setPopupOpen] = useState(message);
 
