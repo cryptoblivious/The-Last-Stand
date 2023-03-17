@@ -1,5 +1,6 @@
 import https from 'https';
 import fs from 'fs';
+import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -40,6 +41,14 @@ if (APP_MODE === 'prod') {
 
 // Create an express app
 const app = express();
+
+// Serve static files from the build directory
+app.use(express.static(path.join(__dirname, 'build'))); // REF : ChatGPT
+
+// Serve the index.html file for all other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+}); // REF : ChatGPT
 
 // Define routes or middleware for your express app here, if any
 passport.serializeUser((user, done) => {
