@@ -6,7 +6,9 @@ import { useState } from 'react';
 
 const Login = (props: any) => {
   const { data } = props;
-  const [popupOpen, setPopupOpen] = useState(data.message);
+  const message = data !== undefined ? data.message : 'No data';
+
+  const [popupOpen, setPopupOpen] = useState(message);
 
   const closePopup = () => {
     setPopupOpen(false);
@@ -20,7 +22,7 @@ const Login = (props: any) => {
       <LoginNavbar />
       {popupOpen && (
         <ErrorPopup
-          message={data.message}
+          message={message}
           onClick={closePopup}
         />
       )}

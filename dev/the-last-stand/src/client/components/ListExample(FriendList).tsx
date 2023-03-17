@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import UserGreetings from './UserGreetings';
 import SendFriendRequestForm from './SendFriendRequestForm';
-import { HOST_PORT } from '../../common/constants';
+import { HOST_NAME, HOST_PORT } from '../config';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch(`http://localhost:${HOST_PORT}/api/users`);
+      const response = await fetch(`${HOST_NAME}:${HOST_PORT}/api/users`);
       const data = await response.json();
 
       if (response.ok) {

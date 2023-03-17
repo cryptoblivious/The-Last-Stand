@@ -20,11 +20,13 @@ import usersRouter from './routes/users';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
-const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Invalid mongo uri';
-const sessionSecret: string = process.env.SESSION_SECRET?.toString() ?? 'Invalid mongo uri';
+const { MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT } = process.env as Record<string, string>;
+
+//const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Invalid mongo uri';
+//const sessionSecret: string = process.env.SESSION_SECRET?.toString() ?? 'Invalid mongo uri';
 
 const store = new MongoStore({
-  mongoUrl: process.env.MONGO_URI,
+  mongoUrl: MONGO_URI,
   collectionName: 'sessions',
 });
 
@@ -61,14 +63,16 @@ export default Arena({
 
     app.use(cors());
     app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
-      res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+      res.header('Access-Control-Allow-Origin', `${CLIENT_URL}:${CLIENT_PORT}`);
+      //res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
       res.header('Access-Control-Allow-Credentials', 'true');
       next();
     });
     app.use(express.json());
     app.use(
       session({
-        secret: sessionSecret,
+        secret: SESSION_SECRET,
+        //secret: sessionSecret,
         resave: false,
         saveUninitialized: false,
         store: store,
@@ -88,7 +92,8 @@ export default Arena({
 
     // Connect to MongoDB
     mongoose
-      .connect(mongoUri, { useNewUrlParser: true })
+      .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+      //.connect(mongoUri, { useNewUrlParser: true })
       .then(() => {
         console.log(`Connected to MongoDB`);
       })

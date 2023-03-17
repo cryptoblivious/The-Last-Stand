@@ -17,6 +17,9 @@ function ErrorPopup(props: IErrorPopupProps) {
   } else if (message === 'Unauthorized') {
     title = 'Login Error';
     text = 'There was an issue with the authentication process. Please try again.';
+  } else {
+    title = 'Unknown Error';
+    text = 'There was an unknown error. Please try again.';
   }
 
   return (

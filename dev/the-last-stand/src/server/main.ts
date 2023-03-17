@@ -1,4 +1,3 @@
-import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -18,15 +17,16 @@ import { initializeGoogleOAuthStrategy } from './controllers/auth';
 import authRouter from './routes/auth';
 import usersRouter from './routes/users';
 
-import { HOST_NAME } from '../common/constants';
-
 mongoose.set('strictQuery', false);
 dotenv.config();
-const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Invalid mongo uri';
-const sessionSecret: string = process.env.SESSION_SECRET?.toString() ?? 'Invalid mongo uri';
+
+const { MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT } = process.env as Record<string, string>;
+
+//const mongoUri: string = process.env.MONGO_URI?.toString() ?? 'Invalid mongo uri';
+//const sessionSecret: string = process.env.SESSION_SECRET?.toString() ?? 'Invalid mongo uri';
 
 const store = new MongoStore({
-  mongoUrl: process.env.MONGO_URI,
+  mongoUrl: MONGO_URI,
   collectionName: 'sessions',
 });
 
@@ -65,7 +65,7 @@ app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: 
 app.use(express.json());
 app.use(
   session({
-    secret: sessionSecret,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store,
@@ -85,7 +85,7 @@ app.use('/users', usersRouter);
 
 // Connect to MongoDB
 mongoose
-  .connect(mongoUri, { useNewUrlParser: true })
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log(`Connected to MongoDB`);
   })
@@ -107,6 +107,7 @@ const gameServer = new Server({
 // Define rooms here
 gameServer.define('match_orchestrator', MatchOrchestrator);
 
+// Attach the express instance to the Colyseus server
 gameServer.attach({ server: app.listen(9001) });
 // Listen for incoming connections on the Colyseus server
 //gameServer.listen(9001);
