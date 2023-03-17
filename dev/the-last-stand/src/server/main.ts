@@ -9,7 +9,7 @@ import passport from 'passport';
 
 import { Server } from '@colyseus/core';
 import { WebSocketTransport } from '@colyseus/ws-transport';
-import { MatchOrchestrer } from './rooms/MatchOrchestrer';
+import { MatchOrchestrator } from './rooms/MatchOrchestrator';
 import { monitor } from '@colyseus/monitor';
 
 import { userModel as User } from './models/user';
@@ -48,7 +48,7 @@ initializeGoogleOAuthStrategy();
 
 const whitelist = ['https://tls.woodchuckgames.com', 'http://localhost:5173'];
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: function (origin: any, callback: any) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
@@ -74,14 +74,14 @@ app.use(
 app.use(passport.session());
 app.use(passport.authenticate('session'));
 
-// Routes
-app.use('/auth', authRouter);
-app.use('/users', usersRouter);
-
-// Dummy route
+// Hello World route
 app.get('/', (req: any, res: any) => {
   res.json({ msg: "It's time to kick ass and chew bubblegum!" });
 });
+
+// Routes
+app.use('/auth', authRouter);
+app.use('/users', usersRouter);
 
 // Connect to MongoDB
 mongoose
@@ -98,18 +98,16 @@ mongoose
  */
 app.use('/colyseus', monitor());
 
-// // Create an http server that will listen to your remote server
-// const httpServer = http.createServer(app);
-
 // Create a Colyseus server
 const gameServer = new Server({
-  server: app.listen(9001), // Pass in the http server we created
+  //server: app.listen(9001),
   transport: new WebSocketTransport(),
 });
 
 // Define rooms here
-gameServer.define('match_orchestrer', MatchOrchestrer);
+gameServer.define('match_orchestrator', MatchOrchestrator);
 
+gameServer.attach({ server: app.listen(9001) });
 // Listen for incoming connections on the Colyseus server
 //gameServer.listen(9001);
 

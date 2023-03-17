@@ -3,10 +3,9 @@ import { ServerMatch } from './schema/ServerMatch';
 import Jumper from '../game/game_components/Jumper';
 import GameEntity from '../game/GameEntity';
 import Mover from '../game/game_components/Mover';
-import { IGameEntityProducer } from '../../typescript/interfaces/IGameEntityProducer';
 import GameEntityFactory from '../game/GameEntityFactory';
 
-export class MatchOrchestrer extends Room<ServerMatch> {
+export class MatchOrchestrator extends Room<ServerMatch> {
   maxClients: number = 4;
   // private gameEntity: GameEntity = new GameEntity(0, 'player', { x: 0, y: 0 }, { width: 32, height: 32 });
   gameEntityFactory: GameEntityFactory = new GameEntityFactory();

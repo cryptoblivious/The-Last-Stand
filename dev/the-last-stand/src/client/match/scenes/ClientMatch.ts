@@ -39,7 +39,7 @@ export default class ClientMatch extends Phaser.Scene {
     }
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
-    const room = await this.client.joinOrCreate<ServerMatch>('match_observer');
+    const room = await this.client.joinOrCreate<ServerMatch>('match_orchestrator');
 
     room.onMessage('res_action', (message) => {
       console.log(message);
