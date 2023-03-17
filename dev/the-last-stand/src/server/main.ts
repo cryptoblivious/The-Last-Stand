@@ -55,7 +55,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-};
+}; // REF : ChatGPT
 app.use(cors(corsOptions));
 app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
   //res.header('Access-Control-Allow-Origin', 'https://tls.woodchuckgames.com, http://localhost:5173');

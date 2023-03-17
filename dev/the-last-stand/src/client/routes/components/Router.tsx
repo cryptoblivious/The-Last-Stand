@@ -1,4 +1,4 @@
-import { Route, createBrowserRouter, RouterProvider, createRoutesFromElements } from 'react-router-dom';
+import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import Error from '../../components/Error';
 import Home from '../../components/Home';
