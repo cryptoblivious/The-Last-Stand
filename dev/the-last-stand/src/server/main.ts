@@ -33,8 +33,8 @@ const store = new MongoStore({
 let sslOptions: any = {};
 if (APP_MODE === 'prod') {
   sslOptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/tls.woodchuckgames.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/tls.woodchuckgames.com/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/stls.woodchuckgames.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/stls.woodchuckgames.com/fullchain.pem'),
   };
 }
 
