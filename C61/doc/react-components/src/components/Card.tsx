@@ -13,12 +13,12 @@ interface CardProps {
     card: Card;
     isSelected: boolean;
     onClick: () => void;
-    width?: string;
-    height?: string;
+    width?: number;
+    height?: number;
 }
 
 
-const Card = ({ card, isSelected, onClick, width = "400px", height = "250px" }: CardProps) => {
+const Card = ({ card, isSelected, onClick, width = 400, height = 250 }: CardProps) => {
     return (
         <div         
             className={`${cardCSS} ${isSelected ? selectedCardCSS : ''}`}
@@ -28,8 +28,8 @@ const Card = ({ card, isSelected, onClick, width = "400px", height = "250px" }: 
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                width,
-                height
+                width : `${width}px`,
+                height : `${height}px`
             }}
             onClick={onClick}
         >
