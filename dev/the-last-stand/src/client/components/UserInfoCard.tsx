@@ -40,7 +40,7 @@ const UserInfoCard = () => {
   return (
     user && (
       <div
-        className='flex gap-4 w-full h-fit p-4 hover:bg-violet-900 justify-between transition ease-in-out duration-300'
+        className='flex gap-4 w-full h-fit p-3 hover:bg-neutral-900 justify-between transition ease-in-out duration-300'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
         <div className='flex w-3/4 gap-4'>
@@ -55,7 +55,7 @@ const UserInfoCard = () => {
             <h4>{`${user.title}`}</h4>
           </div>
         </div>
-        <div className='flex justify-end items-start p-4'>
+        <div className='flex justify-end items-start'>
           {isHovered && (
             <EditButton
               className='w-fit h-fit'
