@@ -4,7 +4,7 @@ import { IUser } from '../../typescript/interfaces/IUser';
 import EditButton from './EditButton';
 import { APP_MODE } from '../domain_config';
 
-const icon = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/200';
+const icon = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
 
 const UserInfoCard = () => {
   const [user, setUser] = useState<IUser | null>(null);
