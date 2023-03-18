@@ -1,5 +1,5 @@
 import CardMenu from './CardMenu';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface Hero {
   id: number;

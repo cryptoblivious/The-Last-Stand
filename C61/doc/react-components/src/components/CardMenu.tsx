@@ -84,9 +84,7 @@ const CardMenu : React.FC<ICardMenuProps> = ({heroes, selectedId, onCardClick, v
     return (
         <div className={cardMenuContainerCSS}>
             <Arrow direction='up' onClick={() => goToCard(true)} />
-            {/* <button className={cardMenuButtonCSS} onClick={() => goToCard(true)}>
-                Previous
-            </button> */}
+           
             {/* use our function to get the array of wanted visible cards and map throught it to render them*/}
             {getVisibleHeroes(carrouselStartIndex).map((hero, index) => (
                 <Card
@@ -96,11 +94,8 @@ const CardMenu : React.FC<ICardMenuProps> = ({heroes, selectedId, onCardClick, v
                     onClick={() => handleCardClick(hero, index)}
                 />
             ))}
+            
             <Arrow direction='down' onClick={() => goToCard(false)} />
-
-            {/* <button className={cardMenuButtonCSS} onClick={() => goToCard(false)}>
-                Next
-            </button> */}
         </div>
     );
 };
