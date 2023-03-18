@@ -10,7 +10,11 @@ import Heroes from '../../components/Heroes';
 const Router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<Error />}>
-      {/* <Route
+      <Route
+        path='/'
+        element={<ProtectedRoute element={<Home />} />}
+      />
+      <Route
         path='login'
         element={
           <ProtectedRoute
@@ -19,14 +23,6 @@ const Router = createBrowserRouter(
             redirects='/home'
           />
         }
-      /> */}
-      <Route
-        path='/'
-        element={<ProtectedRoute element={<Home />} />}
-      />
-      <Route
-        path='login'
-        element={<Login />}
       />
       <Route
         path='home'
