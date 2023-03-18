@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { IUser } from '../../typescript/interfaces/IUser';
 
 export const roleSchema = new Schema(
   {
@@ -20,4 +21,4 @@ export const roleSchema = new Schema(
 
 roleSchema.index({ idUser: 1, role: 1 }, { unique: true } as any);
 
-export const roleModel = model('Role', roleSchema);
+export const roleModel = model<IUser>('Role', roleSchema);

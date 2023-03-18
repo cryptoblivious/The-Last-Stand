@@ -1,25 +1,25 @@
 import { useNavigate, Link } from 'react-router-dom';
-import UserGreetings from './UserGreetings';
-import SendFriendRequestForm from './SendFriendRequestForm';
+import SocialOverlay from './SocialOverlay';
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <main className='bg-black text-white min-h-screen'>
-      <button
-        onClick={() => {
-          navigate(-1);
-        }}>
-        ⥢
-      </button>
-      <UserGreetings />
+    <>
+      <body className='bg-black text-white min-h-screen'>
+        <SocialOverlay />
 
-      <Link to='/match/123'>
-        <button>Play</button>
-      </Link>
-      <SendFriendRequestForm />
-    </main>
+        <button
+          onClick={() => {
+            navigate(-1);
+          }}>
+          ⥢
+        </button>
+        <Link to='/match/123'>
+          <button>Play</button>
+        </Link>
+      </body>
+    </>
   );
 };
 
