@@ -15,8 +15,8 @@ const heroes: Hero[] = [
 ];
 
 const backstories: Record<string, string> = {
-  Solana: 'Solana freakin rocks',
-  Logan: 'Logan is a great guy',
+  'Solana': 'Solana freakin rocks',
+  'Logan': 'Logan is a great guy',
   'chuck doug': 'chuck doug is a sucking asshole guy',
 };
 
