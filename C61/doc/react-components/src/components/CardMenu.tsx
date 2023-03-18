@@ -2,8 +2,7 @@ import Card from './Card';
 import Arrow from './Arrow';
 import { useState } from 'react';
 
-const cardMenuContainerCSS = 'flex-col justify-center items-center gap-4 space-y-4';
-const cardMenuButtonCSS = 'focus:outline-none';
+const cardMenuContainerCSS = 'flex-col justify-center items-center gap-4 space-y-4 transition-all duration-300 ease-in-out transform-gpu';
 interface CardMenuCard {
     id: number;
     name: string;
@@ -61,6 +60,11 @@ const CardMenu : React.FC<ICardMenuProps> = ({heroes, selectedId, onCardClick, v
             if (selectedHeroIndex >= 0 && selectedHeroIndex < heroes.length){
                 setSelectedHeroId(heroes[selectedHeroIndex].id);
             }
+
+            const translateValue = isPrevious 
+            ? -(selectedHeroIndex * 100) + centerCardIndex * 100 
+            : (selectedHeroIndex * 100) - centerCardIndex * 100;
+
             return updateIndex;
         });
     };
@@ -92,7 +96,7 @@ const CardMenu : React.FC<ICardMenuProps> = ({heroes, selectedId, onCardClick, v
                     onClick={() => handleCardClick(hero, index)}
                 />
             ))}
-            <Arrow direction='down' onClick={() => goToCard(true)} />
+            <Arrow direction='down' onClick={() => goToCard(false)} />
 
             {/* <button className={cardMenuButtonCSS} onClick={() => goToCard(false)}>
                 Next
