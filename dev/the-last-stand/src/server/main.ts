@@ -73,6 +73,7 @@ if (APP_MODE === 'prod') {
       res.redirect(`https://${req.headers.host}${req.url}`);
     }
   });
+  console.log('✅ Redirect to https enabled.');
 }
 
 passport.serializeUser((user, done) => {
