@@ -8,6 +8,7 @@ const icon = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' 
 
 const UserInfoCard = () => {
   const [user, setUser] = useState<IUser | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,13 +25,24 @@ const UserInfoCard = () => {
     fetchUser();
   }, []);
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   const handleEdit = () => {
     console.log('edit');
   };
 
   return (
     user && (
-      <div className='flex gap-4 w-full h-fit hover:bg-violet-900 justify-between'>
+      <div
+        className='flex gap-4 w-full h-fit p-4 hover:bg-violet-900 justify-between transition ease-in-out duration-300'
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}>
         <div className='flex w-3/4 gap-4'>
           <img
             className='border-purple-900 h-24 border-2 rounded-full'
@@ -44,10 +56,12 @@ const UserInfoCard = () => {
           </div>
         </div>
         <div className='flex justify-end items-start p-4'>
-          <EditButton
-            className='w-fit h-fit'
-            onClick={handleEdit}
-          />
+          {isHovered && (
+            <EditButton
+              className='w-fit h-fit'
+              onClick={handleEdit}
+            />
+          )}
         </div>
       </div>
     )

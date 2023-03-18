@@ -23,7 +23,7 @@ const SendFriendRequestForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='flex flex-col gap-2'>
+      className='flex flex-col gap-2 p-5'>
       <h4 className='text-pink-900'>Friend Request</h4>
       <p>Enter the username and user number of the player. It's cAsE sEnSiTiVe!</p>
       <div>
