@@ -11,6 +11,8 @@ const SendFriendRequestForm = () => {
 
   const handleChange = (e: any) => {
     const { value } = e.target;
+    console.log(value);
+
     setUserNo(value === '#' ? '' : value.length === 1 ? '#' + value : value.length === 6 ? userNo : value); //ref:ChatGPT
   };
 
@@ -19,20 +21,27 @@ const SendFriendRequestForm = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p>Enter the username and user number (w/o #) of the player you want to send a friend request to. It's cAsE sEnSiTiVe!</p>
-      <input
-        ref={usernameRef}
-        type='text'
-        placeholder='Username'
-      />
-      <input
-        type='text'
-        value={userNo}
-        placeholder='#0000'
-        onChange={handleChange}
-      />
-      <button type='submit'>Send Friend Request</button>
+    <form
+      onSubmit={handleSubmit}
+      className='flex flex-col gap-2'>
+      <h4 className='text-pink-900'>Friend Request</h4>
+      <p>Enter the username and user number of the player. It's cAsE sEnSiTiVe!</p>
+      <div>
+        <input
+          ref={usernameRef}
+          type='text'
+          placeholder='Username'
+          className='w-1/2 placeholder-pink-900 placeholder-opacity-50 text-pink-900'
+        />
+        <input
+          type='text'
+          value={userNo}
+          placeholder='#0000'
+          onChange={handleChange}
+          className='w-1/2 placeholder-pink-900 placeholder-opacity-50 text-pink-900'
+        />
+      </div>
+      <button className='w-fit bg-purple-900 rounded-xl p-1 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'>Send Friend Request</button>
     </form>
   );
 };

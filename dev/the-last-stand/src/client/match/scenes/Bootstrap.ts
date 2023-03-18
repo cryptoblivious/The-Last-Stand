@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Client } from 'colyseus.js';
-import { HOST_NAME, HOST_PORT } from '../../domain_config';
+import { HOST_NAME, HOST_PORT, WS_PROTOCOL } from '../../domain_config';
 
 //holds logic for switching between scenes
 
@@ -12,8 +12,9 @@ export default class Bootstrap extends Phaser.Scene {
   }
 
   init() {
-    this.client = new Client(`ws://${HOST_NAME}:${HOST_PORT}`);
+    //this.client = new Client(`ws://${HOST_NAME}:${HOST_PORT}`);
     //this.client = new Client('ws://localhost:9001')
+    this.client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
   }
 
   create() {

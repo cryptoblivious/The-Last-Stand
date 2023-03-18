@@ -5,6 +5,7 @@ type DomainConfig = {
   CLIENT_NAME: string;
   CLIENT_URL: string;
   CLIENT_PORT: string;
+  WS_PROTOCOL: string;
 };
 
 const defaultConfig: DomainConfig = {
@@ -14,6 +15,7 @@ const defaultConfig: DomainConfig = {
   CLIENT_NAME: '',
   CLIENT_URL: '',
   CLIENT_PORT: '',
+  WS_PROTOCOL: '',
 };
 
 const configMap: Map<string, DomainConfig> = new Map([
@@ -26,6 +28,7 @@ const configMap: Map<string, DomainConfig> = new Map([
       CLIENT_NAME: 'localhost',
       CLIENT_URL: 'http://localhost',
       CLIENT_PORT: '5173',
+      WS_PROTOCOL: 'ws',
     },
   ],
   [
@@ -37,6 +40,7 @@ const configMap: Map<string, DomainConfig> = new Map([
       CLIENT_NAME: 'tls.woodchuckgames.com',
       CLIENT_URL: 'https://tls.woodchuckgames.com',
       CLIENT_PORT: '5173',
+      WS_PROTOCOL: 'wss',
     },
   ],
 ]);
@@ -51,5 +55,6 @@ export const HOST_PORT = domainConfig.HOST_PORT;
 export const CLIENT_NAME = domainConfig.CLIENT_NAME;
 export const CLIENT_URL = domainConfig.CLIENT_URL;
 export const CLIENT_PORT = domainConfig.CLIENT_PORT;
+export const WS_PROTOCOL = domainConfig.WS_PROTOCOL;
 
 //ref : ChatGPT & CoPilot

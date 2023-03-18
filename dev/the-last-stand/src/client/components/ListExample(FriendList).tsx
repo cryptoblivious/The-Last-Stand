@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import UserGreetings from './UserGreetings';
+import UserInfoCard from './UserInfoCard';
 import SendFriendRequestForm from './SendFriendRequestForm';
 import { HOST_NAME, HOST_PORT } from '../domain_config';
 
@@ -32,7 +32,7 @@ const Home = () => {
       </button>
       {users &&
         users.map((user: any) => (
-          <UserGreetings
+          <UserInfoCard
             key={user._id}
             user={user}
           />

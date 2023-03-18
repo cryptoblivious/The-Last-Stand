@@ -1,12 +1,8 @@
 import { Client, Room } from 'colyseus.js';
 import Phaser from 'phaser';
-import IMatchState from '../../typescript/interfaces/IMatchState';
+import { IMatchState } from '../../typescript/interfaces/IMatchState';
 import { EMessage } from '../../typescript/enumerations/EMessage';
-import { Schema } from '@colyseus/schema';
-
-//dotenv.config();
-//const port: string = process.env.PORT?.toString() ?? '';
-
+import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from '../domain_config';
 export default class LocalServer {
   private client: Client;
   private events: Phaser.Events.EventEmitter;
@@ -21,8 +17,8 @@ export default class LocalServer {
 
   // create a client instance
   constructor() {
-    //this.client = new Client('ws://localhost:9001');
-    this.client = new Client('ws://localhost:80');
+    //this.client = new Client('ws://localhost:80');
+    this.client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
 
     this.events = new Phaser.Events.EventEmitter();
   }
