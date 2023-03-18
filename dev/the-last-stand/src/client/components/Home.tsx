@@ -6,9 +6,8 @@ const Home = () => {
 
   return (
     <>
-      <body className='bg-black text-white min-h-screen'>
-        <SocialOverlay />
-
+      <SocialOverlay />
+      <main className='bg-black text-white min-h-screen'>
         <button
           onClick={() => {
             navigate(-1);
@@ -18,7 +17,7 @@ const Home = () => {
         <Link to='/match/123'>
           <button>Play</button>
         </Link>
-      </body>
+      </main>
     </>
   );
 };

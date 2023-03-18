@@ -29,7 +29,7 @@ const UserInfoCard = () => {
         <div className='flex flex-col gap-2 justify-center w-80'>
           <h4>
             {`${user.username}`}
-            <span className='text-gray-500'>{`#${user.userNo ?? '0000'}`}</span>
+            <span className='text-pink-800'>{`#${user.userNo ?? '0000'}`}</span>
           </h4>
           <h4>{`${user.title}`}</h4>
         </div>
