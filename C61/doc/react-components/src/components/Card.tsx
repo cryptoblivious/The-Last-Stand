@@ -8,8 +8,7 @@ interface Card {
     image: string;
 
 }
-
-interface CardProps {
+interface ICardProps {
     card: Card;
     isSelected: boolean;
     onClick: () => void;
@@ -17,8 +16,7 @@ interface CardProps {
     height?: number;
 }
 
-
-const Card = ({ card, isSelected, onClick, width = 400, height = 250 }: CardProps) => {
+const Card = ({ card, isSelected, onClick, width = 400, height = 250 }: ICardProps) => {
     return (
         <div         
             className={`${cardCSS} ${isSelected ? selectedCardCSS : ''}`}
