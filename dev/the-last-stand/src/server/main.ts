@@ -63,6 +63,18 @@ const app = express();
 console.log('✅ Express app created.');
 
 // Define routes or middleware for your express app here, if any
+
+// Redirect to https if in production mode
+if (APP_MODE === 'prod') {
+  app.use((req, res, next) => {
+    if (req.secure) {
+      next();
+    } else {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+  });
+}
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
