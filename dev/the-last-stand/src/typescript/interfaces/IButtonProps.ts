@@ -4,7 +4,7 @@ export interface IButtonProps {
   onClick: () => void;
   className?: string;
   text?: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode | Element;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
 } //ref : ChatGPT

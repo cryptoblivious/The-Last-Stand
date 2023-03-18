@@ -1,4 +1,5 @@
 type DomainConfig = {
+  APP_MODE: string;
   HOST_NAME: string;
   HOST_URL: string;
   HOST_PORT: string;
@@ -9,6 +10,7 @@ type DomainConfig = {
 };
 
 const defaultConfig: DomainConfig = {
+  APP_MODE: '',
   HOST_NAME: '',
   HOST_URL: '',
   HOST_PORT: '',
@@ -22,6 +24,7 @@ const configMap: Map<string, DomainConfig> = new Map([
   [
     'http://localhost:5173',
     {
+      APP_MODE: 'dev',
       HOST_NAME: 'localhost',
       HOST_URL: 'http://localhost',
       HOST_PORT: '80',
@@ -34,6 +37,7 @@ const configMap: Map<string, DomainConfig> = new Map([
   [
     'https://tls.woodchuckgames.com',
     {
+      APP_MODE: 'prod',
       HOST_NAME: 'stls.woodchuckgames.com',
       HOST_URL: 'https://stls.woodchuckgames.com',
       HOST_PORT: '443',
@@ -49,6 +53,7 @@ const currentOrigin = window.location.origin;
 
 const domainConfig: DomainConfig = configMap.get(currentOrigin) ?? { ...defaultConfig };
 
+export const APP_MODE = domainConfig.APP_MODE;
 export const HOST_NAME = domainConfig.HOST_NAME;
 export const HOST_URL = domainConfig.HOST_URL;
 export const HOST_PORT = domainConfig.HOST_PORT;
