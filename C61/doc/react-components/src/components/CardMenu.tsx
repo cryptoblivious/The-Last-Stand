@@ -59,11 +59,12 @@ const CardMenu : React.FC<ICardMenuProps> = ({heroes, selectedId, onCardClick, v
             // if the selected hero index is valid, update the selected hero id
             if (selectedHeroIndex >= 0 && selectedHeroIndex < heroes.length){
                 setSelectedHeroId(heroes[selectedHeroIndex].id);
+                onCardClick(heroes[selectedHeroIndex]);
             }
 
-            const translateValue = isPrevious 
-            ? -(selectedHeroIndex * 100) + centerCardIndex * 100 
-            : (selectedHeroIndex * 100) - centerCardIndex * 100;
+            // const translateValue = isPrevious 
+            // ? -(selectedHeroIndex * 100) + centerCardIndex * 100 
+            // : (selectedHeroIndex * 100) - centerCardIndex * 100;
 
             return updateIndex;
         });
