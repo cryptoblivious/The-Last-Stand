@@ -1,4 +1,5 @@
 import Card from './Card';
+import Arrow from './Arrow';
 import { useState } from 'react';
 
 const cardMenuContainerCSS = 'flex-col justify-center items-center gap-4 space-y-4';
@@ -18,7 +19,7 @@ const getOddNumber = (number: number) => {
     return number % 2 === 0 ? number + 1 : number;
 };
 
-const CardMenu = ({
+const CardMenu : React.FC<ICardMenuProps> = ({
     heroes, visibleCards = 3 }: ICardMenuProps) => {
 
     // make sure the number of visible cards is odd
@@ -75,9 +76,10 @@ const CardMenu = ({
 
     return (
         <div className={cardMenuContainerCSS}>
-            <button className={cardMenuButtonCSS} onClick={() => goToCard(true)}>
+            <Arrow direction='up' onClick={() => goToCard(true)} />
+            {/* <button className={cardMenuButtonCSS} onClick={() => goToCard(true)}>
                 Previous
-            </button>
+            </button> */}
             {/* use our function to get the array of wanted visible cards and map throught it to render them*/}
             {getVisibleHeroes(carrouselStartIndex).map((hero, index) => (
                 <Card
@@ -87,9 +89,11 @@ const CardMenu = ({
                     onClick={() => handleCardClick(hero.id, index)}
                 />
             ))}
-            <button className={cardMenuButtonCSS} onClick={() => goToCard(false)}>
+            <Arrow direction='down' onClick={() => goToCard(true)} />
+
+            {/* <button className={cardMenuButtonCSS} onClick={() => goToCard(false)}>
                 Next
-            </button>
+            </button> */}
         </div>
     );
 };
