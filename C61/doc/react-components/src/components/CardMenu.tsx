@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const cardMenuContainerCSS = 'flex-col justify-center items-center gap-4 space-y-4';
 const cardMenuButtonCSS = 'focus:outline-none';
-export interface CardMenuCard {
+interface CardMenuCard {
     id: number;
     name: string;
     image: string;
@@ -13,14 +13,15 @@ export interface CardMenuCard {
 interface ICardMenuProps {
     heroes: CardMenuCard[];
     visibleCards?: number;
+    selectedId?: number;
+    onCardClick: (card: CardMenuCard) => void;
 }
 
 const getOddNumber = (number: number) => {
     return number % 2 === 0 ? number + 1 : number;
 };
 
-const CardMenu : React.FC<ICardMenuProps> = ({
-    heroes, visibleCards = 3 }: ICardMenuProps) => {
+const CardMenu : React.FC<ICardMenuProps> = ({heroes, selectedId, onCardClick, visibleCards = 3 }: ICardMenuProps) => {
 
     // make sure the number of visible cards is odd
     visibleCards = getOddNumber(visibleCards);
@@ -31,9 +32,11 @@ const CardMenu : React.FC<ICardMenuProps> = ({
     const [selectedHeroId, setSelectedHeroId] = useState(heroes[centerCardIndex].id);
     const [carrouselStartIndex, setCarrouselStartIndex] = useState(0);
 
-    const handleCardClick = (id: number, index: number) => {
+    const handleCardClick = (card:CardMenuCard, index: number) => {
         // update selected hero id
-        setSelectedHeroId(id);
+        setSelectedHeroId(card.id);
+        onCardClick(card);
+        
 
         //update carrousel start index when clicking on a card
         if (index !== centerCardIndex) {
@@ -86,7 +89,7 @@ const CardMenu : React.FC<ICardMenuProps> = ({
                     key={hero.id}
                     card={{ id: hero.id, reference: hero.name, image: hero.image }}
                     isSelected={hero.id === selectedHeroId}
-                    onClick={() => handleCardClick(hero.id, index)}
+                    onClick={() => handleCardClick(hero, index)}
                 />
             ))}
             <Arrow direction='down' onClick={() => goToCard(true)} />

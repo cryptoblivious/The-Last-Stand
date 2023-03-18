@@ -14,13 +14,14 @@ interface IArrowProps {
     onClick: () => void;
     svgWidth?: string;
     svgHeight?: string;
+    fill?: string;
 }
 
-const Arrow: React.FC<IArrowProps> = ({ direction, onClick, svgHeight = '50', svgWidth = '50' }: IArrowProps) => {
+const Arrow: React.FC<IArrowProps> = ({ direction, onClick, svgHeight = '50', svgWidth = '50', fill = '#00FF9C' }: IArrowProps) => {
     return (
         <div className={arrowContainerCSS} onClick={onClick}>
             <svg className={arrowCSS} width={svgWidth} height={svgHeight} viewBox="0 0 24 24">
-                <path d={directions[direction]} fill='#00FF9C' />
+                <path d={directions[direction]} fill={fill} />
             </svg>
         </div>
     )
