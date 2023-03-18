@@ -52,6 +52,7 @@ console.log('✅ Session store created.');
 let sslOptions: any = {};
 if (APP_MODE === 'prod') {
   sslOptions = {
+    wsEngine: 'uws',
     key: fs.readFileSync('/etc/letsencrypt/live/stls.woodchuckgames.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/stls.woodchuckgames.com/fullchain.pem'),
   };
