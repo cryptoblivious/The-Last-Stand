@@ -17,6 +17,9 @@ const Home = () => {
         <Link to='/match/123'>
           <button>Play</button>
         </Link>
+        <Link to='/heroes'>
+          <button>Heroes</button>
+        </Link>
       </main>
     </>
   );
