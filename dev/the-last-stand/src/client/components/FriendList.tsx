@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import FriendInfoCard from './FriendInfoCard';
-import { HOST_NAME, HOST_PORT } from '../domain_config';
+import { HOST_URL, HOST_PORT } from '../domain_config';
 
-const Home = () => {
-  const navigate = useNavigate();
-
+const FriendList = () => {
   const [users, setUsers] = useState<null | any[]>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch(`${HOST_NAME}:${HOST_PORT}/users`);
+      console.log('fetching users at ...', `${HOST_URL}:${HOST_PORT}/users`);
+      const response = await fetch(`${HOST_URL}:${HOST_PORT}/users`);
       const data = await response.json();
 
       if (response.ok) {
@@ -22,7 +20,8 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <div className='flex flex-col gap-1'>
+      <h1>Friend List</h1>
       {users &&
         users.map((user: any) => (
           <FriendInfoCard
@@ -30,8 +29,8 @@ const Home = () => {
             user={user}
           />
         ))}
-    </>
+    </div>
   );
 };
 
-export default Home;
+export default FriendList;

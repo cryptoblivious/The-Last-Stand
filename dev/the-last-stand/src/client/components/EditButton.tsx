@@ -1,7 +1,7 @@
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 import Button from './Button';
-import { GiBookmark, GiBookmarklet } from 'react-icons/gi';
-import {} from 'react-icons/gi';
+import { GiBookmark } from 'react-icons/gi';
+import { GiWhiteBook as GiBookmarklet } from 'react-icons/gi';
 import { useState } from 'react';
 
 function EditButton(props: IButtonProps) {
