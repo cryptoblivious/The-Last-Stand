@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import Button from './Button';
 
 const SendFriendRequestForm = () => {
   const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
@@ -23,9 +24,9 @@ const SendFriendRequestForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='flex flex-col gap-2 pl-3'>
+      className='flex flex-col gap-2'>
       <h4 className='text-pink-900'>Friend Request</h4>
-      <p>Enter the username and user number of the player. It's cAsE sEnSiTiVe!</p>
+      <p className='text-sm'>Enter the username and number of the player you want to invite.</p>
       <div>
         <input
           ref={usernameRef}
@@ -41,7 +42,8 @@ const SendFriendRequestForm = () => {
           className='w-1/2 placeholder-pink-900 placeholder-opacity-50 text-pink-900'
         />
       </div>
-      <button className='w-fit bg-purple-900 rounded-xl p-1 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'>Send Friend Request</button>
+      <p className='text-xs'>(psst! It's cAsE sEnSiTiVe!)</p>
+      <Button text='Send friend request' />
     </form>
   );
 };

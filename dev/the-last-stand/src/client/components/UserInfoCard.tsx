@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import { HOST_URL, HOST_PORT } from '../domain_config';
 import { IUser } from '../../typescript/interfaces/IUser';
 import EditButton from './EditButton';
-import { APP_MODE } from '../domain_config';
+import ShowUserInfo from './ShowUserInfo';
+import EditUserInfo from './EditUserInfo';
 
-const icon = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
+import { APP_MODE } from '../domain_config';
+const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
 
 const UserInfoCard = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -34,35 +37,37 @@ const UserInfoCard = () => {
   };
 
   const handleEdit = () => {
+    setIsEditing(!isEditing);
     console.log('edit');
   };
 
   return (
     user && (
       <div
-        className='flex gap-4 w-full h-fit p-3 hover:bg-neutral-900 justify-between transition ease-in-out duration-300'
+        className='flex gap-4 w-full h-fit justify-evenly rounded-tl-3xl transition ease-in-out duration-300'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
-        <div className='flex w-3/4 gap-4'>
-          <img
-            className='border-purple-900 h-24 border-2 rounded-full'
-            src={icon}></img>
-          <div className='flex flex-col gap-2 justify-center w-80'>
-            <h4>
-              {`${user.username}`}
-              <span className='text-pink-800'>{`#${user.userNo ?? '0000'}`}</span>
-            </h4>
-            <h4>{`${user.title}`}</h4>
-          </div>
-        </div>
-        <div className='flex justify-end items-start'>
-          {isHovered && (
-            <EditButton
-              className='w-fit h-fit'
-              onClick={handleEdit}
-            />
-          )}
-        </div>
+        <EditButton
+          className={`absolute top-2 left-1 w-fit h-fit ${isHovered ? 'opacity-100' : 'opacity-0'} transition duration-1000`}
+          onClick={handleEdit}
+        />
+        {isEditing ? (
+          <EditUserInfo
+            username={user.username}
+            userNo={user.userNo}
+            title={user.title}
+            //avatar={user.avatar}
+            avatar={avatar}
+          />
+        ) : (
+          <ShowUserInfo
+            username={user.username}
+            userNo={user.userNo}
+            title={user.title}
+            //avatar={user.avatar}
+            avatar={avatar}
+          />
+        )}
       </div>
     )
   );

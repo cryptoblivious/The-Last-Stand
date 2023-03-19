@@ -1,5 +1,5 @@
 export default interface IHomeSectionProps {
-  className: string;
+  className?: string;
   title: string;
   subtitle: string;
   link: string;

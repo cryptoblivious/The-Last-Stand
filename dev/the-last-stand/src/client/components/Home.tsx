@@ -12,28 +12,24 @@ const Home = () => {
             title='Play'
             subtitle='Play a match'
             link='/match/123'
-            className=' gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-center border-transparent hover:border-purple-900 hover:scale-105 border-4 transform transition ease-in-out  duration-1000'
             backgroundImg={play}
           />
           <HomeSection
             title='Heroes'
             subtitle='Browse heroes'
             link='/heroes'
-            className=' gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-center border-transparent hover:border-purple-900 hover:scale-105 border-4 transform transition ease-in-out  duration-1000'
             backgroundImg={play}
           />
           <HomeSection
             title='Maps'
             subtitle='Browse maps'
             link='/heroes'
-            className=' gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-center border-transparent hover:border-purple-900 hover:scale-105 border-4 transform transition ease-in-out  duration-1000'
             backgroundImg={play}
           />
           <HomeSection
             title='Stats'
             subtitle='Check your stats'
             link='/heroes'
-            className=' gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-center border-transparent hover:border-purple-900 hover:scale-105 border-4 transform transition ease-in duration-1000 transition-opacity-out '
             backgroundImg={play}
           />
         </div>
