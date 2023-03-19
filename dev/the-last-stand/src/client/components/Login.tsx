@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const Login = (props: any) => {
   const { data } = props;
-  const error = data.message === 'Authorized' ? undefined : data !== undefined ? data.message : 'No server monitoring';
+  const error = data.error ?? null;
   const [popupOpen, setPopupOpen] = useState(error);
 
   const closePopup = () => {

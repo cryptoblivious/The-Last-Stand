@@ -13,13 +13,13 @@ export const isAuth = () => {
       const data = await response.json();
 
       if (data.message === 'Authorized') {
-        return { status: true, data: { message: 'Authorized' } };
+        return { status: true, data: { message: 'Authenticated' } };
       } else {
-        return { status: false, data: { message: 'Unauthorized' } };
+        return { status: false, data: { message: 'Not Authenticated' } };
       }
     } catch (error) {
       console.log(error);
-      return { status: false, data: { message: 'Server error' } };
+      return { status: false, data: { error: 'Server Error' } };
     }
   };
 
