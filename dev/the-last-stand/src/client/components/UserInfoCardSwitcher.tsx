@@ -1,31 +1,22 @@
-import { useEffect, useState } from 'react';
-import { APP_MODE, HOST_URL, HOST_PORT } from '../domain_config';
-import { IUser } from '../../typescript/interfaces/IUser';
 import EditButton from './EditButton';
 import ShowUserInfo from './ShowUserInfo';
 import EditUserInfo from './EditUserInfo';
-
-const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
+import { IUser } from '../../typescript/interfaces/IUser';
+import { useState, useEffect } from 'react';
+import { fetchCurrentUser } from '../fetches/user';
 
 const UserInfoCard = () => {
-  const [user, setUser] = useState<IUser | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [user, setUser] = useState<IUser | null>(null);
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
-        credentials: 'include',
-      });
-      const data = await response.json();
-
-      if (response.ok) {
-        data.avatar = avatar;
-        setUser(data);
-      }
-    };
-
-    fetchUser();
+    async function fetchData() {
+      const user = await fetchCurrentUser();
+      setUser(user);
+    }
+    fetchData();
   }, []);
 
   const handleMouseEnter = () => {
