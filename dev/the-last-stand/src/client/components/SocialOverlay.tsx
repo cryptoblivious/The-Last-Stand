@@ -1,8 +1,8 @@
 import FriendRequestForm from './FriendRequestForm';
 import UserInfoCardSwitcher from './UserInfoCardSwitcher';
 import FriendList from './FriendList';
-import Button from './Button';
 import { useEffect, useState } from 'react';
+import LogoutButton from './LogoutButton';
 
 const SocialOverlay = () => {
   const [overlaying, setOverlaying] = useState<boolean>(false);
@@ -29,7 +29,7 @@ const SocialOverlay = () => {
       <UserInfoCardSwitcher />
       <FriendList />
       <FriendRequestForm />
-      <Button text='Disconnect' />
+      <LogoutButton />
     </div>
   );
 };
