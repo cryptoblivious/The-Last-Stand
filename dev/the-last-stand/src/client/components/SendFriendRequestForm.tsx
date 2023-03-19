@@ -29,10 +29,10 @@ const SendFriendRequestForm = () => {
       <p className='text-sm'>Enter the username and number of the player you want to invite.</p>
       <div>
         <input
+          className='w-1/2 placeholder-pink-900 placeholder-opacity-50 text-pink-900'
           ref={usernameRef}
           type='text'
           placeholder='Username'
-          className='w-1/2 placeholder-pink-900 placeholder-opacity-50 text-pink-900'
         />
         <input
           type='text'

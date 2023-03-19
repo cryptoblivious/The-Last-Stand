@@ -9,8 +9,10 @@ function Button(props: IButtonProps) {
       onClick={onClick}
       disabled={disabled}
       type={type}>
-      {icon && icon}
-      {text}
+      <>
+        {icon && icon}
+        {text}
+      </>
     </button>
   );
 }

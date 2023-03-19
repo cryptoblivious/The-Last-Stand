@@ -19,7 +19,7 @@ const Router = createBrowserRouter(
         element={
           <ProtectedRoute
             element={<Login />}
-            userAuth={false}
+            userAuth='both'
             redirects='/home'
           />
         }
