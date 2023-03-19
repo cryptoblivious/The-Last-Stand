@@ -1,24 +1,22 @@
-const cardCSS = 'bg-cover bg-center bg-no-repeat rounded-lg cursor-pointer overflow-hidden shadow-md flex justify-center items-center hover:scale-110 transition-all durantion-500 ease-in-out';
+import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
+
+const heroMapCardCSS = 'bg-cover bg-center bg-no-repeat rounded-lg cursor-pointer overflow-hidden shadow-md flex justify-center items-center hover:scale-110 transition-all durantion-500 ease-in-out';
 const selectedCardCSS = 'border-2 border-blue-500';
 const cardTextCSS = 'text-2xl text-white text-center bg-transparent';
-interface Card {
-  id: number;
-  reference: string;
-  image: string;
-}
-interface ICardProps {
-  card: Card;
+
+interface IHeroMapCardProps {
+  card: IHeroMapCard;
   isSelected: boolean;
   onClick: () => void;
   width?: number;
   height?: number;
 }
 
-const HeroMapCard = ({ card, isSelected, onClick, width = 400, height = 250 }: ICardProps) => {
+const HeroMapCard = ({ card, isSelected, onClick, width = 400, height = 250 }: IHeroMapCardProps) => {
   const cardOpacityCSS = isSelected ? '' : 'opacity-30';
   return (
     <div
-      className={`${cardCSS} ${isSelected ? selectedCardCSS : ''} ${cardOpacityCSS}`}
+      className={`${heroMapCardCSS} ${isSelected ? selectedCardCSS : ''} ${cardOpacityCSS}`}
       style={{
         backgroundImage: `url(${card.image})`,
         backgroundSize: 'cover',
@@ -28,7 +26,7 @@ const HeroMapCard = ({ card, isSelected, onClick, width = 400, height = 250 }: I
         height: `${height}px`,
       }}
       onClick={onClick}>
-      <div className={cardTextCSS}>{card.reference}</div>
+      <div className={cardTextCSS}>{card.name}</div>
     </div>
   );
 };
