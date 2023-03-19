@@ -17,13 +17,13 @@ const HomeSection = (props: IHomeSectionProps) => {
   const { title, subtitle, link, className, backgroundImg } = props;
   return (
     <div
-      className={`${className ?? 'gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-end pb-10 border-transparent hover:border-purple-900 hover:scale-105 transition ease-in-out duration-1000 border-4 transform'}${backgroundImg && 'bg-no-repeat bg-cover'}`}
+      className={`${backgroundImg && 'bg-no-repeat bg-cover '} ${className ?? 'gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-end pb-10 border-transparent hover:border-purple-900 hover:scale-105 transition ease-in-out duration-1000 border-4 transform'}`}
       style={backgroundImg ? { backgroundImage: `url(${backgroundImg})` } : {}}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      <div className={`${isHovered ? 'bg-opacity-60 h-32' : 'bg-opacity-0'} bg-black flex flex-col justify-evenly items-center rounded-3xl px-5 py-2 transition-all duration-1000 ease-out`}>
+      <div className={`${isHovered ? 'bg-opacity-90' : 'bg-opacity-30'} bg-black flex flex-col justify-evenly items-center rounded-3xl px-5 py-2 transition-all duration-1000 ease-out`}>
         <h1>{title}</h1>
-        <p className={`${isHovered ? 'opacity-100' : 'opacity-0'} overflow-y-hidden transition-all ease-in duration-500`}>{subtitle}</p>
+        <p className={`${isHovered ? 'opacity-100 h-6' : 'opacity-0 h-0'} overflow-y-hidden transition-all ease-in duration-500`}>{subtitle}</p>
       </div>
       <Link to={link}>
         <Button

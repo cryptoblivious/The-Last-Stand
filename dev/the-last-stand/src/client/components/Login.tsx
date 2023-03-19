@@ -6,10 +6,8 @@ import { useState } from 'react';
 
 const Login = (props: any) => {
   const { data } = props;
-  const message = data !== undefined ? data.message : 'No server monitoring';
-  console.log('origin', window.location.origin);
-
-  const [popupOpen, setPopupOpen] = useState(message);
+  const error = data.message === 'Authorized' ? undefined : data !== undefined ? data.message : 'No server monitoring';
+  const [popupOpen, setPopupOpen] = useState(error);
 
   const closePopup = () => {
     setPopupOpen(false);
@@ -23,7 +21,7 @@ const Login = (props: any) => {
       <LoginNavbar />
       {popupOpen && (
         <ErrorPopup
-          message={message}
+          message={error}
           onClick={closePopup}
         />
       )}
