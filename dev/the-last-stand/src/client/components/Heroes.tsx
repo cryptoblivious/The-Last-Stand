@@ -1,12 +1,9 @@
 import HeroMapCardMenu from './HeroMapCardMenu';
 import { useState } from 'react';
+import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 
-interface Hero {
-  id: number;
-  name: string;
-  image: string;
-}
-const heroes: Hero[] = [
+
+const heroes: IHeroMapCard[] = [
   { id: 1, name: 'Solana', image: './src/client/assets/heroes/solana/portrait.webp' },
   { id: 2, name: 'Logan', image: './src/client/assets/heroes/logan/portrait.png' },
   { id: 3, name: 'chuck doug',  image: './src/client/assets/heroes/chuck/portrait.png' },
@@ -24,6 +21,8 @@ const backstories: Record<string, string> = {
   'Solana': 'Solana freakin rocks',
   'Logan': 'Logan is a great guy',
   'chuck doug': 'chuck doug is a sucking asshole guy',
+  'Alphonse': 'Alphonse is a great guy',
+  'Bart': 'Bart is a great guy',
 };
 
 // for (const hero of heroes) {
@@ -40,15 +39,20 @@ const Heroes = () => {
   const backgroundStyle = {
     backgroundImage: `url(${selectedHero ? selectedHero.image : ''})`,
   };
+
+  const handleCardSelected = (card: IHeroMapCard) => {
+    setSelectedHeroName(card);
+  };
+
   return (
     <div
       className='flex justify-center space-x-4 bg-cover bg-center bg-no-repeat'
       style={backgroundStyle}>
-      <h1 className='text-black'> {selectedHeroName}</h1>
-      <p className='text-black'>{selectedHeroBackstory}</p>
+      <h1 className='text-white'> {selectedHeroName}</h1>
+      <p className='text-white'>{selectedHeroBackstory}</p>
       <HeroMapCardMenu
-        heroes={heroes}
-        onCardClick={(card) => setSelectedHeroName(card)}
+        cardsArray={heroes}
+        onCardSelected={handleCardSelected}
       />
     </div>
   );
