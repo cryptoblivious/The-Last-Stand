@@ -1,21 +1,16 @@
 import { useEffect, useState } from 'react';
 import FriendInfoCard from './FriendInfoCard';
-import { HOST_URL, HOST_PORT } from '../domain_config';
+import { fetchUsers } from '../fetches/users';
 
 const FriendList = () => {
   const [users, setUsers] = useState<null | any[]>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch(`${HOST_URL}:${HOST_PORT}/users`);
-      const data = await response.json();
-
-      if (response.ok) {
-        setUsers(data);
-      }
-    };
-
-    fetchUsers();
+    async function fetchData() {
+      const users = await fetchUsers();
+      setUsers(users);
+    }
+    fetchData();
   }, []);
 
   return (

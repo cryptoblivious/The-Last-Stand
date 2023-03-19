@@ -21,6 +21,7 @@ const FriendRequestForm = () => {
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
+    isOpen && usernameRef.current?.focus(); //ref:https://blog.logrocket.com/usestate-vs-useref/
   };
 
   const handleMouseEnter = () => {
@@ -31,9 +32,7 @@ const FriendRequestForm = () => {
     setIsHovered(false);
   };
 
-  useEffect(() => {
-    usernameRef.current?.focus(); //ref:https://blog.logrocket.com/usestate-vs-useref/
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>

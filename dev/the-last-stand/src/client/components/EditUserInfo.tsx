@@ -1,9 +1,31 @@
 import { IUser } from '../../typescript/interfaces/IUser';
+import { patchCurrentUser } from '../fetches/users';
+import { useEffect, useState, useRef } from 'react';
 
-const EditUserInfo = ({ user, className }: { user: IUser; className: string }) => {
+const EditUserInfo = ({ user, className, isSubmitting }: { user: IUser; className: string; isSubmitting: boolean }) => {
   const { avatar, username, title } = user;
+  const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
+  const titleRef = useRef<HTMLSelectElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    console.log(`Username updated to ${usernameRef.current?.value}`);
+    console.log(`Title updated to ${titleRef.current?.value}`);
+
+    // // patch request to update user info
+    // const data = async () => {
+    //   const updatedUser = {
+    //     username: usernameRef.current?.value,
+    //     title: titleRef.current?.value,
+    //   };
+
+    //   const response = await patchCurrentUser(updatedUser);
+    //   console.log(response);
+    // };
+  };
+
+  useEffect(() => {
+    isSubmitting && handleSubmit();
+  }, [isSubmitting]);
 
   return (
     <div className={`flex w-full gap-4 ${className}`}>
@@ -16,7 +38,7 @@ const EditUserInfo = ({ user, className }: { user: IUser; className: string }) =
         className='flex flex-col gap-2 justify-center w-80'>
         <input
           className='w-full placeholder-pink-900 placeholder-opacity-50 text-pink-900'
-          //ref={usernameRef}
+          ref={usernameRef}
           value={username}
           type='text'
           placeholder='Username'
