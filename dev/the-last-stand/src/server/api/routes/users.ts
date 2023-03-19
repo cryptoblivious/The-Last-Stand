@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteUserByEmail, updateUserByEmail, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
+import { createUser, deleteUserByEmail, patchCurrentUser, patchCurrentUser, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
 import { isAuthenticated } from '../controllers/auth';
 
 const usersRouter = express.Router();
@@ -17,9 +17,12 @@ usersRouter.get('/', readUsers);
 usersRouter.get('/:email', readUserByEmail);
 
 // UPDATE a player
-usersRouter.patch('/:email', updateUserByEmail);
+usersRouter.patch('/:email', patchCurrentUser);
 
 // POST a new player
 usersRouter.post('/', createUser);
+
+// PATCH the current user
+usersRouter.patch('/patchCurrentUser', isAuthenticated, patchCurrentUser);
 
 export default usersRouter;

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import FriendInfoCard from './FriendInfoCard';
-import { fetchUsers } from '../fetches/users';
+import { getUsers } from '../fetches/users';
 
 const FriendList = () => {
   const [users, setUsers] = useState<null | any[]>(null);
 
   useEffect(() => {
     async function fetchData() {
-      const users = await fetchUsers();
+      const users = await getUsers();
       setUsers(users);
     }
     fetchData();

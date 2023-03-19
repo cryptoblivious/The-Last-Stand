@@ -11,12 +11,12 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 
-import { userModel as User } from './models/user';
+import { userModel as User } from './api/models/user';
 
-import { initializeGoogleOAuthStrategy } from './controllers/auth';
+import { initializeGoogleOAuthStrategy } from './api/controllers/auth';
 
-import authRouter from './routes/auth';
-import usersRouter from './routes/users';
+import authRouter from './api/routes/auth';
+import usersRouter from './api/routes/users';
 
 mongoose.set('strictQuery', false);
 dotenv.config();

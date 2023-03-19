@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from '../../typescript/interfaces/IUser';
+import { IUser } from '../../../typescript/interfaces/IUser';
 
 export const roleSchema = new Schema(
   {

@@ -1,7 +1,7 @@
 import { APP_MODE, HOST_URL, HOST_PORT } from '../domain_config';
 
-// Fetch the current user from the server through the local cookie
-export const fetchCurrentUser = async () => {
+// Get the current user from the server through the local cookie
+export const getCurrentUser = async () => {
   const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
 
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
@@ -17,8 +17,8 @@ export const fetchCurrentUser = async () => {
   }
 };
 
-// Fetch all users from the server
-export const fetchUsers = async () => {
+// Get all users from the server
+export const getUsers = async () => {
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/users`, {
     credentials: 'include',
   });
@@ -31,20 +31,20 @@ export const fetchUsers = async () => {
   }
 };
 
-// Patch a user by id
-export const patchCurrentUser = async (data: any) => {
+// Patch the current user
+export const patchCurrentUser = async (input: any) => {
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/patchCurrentUser`, {
     method: 'PATCH',
     credentials: 'include',
     // headers: {
     //   'Content-Type': 'application/json',
     // },
-    body: JSON.stringify(data),
+    body: JSON.stringify(input),
   });
-  let result = await response.json();
+  let output = await response.json();
 
   if (response.ok) {
-    return result;
+    return output;
   } else {
     return null;
   }

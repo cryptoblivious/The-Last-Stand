@@ -16,15 +16,15 @@ import { MatchOrchestrator } from './rooms/MatchOrchestrator';
 import { monitor } from '@colyseus/monitor';
 
 // Homemade models
-import { userModel as User } from './models/user';
+import { userModel as User } from './api/models/user';
 
 // Homemade controllers
-import { initializeGoogleOAuthStrategy } from './controllers/auth';
+import { initializeGoogleOAuthStrategy } from './api/controllers/auth';
 
 // Homemade routes
-import authRouter from './routes/auth';
-import usersRouter from './routes/users';
-import heroesRouter from './routes/heroes';
+import authRouter from './api/routes/auth';
+import usersRouter from './api/routes/users';
+import heroesRouter from './api/routes/heroes';
 
 console.log('    ___      _');
 console.log('   / __\\___ | |_   _ ___  ___ _   _ ___');

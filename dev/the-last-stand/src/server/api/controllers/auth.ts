@@ -3,7 +3,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
-import { findUniqueNumber, formatNumber, unformatNumbers } from '../../utils/maths';
+import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
 
 dotenv.config();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST_URL, HOST_PORT } = process.env;

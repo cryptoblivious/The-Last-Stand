@@ -3,7 +3,7 @@ import ShowUserInfo from './ShowUserInfo';
 import EditUserInfo from './EditUserInfo';
 import { IUser } from '../../typescript/interfaces/IUser';
 import { useState, useEffect } from 'react';
-import { fetchCurrentUser } from '../fetches/users';
+import { getCurrentUser } from '../fetches/users';
 
 const UserInfoCard = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -14,7 +14,7 @@ const UserInfoCard = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const user = await fetchCurrentUser();
+      const user = await getCurrentUser();
       setUser(user);
     }
     fetchData();

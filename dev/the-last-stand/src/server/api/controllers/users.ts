@@ -42,11 +42,11 @@ export const readUserByEmail = async (req: any, res: any) => {
   }
 };
 
-// PATCH a user
-export const updateUserByEmail = async (req: any, res: any) => {
-  const email = req.params.email;
+// PATCH the current user
+export const patchCurrentUser = async (req: any, res: any) => {
+  const id = req.user.id;
   try {
-    const user = await User.findOneAndUpdate({ email }, { ...req.body }, { new: true });
+    const user = await User.findOneAndUpdate({ id }, { ...req.body }, { new: true });
     if (!user) {
       return res.status(404).json({ err: 'User not found' });
     }
