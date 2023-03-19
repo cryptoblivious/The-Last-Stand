@@ -53,19 +53,13 @@ const UserInfoCard = () => {
         />
         {isEditing ? (
           <EditUserInfo
-            username={user.username}
-            userNo={user.userNo}
-            title={user.title}
-            //avatar={user.avatar}
-            avatar={avatar}
+            className={`${isEditing} ? 'z-10' : ''}`}
+            user={user}
           />
         ) : (
           <ShowUserInfo
-            username={user.username}
-            userNo={user.userNo}
-            title={user.title}
-            //avatar={user.avatar}
-            avatar={avatar}
+            className={`${!isEditing} ? 'z-10' : ''}`}
+            user={user}
           />
         )}
       </div>

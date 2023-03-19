@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom';
+import BigRoundedInput from './BigRoundedInput';
 
 const LoginForm = () => {
   return (
     <form className='flex flex-col gap-4'>
-      <input
-        className='bg-gray-200 rounded-xl p-3 text-purple-900 placeholder-purple-900 placeholder-opacity-50'
+      <BigRoundedInput
         type='text'
         placeholder='Username'
       />
-      <input
-        className='bg-gray-200 rounded-xl p-3 text-purple-900 placeholder-purple-900 placeholder-opacity-50'
+      <BigRoundedInput
         type='password'
         placeholder='Password'
       />
