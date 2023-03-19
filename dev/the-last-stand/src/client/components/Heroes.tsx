@@ -3,15 +3,15 @@ import { useState } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 import { HOST_URL, HOST_PORT } from '../domain_config';
 
-const heroesPageContainerStyle = "h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat"
+const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat';
 
-const heroesPageTitleContainerStyle = "col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-black bg-opacity-0"
-const heroesPageTitleStyle = "text-4xl font-bold text-center text-fuchsia-400"
+const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-black bg-opacity-0';
+const heroesPageTitleStyle = 'text-4xl font-bold text-center text-fuchsia-400';
 
-const heroesPageBackstoryContainerStyle = "row-start-3 col-start-2 row-span-3 col-span-2 flex justify-center items-center bg-black bg-opacity-30 rounded-lg mr-10 overflow-y-auto"
-const heroesPageBackstoryStyle = "text-xl font-bold text-center text-fuchsia-400"
+const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 col-span-2 flex justify-center items-center bg-black bg-opacity-30 rounded-lg mr-10 overflow-y-auto';
+const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400';
 
-const heroesPageHeroMapCardMenuContainerStyle = "place-self-center row-start-3"
+const heroesPageHeroMapCardMenuContainerStyle = 'place-self-center row-start-3';
 
 const heroes: IHeroMapCard[] = [
   { id: 1, name: 'Solana', image: './src/client/assets/heroes/solana/portrait.webp' },
@@ -21,22 +21,21 @@ const heroes: IHeroMapCard[] = [
   { id: 5, name: 'Bart', image: 'https://picsum.photos/300/200' },
 ];
 
-
 const backstories: Record<string, string> = {
-  'Solana': 'Solana freakin rocks',
-  'Logan': 'Logan is a great guy',
+  Solana: 'Solana freakin rocks',
+  Logan: 'Logan is a great guy',
   'chuck doug': 'chuck doug is a sucking asshole guy',
-  'Alphonse': 'Alphonse is a great guy',
-  'Bart': 'Bart is a great guy',
+  Alphonse: 'Alphonse is a great guy',
+  Bart: 'Bart is a great guy',
 };
 
 const fetchHeroesNamesAndBackstories = async () => {
-  const response = await fetch(`${HOST_URL}:${HOST_PORT}/hnabs`);
+  const response = await fetch(`${HOST_URL}:${HOST_PORT}/heroes/hnabs`);
   const heroesData = await response.json();
   console.log(heroesData);
 };
 
-fetchHeroesNamesAndBackstories()
+fetchHeroesNamesAndBackstories();
 
 const Heroes = () => {
   const [selectedHero, setSelectedHeroName] = useState(heroes[1]);
@@ -45,8 +44,6 @@ const Heroes = () => {
   const backgroundStyle = {
     backgroundImage: `url(${selectedHero ? selectedHero.image : ''})`,
   };
-
-
 
   const handleCardSelected = (card: IHeroMapCard) => {
     setSelectedHeroName(card);
@@ -68,8 +65,6 @@ const Heroes = () => {
       <div className={heroesPageBackstoryContainerStyle}>
         <p className={heroesPageBackstoryStyle}>{selectedHeroBackstory}</p>
       </div>
-
-
     </div>
   );
 };

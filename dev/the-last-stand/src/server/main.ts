@@ -24,6 +24,7 @@ import { initializeGoogleOAuthStrategy } from './controllers/auth';
 // Homemade routes
 import authRouter from './routes/auth';
 import usersRouter from './routes/users';
+import heroesRouter from './routes/heroes';
 
 console.log('    ___      _');
 console.log('   / __\\___ | |_   _ ___  ___ _   _ ___');
@@ -125,6 +126,7 @@ app.get('/', (req: any, res: any) => {
 // Routes
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/heroes', heroesRouter);
 
 /**
  * Bind @colyseus/monitor

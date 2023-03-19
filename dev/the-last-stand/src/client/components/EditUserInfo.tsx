@@ -2,6 +2,9 @@ import { IUser } from '../../typescript/interfaces/IUser';
 
 const EditUserInfo = ({ user, className }: { user: IUser; className: string }) => {
   const { avatar, username, title } = user;
+
+  const handleSubmit = () => {};
+
   return (
     <div className={`flex w-full gap-4 ${className}`}>
       <img
@@ -23,8 +26,7 @@ const EditUserInfo = ({ user, className }: { user: IUser; className: string }) =
           className='text-pink-900'>
           <option
             value='option1'
-            className='text-gray-700 rounded-none'
-            {title === 'No0bZoR' ? 'selected' : ''}>
+            className='text-gray-700 rounded-none'>
             No0bZoR
           </option>
           <option

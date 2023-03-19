@@ -7,7 +7,6 @@ const FriendList = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      console.log('fetching users at ...', `${HOST_URL}:${HOST_PORT}/users`);
       const response = await fetch(`${HOST_URL}:${HOST_PORT}/users`);
       const data = await response.json();
 
