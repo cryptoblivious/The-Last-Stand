@@ -1,6 +1,8 @@
 import CardMenu from './CardMenu';
 import { useState } from 'react';
 
+const heroesPageContainerSyle = "flex justify-center space-x-4 bg-cover bg-center bg-no-repeat";
+
 interface Hero {
   id: number;
   name: string;
@@ -29,10 +31,16 @@ const Heroes = () => {
   };
   return (
     <div
-      className='flex justify-center space-x-4 bg-cover bg-center bg-no-repeat'
+      className={heroesPageContainerSyle}
       style={backgroundStyle}>
-      <h1 className='text-black'> {selectedHeroName}</h1>
-      <p className='text-black'>{selectedHeroBackstory}</p>
+      <div>
+        <h1 className='text-white'> {selectedHeroName}</h1>
+
+      </div>
+      <div>
+        <p className='text-white'>{selectedHeroBackstory}</p>
+
+      </div>
       <CardMenu
         heroes={heroes}
         onCardClick={(card) => setSelectedHeroName(card)}

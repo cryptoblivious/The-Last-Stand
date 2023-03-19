@@ -21,9 +21,9 @@ const extractTextData = async (filepath: string): Promise<string> => {
 };
 
 const backstories: Record<string, string> = {
-  'Solana': '',
-  'Logan': '',
-  'Chuck Doug': '',
+  'Solana': 'Solana freakin rocks',
+  'Logan': 'Logan is a great guy',
+  'chuck doug': 'chuck doug is a sucking asshole guy',
 };
 
 // for (const hero of heroes) {
