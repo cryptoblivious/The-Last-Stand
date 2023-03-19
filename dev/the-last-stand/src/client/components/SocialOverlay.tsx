@@ -1,4 +1,4 @@
-import SendFriendRequestForm from './SendFriendRequestForm';
+import FriendRequestForm from './FriendRequestForm';
 import UserInfoCard from './UserInfoCard';
 import FriendList from './FriendList';
 import Button from './Button';
@@ -27,8 +27,8 @@ const SocialOverlay = () => {
       <div className={`${overlaying ? 'opacity-0' : 'opacity-100'} transition ease-in-out duration-1000 transform fixed top-0 right-0`}>Press "O" to activate and deactivate the Overlay.</div>
 
       <UserInfoCard />
-      <SendFriendRequestForm />
       <FriendList />
+      <FriendRequestForm />
       <Button text='Disconnect' />
     </div>
   );

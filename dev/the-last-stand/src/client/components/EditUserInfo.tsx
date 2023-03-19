@@ -18,13 +18,31 @@ const EditUserInfo = ({ user, className }: { user: IUser; className: string }) =
           type='text'
           placeholder='Username'
         />
-        <input
-          className='w-full placeholder-pink-900 placeholder-opacity-50 text-pink-900'
-          //ref={usernameRef}
-          value={title}
-          type='text'
-          placeholder='Title'
-        />
+        <select
+          id='my-dropdown'
+          className='text-pink-900'>
+          <option
+            value='option1'
+            className='text-gray-700 rounded-none'
+            {title === 'No0bZoR' ? 'selected' : ''}>
+            No0bZoR
+          </option>
+          <option
+            value='option2'
+            className='text-gray-700'>
+            Bounty Hunter
+          </option>
+          <option
+            value='option3'
+            className='text-gray-700'>
+            Disco King
+          </option>
+          <option
+            value='option4'
+            className='text-gray-700'>
+            Psycho Fury
+          </option>
+        </select>
       </form>
     </div>
   );

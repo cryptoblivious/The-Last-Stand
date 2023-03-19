@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { HOST_URL, HOST_PORT } from '../domain_config';
+import { APP_MODE, HOST_URL, HOST_PORT } from '../domain_config';
 import { IUser } from '../../typescript/interfaces/IUser';
 import EditButton from './EditButton';
 import ShowUserInfo from './ShowUserInfo';
 import EditUserInfo from './EditUserInfo';
 
-import { APP_MODE } from '../domain_config';
 const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
 
 const UserInfoCard = () => {
@@ -21,6 +20,7 @@ const UserInfoCard = () => {
       const data = await response.json();
 
       if (response.ok) {
+        data.avatar = avatar;
         setUser(data);
       }
     };
