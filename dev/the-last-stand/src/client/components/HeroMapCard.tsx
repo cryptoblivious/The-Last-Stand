@@ -2,7 +2,7 @@ import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 
 const heroMapCardCSS = 'bg-cover bg-center bg-no-repeat rounded-lg cursor-pointer overflow-hidden shadow-md flex justify-center items-center hover:scale-110 transition-all durantion-500 ease-in-out';
 const selectedCardCSS = 'border-2 border-blue-500';
-const cardTextCSS = 'text-2xl text-white text-center bg-transparent';
+const cardTextCSS = 'text-2xl text-white text-center bg-transparent font-extra-bold';
 
 interface IHeroMapCardProps {
   card: IHeroMapCard;
