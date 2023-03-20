@@ -26,8 +26,9 @@ authRouter.post('/logout', (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect('/');
-    //res.redirect(`${CLIENT_URL}:${CLIENT_PORT}/`);
+    //res.redirect('/');
+    console.log('redirecting to: ', `${CLIENT_URL}:${CLIENT_PORT}/`);
+    res.redirect(`${CLIENT_URL}:${CLIENT_PORT}/`);
   });
 });
 
