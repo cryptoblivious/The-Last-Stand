@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { checkAuth } from '../controllers/auth';
+import { checkAuth, logout } from '../controllers/auth';
 import dotenv from 'dotenv';
 dotenv.config();
 const { CLIENT_URL, CLIENT_PORT } = process.env;
@@ -21,15 +21,6 @@ authRouter.get(
 
 authRouter.get('/check', checkAuth);
 
-authRouter.post('/logout', (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    //res.redirect('/');
-    console.log('redirecting to: ', `${CLIENT_URL}:${CLIENT_PORT}/`);
-    res.redirect(`${CLIENT_URL}:${CLIENT_PORT}/`);
-  });
-});
+authRouter.post('/logout', logout);
 
 export default authRouter;

@@ -1,7 +1,10 @@
 import Button from './Button';
 import { HOST_URL, HOST_PORT } from '../appConfig';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton = () => {
+  const navigate = useNavigate();
+
   const logout = () => {
     const formData = new FormData();
 
@@ -10,8 +13,8 @@ const LogoutButton = () => {
       body: formData,
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        navigate('/login');
       });
   };
   return (

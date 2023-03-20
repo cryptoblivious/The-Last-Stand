@@ -93,3 +93,20 @@ export const isAdmin = async (req: any, res: any, next: any) => {
     res.redirect('/login');
   }
 };
+
+// Logout user
+export const logout = (req: any, res: any, next: any) => {
+  try {
+    req.session.destroy((err: any) => {
+      if (err) {
+        return next(err);
+      }
+      res.clearCookie('connect.sid');
+      console.log('cookie should be cleared');
+      res.status(200).json({ message: 'Logged out' });
+    });
+  } catch (err: any) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};

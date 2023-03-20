@@ -39,7 +39,6 @@ const EditUserInfo = ({ user, className, isSubmitting }: { user: IUser; classNam
         <input
           className='w-full placeholder-pink-900 placeholder-opacity-50 text-pink-900'
           ref={usernameRef}
-          value={username}
           type='text'
           placeholder='Username'
         />
