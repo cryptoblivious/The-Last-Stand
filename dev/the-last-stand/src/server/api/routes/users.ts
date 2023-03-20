@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteUserByEmail, patchCurrentUser, patchCurrentUser, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
+import { createUser, deleteUserByEmail, patchCurrentUser, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
 import { isAuthenticated } from '../controllers/auth';
 
 const usersRouter = express.Router();

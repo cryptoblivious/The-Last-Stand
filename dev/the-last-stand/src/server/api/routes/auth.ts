@@ -21,13 +21,13 @@ authRouter.get(
 
 authRouter.get('/check', checkAuth);
 
-authRouter.post('/logout', function (req, res, next) {
-  req.logout(function (err) {
+authRouter.post('/logout', (req, res, next) => {
+  req.logout((err) => {
     if (err) {
       return next(err);
     }
-    //res.redirect('/');
-    res.redirect(`${CLIENT_URL}:${CLIENT_PORT}/`);
+    res.redirect('/');
+    //res.redirect(`${CLIENT_URL}:${CLIENT_PORT}/`);
   });
 });
 
