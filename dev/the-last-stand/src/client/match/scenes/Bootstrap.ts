@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Client } from 'colyseus.js';
-import { HOST_NAME, HOST_PORT, WS_PROTOCOL } from '../../domain_config';
+import { HOST_NAME, HOST_PORT, WS_PROTOCOL } from '../../appConfig';
 
 //holds logic for switching between scenes
 

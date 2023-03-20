@@ -1,4 +1,4 @@
-type DomainConfig = {
+type TAppConfig = {
   APP_MODE: string;
   HOST_NAME: string;
   HOST_URL: string;
@@ -9,7 +9,7 @@ type DomainConfig = {
   WS_PROTOCOL: string;
 };
 
-const defaultConfig: DomainConfig = {
+const defaultConfig: TAppConfig = {
   APP_MODE: '',
   HOST_NAME: '',
   HOST_URL: '',
@@ -20,7 +20,7 @@ const defaultConfig: DomainConfig = {
   WS_PROTOCOL: '',
 };
 
-const configMap: Map<string, DomainConfig> = new Map([
+const configMap: Map<string, TAppConfig> = new Map([
   [
     'http://localhost:5173',
     {
@@ -51,7 +51,7 @@ const configMap: Map<string, DomainConfig> = new Map([
 
 const currentOrigin = window.location.origin;
 
-const domainConfig: DomainConfig = configMap.get(currentOrigin) ?? { ...defaultConfig };
+const domainConfig: TAppConfig = configMap.get(currentOrigin) ?? { ...defaultConfig };
 
 export const APP_MODE = domainConfig.APP_MODE;
 export const HOST_NAME = domainConfig.HOST_NAME;

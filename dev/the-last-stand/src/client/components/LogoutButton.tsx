@@ -1,10 +1,11 @@
 import Button from './Button';
+import { HOST_URL, HOST_PORT } from '../appConfig';
 
 const LogoutButton = () => {
   const logout = () => {
     const formData = new FormData();
 
-    fetch('/logout', {
+    fetch(`${HOST_URL}:${HOST_PORT}/auth/logout`, {
       method: 'POST',
       body: formData,
     })

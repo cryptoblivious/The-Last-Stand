@@ -2,7 +2,7 @@ import { Client, Room } from 'colyseus.js';
 import Phaser from 'phaser';
 import { IMatchState } from '../../typescript/interfaces/IMatchState';
 import { EMessage } from '../../typescript/enumerations/EMessage';
-import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from '../domain_config';
+import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from '../appConfig';
 export default class LocalServer {
   private client: Client;
   private events: Phaser.Events.EventEmitter;

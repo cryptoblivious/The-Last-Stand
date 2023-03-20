@@ -1,4 +1,4 @@
-import { HOST_URL, HOST_PORT } from '../../domain_config';
+import { HOST_URL, HOST_PORT } from '../../appConfig';
 
 interface IAuth {
   (): Promise<boolean | any>;

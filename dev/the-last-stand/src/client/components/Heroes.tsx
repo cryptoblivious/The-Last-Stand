@@ -1,7 +1,7 @@
 import HeroMapCardMenu from './HeroMapCardMenu';
 import { useState } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
-import { HOST_URL, HOST_PORT } from '../domain_config';
+import { HOST_URL, HOST_PORT } from '../appConfig';
 
 const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat';
 

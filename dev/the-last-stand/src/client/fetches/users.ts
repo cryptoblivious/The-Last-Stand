@@ -1,4 +1,4 @@
-import { APP_MODE, HOST_URL, HOST_PORT } from '../domain_config';
+import { APP_MODE, HOST_URL, HOST_PORT } from '../appConfig';
 
 // Get the current user from the server through the local cookie
 export const getCurrentUser = async () => {
