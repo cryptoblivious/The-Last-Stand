@@ -34,6 +34,7 @@ const store = new MongoStore({
  * Import your Room files
  */
 import { MatchOrchestrator } from './rooms/MatchOrchestrator';
+import heroesRouter from './api/routes/heroes';
 export default Arena({
   getId: () => 'Your Colyseus App',
 
@@ -84,6 +85,8 @@ export default Arena({
     // Routes
     app.use('/auth', authRouter);
     app.use('/users', usersRouter);
+    app.use('/heroes', heroesRouter);
+
 
     // Dummy route
     app.get('/', (req: any, res: any) => {

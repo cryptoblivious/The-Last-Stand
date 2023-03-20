@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 
 
 interface IHero extends Document {
@@ -6,9 +6,11 @@ interface IHero extends Document {
     backstory: string;
 }
 
-export const heroSchema = new Schema({
+const heroSchema = new Schema({
     name: { type: String, required: true },
     backstory: { type: String, required: true },
+}, {
+    collection: 'heroes' // Spécifiez le nom de la collection ici
 });
 
-export const HeroModel = mongoose.model<IHero>('Hero', heroSchema);
+export const HeroModel = model<IHero>('Hero', heroSchema);
