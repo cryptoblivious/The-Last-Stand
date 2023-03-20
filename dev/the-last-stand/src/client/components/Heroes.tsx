@@ -10,14 +10,13 @@ const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 co
 const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400';
 const heroesPageHeroMapCardMenuContainerStyle = 'place-self-center row-start-3';
 
-const heroes: IHeroMapCard[] = [
-  { id: 1, name: 'Solana', image: './src/client/assets/heroes/solana/portrait.webp' },
-  { id: 2, name: 'Logan', image: './src/client/assets/heroes/logan/portrait.png' },
-  { id: 3, name: 'Chuck', image: './src/client/assets/heroes/chuck/portrait.png' },
-  { id: 4, name: 'Alphonse', image: 'https://picsum.photos/450/200' },
-  { id: 5, name: 'Bart', image: 'https://picsum.photos/300/200' },
-];
+const heroImages : Record<string,string> = {
+  solana: './src/client/assets/heroes/solana/portrait.webp',
+  logan: './src/client/assets/heroes/logan/portrait.png',
+  chuck: './src/client/assets/heroes/chuck/portrait.png',
+};
 
+const heroes: IHeroMapCard[] = [];
 const backstories: Record<string, string> = {}
 
 const fetchHeroesNamesAndBackstories = async () => {
@@ -25,11 +24,14 @@ const fetchHeroesNamesAndBackstories = async () => {
   const heroesData = await response.json();
   heroesData.forEach((hero: any) => {
     backstories[hero.name] = hero.backstory;
+    heroes.push({ id: hero.id, name: capirtalizeFirstLetter(hero.name), image: heroImages[hero.name] });
   })
 };
 fetchHeroesNamesAndBackstories();
 
-console.log(backstories)
+const capirtalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 const Heroes = () => {
   const [selectedHero, setSelectedHeroName] = useState(heroes[1]);
