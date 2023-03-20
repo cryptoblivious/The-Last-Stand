@@ -2,6 +2,7 @@ import HeroMapCard from './HeroMapCard';
 import Arrow from './Arrow';
 import { useEffect, useState } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
+import { getUpperOddNumber } from '../../utils/maths';
 
 const cardMenuContainerCSS = 'flex-col justify-center items-center gap-4 space-y-4 transition-all duration-300 ease-in-out transform-gpu';
 
@@ -12,13 +13,10 @@ interface IHeroMapCardMenuProps {
   onCardSelected: (card: IHeroMapCard) => void;
 }
 
-const getOddNumber = (number: number) => {
-  return number % 2 === 0 ? number + 1 : number;
-};
 
 const HeroMapCardMenu: React.FC<IHeroMapCardMenuProps> = ({ cardsArray, selectedId, onCardSelected, visibleCards = 3 }: IHeroMapCardMenuProps) => {
   // make sure the number of visible cards is odd
-  visibleCards = getOddNumber(visibleCards);
+  visibleCards = getUpperOddNumber(visibleCards);
   // get the index of the center card
   const centerCardIndex = Math.floor(visibleCards / 2);
 
@@ -103,3 +101,5 @@ const HeroMapCardMenu: React.FC<IHeroMapCardMenuProps> = ({ cardsArray, selected
 };
 
 export default HeroMapCardMenu;
+
+//ref : chatgpt, copilot

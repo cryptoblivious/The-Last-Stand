@@ -2,6 +2,7 @@ import HeroMapCardMenu from './HeroMapCardMenu';
 import { useState } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 import { HOST_URL, HOST_PORT } from '../appConfig';
+import { capirtalizeFirstLetter } from '../../utils/text_format';
 
 const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat';
 const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-black bg-opacity-0';
@@ -10,28 +11,26 @@ const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 co
 const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400';
 const heroesPageHeroMapCardMenuContainerStyle = 'place-self-center row-start-3';
 
-const heroImages : Record<string,string> = {
+const heroImages: Record<string, string> = {
   solana: './src/client/assets/heroes/solana/portrait.webp',
   logan: './src/client/assets/heroes/logan/portrait.png',
   chuck: './src/client/assets/heroes/chuck/portrait.png',
 };
 
+// variable to store the heroes data
 const heroes: IHeroMapCard[] = [];
 const backstories: Record<string, string> = {}
 
+// fetch data and populate the heroes array and the backstories Record
 const fetchHeroesNamesAndBackstories = async () => {
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/heroes/hnabs`);
   const heroesData = await response.json();
   heroesData.forEach((hero: any) => {
     backstories[hero.name] = hero.backstory;
-    heroes.push({ id: hero.id, name: capirtalizeFirstLetter(hero.name), image: heroImages[hero.name] });
+    heroes.push({ id: hero._id, name: capirtalizeFirstLetter(hero.name), image: heroImages[hero.name] });
   })
 };
 fetchHeroesNamesAndBackstories();
-
-const capirtalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
 
 const Heroes = () => {
   const [selectedHero, setSelectedHeroName] = useState(heroes[1]);
@@ -66,3 +65,5 @@ const Heroes = () => {
 };
 
 export default Heroes;
+
+//ref : chatgpt, copilot

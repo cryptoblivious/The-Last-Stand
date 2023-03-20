@@ -15,4 +15,9 @@ export const unformatNumbers = (numbers: Array<string>) => numbers.map((no: stri
 
 export const formatNumber = (number: number) => number.toString().padStart(4, '0');
 
+
+export const getUpperOddNumber = (number: number) => {
+  return number % 2 === 0 ? number + 1 : number;
+};
+
 //ref ChatGPT
