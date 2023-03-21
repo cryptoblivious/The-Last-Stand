@@ -11,6 +11,7 @@ const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; classNa
     console.log(`Username updated to ${usernameRef.current?.value}`);
     console.log(`Title updated to ${titleRef.current?.selectedOptions[0].textContent}`);
 
+    // SEND PATCH REQUEST TO UPDATE USER INFO
     // // patch request to update user info
     // const data = async () => {
     //   const updatedUser = {
