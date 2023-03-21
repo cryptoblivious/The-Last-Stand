@@ -8,6 +8,7 @@ import { getCurrentUser } from '../fetches/users';
 const UserInfoCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDoneEditing, setIsDoneEditing] = useState(false);
 
   const [user, setUser] = useState<IUser | null>(null);
 
@@ -28,8 +29,8 @@ const UserInfoCard = () => {
   };
 
   const handleToggleEdit = () => {
+    isEditing ? setIsDoneEditing(true) : setIsDoneEditing(false);
     setIsEditing(!isEditing);
-    console.log('isEditing', isEditing);
   };
 
   return (
@@ -42,14 +43,15 @@ const UserInfoCard = () => {
           className={`absolute top-2 left-1 w-fit h-fit ${isHovered ? 'opacity-100' : 'opacity-0'} transition duration-1000`}
           onClick={handleToggleEdit}
         />
-        {isEditing ? (
-          <ShowUserInfo user={user} />
-        ) : (
-          <EditUserInfo
-            user={user}
-            isEditing={isEditing}
-          />
-        )}
+        <EditUserInfo
+          className={`${isEditing ? '' : 'hidden'}`}
+          user={user}
+          isDoneEditing={isDoneEditing}
+        />
+        <ShowUserInfo
+          user={user}
+          className={`${isEditing ? 'hidden' : ''}`}
+        />
       </div>
     )
   );

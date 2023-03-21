@@ -1,15 +1,15 @@
 import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/users';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const EditUserInfo = ({ user, className, isEditing }: { user: IUser; className?: string; isEditing: boolean }) => {
+const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; className?: string; isDoneEditing: boolean }) => {
   const { avatar, username, title } = user;
   const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
   const titleRef = useRef<HTMLSelectElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
 
   const handleSubmit = () => {
     console.log(`Username updated to ${usernameRef.current?.value}`);
-    console.log(`Title updated to ${titleRef.current?.value}`);
+    console.log(`Title updated to ${titleRef.current?.selectedOptions[0].textContent}`);
 
     // // patch request to update user info
     // const data = async () => {
@@ -23,10 +23,9 @@ const EditUserInfo = ({ user, className, isEditing }: { user: IUser; className?:
     // };
   };
 
-  // TODO: Add logic that will only mount this useEffect when isEditing is true
   useEffect(() => {
-    !isEditing && handleSubmit();
-  }, [isEditing]);
+    isDoneEditing && handleSubmit();
+  }, [isDoneEditing]);
 
   return (
     <div className={`flex w-full gap-4 ${className}`}>
@@ -41,10 +40,12 @@ const EditUserInfo = ({ user, className, isEditing }: { user: IUser; className?:
           className='w-full placeholder-pink-900 placeholder-opacity-50 text-pink-900'
           ref={usernameRef}
           type='text'
+          defaultValue={username}
           placeholder='Username'
         />
         <select
           id='my-dropdown'
+          ref={titleRef}
           className='text-pink-900'>
           <option
             value='option1'

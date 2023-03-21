@@ -6,16 +6,16 @@ import { useState } from 'react';
 
 function EditButton(props: IButtonProps) {
   const { onClick = () => console.log('clicked!'), className = 'flex items-center justify-center', disabled = false, type = 'button' } = props;
+  const toggleEditState = onClick;
 
   const [icon, setIcon] = useState<string>('GiBookmark');
-  const toggleEditCard = onClick;
 
   const toggleIcon = () => {
     icon === 'GiBookmark' ? setIcon('GiBookmarklet') : setIcon('GiBookmark');
   };
 
   const handleEdit = () => {
-    toggleEditCard();
+    toggleEditState();
     toggleIcon();
   };
 
