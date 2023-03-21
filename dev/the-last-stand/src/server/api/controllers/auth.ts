@@ -44,16 +44,6 @@ export const initializeGoogleOAuthStrategy = () => {
               lastOnline: new Date(),
             });
             await user.save();
-            // Create a new session ID to prevent session fixation attacks
-            req.session.regenerate((err) => {
-              if (err) {
-                console.error('Error regenerating session:', err);
-                return done(err);
-              }
-              // Store the user ID in the session
-              req.session.userId = user._id;
-              return done(null, user); //ref : ChatGPT
-            });
             return done(null, user);
           }
         } catch (err: any) {
@@ -95,18 +85,18 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 };
 
 // Logout user
-export const logout = (req: any, res: any, next: any) => {
+export const logout = (req: any, res: any) => {
   try {
+    req.logout();
     req.session.destroy((err: any) => {
       if (err) {
-        return next(err);
+        return res.status(500).json({ message: err });
       }
       res.clearCookie('connect.sid');
       console.log('cookie should be cleared');
       res.status(200).json({ message: 'Logged out' });
     });
   } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: err });
   }
 };
