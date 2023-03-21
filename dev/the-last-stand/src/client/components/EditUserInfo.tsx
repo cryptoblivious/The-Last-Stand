@@ -2,7 +2,7 @@ import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/users';
 import { useEffect, useState, useRef } from 'react';
 
-const EditUserInfo = ({ user, className, isSubmitting }: { user: IUser; className: string; isSubmitting: boolean }) => {
+const EditUserInfo = ({ user, className, isEditing }: { user: IUser; className?: string; isEditing: boolean }) => {
   const { avatar, username, title } = user;
   const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
   const titleRef = useRef<HTMLSelectElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
@@ -23,14 +23,15 @@ const EditUserInfo = ({ user, className, isSubmitting }: { user: IUser; classNam
     // };
   };
 
+  // TODO: Add logic that will only mount this useEffect when isEditing is true
   useEffect(() => {
-    isSubmitting && handleSubmit();
-  }, [isSubmitting]);
+    !isEditing && handleSubmit();
+  }, [isEditing]);
 
   return (
     <div className={`flex w-full gap-4 ${className}`}>
       <img
-        className='border-purple-900 h-24 w-36 border-2 rounded-full'
+        className='border-purple-900 h-24 w-24 border-2 rounded-full'
         src={avatar}
       />
       <form

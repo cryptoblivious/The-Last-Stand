@@ -60,7 +60,7 @@ export const checkAuth = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return res.status(200).json({ message: 'Authorized' });
   } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Not authenticated' });
   }
 };
 
@@ -69,7 +69,7 @@ export const isAuthenticated = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Not authenticated' });
   }
 };
 
