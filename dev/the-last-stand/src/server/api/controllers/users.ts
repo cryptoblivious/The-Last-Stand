@@ -1,5 +1,15 @@
 import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
+import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
+
+// Find an available username number
+export const findAvailableUsernameNumber = async (username: string) => {
+  const usersWithSameName = await User.find({ username: username }).exec();
+  const usedNosStrings = usersWithSameName.map((user: any) => user.userNo);
+  const usedNosValues = unformatNumbers(usedNosStrings);
+  const userNo = formatNumber(findUniqueNumber(usedNosValues, 9999));
+  return userNo;
+};
 
 // POST a new user
 export const createUser = async (req: any, res: any) => {
@@ -44,9 +54,22 @@ export const readUserByEmail = async (req: any, res: any) => {
 
 // PATCH the current user
 export const patchCurrentUser = async (req: any, res: any) => {
-  const id = req.user.id;
+  const id = req.user?._id;
+  if (!id) {
+    return res.status(400).json({ err: 'Invalid user ID' });
+  }
   try {
-    const user = await User.findOneAndUpdate({ id }, { ...req.body }, { new: true });
+    const userWithSameName = await User.findOne({ username: req.body.username });
+    let username;
+    req.body.userNo, (username = await User.findOne({ _id: id }).select('userNo username').exec());
+    if (userWithSameName) {
+      const availableUsernameNo = await findAvailableUsernameNumber(req.body.username);
+      if (req.body.userNo === '-1') {
+        return res.status(400).json({ err: `No available username number associated with ${req.body.username}` });
+      }
+      req.body.userNo = availableUsernameNo;
+    }
+    const user = await User.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
     if (!user) {
       return res.status(404).json({ err: 'User not found' });
     }
@@ -54,7 +77,7 @@ export const patchCurrentUser = async (req: any, res: any) => {
   } catch (err: any) {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });
   }
-};
+}; // improved by ChatGPT
 
 // DELETE a user
 export const deleteUserByEmail = async (req: any, res: any) => {

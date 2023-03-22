@@ -33,19 +33,26 @@ export const getUsers = async () => {
 
 // Patch the current user
 export const patchCurrentUser = async (input: any) => {
-  const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/patchCurrentUser`, {
-    method: 'PATCH',
-    credentials: 'include',
-    // headers: {
-    //   'Content-Type': 'application/json',
-    // },
-    body: JSON.stringify(input),
-  });
-  let output = await response.json();
+  console.log('patch current received input', input);
+  console.log('stringified input', JSON.stringify(input));
 
-  if (response.ok) {
-    return output;
-  } else {
-    return null;
+  try {
+    const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (response.ok) {
+      let output = await response.json();
+      return output;
+    } else {
+      throw new Error(`Failed to patch current user: ${response.status} ${response.statusText}`);
+    }
+  } catch (error) {
+    throw new Error(`Failed to patch current user: ${error.message}`);
   }
-};
+}; // improved by ChatGPT

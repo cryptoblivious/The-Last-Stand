@@ -3,7 +3,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
-import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
+import { formatNumber } from '../../../utils/maths';
+import { findAvailableUsernameNumber } from './users';
 
 dotenv.config();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST_URL, HOST_PORT } = process.env;
@@ -29,11 +30,7 @@ export const initializeGoogleOAuthStrategy = () => {
             const userWithSameName = await User.findOne({ username: profile.name?.givenName });
             let userNo = formatNumber(0);
             if (userWithSameName) {
-              // if a user with the same name already exists, add an available number to the userNo field
-              const usersWithSameName = await User.find({ username: profile.name?.givenName }).exec();
-              const usedNosStrings = usersWithSameName.map((user: any) => user.userNo);
-              const usedNosValues = unformatNumbers(usedNosStrings);
-              userNo = formatNumber(findUniqueNumber(usedNosValues, 9999));
+              userNo = await findAvailableUsernameNumber(profile.name!.givenName);
             }
             user = new User({
               email: email,

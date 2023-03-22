@@ -62,6 +62,8 @@ if (APP_MODE === 'prod') {
 
 // Create an express app
 const app = express();
+app.use(express.json());
+
 console.log('✅ Express app created.');
 
 // Define routes or middleware for your express app here, if any
@@ -100,12 +102,11 @@ const corsOptions = {
     }
   },
 }; // REF : ChatGPT
-app.use(cors(corsOptions));
 app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
-app.use(express.json());
+app.use(cors(corsOptions));
 app.use(
   session({
     secret: SESSION_SECRET,
@@ -141,7 +142,6 @@ mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log(`✅ Connected to MongoDB.`);
-
   })
   .catch((err) => console.log(err));
 

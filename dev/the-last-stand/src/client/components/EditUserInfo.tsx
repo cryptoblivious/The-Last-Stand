@@ -15,7 +15,7 @@ const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; classNa
     // // patch request to update user info
     const updatedUser = {
       username: usernameRef.current?.value,
-      title: titleRef.current?.value,
+      title: titleRef.current?.selectedOptions[0].textContent,
     };
 
     patchCurrentUser(updatedUser);

@@ -9,7 +9,7 @@ const ShowUserInfo = ({ user, className }: { user: IUser; className?: string }) 
         src={avatar}></img>
       <div className='flex flex-col gap-2 justify-center w-80'>
         <h4>
-          {`${username}`}
+          {`${username} `}
           <span className='text-pink-800'>{`#${userNo ?? '0000'}`}</span>
         </h4>
         <h4>{`${title}`}</h4>

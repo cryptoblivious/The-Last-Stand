@@ -9,16 +9,19 @@ const UserInfoCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDoneEditing, setIsDoneEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchData() {
       const user = await getCurrentUser();
       setUser(user);
     }
     fetchData();
-  }, []);
+    setIsLoading(false);
+  }, [isDoneEditing]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -32,6 +35,8 @@ const UserInfoCard = () => {
     isEditing ? setIsDoneEditing(true) : setIsDoneEditing(false);
     setIsEditing(!isEditing);
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     user && (
