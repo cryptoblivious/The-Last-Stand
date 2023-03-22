@@ -82,7 +82,32 @@ export const isAdmin = async (req: any, res: any, next: any) => {
   }
 };
 
-// Logout user
+// // Logout user
+// export const logoutUser = (req: any, res: any, next: any) => {
+//   try {
+//     req.logout((err: any) => {
+//       if (err) {
+//         return next(err);
+//       }
+//       console.log('logged out');
+//       res.status(200).json({ message: 'Logged out' });
+//     });
+//     // // req.session.destroy((err: any) => {
+//     // //   if (err) {
+//     // //     console.log('error destroying session: ', err);
+//     // //     return res.status(500).json({ message: err || 'Something went wrong with session destruction' });
+//     // //   }
+//     // //   res.clearCookie();
+//     // //   console.log('cookie should be cleared');
+//     // //   res.status(200).json({ message: 'Logged out' });
+//     // // });
+//   } catch (err: any) {
+//     console.error('error logging out: ', err);
+//     return res.status(500).json({ message: err || 'Something went wrong' });
+//   }
+// };
+
+// Logout user v2
 export const logout = (req: any, res: any) => {
   try {
     //req.logout();
