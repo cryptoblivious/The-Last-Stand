@@ -46,6 +46,7 @@ const { APP_MODE, MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT, HOST_PORT 
 const store = new MongoStore({
   mongoUrl: MONGO_URI,
   collectionName: 'sessions',
+  ttl: 60 * 15, // 15 minutes
 });
 console.log('✅ Session store created.');
 
@@ -113,6 +114,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: store,
+    cookie: {
+      maxAge: 1000 * 60 * 15, // 15 minutes
+      secure: APP_MODE === 'prod' ? true : false,
+    },
   })
 );
 app.use(passport.session());
