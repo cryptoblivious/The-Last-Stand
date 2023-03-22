@@ -13,12 +13,12 @@ const SocialLoginForm = () => {
       <button
         className=' bg-purple-900 rounded-xl p-3 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
         onClick={handleGoogleAuthClick}>
-        Sign Up With Google
+        Sign In With Google
       </button>
       <button
         className=' bg-purple-900 rounded-xl p-3 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
         onClick={handleFacebookAuthClick}>
-        Sign Up With Facebook
+        Sign In With Facebook
       </button>
     </>
   );

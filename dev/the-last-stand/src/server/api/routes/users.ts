@@ -23,6 +23,6 @@ usersRouter.patch('/:email', patchCurrentUser);
 usersRouter.post('/', createUser);
 
 // PATCH the current user
-usersRouter.patch('/patchCurrentUser', isAuthenticated, patchCurrentUser);
+usersRouter.patch('/current', isAuthenticated, patchCurrentUser);
 
 export default usersRouter;

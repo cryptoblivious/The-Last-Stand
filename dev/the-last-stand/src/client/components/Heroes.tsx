@@ -2,12 +2,12 @@ import HeroMapCardMenu from './HeroMapCardMenu';
 import { useState } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 import { HOST_URL, HOST_PORT } from '../appConfig';
-import { capirtalizeFirstLetter } from '../../utils/text_format';
+import { capitalizeFirstLetter } from '../../utils/text_format';
 
 const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat';
-const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-black bg-opacity-0';
+const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-opacity-0';
 const heroesPageTitleStyle = 'text-4xl font-bold text-center text-fuchsia-400';
-const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 col-span-2 flex justify-center items-center bg-black bg-opacity-50 rounded-lg mr-10 overflow-y-auto';
+const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 col-span-2 flex justify-center items-center bg-opacity-30 rounded-lg mr-10 overflow-y-auto';
 const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400';
 const heroesPageHeroMapCardMenuContainerStyle = 'place-self-center row-start-3';
 
@@ -19,16 +19,18 @@ const heroImages: Record<string, string> = {
 
 // variable to store the heroes data
 const heroes: IHeroMapCard[] = [];
-const backstories: Record<string, string> = {}
+const backstories: Record<string, string> = {};
 
+// TODO: fetch data in a useEffect asyz function
 // fetch data and populate the heroes array and the backstories Record
 const fetchHeroesNamesAndBackstories = async () => {
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/heroes/hnabs`);
   const heroesData = await response.json();
+  console.log(heroesData);
   heroesData.forEach((hero: any) => {
     backstories[hero.name] = hero.backstory;
-    heroes.push({ id: hero._id, name: capirtalizeFirstLetter(hero.name), image: heroImages[hero.name] });
-  })
+    heroes.push({ id: hero._id, name: capitalizeFirstLetter(hero.name), image: heroImages[hero.name] });
+  });
 };
 fetchHeroesNamesAndBackstories();
 

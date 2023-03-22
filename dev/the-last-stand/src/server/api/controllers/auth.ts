@@ -3,7 +3,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
-import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
+import { formatNumber } from '../../../utils/maths';
+import { findAvailableUsernameNumber } from './users';
 
 dotenv.config();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST_URL, HOST_PORT } = process.env;
@@ -29,11 +30,7 @@ export const initializeGoogleOAuthStrategy = () => {
             const userWithSameName = await User.findOne({ username: profile.name?.givenName });
             let userNo = formatNumber(0);
             if (userWithSameName) {
-              // if a user with the same name already exists, add an available number to the userNo field
-              const usersWithSameName = await User.find({ username: profile.name?.givenName }).exec();
-              const usedNosStrings = usersWithSameName.map((user: any) => user.userNo);
-              const usedNosValues = unformatNumbers(usedNosStrings);
-              userNo = formatNumber(findUniqueNumber(usedNosValues, 9999));
+              userNo = await findAvailableUsernameNumber(profile.name!.givenName);
             }
             user = new User({
               email: email,
@@ -44,16 +41,6 @@ export const initializeGoogleOAuthStrategy = () => {
               lastOnline: new Date(),
             });
             await user.save();
-            // Create a new session ID to prevent session fixation attacks
-            req.session.regenerate((err) => {
-              if (err) {
-                console.error('Error regenerating session:', err);
-                return done(err);
-              }
-              // Store the user ID in the session
-              req.session.userId = user._id;
-              return done(null, user); //ref : ChatGPT
-            });
             return done(null, user);
           }
         } catch (err: any) {
@@ -70,7 +57,7 @@ export const checkAuth = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return res.status(200).json({ message: 'Authorized' });
   } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Not authenticated' });
   }
 };
 
@@ -79,7 +66,7 @@ export const isAuthenticated = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Not authenticated' });
   }
 };
 
@@ -95,18 +82,18 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 };
 
 // Logout user
-export const logout = (req: any, res: any, next: any) => {
+export const logout = (req: any, res: any) => {
   try {
+    req.logout();
     req.session.destroy((err: any) => {
       if (err) {
-        return next(err);
+        return res.status(500).json({ message: err });
       }
       res.clearCookie('connect.sid');
       console.log('cookie should be cleared');
       res.status(200).json({ message: 'Logged out' });
     });
   } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: err });
   }
 };
