@@ -84,7 +84,7 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 // Logout user
 export const logout = (req: any, res: any) => {
   try {
-    req.logout();
+    //req.logout();
     req.session.destroy((err: any) => {
       if (err) {
         return res.status(500).json({ message: err });
