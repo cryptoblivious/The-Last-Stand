@@ -107,19 +107,53 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 //   }
 // };
 
-// Logout user v2
-export const logout = (req: any, res: any) => {
-  try {
-    //req.logout();
-    req.session.destroy((err: any) => {
-      if (err) {
-        return res.status(500).json({ message: err });
-      }
-      res.clearCookie('connect.sid');
-      console.log('cookie should be cleared');
-      res.status(200).json({ message: 'Logged out' });
-    });
-  } catch (err: any) {
-    return res.status(500).json({ message: err });
-  }
+// // Logout user v2
+// export const logoutUser = (req: any, res: any) => {
+//   try {
+//     req.logout((err: any) => {
+//       if (err) {
+//         return res.status(500).json({ message: err });
+//       }
+//       console.log('logged out');
+//     });
+
+//     req.session.destroy((err: any) => {
+//       if (err) {
+//         return res.status(500).json({ message: err });
+//       }
+//       res.clearCookie('connect.sid');
+//       console.log('cookie should be cleared');
+//       return res.status(200).json({ message: 'Logged out' });
+//     });
+//   } catch (err: any) {
+//     return res.status(500).json({ message: err });
+//   }
+// };
+
+// // Logout user v3
+// export const logoutUser = (req: any, res: any) => {
+//   try {
+//     req.session.destroy((err: any) => {
+//       if (err) {
+//         return res.status(500).json({ message: err });
+//       }
+//       res.clearCookie('connect.sid');
+//       console.log('cookie should be cleared');
+//       return res.status(200).json({ message: 'Logged out' });
+//     });
+//   } catch (err: any) {
+//     return res.status(500).json({ message: err });
+//   }
+// };
+
+// Logout user v4
+export const logoutUser = (req: any, res: any) => {
+  console.log('before', req.session);
+  req.session.destroy((err: any) => {
+    if (err) {
+      return res.status(500).json({ message: err });
+    }
+    console.log('after', req.session);
+    return res.status(200).json({ message: 'Logged out' });
+  });
 };

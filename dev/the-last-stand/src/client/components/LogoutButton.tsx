@@ -15,7 +15,7 @@ const LogoutButton = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log('Logged out', res);
-        navigate('/');
+        navigate('/login');
       });
   };
   return (
