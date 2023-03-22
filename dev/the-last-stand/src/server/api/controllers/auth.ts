@@ -17,6 +17,7 @@ export const initializeGoogleOAuthStrategy = () => {
         clientSecret: GOOGLE_CLIENT_SECRET!,
         callbackURL: `${HOST_URL}:${HOST_PORT}/auth/google/callback`,
         passReqToCallback: true,
+        prompt: 'consent',
       },
       async (req, accessToken, refreshToken, profile, done) => {
         try {
