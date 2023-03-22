@@ -5,6 +5,7 @@ import { IUser } from '../../typescript/interfaces/IUser';
 import { useState, useEffect } from 'react';
 import { getCurrentUser } from '../fetches/users';
 
+// TODO: ADD LISTENER TO USER INFO CARD TO DETECT IF USER DATA HAS CHANGED
 const UserInfoCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
