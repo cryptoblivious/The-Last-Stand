@@ -1,8 +1,7 @@
 import HeroMapCardMenu from './HeroMapCardMenu';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
-import { HOST_URL, HOST_PORT } from '../appConfig';
-import { capitalizeFirstLetter } from '../../utils/text_format';
+import { fetchHeroesNamesAndBackstories } from '../fetches/heroes';
 
 const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat';
 const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-opacity-0';
@@ -11,39 +10,44 @@ const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 co
 const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400';
 const heroesPageHeroMapCardMenuContainerStyle = 'place-self-center row-start-3';
 
-const heroImages: Record<string, string> = {
-  solana: './src/client/assets/heroes/solana/portrait.webp',
-  logan: './src/client/assets/heroes/logan/portrait.png',
-  chuck: './src/client/assets/heroes/chuck/portrait.png',
-};
-
-// variable to store the heroes data
-const heroes: IHeroMapCard[] = [];
-const backstories: Record<string, string> = {};
-
-// TODO: fetch data in a useEffect asyz function
-// fetch data and populate the heroes array and the backstories Record
-const fetchHeroesNamesAndBackstories = async () => {
-  const response = await fetch(`${HOST_URL}:${HOST_PORT}/heroes/hnabs`);
-  const heroesData = await response.json();
-  console.log(heroesData);
-  heroesData.forEach((hero: any) => {
-    backstories[hero.name] = hero.backstory;
-    heroes.push({ id: hero._id, name: capitalizeFirstLetter(hero.name), image: heroImages[hero.name] });
-  });
-};
-fetchHeroesNamesAndBackstories();
 
 const Heroes = () => {
-  const [selectedHero, setSelectedHeroName] = useState(heroes[1]);
+
+  // initialize states
+  const [heroes, setHeroes] = useState<IHeroMapCard[]>([]);
+  const [backstories, setBackstories] = useState<Record<string, string>>({});
+  const [selectedHero, setSelectedHero] = useState<IHeroMapCard | null>(null);
+
+  // fetch heroes and backstories from server on component mount
+  useEffect(() => {
+    fetchHeroesNamesAndBackstories().then(({ heroes, backstories }) => {
+      setHeroes(heroes);
+      setBackstories(backstories);
+    })
+  }, []);
+
+  // set selected hero to first hero in heroes array once heroes are fetched
+  useEffect(() => {
+    if (heroes.length > 0) {
+      setSelectedHero(heroes[1]);
+    }
+  }, [heroes]);
+
+  // return loading if heroes or backstories are not fetched
+  if (!selectedHero) {
+    return <div>Loading...</div>;
+  }
+
+  // set background image to selected hero's image 
   const selectedHeroName = selectedHero ? selectedHero.name : 'Unknown Hero';
   const selectedHeroBackstory = backstories[selectedHeroName.toLowerCase()];
   const backgroundStyle = {
     backgroundImage: `url(${selectedHero ? selectedHero.image : ''})`,
   };
 
+  // callback function for when a card is selected in the HeroMapCardMenu
   const handleCardSelected = (card: IHeroMapCard) => {
-    setSelectedHeroName(card);
+    setSelectedHero(card);
   };
 
   return (
