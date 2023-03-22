@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
 import { Client } from 'colyseus.js';
-import { Room } from 'colyseus';
-import { IServerMatch } from '../../../typescript/interfaces/IServerMatch';
 import GameEntity from '../../../server/game/GameEntity';
 import { ServerMatch } from '../../../server/rooms/schema/ServerMatch';
+import chuckIdle from '../../assets/heroes/chuck/spritesheets/Biker_idle.png'
 
 export default class ClientMatch extends Phaser.Scene {
   private client?: Client;
   private entities: Map<string, GameEntity> = new Map<string, GameEntity>();
   private players: Map<string, Phaser.GameObjects.Rectangle> = new Map<string, Phaser.GameObjects.Rectangle>();
+  private player: Phaser.GameObjects.Sprite | undefined;
   private inputHandler: Record<string, number> = {
     ' ': 0,
     w: 0,
@@ -27,9 +27,13 @@ export default class ClientMatch extends Phaser.Scene {
     super('the-last-stand');
   }
 
-  init() {}
+  init() {
+  }
 
-  preload() {}
+  preload() {
+    this.load.spritesheet('chuckIdle', chuckIdle, { frameWidth: 48, frameHeight: 48 });
+
+  }
 
   async create(data: { client: Client }) {
     const { client } = data;
@@ -42,7 +46,7 @@ export default class ClientMatch extends Phaser.Scene {
     const room = await this.client.joinOrCreate<ServerMatch>('match_orchestrator');
 
     room.onMessage('res_action', (message) => {
-      console.log(message);
+      // console.log(message);
     });
 
     this.input.keyboard.on('keydown', (event: KeyboardEvent) => {
@@ -50,14 +54,26 @@ export default class ClientMatch extends Phaser.Scene {
       if (event.key in this.inputHandler) {
         room.send('req_action', this.inputHandler[event.key]);
       }
-      console.log(event.key);
+      // console.log(event.key);
     });
 
     // // listen to state changes
     room.onStateChange((state: ServerMatch) => {
       this.entities = state.entities;
-      console.log(state);
+      // console.log(state);
     });
+
+    this.player = this.add.sprite(100, 100, 'chuckIdle');
+    this.anims.create({
+      key: 'chuckIdle',
+      frames: this.anims.generateFrameNumbers('chuckIdle', { start: 0, end: 3 }),
+      frameRate: 8,
+      repeat: -1
+    });
+    this.player.setScale(2);
+    this.player.play('chuckIdle');
+
+
   }
 
   render_players(entities: Map<string, GameEntity>) {
@@ -84,6 +100,6 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   update() {
-    this.render_players(this.entities);
+    // this.render_players(this.entities);
   }
 }
