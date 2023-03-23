@@ -6,24 +6,8 @@ type TUserConfig = UserConfigExport & {
   clearCache: boolean;
 };
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  clearCache: true,
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        assetFileNames: 'assets/[name][extname]', // output all assets in the assets folder
-      },
-    },
-  },
-  optimizeDeps: {
-    exclude: ['phaser'], // exclude phaser from being optimized by vite
-  },
-  resolve: {
-    alias: {
-      '@': '/src/client', // create an alias for the client-side code directory
-    },
-  },
+  clearCache: true, //ref ChatGPT
 } as TUserConfig);
