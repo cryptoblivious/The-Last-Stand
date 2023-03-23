@@ -6,8 +6,14 @@ type TUserConfig = UserConfigExport & {
   clearCache: boolean;
 };
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   clearCache: true, //ref ChatGPT
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      input: 'src/client/index.ts',
+    },
+  },
 } as TUserConfig);
