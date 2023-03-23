@@ -14,7 +14,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: './src/client/index.html',
+        main: './src/index.html',
       },
       output: {
         assetFileNames: 'assets/[name].[ext]', // output all assets in the assets folder
