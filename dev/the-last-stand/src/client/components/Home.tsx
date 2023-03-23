@@ -4,11 +4,17 @@ import play from '../assets/wallpapers/616c2d7aeec658a610945fde5d997459.jpg';
 import maps from '../assets/wallpapers/2282b8ab3e009bcddbb32cbff485aa6c.jpg';
 import heroes from '../assets/wallpapers/94f0594713f945197564bc0ef499774f.jpg';
 import stats from '../assets/wallpapers/57da00c688947107588d5bfadd77540d.jpg';
+import chuck from '../assets/wallpapers/Biker-idle.jpg';
 
 const Home = () => {
   return (
     <>
       <SocialOverlay />
+      <img
+        src={chuck}
+        alt='Chuck Norris'
+        className='absolute top-0 left-0 w-full h-full object-cover'
+      />
       <main className='bg-black text-white min-h-screen'>
         <div className='flex items-center gap-5 p-5 justify-evenly h-screen'>
           <HomeSection
