@@ -115,16 +115,22 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.player.setScale(2);
     // this.player.play('chuckRun');
-    const anims = [ 'chuckIdle', 'chuckRun']
+    const anims = [ 'chuckIdle', 'chuckRun', 'chuckAttack1', 'chuckAttack2',  'chuckAttack3' ,'chuckJump', 'chuckHurt', 'chuckDeath', 'chuckClimb', 'chuckDoublejump', 'chuckKick', 'chuckRunAttack']
     const duration = 2000;
     let currentIndex = 0
+    let rounds = 0;
     this.time.addEvent({
       delay: duration,
       loop: true,
       callback: () => {
         this.player?.play(anims[currentIndex]);
         currentIndex = (currentIndex + 1) % anims.length;
+        rounds++;
+        if ( rounds % 2) {
+          this.player?.setFlipX(!this.player?.flipX);
+        }
       } 
+      
     });
   }
 
