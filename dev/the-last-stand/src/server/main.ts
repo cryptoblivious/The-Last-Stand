@@ -46,7 +46,7 @@ const { APP_MODE, MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT, HOST_PORT 
 const store = new MongoStore({
   mongoUrl: MONGO_URI,
   collectionName: 'sessions',
-  ttl: 60 * 15, // 15 minutes
+  ttl: 60 * 3000000, // 3000 minutes
 });
 console.log('✅ Session store created.');
 
