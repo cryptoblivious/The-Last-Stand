@@ -29,17 +29,12 @@ export default class ClientMatch extends Phaser.Scene {
 
   init() {}
 
-
   preload() {
     //load images from assets folder
-    this.load.spritesheet('chuck-idle', chuckIdle, { frameWidth: 48, frameHeight: 48 });
-
-    
+    //this.load.spritesheet('chuck-idle', chuckIdle, { frameWidth: 48, frameHeight: 48 });
   }
 
-
   async create(data: { client: Client }) {
-
     const { client } = data;
     this.client = client;
     if (!this.client) {
@@ -67,45 +62,44 @@ export default class ClientMatch extends Phaser.Scene {
       // console.log(state);
     });
 
-    this.player = this.physics.add.sprite(100, 450, 'chuck-idle');
-    this.player.setCollideWorldBounds(true);
-    this.player.setBounce(0.2);
+    // this.player = this.physics.add.sprite(100, 450, 'chuck-idle');
+    // this.player.setCollideWorldBounds(true);
+    // this.player.setBounce(0.2);
 
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('chuck-idle', { start: 0, end: 3 }),
-      frameRate: 8,
-      repeat: -1,
-    });
+    // this.anims.create({
+    //   key: 'idle',
+    //   frames: this.anims.generateFrameNumbers('chuck-idle', { start: 0, end: 3 }),
+    //   frameRate: 8,
+    //   repeat: -1,
+    // });
 
-    this.player.anims.play('idle', true);
-    
+    // this.player.anims.play('idle', true);
   }
 
-  // render_players(entities: Map<string, GameEntity>) {
-  //   const activeEntitiesNames = Array.from(entities.keys());
+  render_players(entities: Map<string, GameEntity>) {
+    const activeEntitiesNames = Array.from(entities.keys());
 
-  //   const rectToRemove = Array.from(this.players.values()).filter((rect) => !activeEntitiesNames.includes(rect.name));
-  //   for (const rect of rectToRemove) {
-  //     rect.destroy();
-  //     this.players.delete(rect.name);
-  //   }
-  //   const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00];
+    const rectToRemove = Array.from(this.players.values()).filter((rect) => !activeEntitiesNames.includes(rect.name));
+    for (const rect of rectToRemove) {
+      rect.destroy();
+      this.players.delete(rect.name);
+    }
+    const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00];
 
-  //   for (const entity of entities.values()) {
-  //     const existingRect = this.players.get(entity.name);
+    for (const entity of entities.values()) {
+      const existingRect = this.players.get(entity.name);
 
-  //     if (!existingRect) {
-  //       const rect = this.add.rectangle(entity.position.x, entity.position.y, entity.size.width, entity.size.height, colors[entity.id]);
-  //       rect.name = entity.name;
-  //       this.players.set(entity.name, rect);
-  //     } else {
-  //       existingRect.setPosition(entity.position.x, entity.position.y);
-  //     }
-  //   }
-  // }
+      if (!existingRect) {
+        const rect = this.add.rectangle(entity.position.x, entity.position.y, entity.size.width, entity.size.height, colors[entity.id]);
+        rect.name = entity.name;
+        this.players.set(entity.name, rect);
+      } else {
+        existingRect.setPosition(entity.position.x, entity.position.y);
+      }
+    }
+  }
 
   update() {
-    // this.render_players(this.entities);
+    this.render_players(this.entities);
   }
 }
