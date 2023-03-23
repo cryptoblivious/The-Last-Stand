@@ -12,11 +12,21 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    assetsDir: 'assets',
     rollupOptions: {
       input: {
         main: './src/client/index.html',
       },
+      output: {
+        assetFileNames: 'assets/[name].[ext]', // output all assets in the assets folder
+      },
+    },
+  },
+  optimizeDeps: {
+    exclude: ['phaser'], // exclude phaser from being optimized by vite
+  },
+  resolve: {
+    alias: {
+      '@': '/src/client', // create an alias for the client-side code directory
     },
   },
 } as TUserConfig);
