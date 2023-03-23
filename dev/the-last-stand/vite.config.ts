@@ -14,7 +14,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        assetFileNames: 'assets/[path][name].[ext]', // output all assets in the assets folder
+        assetFileNames: 'assets/[dirname]/[name].[ext]', // output all assets in their respective subfolders
       },
     },
   },
