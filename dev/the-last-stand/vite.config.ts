@@ -13,11 +13,8 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        main: './src/client/main.tsx',
-      },
       output: {
-        assetFileNames: 'assets/[name].[ext]', // output all assets in the assets folder
+        assetFileNames: 'assets/[path][name].[ext]', // output all assets in the assets folder
       },
     },
   },
