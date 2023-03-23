@@ -13,7 +13,7 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: 'src/client/index.ts',
+      input: 'src/client/main.tsx',
     },
   },
 } as TUserConfig);
