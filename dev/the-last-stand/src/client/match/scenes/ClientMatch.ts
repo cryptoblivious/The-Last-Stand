@@ -3,12 +3,15 @@ import { Client } from 'colyseus.js';
 import GameEntity from '../../../server/game/GameEntity';
 import { ServerMatch } from '../../../server/rooms/schema/ServerMatch';
 import chuckIdle from '../../assets/heroes/chuck/spritesheets/Biker_idle.png'
+import spriteSheetsLoader from './spritesheetPaths';
+import { capitalizeFirstLetter } from '../../../utils/text_format';
 
 export default class ClientMatch extends Phaser.Scene {
   private client?: Client;
   private entities: Map<string, GameEntity> = new Map<string, GameEntity>();
   private players: Map<string, Phaser.GameObjects.Rectangle> = new Map<string, Phaser.GameObjects.Rectangle>();
   private player: Phaser.GameObjects.Sprite | undefined;
+  private spriteSheetsLoader = spriteSheetsLoader;
   private inputHandler: Record<string, number> = {
     ' ': 0,
     w: 0,
@@ -31,8 +34,25 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   preload() {
-    this.load.spritesheet('chuckIdle', chuckIdle, { frameWidth: 48, frameHeight: 48 });
+    // this.spriteSheetsLoader.forEach((hero) => {
+    //   const { name, paths } = hero;
+    //   Object.entries(paths).forEach(([key, value]) => {
+    //     const spriteSheetName = `${name}${key}`;
+    //     this.load.spritesheet(spriteSheetName, value, { frameWidth: 48, frameHeight: 48 });
+    //     console.log(spriteSheetName);
+    //   });
+    // });
+    // this.load.spritesheet('chuckIdle', spriteSheetsLoader.find(hero => hero.name === 'chuck')?.paths.idleRight, { frameWidth: 48, frameHeight: 48 });
 
+    this.spriteSheetsLoader.forEach((spritePaths) => {
+      // console.log(spritePaths);
+      const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
+      spriteSheetPaths.forEach((key) => {
+        const spriteSheetName = `${spritePaths.heroName}${ capitalizeFirstLetter(key.key)}`;
+        this.load.spritesheet(spriteSheetName, key.path, { frameWidth: key.frameWidth, frameHeight: key.frameHeight });
+        console.log(spriteSheetName);
+      })
+    });
   }
 
   async create(data: { client: Client }) {
@@ -63,15 +83,37 @@ export default class ClientMatch extends Phaser.Scene {
       // console.log(state);
     });
 
-    this.player = this.add.sprite(100, 100, 'chuckIdle');
-    this.anims.create({
-      key: 'chuckIdle',
-      frames: this.anims.generateFrameNumbers('chuckIdle', { start: 0, end: 3 }),
-      frameRate: 8,
-      repeat: -1
+    this.spriteSheetsLoader.forEach((spritePaths) => {
+      const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
+      spriteSheetPaths.forEach((key) => {
+        const animKey = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
+        this.anims.create({
+          key: animKey,
+          frames: this.anims.generateFrameNumbers(animKey, { start: key.startFrame, end: key.endFrame }),
+          frameRate: key.frameRate,
+          repeat: key.repeat,
+        });
+        // console.log(animKey);
+      })
     });
+
+    this.player = this.add.sprite(100, 100, 'chuckIdleRight');
+
+    // this.anims.create({
+    //   key: 'chuckIdleRight',
+    //   frames: this.anims.generateFrameNumbers('chuckidleRight', { start: 0, end: 3 }),
+    //   frameRate: 8,
+    //   repeat: -1
+    // });
+    // this.anims.create({
+    //   key: 'chuckRunRight',
+    //   frames: this.anims.generateFrameNumbers('chuckrunRight', { start: 0, end: 3 }),
+    //   frameRate: 12,
+    //   repeat: -1
+    // });
+
     this.player.setScale(2);
-    this.player.play('chuckIdle');
+    this.player.play('chuckRunRight');
 
 
   }
