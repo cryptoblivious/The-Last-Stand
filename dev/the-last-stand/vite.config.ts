@@ -8,12 +8,15 @@ type TUserConfig = UserConfigExport & {
 
 export default defineConfig({
   plugins: [react()],
-  clearCache: true, //ref ChatGPT
+  clearCache: true,
   build: {
     outDir: 'dist',
+    emptyOutDir: true,
     assetsDir: 'assets',
     rollupOptions: {
-      input: 'src/client/main.tsx',
+      input: {
+        main: './src/client/index.html',
+      },
     },
   },
 } as TUserConfig);
