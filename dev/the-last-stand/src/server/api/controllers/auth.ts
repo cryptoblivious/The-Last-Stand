@@ -133,7 +133,7 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 export const logoutUser = (req: any, res: any) => {
   try {
     res.clearCookie('connect.sid');
-    res.cookie('cookieName', '', { expires: new Date(0) });
+    res.cookie('connect.sid', '', { expires: new Date(0) });
     console.log('cookie should be cleared');
     return res.status(200).json({ message: 'Logged out' });
   } catch (err: any) {
