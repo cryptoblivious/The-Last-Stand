@@ -50,7 +50,7 @@ export default class ClientMatch extends Phaser.Scene {
       spriteSheetPaths.forEach((key) => {
         const spriteSheetName = `${spritePaths.heroName}${ capitalizeFirstLetter(key.key)}`;
         this.load.spritesheet(spriteSheetName, key.path, { frameWidth: key.frameWidth, frameHeight: key.frameHeight });
-        console.log(spriteSheetName);
+        // console.log(spriteSheetName);
       })
     });
   }
@@ -96,8 +96,9 @@ export default class ClientMatch extends Phaser.Scene {
         // console.log(animKey);
       })
     });
+    
 
-    this.player = this.add.sprite(100, 100, 'chuckIdleRight');
+    this.player = this.add.sprite(100, 100, 'chuckIdle');
 
     // this.anims.create({
     //   key: 'chuckIdleRight',
@@ -113,9 +114,18 @@ export default class ClientMatch extends Phaser.Scene {
     // });
 
     this.player.setScale(2);
-    this.player.play('chuckRunRight');
-
-
+    // this.player.play('chuckRun');
+    const anims = [ 'chuckIdle', 'chuckRun']
+    const duration = 2000;
+    let currentIndex = 0
+    this.time.addEvent({
+      delay: duration,
+      loop: true,
+      callback: () => {
+        this.player?.play(anims[currentIndex]);
+        currentIndex = (currentIndex + 1) % anims.length;
+      } 
+    });
   }
 
   render_players(entities: Map<string, GameEntity>) {

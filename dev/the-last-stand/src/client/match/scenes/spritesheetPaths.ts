@@ -1,15 +1,14 @@
 import { IHeroesSpritePaths } from '../../../typescript/interfaces/IHeroesSpritesPaths';
-import chuckIdleRightPath from '../../assets/heroes/chuck/spritesheets/Biker_idle.png'
-import chuckRunRightPath from '../../assets/heroes/chuck/spritesheets/Biker_run.png'
-// Want to create a Record that will hold the paths to the spritesheets:
+import chuckIdlePath from '../../assets/heroes/chuck/spritesheets/chuck_idle.png'
+import chuckRunPath from '../../assets/heroes/chuck/spritesheets/chuck_run.png'
 
 const spriteSheetsLoader: IHeroesSpritePaths[] = [
     {
         heroName: 'chuck',
         spriteSheets: [
             {
-                key: 'idleRight',
-                path: chuckIdleRightPath,
+                key: 'idle',
+                path: chuckIdlePath,
                 frameWidth: 48,
                 frameHeight: 48,
                 startFrame: 0,
@@ -18,8 +17,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
                 repeat: -1,
             },
             {
-                key: 'runRight',
-                path: chuckRunRightPath,
+                key: 'run',
+                path: chuckRunPath,
                 frameWidth: 48,
                 frameHeight: 48,
                 startFrame: 0,

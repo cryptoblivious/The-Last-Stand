@@ -1,7 +1,5 @@
 
 
-
-
 export default interface ISpriteAnimationConfig {
     key : string;
     path: string;
