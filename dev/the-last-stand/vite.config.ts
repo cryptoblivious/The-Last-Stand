@@ -6,7 +6,7 @@ type TUserConfig = UserConfigExport & {
   clearCache: boolean;
 };
 
-const BASE_DIR = 'dev/the-last-stand';
+const BASE_DIR = '/dev/the-last-stand';
 export default defineConfig({
   base: BASE_DIR,
   plugins: [react()],
