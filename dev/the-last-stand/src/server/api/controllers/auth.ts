@@ -17,7 +17,6 @@ export const initializeGoogleOAuthStrategy = () => {
         clientSecret: GOOGLE_CLIENT_SECRET!,
         callbackURL: `${HOST_URL}:${HOST_PORT}/auth/google/callback`,
         passReqToCallback: true,
-        prompt: 'consent',
       },
       async (req, accessToken, refreshToken, profile, done) => {
         try {
@@ -129,17 +128,17 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 //   }
 // };
 
-// Logout user v3
-export const logoutUser = (req: any, res: any) => {
-  try {
-    res.clearCookie('connect.sid');
-    res.cookie('connect.sid', '', { expires: new Date(0) });
-    console.log('cookie should be cleared');
-    return res.status(200).json({ message: 'Logged out' });
-  } catch (err: any) {
-    return res.status(500).json({ message: err });
-  }
-};
+// // Logout user v3 DOING SHIT FUCKALL
+// export const logoutUser = (req: any, res: any) => {
+//   try {
+//     res.clearCookie('connect.sid');
+//     res.cookie('connect.sid', '', { expires: new Date(0) });
+//     console.log('cookie should be cleared');
+//     return res.status(200).json({ message: 'Logged out' });
+//   } catch (err: any) {
+//     return res.status(500).json({ message: err });
+//   }
+// };
 
 // // Logout user v4
 // export const logoutUser = (req: any, res: any) => {
@@ -169,3 +168,13 @@ export const logoutUser = (req: any, res: any) => {
 //     });
 //   });
 // };
+
+// Logout user v6
+export const logoutUser = (req: any, res: any) => {
+  req.logout((err: any) => {
+    if (err) {
+      return res.status(500).json({ message: err });
+    }
+    return res.status(200).json({ message: 'Logged out' });
+  });
+};

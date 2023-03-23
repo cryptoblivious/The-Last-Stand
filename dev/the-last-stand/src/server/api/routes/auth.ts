@@ -19,6 +19,6 @@ authRouter.get(
 
 authRouter.get('/check', checkAuth);
 
-authRouter.post('/logout', logoutUser);
+authRouter.delete('/logout', logoutUser);
 
 export default authRouter;
