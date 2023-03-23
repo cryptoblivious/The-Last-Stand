@@ -6,13 +6,8 @@ type TUserConfig = UserConfigExport & {
   clearCache: boolean;
 };
 
-const BASE_DIR = '/dev/the-last-stand';
+// https://vitejs.dev/config/
 export default defineConfig({
-  base: BASE_DIR,
   plugins: [react()],
   clearCache: true, //ref ChatGPT
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets', // Add this line to specify the assets folder
-  },
 } as TUserConfig);
