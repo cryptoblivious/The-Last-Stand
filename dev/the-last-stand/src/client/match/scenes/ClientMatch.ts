@@ -4,7 +4,7 @@ import GameEntity from '../../../server/game/GameEntity';
 import { ServerMatch } from '../../../server/rooms/schema/ServerMatch';
 import spriteSheetsLoader from './spritesheetPaths';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
-import { stats } from '../../../../../tutorials/mern/frontend/src/common/constant';
+
 
 export default class ClientMatch extends Phaser.Scene {
   private client?: Client;
@@ -16,6 +16,7 @@ export default class ClientMatch extends Phaser.Scene {
   private spriteSheetsLoader = spriteSheetsLoader;
   
 
+  // TOUTES LES KEYS 
   private keyA?: Phaser.Input.Keyboard.Key
   private keyW?: Phaser.Input.Keyboard.Key
   private keyS?: Phaser.Input.Keyboard.Key
@@ -51,7 +52,7 @@ export default class ClientMatch extends Phaser.Scene {
 
   preload() {
    
-    // Create the sprite sheets
+    // LOAD DES SPRITESHEETS AVEC LE SPRITESHEETLOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
       // console.log(spritePaths);
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
@@ -62,7 +63,6 @@ export default class ClientMatch extends Phaser.Scene {
       })
     });
   }
-
 
   async create(data: { client: Client }) {
     const { client } = data;
@@ -78,6 +78,7 @@ export default class ClientMatch extends Phaser.Scene {
       // console.log(message);
     });
 
+    //  TOUTES LES KEYS DES MOUVEMENTS -> LAID A MORT A REFAIRE
     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -105,15 +106,16 @@ export default class ClientMatch extends Phaser.Scene {
       this.entities = state.entities;
       // console.log(state);
     });
-    this.room.onMessage('res_action', (message) => {
+    this.room.onMessage('res_action', (message : {id : string, velocity : number}) => {
+      // REPONSE DU SERVEUR EN CE MOMENT ON RECOIT LA VELOCITY ET LE ID DU JOUEUR
       console.log(message.id, message.velocity);
       this.playerSprites.get(message.id)?.setVelocityX(message.velocity);
       this.room!.state.entities.get(message.id).position.x = this.playerSprites.get(message.id)?.x;
       // this.player?.setVelocityX(message.velocity);
     });
 
-    //  create the animations 
-    this.spriteSheetsLoader.forEach((spritePaths) => {
+    //  CREATION DES ANIMATIONS AVEC LES SPRITESHEETS DU SPRITESHEET LOADER 
+    this.spriteSheetsLoader.forEach((spritePaths ) => {
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
       spriteSheetPaths.forEach((key) => {
         const animKey = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
@@ -128,28 +130,13 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
 
-
+    // AJOUT DU PETIT CHUCK DOUG TOUT SEUL COTE CLIENT SEULEMENT
     // this.player = this.physics.add.sprite(100, 450, 'chuckIdle');
     // this.player.setCollideWorldBounds(true);
     // this.player.setBounce(0.2);
-
-    // this.anims.create({
-    //   key: 'chuckIdleRight',
-    //   frames: this.anims.generateFrameNumbers('chuckidleRight', { start: 0, end: 3 }),
-    //   frameRate: 8,
-    //   repeat: -1
-    // });
-    // this.anims.create({
-    //   key: 'chuckRunRight',
-    //   frames: this.anims.generateFrameNumbers('chuckrunRight', { start: 0, end: 3 }),
-    //   frameRate: 12,
-    //   repeat: -1
-    // });
-
-
     // this.player.setScale(2);
 
-
+    //  UN LOOP DES ANIMATIONS QUI EXISTENT POUR CHUCK DOUG
     // loop throught the animations
     // const anims = [ 'chuckIdle', 'chuckRun', 'chuckAttack1', 'chuckAttack2',  'chuckAttack3' ,'chuckJump', 'chuckHurt', 'chuckDeath', 'chuckClimb', 'chuckDoublejump', 'chuckKick', 'chuckRunAttack']
     // const duration = 2000;
@@ -170,6 +157,7 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   // render sprites for each player in the state using the playerSprits map
+  //  TODO -> AMELIORER LA LOGIQUE C EST DE LA GROSSE MARDE
   renderPlayerSprites() {
     const activeEntitiesNames = Array.from(this.entities.keys());
 
@@ -194,8 +182,6 @@ export default class ClientMatch extends Phaser.Scene {
       }
     }
   }
-
-  
 
   render_players(entities: Map<string, GameEntity>) {
     const activeEntitiesNames = Array.from(entities.keys());
@@ -223,11 +209,14 @@ export default class ClientMatch extends Phaser.Scene {
   update() {
   //   // this.render_players(this.entities);
     this.renderPlayerSprites();
-    
 
+    // le key down qui envoie l action pour le set velocity 
     if (this.keyD?.isDown) {
       this.room?.send('req_action', 3);
     }
+
+
+    // LOGIQUE POUR LES ANIMATIONS DE CHUCKDOUGLAS
 
   //   if (this.player) {
   //     let isAttacking = false;

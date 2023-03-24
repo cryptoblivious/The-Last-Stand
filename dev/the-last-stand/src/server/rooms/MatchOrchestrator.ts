@@ -37,12 +37,7 @@ export class MatchOrchestrator extends Room<ServerMatch> {
       this.broadcast('res_action', { id: client.sessionId, velocity: velocity }, {
         //except: client
       });
-    });
-
-    this.onMessage('move', (client, sprite) => {
-      sprite.setVelocityX(-160);
-    });
-
+    })
   }
 
   // this.onMessage("action", (client, message) => {
