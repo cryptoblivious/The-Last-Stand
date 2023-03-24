@@ -4,6 +4,7 @@ import GameEntity from '../../../server/game/GameEntity';
 import { ServerMatch } from '../../../server/rooms/schema/ServerMatch';
 import spriteSheetsLoader from './spritesheetPaths';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
+import { stats } from '../../../../../tutorials/mern/frontend/src/common/constant';
 
 export default class ClientMatch extends Phaser.Scene {
   private client?: Client;
@@ -106,8 +107,9 @@ export default class ClientMatch extends Phaser.Scene {
     });
     this.room.onMessage('res_action', (message) => {
       console.log(message.id, message.velocity);
-      // this.playerSprites.get(message.id)?.setVelocityX(message.velocity);
-      this.player?.setVelocityX(message.velocity);
+      this.playerSprites.get(message.id)?.setVelocityX(message.velocity);
+      this.room!.state.entities.get(message.id).position.x = this.playerSprites.get(message.id)?.x;
+      // this.player?.setVelocityX(message.velocity);
     });
 
     //  create the animations 
@@ -127,9 +129,9 @@ export default class ClientMatch extends Phaser.Scene {
 
 
 
-    this.player = this.physics.add.sprite(100, 450, 'chuckIdle');
-    this.player.setCollideWorldBounds(true);
-    this.player.setBounce(0.2);
+    // this.player = this.physics.add.sprite(100, 450, 'chuckIdle');
+    // this.player.setCollideWorldBounds(true);
+    // this.player.setBounce(0.2);
 
     // this.anims.create({
     //   key: 'chuckIdleRight',
@@ -220,7 +222,7 @@ export default class ClientMatch extends Phaser.Scene {
 
   update() {
   //   // this.render_players(this.entities);
-  //   this.renderPlayerSprites();
+    this.renderPlayerSprites();
     
 
     if (this.keyD?.isDown) {
