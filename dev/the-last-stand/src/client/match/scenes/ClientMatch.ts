@@ -62,6 +62,8 @@ export default class ClientMatch extends Phaser.Scene {
         // console.log(spriteSheetName);
       })
     });
+    //load images from assets folder
+    //this.load.spritesheet('chuck-idle', chuckIdle, { frameWidth: 48, frameHeight: 48 });
   }
 
   async create(data: { client: Client }) {

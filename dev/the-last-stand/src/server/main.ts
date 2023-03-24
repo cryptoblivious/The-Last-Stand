@@ -6,6 +6,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import session from 'express-session';
+import { Session, SessionData } from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 
@@ -26,6 +27,12 @@ import authRouter from './api/routes/auth';
 import usersRouter from './api/routes/users';
 import heroesRouter from './api/routes/heroes';
 
+mongoose.set('strictQuery', false);
+dotenv.config();
+
+const { APP_MODE, MONGO_URI, SESSION_SECRET, HOST_PORT } = process.env as Record<string, string>;
+
+// Console eye candy
 console.log('    ___      _');
 console.log('   / __\\___ | |_   _ ___  ___ _   _ ___');
 console.log('  / /  / _ \\| | | | / __|/ _ \\ | | / __|');
@@ -38,17 +45,7 @@ console.log('--------------------------------------------------');
 console.log('Starter file created by Andrzej Wisniowski. Find my other projects at https://github.com/cryptoblivious');
 console.log('--------------------------------------------------');
 
-mongoose.set('strictQuery', false);
-dotenv.config();
-
-const { APP_MODE, MONGO_URI, SESSION_SECRET, CLIENT_URL, CLIENT_PORT, HOST_PORT } = process.env as Record<string, string>;
-
-const store = new MongoStore({
-  mongoUrl: MONGO_URI,
-  collectionName: 'sessions',
-  ttl: 60 * 3000000, // 3000 minutes
-});
-console.log('✅ Session store created.');
+// Options
 
 // Load SSL certificates and private keys if in production mode
 let sslOptions: any = {};
@@ -61,11 +58,32 @@ if (APP_MODE === 'prod') {
   console.log('✅ SSL certificates loaded.');
 }
 
+const whitelist = ['https://tls.woodchuckgames.com', 'http://localhost:5173'];
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}; // REF : ChatGPT
+console.log('✅ Options set.');
+
+const mongoStore = new MongoStore({
+  mongoUrl: MONGO_URI,
+  collectionName: 'sessions',
+  ttl: 60 * 300000, // 300000 minutes
+  touchAfter: 60 * 15, // 15 minutes,
+});
+console.log('✅ Session store created.');
+
 // Create an express app
 const app = express();
-app.use(express.json());
 
 console.log('✅ Express app created.');
+
+app.use(express.json());
 
 // Define routes or middleware for your express app here, if any
 
@@ -81,6 +99,26 @@ if (APP_MODE === 'prod') {
   console.log('✅ Redirect to https enabled.');
 }
 
+app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+app.use(cors(corsOptions));
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: mongoStore,
+    cookie: {
+      maxAge: 1000 * 60 * 15, // 15 minutes
+      secure: APP_MODE === 'prod' ? true : false,
+      sameSite: 'strict',
+    },
+    rolling: true,
+  })
+);
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -93,35 +131,21 @@ passport.deserializeUser((id, done) => {
 
 initializeGoogleOAuthStrategy();
 
-const whitelist = ['https://tls.woodchuckgames.com', 'http://localhost:5173'];
-const corsOptions = {
-  origin: function (origin: any, callback: any) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-}; // REF : ChatGPT
-app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
-  res.header('Access-Control-Allow-Credentials', 'true');
+// Add middleware to update the session timestamp in order to keep the serverside session alive
+app.use(function (req, res, next) {
+  interface ISession extends Session, SessionData {
+    lastAccess: Date;
+  }
+  const reqSession: ISession = req.session as ISession;
+  // Update the session timestamp
+  reqSession.lastAccess = new Date();
+
+  // Call the next middleware function in the chain
   next();
-});
-app.use(cors(corsOptions));
-app.use(
-  session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      maxAge: 1000 * 60 * 15, // 15 minutes
-      secure: APP_MODE === 'prod' ? true : false,
-    },
-  })
-);
+}); // REF : ChatGPT
+
 app.use(passport.session());
-app.use(passport.authenticate('session'));
+//app.use(passport.authenticate('session'));
 console.log('✅ Middleware defined.');
 
 // Hello World route

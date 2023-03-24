@@ -9,11 +9,13 @@ const LogoutButton = () => {
     const formData = new FormData();
 
     fetch(`${HOST_URL}:${HOST_PORT}/auth/logout`, {
-      method: 'POST',
+      method: 'DELETE',
       body: formData,
+      credentials: 'include',
     })
       .then((res) => res.json())
-      .then(() => {
+      .then((res) => {
+        console.log('Logged out', res);
         navigate('/login');
       });
   };

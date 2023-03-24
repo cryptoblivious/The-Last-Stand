@@ -24,7 +24,7 @@ export default class FirstGame extends Phaser.Scene {
         this.load.image('ground', 'assets/platform.png')
 
         // loading the spritesheet for the dude dont use add image
-        this.load.spritesheet('dude', 'assets/dude.png' , 
+        this.load.spritesheet('dude', 'assets/Biker_idle.png' , 
         { frameWidth: 32, frameHeight: 48 })
 	}
 

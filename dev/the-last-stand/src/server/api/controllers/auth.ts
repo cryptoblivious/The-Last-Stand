@@ -17,7 +17,6 @@ export const initializeGoogleOAuthStrategy = () => {
         clientSecret: GOOGLE_CLIENT_SECRET!,
         callbackURL: `${HOST_URL}:${HOST_PORT}/auth/google/callback`,
         passReqToCallback: true,
-        prompt: 'consent',
       },
       async (req, accessToken, refreshToken, profile, done) => {
         try {
@@ -82,19 +81,100 @@ export const isAdmin = async (req: any, res: any, next: any) => {
   }
 };
 
-// Logout user
-export const logout = (req: any, res: any) => {
-  try {
-    //req.logout();
-    req.session.destroy((err: any) => {
-      if (err) {
-        return res.status(500).json({ message: err });
-      }
-      res.clearCookie('connect.sid');
-      console.log('cookie should be cleared');
-      res.status(200).json({ message: 'Logged out' });
-    });
-  } catch (err: any) {
-    return res.status(500).json({ message: err });
-  }
+// // Logout user v1 CRAP
+// export const logoutUser = (req: any, res: any, next: any) => {
+//   try {
+//     req.logout((err: any) => {
+//       if (err) {
+//         return next(err);
+//       }
+//       console.log('logged out');
+//       res.status(200).json({ message: 'Logged out' });
+//     });
+//     req.session.destroy((err: any) => {
+//       if (err) {
+//         console.log('error destroying session: ', err);
+//         return res.status(500).json({ message: err || 'Something went wrong with session destruction' });
+//       }
+//       res.clearCookie();
+//       console.log('cookie should be cleared');
+//       res.status(200).json({ message: 'Logged out' });
+//     });
+//   } catch (err: any) {
+//     console.error('error logging out: ', err);
+//     return res.status(500).json({ message: err || 'Something went wrong' });
+//   }
+// };
+
+// // Logout user v2 NOT DOING ANYTHING
+// export const logoutUser = (req: any, res: any) => {
+//   try {
+//     req.logout((err: any) => {
+//       if (err) {
+//         return res.status(500).json({ message: err });
+//       }
+//       console.log('logged out');
+//     });
+//     req.session.destroy((err: any) => {
+//       if (err) {
+//         return res.status(500).json({ message: err });
+//       }
+//       res.clearCookie('connect.sid');
+//       console.log('cookie should be cleared');
+//       return res.status(200).json({ message: 'Logged out' });
+//     });
+//   } catch (err: any) {
+//     return res.status(500).json({ message: err });
+//   }
+// };
+
+// // Logout user v3 DOING SHIT FUCKALL
+// export const logoutUser = (req: any, res: any) => {
+//   try {
+//     res.clearCookie('connect.sid');
+//     res.cookie('connect.sid', '', { expires: new Date(0) });
+//     console.log('cookie should be cleared');
+//     return res.status(200).json({ message: 'Logged out' });
+//   } catch (err: any) {
+//     return res.status(500).json({ message: err });
+//   }
+// };
+
+// // Logout user v4
+// export const logoutUser = (req: any, res: any) => {
+//   console.log('before', req.session);
+//   console.log('session id1', req.session.id);
+//   console.log('session id2', req.sessionID);
+//   req.session.destroy((err: any) => {
+//     if (err) {
+//       return res.status(500).json({ message: err });
+//     }
+//     console.log('after', req.session);
+//     return res.status(200).json({ message: 'Logged out' });
+//   });
+// };
+
+// // Logout user v5
+// export const logoutUser = (req: any, res: any) => {
+//   req.session.regenerate(function (err) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     req.session.destroy(function (err) {
+//       if (err) {
+//         console.log(err);
+//       }
+//       res.redirect('/');
+//     });
+//   });
+// };
+
+// Logout user v6
+export const logoutUser = (req: any, res: any) => {
+  req.logout((err: any) => {
+    if (err) {
+      return res.status(500).json({ message: err });
+    }
+    return res.status(200).json({ message: 'Logged out' });
+  });
 };
