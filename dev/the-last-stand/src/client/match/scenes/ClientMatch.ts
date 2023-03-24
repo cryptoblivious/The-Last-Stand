@@ -1,16 +1,16 @@
 import Phaser from 'phaser';
-import { Client } from 'colyseus.js';
+import { Client , Room } from 'colyseus.js';
 import GameEntity from '../../../server/game/GameEntity';
 import { ServerMatch } from '../../../server/rooms/schema/ServerMatch';
 import spriteSheetsLoader from './spritesheetPaths';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
-import playerModel from '../../../../../tutorials/mern/backend/models/player';
 
 export default class ClientMatch extends Phaser.Scene {
   private client?: Client;
   private entities: Map<string, GameEntity> = new Map<string, GameEntity>();
   private players: Map<string, Phaser.GameObjects.Rectangle> = new Map<string, Phaser.GameObjects.Rectangle>();
-  private playerSprites: Map<string, Phaser.GameObjects.Sprite> = new Map<string, Phaser.GameObjects.Sprite>();
+  private playerSprites: Map<string, Phaser.Physics.Arcade.Sprite> = new Map<string, Phaser.Physics.Arcade.Sprite>();
+  private room : Room | undefined;
   private player: any
   private spriteSheetsLoader = spriteSheetsLoader;
   
@@ -71,9 +71,9 @@ export default class ClientMatch extends Phaser.Scene {
     }
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
-    const room = await this.client.joinOrCreate<ServerMatch>('match_orchestrator');
+    this.room = await this.client.joinOrCreate<ServerMatch>('match_orchestrator');
 
-    room.onMessage('res_action', (message) => {
+    this.room.onMessage('res_action', (message) => {
       // console.log(message);
     });
 
@@ -94,16 +94,20 @@ export default class ClientMatch extends Phaser.Scene {
 
       // translate key to action and send to server
       // if (event.key in this.inputHandler) {
-      //   room.send('req_action', this.inputHandler[event.key]);
+      //   this.room?.send('req_action', this.inputHandler[event.key]);
       // }
       // console.log(event.key);
     });
 
     // // listen to state changes
-    room.onStateChange((state: ServerMatch) => {
-      // this.renderPlayerSprites(state.entities, this.playerSprites);
-      // this.entities = state.entities;
+    this.room.onStateChange((state: ServerMatch) => {
+      this.entities = state.entities;
       // console.log(state);
+    });
+    this.room.onMessage('res_action', (message) => {
+      console.log(message.id, message.velocity);
+      // this.playerSprites.get(message.id)?.setVelocityX(message.velocity);
+      this.player?.setVelocityX(message.velocity);
     });
 
     //  create the animations 
@@ -141,7 +145,7 @@ export default class ClientMatch extends Phaser.Scene {
     // });
 
 
-    this.player.setScale(2);
+    // this.player.setScale(2);
 
 
     // loop throught the animations
@@ -164,24 +168,25 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   // render sprites for each player in the state using the playerSprits map
-  renderPlayerSprites(entities: Map<string, GameEntity>, playerSprites: Map<string, Phaser.GameObjects.Sprite>) {
-    const activeEntitiesNames = Array.from(entities.keys());
+  renderPlayerSprites() {
+    const activeEntitiesNames = Array.from(this.entities.keys());
 
-    const spritesToRemove = Array.from(playerSprites.values()).filter((sprite) => !activeEntitiesNames.includes(sprite.name));
+    const spritesToRemove = Array.from(this.playerSprites.values()).filter((sprite) => !activeEntitiesNames.includes(sprite.name));
     for (const sprite of spritesToRemove) {
       sprite.destroy();
-      playerSprites.delete(sprite.name);
+      this.playerSprites.delete(sprite.name);
     }
 
-    for (const entity of entities.values()) {
-      const existingSprite = playerSprites.get(entity.name);
+    for (const entity of this.entities.values()) {
+      const existingSprite = this.playerSprites.get(entity.name);
        if (!existingSprite) {
         const sprite = this.physics.add.sprite(entity.position.x, entity.position.y, 'chuckIdle')
         sprite.name = entity.name;
         sprite.setScale(2);
         sprite.setCollideWorldBounds(true);
         sprite.setBounce(0.2);
-        playerSprites.set(entity.name, sprite);
+        sprite.setGravityY(300 )
+        this.playerSprites.set(entity.name, sprite);
       } else {
         existingSprite.setPosition(entity.position.x, entity.position.y);
       }
@@ -214,46 +219,52 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   update() {
-    // this.render_players(this.entities);
+  //   // this.render_players(this.entities);
+  //   this.renderPlayerSprites();
+    
 
-    if (this.player) {
-      let isAttacking = false;
-      let isMoving = false;
-      let isJumping = false;
-
-      if (this.keyA?.isDown) {
-        this.player.setFlipX(true);
-        this.player.play('chuckRun', true);
-        this.player.setVelocityX(-160);
-        isMoving = true;
-      } else if (this.keyD?.isDown) {
-        this.player.setFlipX(false);
-        this.player.play('chuckRun', true);
-        this.player.setVelocityX(160);
-        isMoving = true;
-      } else {
-        this.player.setVelocityX(0);
-      }
-      if (this.keyJ?.isDown) {
-        this.player.play('chuckAttack1', true);
-        isAttacking = true;
-      } else if (this.keyK?.isDown) {
-        this.player.play('chuckAttack2', true);
-        isAttacking = true;
-      } else if (this.keyL?.isDown) {
-        this.player.play('chuckAttack3', true);
-        isAttacking = true;
-      } else if (this.keyW?.isDown || this.keySpace?.isDown && this.player.body.touching.down) {
-        this.player.play('chuckJump');
-        this.player.setVelocityY(-160);
-        isJumping = true;
-      } else if (this.keyS?.isDown) {
-        this.player.play('chuckClimb');
-        this.player.setVelocityY(160);
-      }
-      if (!isAttacking && !isMoving && !isJumping) {
-        this.player.play('chuckIdle', true);
-      }
+    if (this.keyD?.isDown) {
+      this.room?.send('req_action', 3);
     }
+
+  //   if (this.player) {
+  //     let isAttacking = false;
+  //     let isMoving = false;
+  //     let isJumping = false;
+
+  //     if (this.keyA?.isDown) {
+  //       this.player.setFlipX(true);
+  //       this.player.play('chuckRun', true);
+  //       this.player.setVelocityX(-160);
+  //       isMoving = true;
+  //     } else if (this.keyD?.isDown) {
+  //       this.player.setFlipX(false);
+  //       this.player.play('chuckRun', true);
+  //       this.player.setVelocityX(160);
+  //       isMoving = true;
+  //     } else {
+  //       this.player.setVelocityX(0);
+  //     }
+  //     if (this.keyJ?.isDown) {
+  //       this.player.play('chuckAttack1', true);
+  //       isAttacking = true;
+  //     } else if (this.keyK?.isDown) {
+  //       this.player.play('chuckAttack2', true);
+  //       isAttacking = true;
+  //     } else if (this.keyL?.isDown) {
+  //       this.player.play('chuckAttack3', true);
+  //       isAttacking = true;
+  //     } else if (this.keyW?.isDown || this.keySpace?.isDown && this.player.body.touching.down) {
+  //       this.player.play('chuckJump');
+  //       this.player.setVelocityY(-160);
+  //       isJumping = true;
+  //     } else if (this.keyS?.isDown) {
+  //       this.player.play('chuckClimb');
+  //       this.player.setVelocityY(160);
+  //     }
+  //     if (!isAttacking && !isMoving && !isJumping) {
+  //       this.player.play('chuckIdle', true);
+  //     }
+  //   }
   }
 }
