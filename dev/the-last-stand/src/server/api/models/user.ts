@@ -11,7 +11,7 @@ export const userSchema = new Schema(
     username: {
       type: String,
       required: true,
-      match: /^[a-zA-Z0-9]{2,}$/,
+      match: /^(\w+\s)*\w+$/,
     },
     userNo: {
       type: String,
