@@ -4,6 +4,7 @@ import GameEntity from '../../../server/game/GameEntity';
 import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
+import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
@@ -24,7 +25,6 @@ export default class ClientMatch extends Phaser.Scene {
   preload() {
     // LOAD DES SPRITESHEETS AVEC LE SPRITESHEETLOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
-      // console.log(spritePaths);
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
       spriteSheetPaths.forEach((key) => {
         const spriteSheetName = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
@@ -39,40 +39,34 @@ export default class ClientMatch extends Phaser.Scene {
     const { client } = data;
     this.gameClient = client;
     if (this.gameClient) {
-      console.log('client', this.gameClient);
     } else {
       throw new Error('client not found');
     }
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>('match_orchestrator');
-    console.log('mo', this.mo);
 
     //  TOUTES LES KEYS DES MOUVEMENTS -> LAID A MORT A REFAIRE
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
-    console.log('keys', this.keys);
-    console.log('d key', this.keys.D);
 
-    // // COLYSEUS;
-    // // listen to state changes
-    // this.mo.onStateChange((state: MatchState) => {
-    //   this.gameEntities = state.gem;
-    //   console.log(state);
-    // });
+    // COLYSEUS;
+    // listen to state changes
+    this.mo.onStateChange((state: MatchState) => {
+      this.gameEntities = state.gem;
+      console.log(state);
+    });
 
     this.mo.onMessage('assign_id', (message: { id: string }) => {
-      console.log(message);
       this.playerId = message.id;
     });
 
-    this.mo.onMessage('create_entity', (message: { id: string; position: { x: number; y: number } }) => {
-      console.log(message);
+    this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
       this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, 'chuckIdle'));
       this.gameEntities.get(message.id)?.setCollideWorldBounds(true);
       this.gameEntities.get(message.id)?.setBounce(0.2);
       this.gameEntities.get(message.id)?.setGravityY(300);
       this.gameEntities.get(message.id)?.setScale(2);
-      console.log(this.gameEntities);
+      this.gameEntities.get(message.id)?.anims.play('chuckIdle', true);
     });
 
     // // COLYSEUS
@@ -105,10 +99,8 @@ export default class ClientMatch extends Phaser.Scene {
       if (this.keys.D?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(false);
         this.gameEntities.get(this.playerId!).setVelocityX(160);
-        console.log(this.gameEntities.get(this.playerId!));
         this.gameEntities.get(this.playerId!)?.play('chuckRun', true);
-        console.log('player', this.mo?.state.gem.get(this.playerId));
-        console.log(this.gameEntities);
+        console.log('player', this.mo?.state.gem);
       } else if (this.keys && this.keys.A?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(true);
         this.gameEntities.get(this.playerId!).setVelocityX(-160);
@@ -117,8 +109,8 @@ export default class ClientMatch extends Phaser.Scene {
         this.gameEntities.get(this.playerId!)?.setVelocityX(0);
         this.gameEntities.get(this.playerId!)?.play('chuckIdle', true);
       }
-      console.log(this.mo!.state.gem);
-      //this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
+      this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
+      this.mo!.state.gem.get(this.playerId).position.y = this.gameEntities.get(this.playerId!).y;
     }
   }
 }

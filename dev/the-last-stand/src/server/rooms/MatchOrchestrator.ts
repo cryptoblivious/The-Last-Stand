@@ -4,6 +4,8 @@ import Jumper from '../game/game_components/Jumper';
 import GameEntity from '../game/GameEntity';
 import Mover from '../game/game_components/Mover';
 import GameEntityFactory from '../game/GameEntityFactory';
+import { GameEntityMapper } from './schema/MatchState';
+import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 
 interface IClient extends Client {
   selectedHero: string;
@@ -51,9 +53,11 @@ export class MatchOrchestrator extends Room<MatchState> {
     const index = this.clients.indexOf(client);
     this.broadcast('assign_id', { id: client.sessionId });
     client.selectedHero = 'chuck';
-    let entity = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index] };
-    this.state.gem.set(client.sessionId, entity);
+    const entityMap = new GameEntityMapper({ id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index] });
+    const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index] };
     this.broadcast('create_entity', entity);
+
+    this.state.gem.set(client.sessionId, entityMap);
 
     //const entity = new GameEntity({ id: index, name: client.sessionId, position: this.positionHandler[index], size: { width: 32, height: 32 } });
     //const jumper = new Jumper({ gameEntity: entity, maxJumps: -1 });
