@@ -52,7 +52,7 @@ export class MatchOrchestrator extends Room<MatchState> {
     this.broadcast('assign_id', { id: client.sessionId });
     client.selectedHero = 'chuck';
     let entity = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index] };
-    //this.state.gem.set(client.sessionId, entity);
+    this.state.gem.set(client.sessionId, entity);
     this.broadcast('create_entity', entity);
 
     //const entity = new GameEntity({ id: index, name: client.sessionId, position: this.positionHandler[index], size: { width: 32, height: 32 } });

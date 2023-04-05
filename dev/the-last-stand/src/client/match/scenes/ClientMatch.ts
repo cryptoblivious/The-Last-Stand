@@ -72,7 +72,6 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.get(message.id)?.setBounce(0.2);
       this.gameEntities.get(message.id)?.setGravityY(300);
       this.gameEntities.get(message.id)?.setScale(2);
-      this.gameEntities.get(message.id)?.setOrigin(1, 1);
       console.log(this.gameEntities);
     });
 
@@ -96,65 +95,9 @@ export default class ClientMatch extends Phaser.Scene {
           frameRate: key.frameRate,
           repeat: key.repeat,
         });
-        // console.log(animKey);
       });
     });
-
-    // // AJOUT DU PETIT CHUCK DOUG TOUT SEUL COTE CLIENT SEULEMENT
-    // this.ges.set('player1', this.physics.add.sprite(400, 900, 'chuckIdle'));
-    // this.ges.get('player1')?.setCollideWorldBounds(true);
-    // this.ges.get('player1')?.setBounce(0.2);
-    // this.player = this.physics.add.sprite(100, 450, 'chuckIdle');
-    // this.player.setCollideWorldBounds(true);
-    // this.player.setBounce(0.2);
-    // this.player.setScale(2);
-
-    //  UN LOOP DES ANIMATIONS QUI EXISTENT POUR CHUCK DOUG
-    // loop throught the animations
-    // const anims = [ 'chuckIdle', 'chuckRun', 'chuckAttack1', 'chuckAttack2',  'chuckAttack3' ,'chuckJump', 'chuckHurt', 'chuckDeath', 'chuckClimb', 'chuckDoublejump', 'chuckKick', 'chuckRunAttack']
-    // const duration = 2000;
-    // let currentIndex = 0
-    // let rounds = 0;
-    // this.time.addEvent({
-    //   delay: duration,
-    //   loop: true,
-    //   callback: () => {
-    //     this.player?.play(anims[currentIndex]);
-    //     currentIndex = (currentIndex + 1) % anims.length;
-    //     rounds++;
-    //     if ( rounds % 2) {
-    //       this.player?.setFlipX(!this.player?.flipX);
-    //     }
-    //   }
-    // });
   }
-
-  // // render sprites for each player in the state using the playerSprits map
-  // //  TODO -> AMELIORER LA LOGIQUE C EST DE LA GROSSE MARDE
-  // renderPlayerSprites() {
-  //   const activeEntitiesNames = Array.from(this.ges.keys());
-
-  //   const spritesToRemove = Array.from(this.playerSprites.values()).filter((sprite) => !activeEntitiesNames.includes(sprite.name));
-  //   for (const sprite of spritesToRemove) {
-  //     sprite.destroy();
-  //     this.playerSprites.delete(sprite.name);
-  //   }
-
-  //   for (const entity of this.ges.values()) {
-  //     const existingSprite = this.playerSprites.get(entity.name);
-  //     if (!existingSprite) {
-  //       const sprite = this.physics.add.sprite(entity.position.x, entity.position.y, 'chuckIdle');
-  //       sprite.name = entity.name;
-  //       sprite.setScale(2);
-  //       sprite.setCollideWorldBounds(true);
-  //       sprite.setBounce(0.2);
-  //       sprite.setGravityY(300);
-  //       this.playerSprites.set(entity.name, sprite);
-  //     } else {
-  //       existingSprite.setPosition(entity.position.x, entity.position.y);
-  //     }
-  //   }
-  // }
 
   update() {
     // le key down qui envoie l action pour le set velocity
@@ -166,7 +109,6 @@ export default class ClientMatch extends Phaser.Scene {
         this.gameEntities.get(this.playerId!)?.play('chuckRun', true);
         console.log('player', this.mo?.state.gem.get(this.playerId));
         console.log(this.gameEntities);
-        //this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
       } else if (this.keys && this.keys.A?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(true);
         this.gameEntities.get(this.playerId!).setVelocityX(-160);
@@ -175,6 +117,8 @@ export default class ClientMatch extends Phaser.Scene {
         this.gameEntities.get(this.playerId!)?.setVelocityX(0);
         this.gameEntities.get(this.playerId!)?.play('chuckIdle', true);
       }
+      console.log(this.mo!.state.gem);
+      //this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
     }
   }
 }
