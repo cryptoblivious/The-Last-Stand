@@ -72,6 +72,7 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.get(message.id)?.setBounce(0.2);
       this.gameEntities.get(message.id)?.setGravityY(300);
       this.gameEntities.get(message.id)?.setScale(2);
+      this.gameEntities.get(message.id)?.setOrigin(1, 1);
       console.log(this.gameEntities);
     });
 

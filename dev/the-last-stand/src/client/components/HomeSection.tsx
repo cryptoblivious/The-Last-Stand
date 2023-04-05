@@ -17,7 +17,7 @@ const HomeSection = (props: IHomeSectionProps) => {
   const { title, subtitle, link, className, backgroundImg } = props;
   return (
     <div
-      className={`${backgroundImg && 'bg-no-repeat bg-cover '} ${className ?? 'gap-10 h-full rounded-3xl flex flex-col flex-grow items-center justify-end pb-10 border-transparent hover:border-purple-900 hover:scale-105 transition ease-in-out duration-1000 border-4 transform'}`}
+      className={`${backgroundImg && 'bg-no-repeat bg-cover '} ${className ?? 'gap-10 h-[90vh] rounded-3xl flex flex-col flex-grow items-center justify-end pb-10 border-transparent hover:border-purple-900 hover:scale-105 transition ease-in-out duration-1000 border-4 transform'}`}
       style={backgroundImg ? { backgroundImage: `url(${backgroundImg})` } : {}}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>

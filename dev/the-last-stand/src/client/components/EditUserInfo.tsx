@@ -35,7 +35,7 @@ const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; classNa
         //onSubmit={handleSubmit}
         className='flex flex-col gap-2 justify-center w-80'>
         <input
-          className='w-full placeholder-pink-900 placeholder-opacity-50 text-pink-900'
+          className='w-full placeholder-pink-900 placeholder-opacity-50 bg-purple-900 border-pink-600 border-2 rounded-xl p-1 text-pink-600'
           ref={usernameRef}
           type='text'
           defaultValue={username}
@@ -44,25 +44,25 @@ const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; classNa
         <select
           id='my-dropdown'
           ref={titleRef}
-          className='text-pink-900'>
+          className=' bg-purple-900 border-pink-600 border-2 rounded-xl p-1 text-pink-600'>
           <option
             value='option1'
-            className='text-gray-700 rounded-none'>
+            className='text-pink-600'>
             No0bZoR
           </option>
           <option
             value='option2'
-            className='text-gray-700'>
+            className='text-pink-600'>
             Bounty Hunter
           </option>
           <option
             value='option3'
-            className='text-gray-700'>
+            className='text-pink-600'>
             Disco King
           </option>
           <option
             value='option4'
-            className='text-gray-700'>
+            className='text-pink-600'>
             Psycho Fury
           </option>
         </select>
