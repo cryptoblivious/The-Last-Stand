@@ -4,6 +4,7 @@ import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
+import Jumper from '../../../server/game/game_components/Jumper';
 
 interface MovePlayerMessage {
   x: number;
@@ -40,6 +41,7 @@ export default class ClientMatch extends Phaser.Scene {
   private gameEntities: Map<string, any> = new Map<string, any>();
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
+  private movePlayerMessage?: MovePlayerMessage
   
   // TOUTES LES KEYS
   private keys?: any;
@@ -121,6 +123,7 @@ export default class ClientMatch extends Phaser.Scene {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
 
+      let isAttacking = false;
       let anim = '';
       let direction = '';
       const entity = this.gameEntities.get(this.playerId!);
@@ -128,47 +131,54 @@ export default class ClientMatch extends Phaser.Scene {
       if (entity.body.velocity.y < -10) {
         anim = `${entity.name}Jump`;
       }
-      else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown) {
+      else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown) {
 
-        if (this.keys.A?.isDown && this.keys.D?.isDown) {
+        if (this.keys.A?.isDown && this.keys.D?.isDown || this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown) {
           anim = `${entity.name}Idle`;
           entity.setVelocityX(0);
         }
 
-        else if (this.keys.D?.isDown) {
+        else if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
           anim = `${entity.name}Run`;
           entity.setVelocityX(entity.baseSpeed);
           direction = 'right';
         }
 
-        else if (this.keys.A?.isDown) {
+        else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
           anim = `${entity.name}Run`;
           entity.setVelocityX(-entity.baseSpeed);
           direction = 'left';
         }
+        else if (this.keys.J.isDown) {
+          anim = `${entity.name}Attack1`;
+        }
 
-        if (this.keys.W?.isDown) {
+        if (this.keys.W?.isDown || this.keys.UP?.isDown || this.keys.SPACE?.isDown) {
           entity.setVelocityY(-entity.jumpHeight);
         }
       }
-      else {
+      else if (!isAttacking) {
         anim = `${entity.name}Idle`;
         entity.setVelocityX(0)
       }
 
-      const movePlayerMessage: MovePlayerMessage = {
+      this.movePlayerMessage = {
         x: entity.x,
         y: entity.y,
         anim: anim,
         direction: direction,
       };
-      this.mo.send('move_player', movePlayerMessage);
+
+
+      this.mo.send('move_player', this.movePlayerMessage);
+
+
 
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
         const entity = this.gameEntities.get(key);
         if (entity) {
           entity.setPosition(gem.position.x, gem.position.y);
-   
+          let animCompleted = undefined
           if (gem.direction !== ''){
             let flipX;
             if (gem.direction == 'left') {
@@ -179,7 +189,20 @@ export default class ClientMatch extends Phaser.Scene {
             }
             entity.setFlipX(flipX);
           }
+          // wait for the attack animation do be finished before doing anything else
+          if (gem.anim == `${gem.gameEntityType}Attack1`) {
+            // entity.anims.stop();
+            animCompleted = false;
+            entity.anims.play(`${gem.gameEntityType}Attack1`, true);
+            entity.on('animationcomplete', () => {
+              // entity.anims.play(`${gem.gameEntityType}Idle`, true);
+              animCompleted = true;
+              console.log ('anim completed')
+            });
+          }  
+          if (animCompleted || animCompleted === undefined) {
           entity.play(gem.anim, true);
+          }
         }
       });
     }
