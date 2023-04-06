@@ -10,4 +10,9 @@ type TUserConfig = UserConfigExport & {
 export default defineConfig({
   plugins: [react()],
   clearCache: true, //ref ChatGPT
+  resolve: {
+    alias: {
+      '@assets': '/src/client/assets',
+    },
+  },
 } as TUserConfig);
