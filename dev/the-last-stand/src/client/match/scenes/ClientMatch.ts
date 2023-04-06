@@ -12,6 +12,27 @@ interface MovePlayerMessage {
   y: number;
 }
 
+const baseSpeedHandler: Record<string, number> = {
+  chuck: 100,
+  solana: 200,
+  sirius: 150,
+  logan: 150,
+};
+
+const jumpHeightHandler: Record<string, number> = {
+  chuck: 400,
+  solana: 500,
+  sirius: 1500,
+  logan: 1500,
+};
+
+const weightHandler: Record<string, number> = {
+  chuck: 400,
+  solana: 300,
+  sirius: 300,
+  logan: 300,
+};
+
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
@@ -66,14 +87,19 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
-      console.log('type', message.gameEntityType);
-      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, message.gameEntityType));
-      this.gameEntities.get(message.id)?.setName(message.gameEntityType);
-      this.gameEntities.get(message.id)?.setCollideWorldBounds(true);
-      this.gameEntities.get(message.id)?.setBounce(0.2);
-      this.gameEntities.get(message.id)?.setGravityY(300);
-      this.gameEntities.get(message.id)?.setScale(2);
-      this.gameEntities.get(message.id)?.anims.play(`${message.gameEntityType}Idle`, true);
+      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
+
+      const entity = this.gameEntities.get(message.id);
+
+      entity.setName(message.gameEntityType);
+      entity.setCollideWorldBounds(true);
+      entity.setBounce(0.2);
+      entity.setGravityY(weightHandler[message.gameEntityType]);
+      entity.setScale(2);
+      entity.anims.play(`${message.gameEntityType}Idle`, true);
+      entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
+      entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
+      console.log(entity);
     });
 
     this.mo.onMessage('remove_entity', (message: { id: string }) => {
@@ -99,23 +125,28 @@ export default class ClientMatch extends Phaser.Scene {
   update() {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
-      if (this.keys.D?.isDown) {
-        this.gameEntities.get(this.playerId!)?.setFlipX(false);
-        this.gameEntities.get(this.playerId!).setVelocityX(160);
-        this.gameEntities.get(this.playerId!)?.play(`${this.gameEntities.get(this.playerId!)?.name}Run`, true);
+      const entity = this.gameEntities.get(this.playerId!);
+      if (entity.body.velocity.y < -10) {
+        entity.play(`${entity.name}Jump`, true);
+      } else if (this.keys.D?.isDown) {
+        entity.setFlipX(false);
+        entity.setVelocityX(entity.baseSpeed);
+        entity.play(`${entity.name}Run`, true);
       } else if (this.keys && this.keys.A?.isDown) {
-        this.gameEntities.get(this.playerId!)?.setFlipX(true);
-        this.gameEntities.get(this.playerId!).setVelocityX(-160);
-        this.gameEntities.get(this.playerId!)?.play(`${this.gameEntities.get(this.playerId!)?.name}Run`, true);
+        entity.setFlipX(true);
+        entity.setVelocityX(-entity.baseSpeed);
+        entity.play(`${entity.name}Run`, true);
+      } else if (this.keys.W?.isDown) {
+        entity.setVelocityY(-entity.jumpHeight);
       } else {
-        this.gameEntities.get(this.playerId!)?.setVelocityX(0);
-        this.gameEntities.get(this.playerId!)?.play(`${this.gameEntities.get(this.playerId!)?.name}Idle`, true);
+        entity.setVelocityX(0);
+        entity.play(`${entity.name}Idle`, true);
       }
 
       const movePlayerMessage: MovePlayerMessage = {
         playerId: this.playerId!,
-        x: this.gameEntities.get(this.playerId!).x,
-        y: this.gameEntities.get(this.playerId!).y,
+        x: entity.x,
+        y: entity.y,
       };
 
       this.mo.send('move_player', movePlayerMessage);

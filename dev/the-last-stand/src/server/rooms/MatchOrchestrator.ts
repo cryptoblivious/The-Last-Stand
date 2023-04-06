@@ -40,7 +40,6 @@ export class MatchOrchestrator extends Room<MatchState> {
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
     client.selectedHero = this.heroHandler[index];
-    console.log(index);
     client.send('assign_player_id', { id: client.sessionId });
 
     // Create the new player's hero and broadcast it to all clients
