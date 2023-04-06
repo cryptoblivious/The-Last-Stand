@@ -35,7 +35,6 @@ export default class ClientMatch extends Phaser.Scene {
       spriteSheetPaths.forEach((key) => {
         const spriteSheetName = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
         this.load.spritesheet({ key: spriteSheetName, url: key.path, frameConfig: { frameWidth: key.frameWidth, frameHeight: key.frameHeight } });
-        // console.log(spriteSheetName);
       });
     });
   }
@@ -57,7 +56,6 @@ export default class ClientMatch extends Phaser.Scene {
 
     // listen to state changes
     this.mo.onStateChange((state: MatchState) => {
-      console.log(this.gameEntities);
       state.gem.forEach((ge: IGameEntityMapper, key: string) => {
         this.gameEntities.get(key)?.setPosition(ge.position.x, ge.position.y);
       });
@@ -68,12 +66,19 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
-      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, 'chuckIdle'));
+      console.log('type', message.gameEntityType);
+      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, message.gameEntityType));
+      this.gameEntities.get(message.id)?.setName(message.gameEntityType);
       this.gameEntities.get(message.id)?.setCollideWorldBounds(true);
       this.gameEntities.get(message.id)?.setBounce(0.2);
       this.gameEntities.get(message.id)?.setGravityY(300);
       this.gameEntities.get(message.id)?.setScale(2);
-      this.gameEntities.get(message.id)?.anims.play('chuckIdle', true);
+      this.gameEntities.get(message.id)?.anims.play(`${message.gameEntityType}Idle`, true);
+    });
+
+    this.mo.onMessage('remove_entity', (message: { id: string }) => {
+      this.gameEntities.get(message.id)?.destroy();
+      this.gameEntities.delete(message.id);
     });
 
     //  CREATION DES ANIMATIONS AVEC LES SPRITESHEETS DU SPRITESHEET LOADER
@@ -97,16 +102,14 @@ export default class ClientMatch extends Phaser.Scene {
       if (this.keys.D?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(false);
         this.gameEntities.get(this.playerId!).setVelocityX(160);
-        this.gameEntities.get(this.playerId!)?.play('chuckRun', true);
-        console.log(this.mo?.state.gem.get(this.playerId), this.mo?.state.gem.get(this.playerId).position.x);
+        this.gameEntities.get(this.playerId!)?.play(`${this.gameEntities.get(this.playerId!)?.name}Run`, true);
       } else if (this.keys && this.keys.A?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(true);
         this.gameEntities.get(this.playerId!).setVelocityX(-160);
-        this.gameEntities.get(this.playerId!)?.play('chuckRun', true);
-        console.log(this.mo?.state.gem.get(this.playerId), this.mo?.state.gem.get(this.playerId).position.x);
+        this.gameEntities.get(this.playerId!)?.play(`${this.gameEntities.get(this.playerId!)?.name}Run`, true);
       } else {
         this.gameEntities.get(this.playerId!)?.setVelocityX(0);
-        this.gameEntities.get(this.playerId!)?.play('chuckIdle', true);
+        this.gameEntities.get(this.playerId!)?.play(`${this.gameEntities.get(this.playerId!)?.name}Idle`, true);
       }
 
       const movePlayerMessage: MovePlayerMessage = {

@@ -18,6 +18,13 @@ export class MatchOrchestrator extends Room<MatchState> {
     3: { x: 200, y: 400 },
   };
 
+  private heroHandler: Record<number, string> = {
+    0: 'chuck',
+    1: 'solana',
+    2: 'chuck',
+    3: 'solana',
+  };
+
   onCreate(options: any) {
     this.setState(new MatchState());
 
@@ -30,10 +37,10 @@ export class MatchOrchestrator extends Room<MatchState> {
   onJoin(client: IClient, options: any) {
     console.log(client.id, 'joined');
 
-    client.selectedHero = 'chuck';
-
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
+    client.selectedHero = this.heroHandler[index];
+    console.log(index);
     client.send('assign_player_id', { id: client.sessionId });
 
     // Create the new player's hero and broadcast it to all clients
@@ -42,18 +49,25 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
-      console.log('sending create_entity', ge);
       client.send('create_entity', ge);
     });
 
     // Create the new player's hero game state data and add it to the game state
-    const entityMap = new GameEntityMapper({ id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index] });
+    const entityMap = new GameEntityMapper();
+    entityMap.id = client.sessionId;
+    entityMap.gameEntityType = client.selectedHero;
+    entityMap.position.x = this.positionHandler[index].x;
+    entityMap.position.y = this.positionHandler[index].y;
     this.state.gem.set(client.sessionId, entityMap);
   }
 
   onLeave(client: Client, consented: boolean) {
     console.log(client.sessionId, 'left');
 
+    // Tell all clients to remove the player's hero
+    this.broadcast('remove_entity', { id: client.sessionId });
+
+    // Remove the player's hero game state data from the game state
     this.state.gem.delete(client.sessionId);
   }
 

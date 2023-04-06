@@ -11,7 +11,7 @@ export class GameEntityMapper extends Schema {
   @type(Position) position: Position = new Position();
 }
 export class MatchState extends Schema {
-  @type({ map: GameEntityMapper }) gem: MapSchema<any> = new MapSchema<GameEntityMapper>();
+  @type({ map: GameEntityMapper }) gem: MapSchema<GameEntityMapper> = new MapSchema<GameEntityMapper>();
 
   movePlayer(playerId: string, x: number, y: number) {
     const player = this.gem.get(playerId);

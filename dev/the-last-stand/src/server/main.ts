@@ -73,8 +73,7 @@ console.log('✅ Options set.');
 const mongoStore = new MongoStore({
   mongoUrl: MONGO_URI,
   collectionName: 'sessions',
-  ttl: 60 * 300000, // 300000 minutes
-  touchAfter: 60 * 15, // 15 minutes,
+  ttl: 60 * 300000, // 300 000 minutes
 });
 console.log('✅ Session store created.');
 
@@ -111,7 +110,7 @@ app.use(
     saveUninitialized: false,
     store: mongoStore,
     cookie: {
-      maxAge: 1000 * 60 * 15, // 15 minutes
+      maxAge: 1000 * 60 * 300000, // 300 000 minutes
       secure: APP_MODE === 'prod' ? true : false,
       sameSite: 'strict',
     },

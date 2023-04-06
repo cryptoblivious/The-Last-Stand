@@ -9,8 +9,21 @@ import chuckClimbPath from '../../assets/heroes/chuck/spritesheets/chuck_climb.p
 import chuckDeathPath from '../../assets/heroes/chuck/spritesheets/chuck_death.png';
 import chuckHurtPath from '../../assets/heroes/chuck/spritesheets/chuck_hurt.png';
 import chuckDoubleJumpPath from '../../assets/heroes/chuck/spritesheets/chuck_doublejump.png';
-import chuck_kickPath from '../../assets/heroes/chuck/spritesheets/chuck_kick.png';
+import chuckKickPath from '../../assets/heroes/chuck/spritesheets/chuck_kick.png';
 import chuckRunAttackPath from '../../assets/heroes/chuck/spritesheets/chuck_run_attack.png';
+
+import solanaIdlePath from '../../assets/heroes/solana/spritesheets/solana_idle.png';
+import solanaRunPath from '../../assets/heroes/solana/spritesheets/solana_run.png';
+import solanaJumpPath from '../../assets/heroes/solana/spritesheets/solana_jump.png';
+import solanaAttackPath1 from '../../assets/heroes/solana/spritesheets/solana_attack_1.png';
+import solanaAttackPath2 from '../../assets/heroes/solana/spritesheets/solana_attack_2.png';
+import solanaAttackPath3 from '../../assets/heroes/solana/spritesheets/solana_attack_3.png';
+import solanaClimbPath from '../../assets/heroes/solana/spritesheets/solana_climb.png';
+import solanaDeathPath from '../../assets/heroes/solana/spritesheets/solana_death.png';
+import solanaHurtPath from '../../assets/heroes/solana/spritesheets/solana_hurt.png';
+import solanaDoubleJumpPath from '../../assets/heroes/solana/spritesheets/solana_doublejump.png';
+import solanaPunchPath from '../../assets/heroes/solana/spritesheets/solana_punch.png';
+import solanaRunAttackPath from '../../assets/heroes/solana/spritesheets/solana_run_attack.png';
 
 const spriteSheetsLoader: IHeroesSpritePaths[] = [
   {
@@ -118,7 +131,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'kick',
-        path: chuck_kickPath,
+        path: chuckKickPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -143,7 +156,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
     spriteSheets: [
       {
         key: 'idle',
-        path: chuckIdlePath,
+        path: solanaIdlePath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -153,7 +166,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'run',
-        path: chuckRunPath,
+        path: solanaRunPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -163,7 +176,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'jump',
-        path: chuckJumpPath,
+        path: solanaJumpPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -173,7 +186,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'attack1',
-        path: chuckAttackPath1,
+        path: solanaAttackPath1,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -183,7 +196,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'attack2',
-        path: chuckAttackPath2,
+        path: solanaAttackPath2,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -193,7 +206,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'attack3',
-        path: chuckAttackPath3,
+        path: solanaAttackPath3,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -203,7 +216,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'climb',
-        path: chuckClimbPath,
+        path: solanaClimbPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -213,7 +226,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'death',
-        path: chuckDeathPath,
+        path: solanaDeathPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -223,7 +236,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'hurt',
-        path: chuckHurtPath,
+        path: solanaHurtPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -233,7 +246,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'doublejump',
-        path: chuckDoubleJumpPath,
+        path: solanaDoubleJumpPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -242,8 +255,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         repeat: 0,
       },
       {
-        key: 'kick',
-        path: chuck_kickPath,
+        key: 'punch',
+        path: solanaPunchPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
@@ -253,7 +266,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       },
       {
         key: 'runAttack',
-        path: chuckRunAttackPath,
+        path: solanaRunAttackPath,
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,
