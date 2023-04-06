@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';
-import MatchScene from '../match/scenes/ClientMatch';
+import ClientMatch from '../match/scenes/ClientMatch';
 
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
@@ -23,7 +23,7 @@ const Match = () => {
             gravity: { y: 200 },
           },
         },
-        scene: [Bootstrap, MatchScene],
+        scene: [Bootstrap, ClientMatch],
         parent: 'match-canvas',
       };
 
