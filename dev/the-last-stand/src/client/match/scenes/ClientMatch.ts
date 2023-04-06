@@ -7,7 +7,6 @@ import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 
 interface MovePlayerMessage {
-  playerId: string;
   x: number;
   y: number;
 }
@@ -128,34 +127,33 @@ export default class ClientMatch extends Phaser.Scene {
       const entity = this.gameEntities.get(this.playerId!);
       if (entity.body.velocity.y < -10) {
         entity.play(`${entity.name}Jump`, true);
-      } else if (this.keys.D?.isDown) {
-        entity.setFlipX(false);
-        entity.setVelocityX(entity.baseSpeed);
-        entity.play(`${entity.name}Run`, true);
-      } else if (this.keys && this.keys.A?.isDown) {
-        entity.setFlipX(true);
-        entity.setVelocityX(-entity.baseSpeed);
-        entity.play(`${entity.name}Run`, true);
-      } else if (this.keys.W?.isDown) {
-        entity.setVelocityY(-entity.jumpHeight);
+      } else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown) {
+        if (this.keys.A?.isDown && this.keys.D?.isDown) {
+          entity.setVelocityX(0);
+          entity.play(`${entity.name}Idle`, true);
+        } else if (this.keys.D?.isDown) {
+          entity.setFlipX(false);
+          entity.setVelocityX(entity.baseSpeed);
+          entity.play(`${entity.name}Run`, true);
+        } else if (this.keys.A?.isDown) {
+          entity.setFlipX(true);
+          entity.setVelocityX(-entity.baseSpeed);
+          entity.play(`${entity.name}Run`, true);
+        }
+        if (this.keys.W?.isDown) {
+          entity.setVelocityY(-entity.jumpHeight);
+        }
       } else {
         entity.setVelocityX(0);
         entity.play(`${entity.name}Idle`, true);
       }
 
       const movePlayerMessage: MovePlayerMessage = {
-        playerId: this.playerId!,
         x: entity.x,
         y: entity.y,
       };
 
       this.mo.send('move_player', movePlayerMessage);
-
-      // this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
-      // this.mo!.state.gem.get(this.playerId).position.y = this.gameEntities.get(this.playerId!).y;
-
-      // // trigger state change manually
-      // this.mo!.state.gem.get(this.playerId).position = { ...this.mo!.state.gem.get(this.playerId).position };
     }
   }
 }

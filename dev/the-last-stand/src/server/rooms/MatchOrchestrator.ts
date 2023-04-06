@@ -28,9 +28,9 @@ export class MatchOrchestrator extends Room<MatchState> {
   onCreate(options: any) {
     this.setState(new MatchState());
 
-    this.onMessage('move_player', (client, message) => {
-      const { playerId, x, y } = message;
-      this.state.movePlayer(playerId, x, y);
+    this.onMessage('move_player', (player, message) => {
+      const { x, y } = message;
+      this.state.movePlayer(player.id, x, y);
     });
   }
 
