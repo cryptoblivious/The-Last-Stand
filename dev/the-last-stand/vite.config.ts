@@ -1,17 +1,12 @@
 import { defineConfig, UserConfigExport } from 'vite';
 import react from '@vitejs/plugin-react';
-import copy from 'rollup-plugin-copy';
 
 type TUserConfig = UserConfigExport & {
   clearCache: boolean;
 };
 
-const ASSETS_BASE_PATH = '/public/assets';
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
+  plugins: [react()],
   clearCache: true, //ref ChatGPT3
 } as TUserConfig);
