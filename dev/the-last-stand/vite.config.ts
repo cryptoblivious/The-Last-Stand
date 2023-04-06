@@ -22,8 +22,5 @@ export default defineConfig({
       hook: 'buildStart',
     }),
   ],
-  build: {
-    outDir: 'dev/the-last-stand/dist',
-  },
   clearCache: true, //ref ChatGPT3
 } as TUserConfig);
