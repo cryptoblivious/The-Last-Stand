@@ -1,8 +1,10 @@
 import { APP_MODE, HOST_URL, HOST_PORT } from '../appConfig';
 
+import avatar from '../../assets/heroes/chuck/avatar.png';
+
 // Get the current user from the server through the local cookie
 export const getCurrentUser = async () => {
-  const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
+  //const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
 
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
     credentials: 'include',
