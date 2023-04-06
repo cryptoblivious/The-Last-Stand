@@ -4,4 +4,6 @@ export interface IGameEntityMapper {
   id: string;
   gameEntityType: string;
   position: Position;
+  anim : string;
+  flipX : boolean;
 }

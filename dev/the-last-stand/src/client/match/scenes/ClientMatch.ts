@@ -9,6 +9,8 @@ import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMap
 interface MovePlayerMessage {
   x: number;
   y: number;
+  anim? : string;
+  flipX? : boolean;
 }
 
 const baseSpeedHandler: Record<string, number> = {
@@ -38,6 +40,8 @@ export default class ClientMatch extends Phaser.Scene {
   private gameEntities: Map<string, any> = new Map<string, any>();
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
+  private lastDirection?: string; 
+  private lastFlipX?: boolean;
 
   // TOUTES LES KEYS
   private keys?: any;
@@ -118,39 +122,76 @@ export default class ClientMatch extends Phaser.Scene {
   update() {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
+      
+      let anim = '';
+      let flipX: boolean | undefined;
       const entity = this.gameEntities.get(this.playerId!);
       if (entity.body.velocity.y < -10) {
-        entity.play(`${entity.name}Jump`, true);
+        anim = `${entity.name}Jump`;
+        // entity.play(`${entity.name}Jump`, true);
       } else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown) {
         if (this.keys.A?.isDown && this.keys.D?.isDown) {
+          anim = `${entity.name}Idle`;
           entity.setVelocityX(0);
-          entity.play(`${entity.name}Idle`, true);
+          // entity.play(`${entity.name}Idle`, true);
         } else if (this.keys.D?.isDown) {
-          entity.setFlipX(false);
+          if (this.lastDirection !== 'right') {
+            flipX = false;
+            this.lastDirection = 'right';
+          }
+          anim = `${entity.name}Run`;
+          // entity.flipX = false;
+          // entity.setFlipX(false);
+          this.mo.state.gem.get(this.playerId).flipX = false;
+          // console.log(this.mo.state.gem.get(this.playerId).flipX);
           entity.setVelocityX(entity.baseSpeed);
-          entity.play(`${entity.name}Run`, true);
+          // entity.play(`${entity.name}Run`, true);
         } else if (this.keys.A?.isDown) {
-          entity.setFlipX(true);
+          anim = `${entity.name}Run`;
+          if (this.lastDirection !== 'left') {
+            flipX = true;
+            this.lastDirection = 'left';
+          }
+          // entity.setFlipX(true);
+          // entity.flipX = true;
+          // this.mo.state.gem.get(this.playerId).flipX = true;
+          // console.log(this.mo.state.gem.get(this.playerId).flipX);
+
+
           entity.setVelocityX(-entity.baseSpeed);
-          entity.play(`${entity.name}Run`, true);
+          // entity.play(`${entity.name}Run`, true);
         }
         if (this.keys.W?.isDown) {
           entity.setVelocityY(-entity.jumpHeight);
         }
       } else {
-        entity.setVelocityX(0);
-        entity.play(`${entity.name}Idle`, true);
+        anim = `${entity.name}Idle`;
+        entity.setVelocityX(0)
+        // entity.play(`${entity.name}Idle`, true);
       }
 
       const movePlayerMessage: MovePlayerMessage = {
         x: entity.x,
         y: entity.y,
+        anim : anim,
+        flipX : flipX
       };
-
       this.mo.send('move_player', movePlayerMessage);
 
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
-        this.gameEntities.get(key)?.setPosition(gem.position.x, gem.position.y);
+        const entity = this.gameEntities.get(key);
+        if (entity) {
+          entity.setPosition(gem.position.x, gem.position.y);
+          if (gem.flipX !== undefined && gem.flipX !== entity.flipX){
+            entity.setFlipX(gem.flipX);
+            this.lastFlipX = gem.flipX;
+            console.log(gem.flipX)
+          }
+          entity.play(gem.anim, true);
+          console.log(gem.flipX)
+        }
+        // this.gameEntities.get(key)?.setPosition(gem.position.x, gem.position.y);
+        
       });
     }
   }

@@ -4,6 +4,7 @@ import GameEntityFactory from '../game/GameEntityFactory';
 import { GameEntityMapper } from './schema/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 
+
 interface IClient extends Client {
   selectedHero: string;
 }
@@ -28,9 +29,10 @@ export class MatchOrchestrator extends Room<MatchState> {
   onCreate(options: any) {
     this.setState(new MatchState());
 
-    this.onMessage('move_player', (player, message) => {
-      const { x, y } = message;
-      this.state.movePlayer(player.id, x, y);
+    this.onMessage('move_player', (player, message : {x : number, y:number, anim?:string, flipX?:boolean}) => {
+      const { x, y, anim, flipX } = message;
+      this.state.movePlayer(player.id, x, y, anim, flipX);
+      // console.log(this.state.gem.get(player.id)?.flipX)
     });
   }
 
