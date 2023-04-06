@@ -1,17 +1,16 @@
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 import Button from './Button';
-import { GiBookmark } from 'react-icons/gi';
-import { GiWhiteBook as GiBookmarklet } from 'react-icons/gi';
+import { GiFeather, GiBookmarklet } from 'react-icons/gi';
 import { useState } from 'react';
 
 function EditButton(props: IButtonProps) {
   const { onClick = () => console.log('clicked!'), className = 'flex items-center justify-center', disabled = false, type = 'button' } = props;
   const toggleEditState = onClick;
 
-  const [icon, setIcon] = useState<string>('GiBookmark');
+  const [icon, setIcon] = useState<string>('GiFeather');
 
   const toggleIcon = () => {
-    icon === 'GiBookmark' ? setIcon('GiBookmarklet') : setIcon('GiBookmark');
+    icon === 'GiFeather' ? setIcon('GiBookmarklet') : setIcon('GiFeather');
   };
 
   const handleEdit = () => {
@@ -26,15 +25,15 @@ function EditButton(props: IButtonProps) {
       disabled={disabled}
       type={type}
       icon={
-        icon === 'GiBookmark' ? (
-          <GiBookmark
-            aria-label='GiBookmark'
+        icon === 'GiFeather' ? (
+          <GiFeather
+            aria-label='GiFeather'
             fontSize='1.69rem'
             color='rgb(103 232 249)'
           />
         ) : (
           <GiBookmarklet
-            aria-label='GiWhiteBook'
+            aria-label='GiBookmarklet'
             fontSize='1.69rem'
             color='rgb(103 232 249)'
           />
