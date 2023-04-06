@@ -15,4 +15,7 @@ export default defineConfig({
       '@assets': '/src/client/assets',
     },
   },
+  optimizeDeps: {
+    include: ['src/client/assets'],
+  },
 } as TUserConfig);
