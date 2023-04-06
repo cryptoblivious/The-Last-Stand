@@ -5,11 +5,14 @@
     "module": "commonjs",
     "strict": true,
     "allowJs": true,
+    "lib": ["es6"],
     "strictNullChecks": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "include": ["src/server/**/*.ts", "src/server/**/*.js"],
+  "exclude": ["node_modules", "src/client"]
 }

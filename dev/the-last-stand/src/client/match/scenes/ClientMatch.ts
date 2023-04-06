@@ -6,6 +6,12 @@ import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 
+interface MovePlayerMessage {
+  playerId: string;
+  x: number;
+  y: number;
+}
+
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
@@ -49,14 +55,16 @@ export default class ClientMatch extends Phaser.Scene {
     //  TOUTES LES KEYS DES MOUVEMENTS -> LAID A MORT A REFAIRE
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
-    // COLYSEUS;
     // listen to state changes
     this.mo.onStateChange((state: MatchState) => {
-      this.gameEntities = state.gem;
-      console.log(state);
+      state.gem.forEach((ge: IGameEntityMapper, key: string) => {
+        console.log('position of ' + key + ' before : ' + this.gameEntities.get(key)?.x + ' ' + this.gameEntities.get(key)?.y);
+        this.gameEntities.get(key)?.setPosition(ge.position.x, ge.position.y);
+        console.log('position of ' + key + ' after : ' + this.gameEntities.get(key)?.x + ' ' + this.gameEntities.get(key)?.y);
+      });
     });
 
-    this.mo.onMessage('assign_id', (message: { id: string }) => {
+    this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
     });
 
@@ -68,15 +76,6 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.get(message.id)?.setScale(2);
       this.gameEntities.get(message.id)?.anims.play('chuckIdle', true);
     });
-
-    // // COLYSEUS
-    // this.mo.onMessage('res_action', (message: { id: string; velocity: number }) => {
-    //   // REPONSE DU SERVEUR EN CE MOMENT ON RECOIT LA VELOCITY ET LE ID DU JOUEUR
-    //   console.log(message.id, message.velocity);
-    //   this.playerSprites.get(message.id)?.setVelocityX(message.velocity);
-    //   this.mo!.state.entities.get(message.id).position.x = this.playerSprites.get(message.id)?.x;
-    //   // this.player?.setVelocityX(message.velocity);
-    // });
 
     //  CREATION DES ANIMATIONS AVEC LES SPRITESHEETS DU SPRITESHEET LOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
@@ -95,22 +94,35 @@ export default class ClientMatch extends Phaser.Scene {
 
   update() {
     // le key down qui envoie l action pour le set velocity
-    if (this.keys) {
+    if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       if (this.keys.D?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(false);
         this.gameEntities.get(this.playerId!).setVelocityX(160);
         this.gameEntities.get(this.playerId!)?.play('chuckRun', true);
-        console.log('player', this.mo?.state.gem);
+        console.log(this.mo?.state.gem.get(this.playerId), this.mo?.state.gem.get(this.playerId).position.x);
       } else if (this.keys && this.keys.A?.isDown) {
         this.gameEntities.get(this.playerId!)?.setFlipX(true);
         this.gameEntities.get(this.playerId!).setVelocityX(-160);
         this.gameEntities.get(this.playerId!)?.play('chuckRun', true);
+        console.log(this.mo?.state.gem.get(this.playerId), this.mo?.state.gem.get(this.playerId).position.x);
       } else {
         this.gameEntities.get(this.playerId!)?.setVelocityX(0);
         this.gameEntities.get(this.playerId!)?.play('chuckIdle', true);
       }
-      this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
-      this.mo!.state.gem.get(this.playerId).position.y = this.gameEntities.get(this.playerId!).y;
+
+      const movePlayerMessage: MovePlayerMessage = {
+        playerId: this.playerId!,
+        x: this.gameEntities.get(this.playerId!).x,
+        y: this.gameEntities.get(this.playerId!).y,
+      };
+
+      this.mo.send('move_player', movePlayerMessage);
+
+      // this.mo!.state.gem.get(this.playerId).position.x = this.gameEntities.get(this.playerId!).x;
+      // this.mo!.state.gem.get(this.playerId).position.y = this.gameEntities.get(this.playerId!).y;
+
+      // // trigger state change manually
+      // this.mo!.state.gem.get(this.playerId).position = { ...this.mo!.state.gem.get(this.playerId).position };
     }
   }
 }

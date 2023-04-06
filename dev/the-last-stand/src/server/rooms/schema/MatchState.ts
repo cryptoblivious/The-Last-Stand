@@ -1,11 +1,23 @@
 import { Schema, Context, type, MapSchema, ArraySchema } from '@colyseus/schema';
 import GameEntity from '../../game/GameEntity';
 
+export class Position extends Schema {
+  @type('number') x: number = 0;
+  @type('number') y: number = 0;
+}
 export class GameEntityMapper extends Schema {
   @type('string') id: string = '';
   @type('string') gameEntityType: string = '';
-  @type({ map: 'number' }) position: { x: number; y: number } = { x: 0, y: 0 };
+  @type(Position) position: Position = new Position();
 }
 export class MatchState extends Schema {
-  @type({ map: GameEntityMapper }) gem: MapSchema<any> = new MapSchema<any>();
+  @type({ map: GameEntityMapper }) gem: MapSchema<any> = new MapSchema<GameEntityMapper>();
+
+  movePlayer(playerId: string, x: number, y: number) {
+    const player = this.gem.get(playerId);
+    if (player) {
+      player.position.x = x;
+      player.position.y = y;
+    }
+  }
 }
