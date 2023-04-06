@@ -57,10 +57,9 @@ export default class ClientMatch extends Phaser.Scene {
 
     // listen to state changes
     this.mo.onStateChange((state: MatchState) => {
+      console.log(this.gameEntities);
       state.gem.forEach((ge: IGameEntityMapper, key: string) => {
-        console.log('position of ' + key + ' before : ' + this.gameEntities.get(key)?.x + ' ' + this.gameEntities.get(key)?.y);
         this.gameEntities.get(key)?.setPosition(ge.position.x, ge.position.y);
-        console.log('position of ' + key + ' after : ' + this.gameEntities.get(key)?.x + ' ' + this.gameEntities.get(key)?.y);
       });
     });
 
