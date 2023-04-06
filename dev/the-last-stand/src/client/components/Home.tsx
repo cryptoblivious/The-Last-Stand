@@ -1,9 +1,9 @@
 import SocialOverlay from './SocialOverlay';
 import HomeSection from './HomeSection';
-import play from '../assets/wallpapers/616c2d7aeec658a610945fde5d997459.jpg';
-import maps from '../assets/wallpapers/2282b8ab3e009bcddbb32cbff485aa6c.jpg';
-import heroes from '../assets/wallpapers/94f0594713f945197564bc0ef499774f.jpg';
-import stats from '../assets/wallpapers/57da00c688947107588d5bfadd77540d.jpg';
+import play from '../../assets/wallpapers/616c2d7aeec658a610945fde5d997459.jpg';
+import maps from '../../assets/wallpapers/2282b8ab3e009bcddbb32cbff485aa6c.jpg';
+import heroes from '../../assets/wallpapers/94f0594713f945197564bc0ef499774f.jpg';
+import stats from '../../assets/wallpapers/57da00c688947107588d5bfadd77540d.jpg';
 
 const Home = () => {
   return (
@@ -15,25 +15,25 @@ const Home = () => {
             title='Play'
             subtitle='Play a match.'
             link='/match/123'
-            backgroundImg={play}
+            backgroundImg={'/assets/wallpapers/616c2d7aeec658a610945fde5d997459.jpg'}
           />
           <HomeSection
             title='Heroes'
             subtitle='Browse heroes.'
             link='/heroes'
-            backgroundImg={heroes}
+            backgroundImg={'/assets/wallpapers/94f0594713f945197564bc0ef499774f.jpg'}
           />
           <HomeSection
             title='Maps'
             subtitle='Browse maps.'
             link='/heroes'
-            backgroundImg={maps}
+            backgroundImg={'/assets/wallpapers/2282b8ab3e009bcddbb32cbff485aa6c.jpg'}
           />
           <HomeSection
             title='Stats'
             subtitle='Check your stats.'
             link='/heroes'
-            backgroundImg={stats}
+            backgroundImg={'/assets/wallpapers/57da00c688947107588d5bfadd77540d.jpg'}
           />
         </div>
       </main>

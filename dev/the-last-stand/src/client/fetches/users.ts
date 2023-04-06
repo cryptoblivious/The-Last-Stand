@@ -12,7 +12,7 @@ export const getCurrentUser = async () => {
   let data = await response.json();
 
   if (response.ok) {
-    data.avatar = avatar;
+    data.avatar = '/assets/heroes/chuck/avatar.png';
     return data;
   } else {
     return null;

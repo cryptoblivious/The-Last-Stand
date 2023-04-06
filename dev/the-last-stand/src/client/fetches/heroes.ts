@@ -7,9 +7,9 @@ import chuck from '../assets/heroes/chuck/portrait.png';
 
 // Record of hero names and their portrait images, should be moved to a config file
 const heroImages: Record<string, string> = {
-  solana: solana,
-  logan: logan,
-  chuck: chuck,
+  solana: '/assets/heroes/solana/portrait.webp',
+  logan: '/assets/heroes/logan/portrait.png',
+  chuck: '/assets/heroes/chuck/portrait.png',
 };
 
 //  Fetches the names and backstories of all heroes and returns as an array of IHeroMapCard objects and a Record of hero names and backstories

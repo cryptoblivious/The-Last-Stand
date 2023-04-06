@@ -1,6 +1,6 @@
 import LoginNavbar from './LoginNavbar';
 import ErrorPopup from './ErrorPopup';
-import { login } from '../assets/';
+import { login } from '../../public/assets/';
 import '../styles/index.css';
 import { useState } from 'react';
 
@@ -17,7 +17,7 @@ const Login = (props: any) => {
     <main
       id='login'
       className='w-full flex flex-col h-screen justify-start text-center bg-center bg-no-repeat bg-cover bg-purple-900' //ref: ChatGPT
-      style={{ backgroundImage: `url(${login})` }}>
+      style={{ backgroundImage: `url(/assets/wallpapers/login.png)` }}>
       <LoginNavbar />
       {popupOpen && (
         <ErrorPopup
