@@ -14,6 +14,9 @@
     "clean-server": "node node_modules/rimraf/bin lib",
     "test-server": "mocha --require ts-node/register test/**_test.ts --exit --timeout 15000"
   },
+  "build": {
+    "chunkSizeWarningLimit": 100000
+  },
   "dependencies": {
     "@colyseus/arena": "^0.14.22",
     "@colyseus/command": "^0.2.1",
