@@ -1,0 +1,2 @@
+[build]
+publish = "dev/the-last-stand/dist"
