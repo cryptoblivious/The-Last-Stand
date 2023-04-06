@@ -1,6 +1,6 @@
 import { APP_MODE, HOST_URL, HOST_PORT } from '../appConfig';
 
-import avatar from '../../assets/heroes/chuck/avatar.png';
+import avatar from '../assets/heroes/chuck/avatar.png';
 
 // Get the current user from the server through the local cookie
 export const getCurrentUser = async () => {
