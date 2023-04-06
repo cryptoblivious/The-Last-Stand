@@ -36,9 +36,7 @@ export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
   private gameEntities: Map<string, any> = new Map<string, any>();
-  private playerSprites: Map<string, Phaser.Physics.Arcade.Sprite> = new Map<string, Phaser.Physics.Arcade.Sprite>();
   private mo: Room | undefined;
-  // private player: any;
   private spriteSheetsLoader = spriteSheetsLoader;
 
   // TOUTES LES KEYS
