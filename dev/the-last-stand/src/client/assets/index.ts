@@ -1,8 +1,4 @@
 import login from './wallpapers/login.png';
-// import facebook from './icons/facebook.svg';
-// import instagram from './icons/instagram.svg';
-// import linkedin from './icons/linkedin.svg';
-// import twitter from './icons/twitter.svg';
 
 import chuckIdlePath from './heroes/chuck/spritesheets/chuck_idle.png';
 import chuckRunPath from './heroes/chuck/spritesheets/chuck_run.png';
