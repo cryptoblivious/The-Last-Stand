@@ -8,8 +8,9 @@ import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMap
 interface MovePlayerMessage {
   x: number;
   y: number;
-  anim? : string;
-  flipX? : boolean;
+  anim?: string;
+  flipX?: boolean;
+  direction?: string;
 }
 
 const baseSpeedHandler: Record<string, number> = {
@@ -39,16 +40,14 @@ export default class ClientMatch extends Phaser.Scene {
   private gameEntities: Map<string, any> = new Map<string, any>();
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
-  private lastDirection?: string; 
-  private lastFlipX?: boolean;
-
+  
   // TOUTES LES KEYS
   private keys?: any;
 
   constructor() {
     super('the-last-stand');
   }
-
+  
   preload() {
     // LOAD DES SPRITESHEETS AVEC LE SPRITESHEETLOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
@@ -76,7 +75,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
     // listen to state changes
-    this.mo.onStateChange((state: MatchState) => {});
+    this.mo.onStateChange((state: MatchState) => { });
 
     this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
@@ -121,59 +120,47 @@ export default class ClientMatch extends Phaser.Scene {
   update() {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
-      
+
       let anim = '';
-      let flipX: boolean | undefined;
+      let direction = '';
       const entity = this.gameEntities.get(this.playerId!);
+
       if (entity.body.velocity.y < -10) {
         anim = `${entity.name}Jump`;
-        // entity.play(`${entity.name}Jump`, true);
-      } else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown) {
+      }
+      else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown) {
+
         if (this.keys.A?.isDown && this.keys.D?.isDown) {
           anim = `${entity.name}Idle`;
           entity.setVelocityX(0);
-          // entity.play(`${entity.name}Idle`, true);
-        } else if (this.keys.D?.isDown) {
-          if (this.lastDirection !== 'right') {
-            flipX = false;
-            this.lastDirection = 'right';
-          }
-          anim = `${entity.name}Run`;
-          // entity.flipX = false;
-          // entity.setFlipX(false);
-          this.mo.state.gem.get(this.playerId).flipX = false;
-          // console.log(this.mo.state.gem.get(this.playerId).flipX);
-          entity.setVelocityX(entity.baseSpeed);
-          // entity.play(`${entity.name}Run`, true);
-        } else if (this.keys.A?.isDown) {
-          anim = `${entity.name}Run`;
-          if (this.lastDirection !== 'left') {
-            flipX = true;
-            this.lastDirection = 'left';
-          }
-          // entity.setFlipX(true);
-          // entity.flipX = true;
-          // this.mo.state.gem.get(this.playerId).flipX = true;
-          // console.log(this.mo.state.gem.get(this.playerId).flipX);
-
-
-          entity.setVelocityX(-entity.baseSpeed);
-          // entity.play(`${entity.name}Run`, true);
         }
+
+        else if (this.keys.D?.isDown) {
+          anim = `${entity.name}Run`;
+          entity.setVelocityX(entity.baseSpeed);
+          direction = 'right';
+        }
+
+        else if (this.keys.A?.isDown) {
+          anim = `${entity.name}Run`;
+          entity.setVelocityX(-entity.baseSpeed);
+          direction = 'left';
+        }
+
         if (this.keys.W?.isDown) {
           entity.setVelocityY(-entity.jumpHeight);
         }
-      } else {
+      }
+      else {
         anim = `${entity.name}Idle`;
         entity.setVelocityX(0)
-        // entity.play(`${entity.name}Idle`, true);
       }
 
       const movePlayerMessage: MovePlayerMessage = {
         x: entity.x,
         y: entity.y,
-        anim : anim,
-        flipX : flipX
+        anim: anim,
+        direction: direction,
       };
       this.mo.send('move_player', movePlayerMessage);
 
@@ -181,16 +168,19 @@ export default class ClientMatch extends Phaser.Scene {
         const entity = this.gameEntities.get(key);
         if (entity) {
           entity.setPosition(gem.position.x, gem.position.y);
-          if (gem.flipX !== undefined && gem.flipX !== entity.flipX){
-            entity.setFlipX(gem.flipX);
-            this.lastFlipX = gem.flipX;
-            console.log(gem.flipX)
+   
+          if (gem.direction !== ''){
+            let flipX;
+            if (gem.direction == 'left') {
+              flipX = true;
+            }
+            else if (gem.direction == 'right') {
+              flipX = false;
+            }
+            entity.setFlipX(flipX);
           }
           entity.play(gem.anim, true);
-          console.log(gem.flipX)
         }
-        // this.gameEntities.get(key)?.setPosition(gem.position.x, gem.position.y);
-        
       });
     }
   }
