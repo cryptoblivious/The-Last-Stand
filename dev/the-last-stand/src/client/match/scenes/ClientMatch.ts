@@ -12,7 +12,7 @@ interface MovePlayerMessage {
 }
 
 const baseSpeedHandler: Record<string, number> = {
-  chuck: 100,
+  chuck: 1000,
   solana: 200,
   sirius: 150,
   logan: 150,
@@ -75,11 +75,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
     // listen to state changes
-    this.mo.onStateChange((state: MatchState) => {
-      state.gem.forEach((ge: IGameEntityMapper, key: string) => {
-        this.gameEntities.get(key)?.setPosition(ge.position.x, ge.position.y);
-      });
-    });
+    this.mo.onStateChange((state: MatchState) => {});
 
     this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
@@ -154,6 +150,10 @@ export default class ClientMatch extends Phaser.Scene {
       };
 
       this.mo.send('move_player', movePlayerMessage);
+
+      this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
+        this.gameEntities.get(key)?.setPosition(gem.position.x, gem.position.y);
+      });
     }
   }
 }
