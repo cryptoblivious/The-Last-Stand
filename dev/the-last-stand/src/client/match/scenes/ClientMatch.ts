@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import { Client, Room } from 'colyseus.js';
-import GameEntity from '../../../server/game/GameEntity';
 import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';

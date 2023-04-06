@@ -1,3 +1,0 @@
-[build-yolo]
-  command = "vite build"
-  publish = "src/client/assets"

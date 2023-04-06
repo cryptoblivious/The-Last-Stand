@@ -1,8 +1,4 @@
 import login from './wallpapers/login.png';
-import facebook from './icons/facebook.svg';
-import instagram from './icons/instagram.svg';
-import linkedin from './icons/linkedin.svg';
-import twitter from './icons/twitter.svg';
 
 import chuckIdlePath from './heroes/chuck/spritesheets/chuck_idle.png';
 import chuckRunPath from './heroes/chuck/spritesheets/chuck_run.png';
@@ -30,4 +26,4 @@ import solanaDoubleJumpPath from './heroes/solana/spritesheets/solana_doublejump
 import solanaPunchPath from './heroes/solana/spritesheets/solana_punch.png';
 import solanaRunAttackPath from './heroes/solana/spritesheets/solana_run_attack.png';
 
-export { login, facebook, instagram, linkedin, twitter, chuckIdlePath, chuckRunPath, chuckJumpPath, chuckAttackPath1, chuckAttackPath2, chuckAttackPath3, chuckClimbPath, chuckDeathPath, chuckHurtPath, chuckDoubleJumpPath, chuckKickPath, chuckRunAttackPath, solanaIdlePath, solanaRunPath, solanaJumpPath, solanaAttackPath1, solanaAttackPath2, solanaAttackPath3, solanaClimbPath, solanaDeathPath, solanaHurtPath, solanaDoubleJumpPath, solanaPunchPath, solanaRunAttackPath };
+export { login, chuckIdlePath, chuckRunPath, chuckJumpPath, chuckAttackPath1, chuckAttackPath2, chuckAttackPath3, chuckClimbPath, chuckDeathPath, chuckHurtPath, chuckDoubleJumpPath, chuckKickPath, chuckRunAttackPath, solanaIdlePath, solanaRunPath, solanaJumpPath, solanaAttackPath1, solanaAttackPath2, solanaAttackPath3, solanaClimbPath, solanaDeathPath, solanaHurtPath, solanaDoubleJumpPath, solanaPunchPath, solanaRunAttackPath };

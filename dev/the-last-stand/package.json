@@ -14,9 +14,6 @@
     "clean-server": "node node_modules/rimraf/bin lib",
     "test-server": "mocha --require ts-node/register test/**_test.ts --exit --timeout 15000"
   },
-  "build": {
-    "chunkSizeWarningLimit": 100000
-  },
   "dependencies": {
     "@colyseus/arena": "^0.14.22",
     "@colyseus/command": "^0.2.1",
@@ -63,6 +60,7 @@
     "postcss-cli": "^10.1.0",
     "prettier": "^2.8.4",
     "rimraf": "^2.7.1",
+    "rollup-plugin-copy": "^3.4.0",
     "tailwindcss": "^3.2.7",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^1.0.0-pre.63",
