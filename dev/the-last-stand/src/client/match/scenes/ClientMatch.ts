@@ -5,6 +5,7 @@ import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 import backgroundImage  from '/assets/craftpix/backgrounds/background.png';
+import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -62,6 +63,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     // Load backgrounds and tiles
     this.load.image('background', backgroundImage);
+    this.load.image('tuile03', tuile03);
   }
 
   // Get the client from the Boostrap scene
@@ -76,7 +78,7 @@ export default class ClientMatch extends Phaser.Scene {
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>('match_orchestrator');
 
-    //  TOUTES LES KEYS DES MOUVEMENTS -> LAID A MORT A REFAIRE
+    //  TOUTES LES KEYS DES MOUVEMENTS
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
     // listen to state changes
@@ -127,9 +129,13 @@ export default class ClientMatch extends Phaser.Scene {
     // stretch the background to fit the whole screen
     this.background.displayWidth = this.sys.canvas.width;
     this.background.displayHeight = this.sys.canvas.height;
-    
-    
 
+
+    // Tileset platform principale 
+    const tileMap = this.make.tilemap({ tileWidth: 32, tileHeight: 32, width: 10, height: 1 });
+    const tileSet = tileMap.addTilesetImage('tuile03');
+    const layer = tileMap.createBlankLayer('Tile Layer 1', tileSet, 100, 100);
+    this.add.existing(layer);
   }
 
   update() {
