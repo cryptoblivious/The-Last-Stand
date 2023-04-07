@@ -4,8 +4,7 @@ import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
-import Jumper from '../../../server/game/game_components/Jumper';
-
+import backgroundImage  from '/assets/craftpix/backgrounds/background.png';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -42,6 +41,7 @@ export default class ClientMatch extends Phaser.Scene {
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
   private movePlayerMessage?: MovePlayerMessage
+  private background?: Phaser.GameObjects.Image
   
   // TOUTES LES KEYS
   private keys?: any;
@@ -59,6 +59,9 @@ export default class ClientMatch extends Phaser.Scene {
         this.load.spritesheet({ key: spriteSheetName, url: key.path, frameConfig: { frameWidth: key.frameWidth, frameHeight: key.frameHeight } });
       });
     });
+
+    // Load backgrounds and tiles
+    this.load.image('background', backgroundImage);
   }
 
   // Get the client from the Boostrap scene
@@ -117,6 +120,16 @@ export default class ClientMatch extends Phaser.Scene {
         });
       });
     });
+
+    //  CREATION DU BACKGROUND ET DU TUILAGE
+    // Background
+    this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
+    // stretch the background to fit the whole screen
+    this.background.displayWidth = this.sys.canvas.width;
+    this.background.displayHeight = this.sys.canvas.height;
+    
+    
+
   }
 
   update() {
