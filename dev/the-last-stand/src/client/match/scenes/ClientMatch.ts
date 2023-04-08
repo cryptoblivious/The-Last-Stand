@@ -16,14 +16,14 @@ interface MovePlayerMessage {
 
 const baseSpeedHandler: Record<string, number> = {
   chuck: 1000,
-  solana: 200,
+  solana: 1000,
   sirius: 150,
   logan: 150,
 };
 
 const jumpHeightHandler: Record<string, number> = {
-  chuck: 400,
-  solana: 500,
+  chuck: 800,
+  solana: 800,
   sirius: 1500,
   logan: 1500,
 };
@@ -35,7 +35,21 @@ const weightHandler: Record<string, number> = {
   logan: 300,
 };
 
-const fixedAnimations: string[] = ['jump', 'attack1', 'attack2', 'attack3'];
+const maxJumpHandler: Record<string, number> = {
+  chuck: 2,
+  solana: 2,
+  sirius: 2,
+  logan: 2,
+};
+
+const bounceHandler: Record<string, number> = {
+  chuck: 0,
+  solana: 0,
+  sirius: 0,
+  logan: 0,
+};
+
+const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3'];
 
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
@@ -97,13 +111,15 @@ export default class ClientMatch extends Phaser.Scene {
 
       entity.setName(message.gameEntityType);
       entity.setCollideWorldBounds(true);
-      entity.setBounce(0.2);
+      entity.setBounce(bounceHandler[message.gameEntityType]);
       entity.setGravityY(weightHandler[message.gameEntityType]);
       entity.setScale(2);
       entity.anims.play(`${message.gameEntityType}Idle`, true);
       entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
       entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
       entity.direction = message.direction;
+      entity.jumpCount = 0;
+      entity.maxJump = maxJumpHandler[message.gameEntityType];
       console.log(entity);
     });
 
@@ -144,32 +160,74 @@ export default class ClientMatch extends Phaser.Scene {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       const entity = this.gameEntities.get(this.playerId!);
+      const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
+      const canvasHeight: number = this.game.config.height as number;
+      const spriteBottom = entity.y + entity.height;
+      const bounceCorrection = 1;
+      const keyboardPressed = this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown;
+      const jumping = Phaser.Input.Keyboard.JustDown(this.keys.W) || Phaser.Input.Keyboard.JustDown(this.keys.UP) || Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
 
-      if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown) {
-        if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
-          entity.anim = `${entity.name}Idle`;
-          entity.setVelocityX(0);
-        } else if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
-          entity.anim = `${entity.name}Run`;
-          entity.setVelocityX(entity.baseSpeed);
-          entity.direction = 'right';
-        } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
-          entity.anim = `${entity.name}Run`;
-          entity.setVelocityX(-entity.baseSpeed);
-          entity.direction = 'left';
-        } else if (this.keys.J.isDown) {
+      if (spriteBottom >= canvasHeight - bounceCorrection) {
+        entity.body.touching.down = true;
+      }
+      if (entity.body.touching.down) {
+        entity.jumpCount = 0;
+      }
+
+      console.log('animKey', animKey);
+
+      // Input logic
+      if (keyboardPressed) {
+        // Jumping logic
+        if (jumping) {
+          entity.jumpCount += 1;
+          if (entity.jumpCount < entity.maxJump) {
+            entity.setVelocityY(-entity.jumpHeight);
+            if (entity.body.touching.down) {
+              entity.anim = `${entity.name}Jump`;
+            } else if (entity.jumpCount >= 1) {
+              entity.anim = `${entity.name}DoubleJump`;
+            }
+          } else if (entity.jumpCount >= entity.maxJump) {
+            entity.anim = `${entity.name}Fall`;
+          }
+        }
+        // Moving logic
+        if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown) {
+          if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
+            entity.anim = `${entity.name}Idle`;
+            entity.setVelocityX(0);
+          } else {
+            if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
+              entity.setVelocityX(entity.baseSpeed);
+              entity.direction = 'right';
+            } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
+              entity.setVelocityX(-entity.baseSpeed);
+              entity.direction = 'left';
+            }
+            if (animKey !== 'Jump' && animKey !== 'DoubleJump') {
+              if (entity.body.touching.down) {
+                entity.anim = `${entity.name}Run`;
+              } else {
+                entity.anim = `${entity.name}Fall`;
+              }
+            }
+          }
+        }
+        // Attacking logic
+        if (this.keys.J.isDown && entity.body.touching.down) {
           entity.anim = `${entity.name}Attack1`;
         }
-
-        if (this.keys.W?.isDown || this.keys.UP?.isDown || this.keys.SPACE?.isDown) {
-          entity.anim = `${entity.name}Jump`;
-          entity.setVelocityY(-entity.jumpHeight);
+      }
+      // Idle logic
+      else if (!fixedAnimations.includes(animKey)) {
+        if (entity.body.touching.down) {
+          entity.anim = `${entity.name}Idle`;
+        } else {
+          entity.anim = `${entity.name}Fall`;
         }
-      } else if (!fixedAnimations.includes(entity.anim)) {
-        entity.anim = `${entity.name}Idle`;
         entity.setVelocityX(0);
       }
-      console.log('anim', entity.anim);
 
       this.updateSpriteMessage = {
         x: entity.x,
@@ -183,10 +241,12 @@ export default class ClientMatch extends Phaser.Scene {
       //Render all the sprites
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
         const entity = this.gameEntities.get(key);
+        const animKey = gem.anim?.split(gem.gameEntityType)[1];
+        let flipX;
+
         if (entity) {
           entity.setPosition(gem.position.x, gem.position.y);
 
-          let flipX;
           if (gem.direction == 'left') {
             flipX = true;
           } else if (gem.direction == 'right') {
@@ -194,14 +254,15 @@ export default class ClientMatch extends Phaser.Scene {
           }
           entity.setFlipX(flipX);
 
-          // wait for the attack animation do be finished before doing anything else
-          if (gem.anim == `${gem.gameEntityType}Attack1`) {
-            //entity.anims.stop();
-            entity.anims.play(`${gem.gameEntityType}Attack1`, true);
+          // wait for fixed animations do be finished before playing other animations
+          if (fixedAnimations.includes(animKey!)) {
+            //console.log('anim fixed', animKey);
+            entity.anims.play(`${gem.gameEntityType}${animKey}`, true);
             entity.on('animationcomplete', () => {
               entity.anims.play(`${gem.gameEntityType}Idle`, true);
-              console.log('anim completed');
             });
+          } else {
+            entity.anims.play(gem.anim, true);
           }
         }
       });
