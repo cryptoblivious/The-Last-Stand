@@ -4,7 +4,7 @@ import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
-import backgroundImage  from '/assets/craftpix/backgrounds/background.png';
+import backgroundImage from '/assets/craftpix/backgrounds/background.png';
 import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
 interface MovePlayerMessage {
   x: number;
@@ -35,22 +35,24 @@ const weightHandler: Record<string, number> = {
   logan: 300,
 };
 
+const fixedAnimations: string[] = ['jump', 'attack1', 'attack2', 'attack3'];
+
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
   private gameEntities: Map<string, any> = new Map<string, any>();
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
-  private movePlayerMessage?: MovePlayerMessage
-  private background?: Phaser.GameObjects.Image
-  
+  private updateSpriteMessage?: MovePlayerMessage;
+  private background?: Phaser.GameObjects.Image;
+
   // TOUTES LES KEYS
   private keys?: any;
 
   constructor() {
     super('the-last-stand');
   }
-  
+
   preload() {
     // LOAD DES SPRITESHEETS AVEC LE SPRITESHEETLOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
@@ -82,7 +84,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
     // listen to state changes
-    this.mo.onStateChange((state: MatchState) => { });
+    this.mo.onStateChange((state: MatchState) => {});
 
     this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
@@ -101,6 +103,7 @@ export default class ClientMatch extends Phaser.Scene {
       entity.anims.play(`${message.gameEntityType}Idle`, true);
       entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
       entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
+      entity.direction = message.direction;
       console.log(entity);
     });
 
@@ -130,8 +133,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.background.displayWidth = this.sys.canvas.width;
     this.background.displayHeight = this.sys.canvas.height;
 
-
-    // Tileset platform principale 
+    // Tileset platform principale
     const tileMap = this.make.tilemap({ tileWidth: 32, tileHeight: 32, width: 10, height: 1 });
     const tileSet = tileMap.addTilesetImage('tuile03');
     const layer = tileMap.createBlankLayer('Tile Layer 1', tileSet, 100, 100);
@@ -141,86 +143,65 @@ export default class ClientMatch extends Phaser.Scene {
   update() {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
-
-      let isAttacking = false;
-      let anim = '';
-      let direction = '';
       const entity = this.gameEntities.get(this.playerId!);
 
-      if (entity.body.velocity.y < -10) {
-        anim = `${entity.name}Jump`;
-      }
-      else if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown) {
-
-        if (this.keys.A?.isDown && this.keys.D?.isDown || this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown) {
-          anim = `${entity.name}Idle`;
+      if (this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown) {
+        if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
+          entity.anim = `${entity.name}Idle`;
           entity.setVelocityX(0);
-        }
-
-        else if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
-          anim = `${entity.name}Run`;
+        } else if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
+          entity.anim = `${entity.name}Run`;
           entity.setVelocityX(entity.baseSpeed);
-          direction = 'right';
-        }
-
-        else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
-          anim = `${entity.name}Run`;
+          entity.direction = 'right';
+        } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
+          entity.anim = `${entity.name}Run`;
           entity.setVelocityX(-entity.baseSpeed);
-          direction = 'left';
-        }
-        else if (this.keys.J.isDown) {
-          anim = `${entity.name}Attack1`;
+          entity.direction = 'left';
+        } else if (this.keys.J.isDown) {
+          entity.anim = `${entity.name}Attack1`;
         }
 
         if (this.keys.W?.isDown || this.keys.UP?.isDown || this.keys.SPACE?.isDown) {
+          entity.anim = `${entity.name}Jump`;
           entity.setVelocityY(-entity.jumpHeight);
         }
+      } else if (!fixedAnimations.includes(entity.anim)) {
+        entity.anim = `${entity.name}Idle`;
+        entity.setVelocityX(0);
       }
-      else if (!isAttacking) {
-        anim = `${entity.name}Idle`;
-        entity.setVelocityX(0)
-      }
+      console.log('anim', entity.anim);
 
-      this.movePlayerMessage = {
+      this.updateSpriteMessage = {
         x: entity.x,
         y: entity.y,
-        anim: anim,
-        direction: direction,
+        direction: entity.direction,
+        anim: entity.anim,
       };
 
+      this.mo.send('update_sprite', this.updateSpriteMessage);
 
-      this.mo.send('move_player', this.movePlayerMessage);
-
-
-
+      //Render all the sprites
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
         const entity = this.gameEntities.get(key);
         if (entity) {
           entity.setPosition(gem.position.x, gem.position.y);
-          let animCompleted = undefined
-          if (gem.direction !== ''){
-            let flipX;
-            if (gem.direction == 'left') {
-              flipX = true;
-            }
-            else if (gem.direction == 'right') {
-              flipX = false;
-            }
-            entity.setFlipX(flipX);
+
+          let flipX;
+          if (gem.direction == 'left') {
+            flipX = true;
+          } else if (gem.direction == 'right') {
+            flipX = false;
           }
+          entity.setFlipX(flipX);
+
           // wait for the attack animation do be finished before doing anything else
           if (gem.anim == `${gem.gameEntityType}Attack1`) {
-            // entity.anims.stop();
-            animCompleted = false;
+            //entity.anims.stop();
             entity.anims.play(`${gem.gameEntityType}Attack1`, true);
             entity.on('animationcomplete', () => {
-              // entity.anims.play(`${gem.gameEntityType}Idle`, true);
-              animCompleted = true;
-              console.log ('anim completed')
+              entity.anims.play(`${gem.gameEntityType}Idle`, true);
+              console.log('anim completed');
             });
-          }  
-          if (animCompleted || animCompleted === undefined) {
-          entity.play(gem.anim, true);
           }
         }
       });

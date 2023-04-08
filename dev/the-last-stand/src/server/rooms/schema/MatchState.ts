@@ -15,13 +15,13 @@ export class GameEntityMapper extends Schema {
 export class MatchState extends Schema {
   @type({ map: GameEntityMapper }) gem: MapSchema<GameEntityMapper> = new MapSchema<GameEntityMapper>();
 
-  movePlayer(playerId: string, x: number, y: number, anim?: string, direction?: string) {
+  updateSprite(playerId: string, x: number, y: number, direction?: string, anim?: string) {
     const player = this.gem.get(playerId);
     if (player) {
       player.position.x = x;
       player.position.y = y;
-      player.anim = anim;
       player.direction = direction;
+      player.anim = anim;
     }
   }
 }

@@ -4,7 +4,6 @@ import GameEntityFactory from '../game/GameEntityFactory';
 import { GameEntityMapper } from './schema/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 
-
 interface IClient extends Client {
   selectedHero: string;
 }
@@ -19,6 +18,13 @@ export class MatchOrchestrator extends Room<MatchState> {
     3: { x: 200, y: 400 },
   };
 
+  private directionHandler: Record<number, string> = {
+    0: 'right',
+    1: 'left',
+    2: 'right',
+    3: 'left',
+  };
+
   private heroHandler: Record<number, string> = {
     0: 'chuck',
     1: 'solana',
@@ -29,9 +35,9 @@ export class MatchOrchestrator extends Room<MatchState> {
   onCreate(options: any) {
     this.setState(new MatchState());
 
-    this.onMessage('move_player', (player, message : {x : number, y:number, anim?:string, direction?:string}) => {
-      const { x, y, anim, direction } = message;
-      this.state.movePlayer(player.id, x, y, anim, direction);
+    this.onMessage('update_sprite', (player, message: { x: number; y: number; direction?: string; anim?: string }) => {
+      const { x, y, direction, anim } = message;
+      this.state.updateSprite(player.id, x, y, direction, anim);
       // console.log(this.state.gem.get(player.id)?.flipX)
     });
   }
@@ -45,7 +51,7 @@ export class MatchOrchestrator extends Room<MatchState> {
     client.send('assign_player_id', { id: client.sessionId });
 
     // Create the new player's hero and broadcast it to all clients
-    const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index] };
+    const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };
     this.broadcast('create_entity', entity);
 
     // Tell the new player to create all the other game entities
