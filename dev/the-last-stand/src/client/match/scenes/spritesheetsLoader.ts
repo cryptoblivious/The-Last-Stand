@@ -61,7 +61,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 5,
-        frameRate: 8,
+        frameRate: 16,
         repeat: 0,
       },
       {
@@ -71,7 +71,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 7,
-        frameRate: 10,
+        frameRate: 16,
         repeat: 0,
       },
       {
@@ -81,7 +81,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 7,
-        frameRate: 10,
+        frameRate: 16,
         repeat: 0,
       },
       {
@@ -206,7 +206,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 7,
-        frameRate: 10,
+        frameRate: 8,
         repeat: 0,
       },
       {
@@ -216,7 +216,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 7,
-        frameRate: 10,
+        frameRate: 8,
         repeat: 0,
       },
       {
@@ -250,8 +250,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         repeat: 0,
       },
       {
-        key: 'punch',
-        path: '/assets/heroes/solana/spritesheets/solana_punch.png',
+        key: 'kick',
+        path: '/assets/heroes/solana/spritesheets/solana_kick.png',
         frameWidth: 48,
         frameHeight: 48,
         startFrame: 0,

@@ -16,6 +16,13 @@ interface MovePlayerMessage {
 
 const baseSpeedHandler: Record<string, number> = {
   chuck: 1000,
+  solana: 500,
+  sirius: 150,
+  logan: 150,
+};
+
+const airborneSpeedHandler: Record<string, number> = {
+  chuck: 500,
   solana: 1000,
   sirius: 150,
   logan: 150,
@@ -133,9 +140,17 @@ export default class ClientMatch extends Phaser.Scene {
     //   .setScale(2)
     //   .refreshBody();
     // create a platform with the platform builder
-    const platform = this.add.tileSprite(this.sys.canvas.width / 2, this.sys.canvas.height, this.sys.canvas.width, 32, 'tuile03');
-    this.physics.add.existing(platform, true);
-    platforms.add(platform);
+    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, 'tuile03');
+    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
+    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
+
+    this.physics.add.existing(platform1, true);
+    this.physics.add.existing(platform2, true);
+    this.physics.add.existing(platform3, true);
+
+    platforms.add(platform1);
+    platforms.add(platform2);
+    platforms.add(platform3);
 
     // adjust the scale of the platform
     //platform.setScale(2);
@@ -157,11 +172,12 @@ export default class ClientMatch extends Phaser.Scene {
       entity.setScale(2);
       entity.anims.play(`${message.gameEntityType}Idle`, true);
       entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
+      entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];
       entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
       entity.direction = message.direction;
       entity.jumpCount = 0;
       entity.maxJump = maxJumpHandler[message.gameEntityType];
-      console.log(entity);
+      console.log(this.gameEntities);
     });
 
     this.mo.onMessage('remove_entity', (message: { id: string }) => {
@@ -180,6 +196,7 @@ export default class ClientMatch extends Phaser.Scene {
       const bounceCorrection = 10;
       const keyboardPressed = this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown;
       const jumping = Phaser.Input.Keyboard.JustDown(this.keys.W) || Phaser.Input.Keyboard.JustDown(this.keys.UP) || Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
+      const attacking = Phaser.Input.Keyboard.JustDown(this.keys.J) || Phaser.Input.Keyboard.JustDown(this.keys.K) || Phaser.Input.Keyboard.JustDown(this.keys.L);
 
       if (spriteBottom >= canvasHeight - bounceCorrection) {
         entity.body.blocked.down = true;
@@ -197,10 +214,10 @@ export default class ClientMatch extends Phaser.Scene {
             entity.setVelocityX(0);
           } else {
             if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
-              entity.setVelocityX(entity.baseSpeed);
+              entity.body.blocked.down ? entity.setVelocityX(entity.baseSpeed) : entity.setVelocityX(entity.airborneSpeed);
               entity.direction = 'right';
             } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
-              entity.setVelocityX(-entity.baseSpeed);
+              entity.body.blocked.down ? entity.setVelocityX(-entity.baseSpeed) : entity.setVelocityX(-entity.airborneSpeed);
               entity.direction = 'left';
             }
             if (animKey !== 'Jump' && animKey !== 'DoubleJump' && entity.anim !== `${entity.name}Jump`) {
@@ -214,10 +231,11 @@ export default class ClientMatch extends Phaser.Scene {
         }
         // Jumping logic
         if (jumping) {
-          entity.jumpCount += 1;
           if (entity.jumpCount < entity.maxJump) {
+            entity.jumpCount += 1;
+
             entity.setVelocityY(-entity.jumpHeight);
-            if (entity.body.touching.down) {
+            if (entity.body.blocked.down) {
               entity.anim = `${entity.name}Jump`;
             } else if (entity.jumpCount >= 1) {
               entity.anim = `${entity.name}DoubleJump`;
@@ -227,8 +245,16 @@ export default class ClientMatch extends Phaser.Scene {
           }
         }
         // Attacking logic
-        if (this.keys.J.isDown && entity.body.blocked.down) {
-          entity.anim = `${entity.name}Attack1`;
+        if (attacking && entity.body.blocked.down) {
+          if (!fixedAnimations.includes(animKey)) {
+            if (this.keys.J?.isDown) {
+              entity.anim = `${entity.name}Attack1`;
+            } else if (this.keys.K?.isDown) {
+              entity.anim = `${entity.name}Attack2`;
+            } else if (this.keys.L?.isDown) {
+              entity.anim = `${entity.name}Attack3`;
+            }
+          }
         }
       }
       // Idle logic
@@ -236,13 +262,24 @@ export default class ClientMatch extends Phaser.Scene {
         entity.setVelocityX(0);
 
         if (!fixedAnimations.includes(animKey)) {
-          console.log(entity.body.blocked.down);
           if (entity.body.blocked.down) {
             entity.anim = `${entity.name}Idle`;
           } else {
             entity.anim = `${entity.name}Fall`;
           }
         }
+      }
+
+      // Make the sprite appear on the other side of the screen when it goes off screen
+      if (entity.x > this.sys.canvas.width * 1.2) {
+        entity.x = 0 - this.sys.canvas.width * 0.2;
+      } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
+        entity.x = this.sys.canvas.width * 1.2;
+      }
+      if (entity.y > this.sys.canvas.height * 1.2) {
+        entity.y = 0 - this.sys.canvas.height * 0.2;
+      } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
+        entity.y = this.sys.canvas.height * 1.2;
       }
 
       this.updateSpriteMessage = {
@@ -272,9 +309,13 @@ export default class ClientMatch extends Phaser.Scene {
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
-            entity.anims.play(`${gem.gameEntityType}${animKey}`, true);
+            entity.anims.play(gem.anim, true);
             entity.once('animationcomplete', () => {
-              animKey == 'Attack1' ? entity.anims.play(`${gem.gameEntityType}Idle`, true) : entity.anims.play(`${gem.gameEntityType}Fall`, true);
+              if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
+                entity.anims.play(`${gem.gameEntityType}Idle`, true);
+                // TODO : Generate attack hitboxes
+                console.log(`Generate ${entity.name}${animKey} from ${this.playerId} at ${entity.x}, ${entity.y}`);
+              } else entity.anims.play(`${gem.gameEntityType}Fall`, true);
             });
           } else {
             entity.anims.play(gem.anim, true);
