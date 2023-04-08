@@ -23,6 +23,7 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
   }
 
   return true ? (
+    // SKIPPER
     //return isAuthenticated === userAuth || userAuth === 'both' ? (
     React.cloneElement(Component, { data })
   ) : (
