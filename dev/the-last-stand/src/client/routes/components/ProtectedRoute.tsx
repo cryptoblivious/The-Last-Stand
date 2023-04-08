@@ -22,7 +22,8 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
     return <div className='bg-black text-white h-screen'>Checking authentication...</div>;
   }
 
-  return isAuthenticated === userAuth || userAuth === 'both' ? (
+  return true ? (
+    //return isAuthenticated === userAuth || userAuth === 'both' ? (
     React.cloneElement(Component, { data })
   ) : (
     <Navigate
