@@ -31,7 +31,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 3,
-        frameRate: 8,
+        frameRate: 4,
         repeat: 0,
       },
       {
@@ -41,7 +41,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 5,
-        frameRate: 8,
+        frameRate: 4,
         repeat: 0,
       },
       {

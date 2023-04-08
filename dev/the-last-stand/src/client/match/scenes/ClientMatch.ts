@@ -43,10 +43,10 @@ const maxJumpHandler: Record<string, number> = {
 };
 
 const bounceHandler: Record<string, number> = {
-  chuck: 0,
-  solana: 0,
-  sirius: 0,
-  logan: 0,
+  chuck: 0.1,
+  solana: 0.1,
+  sirius: 0.1,
+  logan: 0.1,
 };
 
 const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3'];
@@ -97,37 +97,6 @@ export default class ClientMatch extends Phaser.Scene {
     //  TOUTES LES KEYS DES MOUVEMENTS
     this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
-    // listen to state changes
-    this.mo.onStateChange((state: MatchState) => {});
-
-    this.mo.onMessage('assign_player_id', (message: { id: string }) => {
-      this.playerId = message.id;
-    });
-
-    this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
-      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
-
-      const entity = this.gameEntities.get(message.id);
-
-      entity.setName(message.gameEntityType);
-      entity.setCollideWorldBounds(true);
-      entity.setBounce(bounceHandler[message.gameEntityType]);
-      entity.setGravityY(weightHandler[message.gameEntityType]);
-      entity.setScale(2);
-      entity.anims.play(`${message.gameEntityType}Idle`, true);
-      entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
-      entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
-      entity.direction = message.direction;
-      entity.jumpCount = 0;
-      entity.maxJump = maxJumpHandler[message.gameEntityType];
-      console.log(entity);
-    });
-
-    this.mo.onMessage('remove_entity', (message: { id: string }) => {
-      this.gameEntities.get(message.id)?.destroy();
-      this.gameEntities.delete(message.id);
-    });
-
     //  CREATION DES ANIMATIONS AVEC LES SPRITESHEETS DU SPRITESHEET LOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
@@ -150,10 +119,55 @@ export default class ClientMatch extends Phaser.Scene {
     this.background.displayHeight = this.sys.canvas.height;
 
     // Tileset platform principale
-    const tileMap = this.make.tilemap({ tileWidth: 32, tileHeight: 32, width: 10, height: 1 });
-    const tileSet = tileMap.addTilesetImage('tuile03');
-    const layer = tileMap.createBlankLayer('Tile Layer 1', tileSet, 100, 100);
-    this.add.existing(layer);
+    //const tileMap = this.make.tilemap({ tileWidth: 32, tileHeight: 32, width: 10, height: 1 });
+    //const tileSet = tileMap.addTilesetImage('tuile03');
+    //const layer = tileMap.createBlankLayer('Tile Layer 1', tileSet, 100, 100);
+    //this.add.existing(layer);
+
+    //tileMap.setCollisionBetween(0, 14);
+
+    // Create platforms
+    const platforms = this.physics.add.staticGroup();
+    // platforms
+    //   .create(100, this.sys.canvas.height - 100, 'tuile03')
+    //   .setScale(2)
+    //   .refreshBody();
+    // create a platform with the platform builder
+    const platform = this.add.tileSprite(this.sys.canvas.width / 2, this.sys.canvas.height, this.sys.canvas.width, 32, 'tuile03');
+    this.physics.add.existing(platform, true);
+    platforms.add(platform);
+
+    // adjust the scale of the platform
+    //platform.setScale(2);
+
+    this.mo.onMessage('assign_player_id', (message: { id: string }) => {
+      this.playerId = message.id;
+    });
+
+    this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
+      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
+
+      const entity = this.gameEntities.get(message.id);
+
+      entity.setName(message.gameEntityType);
+      //entity.setCollideWorldBounds(true);
+      this.physics.add.collider(entity, platforms);
+      entity.setBounce(bounceHandler[message.gameEntityType]);
+      entity.setGravityY(weightHandler[message.gameEntityType]);
+      entity.setScale(2);
+      entity.anims.play(`${message.gameEntityType}Idle`, true);
+      entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
+      entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
+      entity.direction = message.direction;
+      entity.jumpCount = 0;
+      entity.maxJump = maxJumpHandler[message.gameEntityType];
+      console.log(entity);
+    });
+
+    this.mo.onMessage('remove_entity', (message: { id: string }) => {
+      this.gameEntities.get(message.id)?.destroy();
+      this.gameEntities.delete(message.id);
+    });
   }
 
   update() {
@@ -163,21 +177,41 @@ export default class ClientMatch extends Phaser.Scene {
       const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
       const canvasHeight: number = this.game.config.height as number;
       const spriteBottom = entity.y + entity.height;
-      const bounceCorrection = 1;
+      const bounceCorrection = 10;
       const keyboardPressed = this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown;
       const jumping = Phaser.Input.Keyboard.JustDown(this.keys.W) || Phaser.Input.Keyboard.JustDown(this.keys.UP) || Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
 
       if (spriteBottom >= canvasHeight - bounceCorrection) {
-        entity.body.touching.down = true;
+        entity.body.blocked.down = true;
       }
-      if (entity.body.touching.down) {
+      if (entity.body.blocked.down) {
         entity.jumpCount = 0;
       }
 
-      console.log('animKey', animKey);
-
       // Input logic
       if (keyboardPressed) {
+        // Moving logic
+        if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown) {
+          if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
+            entity.anim = `${entity.name}Idle`;
+            entity.setVelocityX(0);
+          } else {
+            if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
+              entity.setVelocityX(entity.baseSpeed);
+              entity.direction = 'right';
+            } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
+              entity.setVelocityX(-entity.baseSpeed);
+              entity.direction = 'left';
+            }
+            if (animKey !== 'Jump' && animKey !== 'DoubleJump' && entity.anim !== `${entity.name}Jump`) {
+              if (entity.body.blocked.down) {
+                entity.anim = `${entity.name}Run`;
+              } else {
+                entity.anim = `${entity.name}Fall`;
+              }
+            }
+          }
+        }
         // Jumping logic
         if (jumping) {
           entity.jumpCount += 1;
@@ -192,41 +226,23 @@ export default class ClientMatch extends Phaser.Scene {
             entity.anim = `${entity.name}Fall`;
           }
         }
-        // Moving logic
-        if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown) {
-          if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
-            entity.anim = `${entity.name}Idle`;
-            entity.setVelocityX(0);
-          } else {
-            if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
-              entity.setVelocityX(entity.baseSpeed);
-              entity.direction = 'right';
-            } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
-              entity.setVelocityX(-entity.baseSpeed);
-              entity.direction = 'left';
-            }
-            if (animKey !== 'Jump' && animKey !== 'DoubleJump') {
-              if (entity.body.touching.down) {
-                entity.anim = `${entity.name}Run`;
-              } else {
-                entity.anim = `${entity.name}Fall`;
-              }
-            }
-          }
-        }
         // Attacking logic
-        if (this.keys.J.isDown && entity.body.touching.down) {
+        if (this.keys.J.isDown && entity.body.blocked.down) {
           entity.anim = `${entity.name}Attack1`;
         }
       }
       // Idle logic
-      else if (!fixedAnimations.includes(animKey)) {
-        if (entity.body.touching.down) {
-          entity.anim = `${entity.name}Idle`;
-        } else {
-          entity.anim = `${entity.name}Fall`;
-        }
+      else {
         entity.setVelocityX(0);
+
+        if (!fixedAnimations.includes(animKey)) {
+          console.log(entity.body.blocked.down);
+          if (entity.body.blocked.down) {
+            entity.anim = `${entity.name}Idle`;
+          } else {
+            entity.anim = `${entity.name}Fall`;
+          }
+        }
       }
 
       this.updateSpriteMessage = {
@@ -256,10 +272,9 @@ export default class ClientMatch extends Phaser.Scene {
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
-            //console.log('anim fixed', animKey);
             entity.anims.play(`${gem.gameEntityType}${animKey}`, true);
-            entity.on('animationcomplete', () => {
-              entity.anims.play(`${gem.gameEntityType}Idle`, true);
+            entity.once('animationcomplete', () => {
+              animKey == 'Attack1' ? entity.anims.play(`${gem.gameEntityType}Idle`, true) : entity.anims.play(`${gem.gameEntityType}Fall`, true);
             });
           } else {
             entity.anims.play(gem.anim, true);
