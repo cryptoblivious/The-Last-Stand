@@ -6,12 +6,23 @@ import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 import backgroundImage from '/assets/craftpix/backgrounds/background.png';
 import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
+import GameEntityFactory from '../GameEntityFactory';
+
 interface MovePlayerMessage {
   x: number;
   y: number;
   anim?: string;
   flipX?: boolean;
   direction?: string;
+}
+
+interface GenerateAttackHitboxMessage {
+  attackType: string;
+  attackerWidth: number;
+  attackerHeight: number;
+  direction: string;
+  x: number;
+  y: number;
 }
 
 const baseSpeedHandler: Record<string, number> = {
@@ -65,8 +76,10 @@ export default class ClientMatch extends Phaser.Scene {
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
   private updateSpriteMessage?: MovePlayerMessage;
+  private generateAttackHitboxMessage?: GenerateAttackHitboxMessage;
   private background?: Phaser.GameObjects.Image;
   private airborneCorrection: integer = 3;
+  private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
 
   // TOUTES LES KEYS
   private keys?: any;
@@ -174,24 +187,32 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
-      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
+      if (message.gameEntityType == 'rectangle') {
+        const entity = this.gameEntityFactory.produce('rectangle', { x: message.position.x, y: message.position.y });
+        const graphics = this.add.graphics();
+        graphics.fillStyle(0xff0000, 1);
+        graphics.fillRect(message.position.x, message.position.y, entity.size.x, entity.size.y);
+        this.gameEntities.set(message.id, graphics);
+      } else {
+        console.log('creating entity');
+        this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
+        const entity = this.gameEntities.get(message.id);
+        entity.setName(message.gameEntityType);
+        //entity.setCollideWorldBounds(true);
+        this.physics.add.collider(entity, platforms);
+        entity.setBounce(bounceHandler[message.gameEntityType]);
+        entity.setGravityY(weightHandler[message.gameEntityType]);
+        entity.setScale(2);
+        entity.anims.play(`${message.gameEntityType}Idle`, true);
+        entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
+        entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];
+        entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
+        entity.direction = message.direction;
+        entity.jumpCount = 0;
+        entity.airborneCount = 0;
+        entity.maxJump = maxJumpHandler[message.gameEntityType];
+      }
 
-      const entity = this.gameEntities.get(message.id);
-
-      entity.setName(message.gameEntityType);
-      //entity.setCollideWorldBounds(true);
-      this.physics.add.collider(entity, platforms);
-      entity.setBounce(bounceHandler[message.gameEntityType]);
-      entity.setGravityY(weightHandler[message.gameEntityType]);
-      entity.setScale(2);
-      entity.anims.play(`${message.gameEntityType}Idle`, true);
-      entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
-      entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];
-      entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
-      entity.direction = message.direction;
-      entity.jumpCount = 0;
-      entity.airborneCount = 0;
-      entity.maxJump = maxJumpHandler[message.gameEntityType];
       console.log(this.gameEntities);
     });
 
@@ -321,6 +342,17 @@ export default class ClientMatch extends Phaser.Scene {
                 entity.anim = `${gem.gameEntityType}Idle`;
                 //entity.anims.play(`${gem.gameEntityType}Idle`, true);
                 // TODO : Generate attack hitboxes
+                this.generateAttackHitboxMessage = {
+                  attackType: entity.name + animKey,
+                  attackerWidth: entity.width,
+                  attackerHeight: entity.height,
+                  direction: entity.direction,
+                  x: entity.x,
+                  y: entity.y,
+                };
+
+                this.mo!.send('generate_attack_hitbox', this.generateAttackHitboxMessage);
+
                 console.log(`Generate ${entity.name}${animKey} from ${this.playerId} at ${entity.x}, ${entity.y}`);
               } else {
                 //entity.anims.play(`${gem.gameEntityType}Fall`, true);

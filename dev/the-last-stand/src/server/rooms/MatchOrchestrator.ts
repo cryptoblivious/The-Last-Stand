@@ -1,6 +1,5 @@
 import { Room, Client } from 'colyseus';
 import { MatchState } from './schema/MatchState';
-import GameEntityFactory from '../game/GameEntityFactory';
 import { GameEntityMapper } from './schema/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 
@@ -9,7 +8,6 @@ interface IClient extends Client {
 }
 export class MatchOrchestrator extends Room<MatchState> {
   maxClients: number = 4;
-  gameEntityFactory: GameEntityFactory = new GameEntityFactory();
 
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 50, y: 400 },
@@ -39,6 +37,14 @@ export class MatchOrchestrator extends Room<MatchState> {
       const { x, y, direction, anim } = message;
       this.state.updateSprite(player.id, x, y, direction, anim);
       // console.log(this.state.gem.get(player.id)?.flipX)
+    });
+
+    this.onMessage('generate_attack_hitbox', (player, message: { attackType: string; attackerWidth: number; attackerHeight: number; direction: string; x: number; y: number }) => {
+      //console.log('generating attack hitbox', message);
+      const { attackType, attackerWidth, attackerHeight, direction, x, y } = message;
+      const entity: IGameEntityMapper = { id: player.id, gameEntityType: 'rectangle', position: { x: x, y: y }, direction: direction };
+      console.log('generating_attack_hitbox', entity);
+      this.broadcast('create_entity', entity);
     });
   }
 

@@ -1,6 +1,6 @@
-import GameEntity from './GameEntity';
-import Mover from './game_components/Mover';
-import Jumper from './game_components/Jumper';
+import GameEntity from '../../server/game/GameEntity';
+import Mover from '../../server/game/game_components/Mover';
+import Jumper from '../../server/game/game_components/Jumper';
 import { IGameEntityProducer } from '../../typescript/interfaces/IGameEntityProducer';
 
 export default class GameEntityFactory {
@@ -9,19 +9,22 @@ export default class GameEntityFactory {
 
   constructor() {
     this.idSequencer = 0;
+    console.log('factory', this);
+
+    //console.log('instantiating idSequencer: ' + this.idSequencer);
     this.gameEntityPrefabs = new Map<string, IGameEntityProducer>();
 
     this.gameEntityPrefabs.set('solana', this.produceSolana);
-    this.gameEntityPrefabs.set('square', this.produceSquare);
+    this.gameEntityPrefabs.set('rectangle', this.produceRectangle);
     //this.gameEntityPrefabs.set(); // add more prefabs here
   }
 
-  produceSolana(): GameEntity {
+  produceSolana(position: { x: number; y: number }): GameEntity {
     let solana = new GameEntity({
       id: this.idSequencer,
       name: 'solana',
-      position: { x: 0, y: 0 },
       size: { width: 0, height: 0 },
+      position: position,
     });
 
     //solana.addComponent('renderer', new Renderer({ gameEntity: solana, name: 'renderer', spritesheets: [['moveLeft', 'solanaMoveLeft.png'], ['moveRight', 'solanaMoveRight.png'], ['jump', 'solanaJump']] }));
@@ -32,12 +35,27 @@ export default class GameEntityFactory {
     return solana;
   }
 
-  produce(name: string): GameEntity {
+  produceRectangle(position: { x: number; y: number }): GameEntity {
+    //TODO: Get idSequencer to be defined here
+    console.log('this: ', this);
+    console.log('idSequencer: ', this.idSequencer);
+
+    let rectangle = new GameEntity({
+      id: this.idSequencer,
+      name: 'rectangle',
+      size: { width: 100, height: 25 },
+      position: position,
+    });
+
+    return rectangle;
+  }
+
+  produce(name: string, position: { x: number; y: number }): GameEntity {
     const gameEntityProducer = this.gameEntityPrefabs.get(name);
 
     if (gameEntityProducer) {
-      this.idSequencer++;
-      const gameEntity = gameEntityProducer();
+      this.idSequencer += 1;
+      const gameEntity = gameEntityProducer(position);
       return gameEntity;
     } else {
       throw new Error(`No prefab with name ${name} exists`);
