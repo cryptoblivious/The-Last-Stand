@@ -66,12 +66,25 @@ export default class ClientMatch extends Phaser.Scene {
   private spriteSheetsLoader = spriteSheetsLoader;
   private updateSpriteMessage?: MovePlayerMessage;
   private background?: Phaser.GameObjects.Image;
+  private airborneCorrection: integer = 3;
 
   // TOUTES LES KEYS
   private keys?: any;
 
   constructor() {
     super('the-last-stand');
+  }
+
+  applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
+    if (entity.body.blocked.down) {
+      entity.anim = `${entity.name}${groundedAnim}`;
+      entity.airborneCount = 0;
+    } else {
+      entity.airborneCount += 1;
+      if (entity.airborneCount >= this.airborneCorrection) {
+        entity.anim = `${entity.name}${airborneAnim}`;
+      }
+    }
   }
 
   preload() {
@@ -176,6 +189,7 @@ export default class ClientMatch extends Phaser.Scene {
       entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
       entity.direction = message.direction;
       entity.jumpCount = 0;
+      entity.airborneCount = 0;
       entity.maxJump = maxJumpHandler[message.gameEntityType];
       console.log(this.gameEntities);
     });
@@ -207,6 +221,20 @@ export default class ClientMatch extends Phaser.Scene {
 
       // Input logic
       if (keyboardPressed) {
+        // Jumping logic
+        if (jumping) {
+          if (entity.jumpCount < entity.maxJump) {
+            entity.setVelocityY(-entity.jumpHeight);
+            if (entity.jumpCount == 0) {
+              entity.anim = `${entity.name}Jump`;
+            } else if (entity.jumpCount >= 1) {
+              entity.anim = `${entity.name}DoubleJump`;
+            }
+            entity.jumpCount += 1;
+          } else if (entity.jumpCount >= entity.maxJump) {
+            entity.anim = `${entity.name}Fall`;
+          }
+        }
         // Moving logic
         if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown) {
           if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
@@ -220,28 +248,9 @@ export default class ClientMatch extends Phaser.Scene {
               entity.body.blocked.down ? entity.setVelocityX(-entity.baseSpeed) : entity.setVelocityX(-entity.airborneSpeed);
               entity.direction = 'left';
             }
-            if (animKey !== 'Jump' && animKey !== 'DoubleJump' && entity.anim !== `${entity.name}Jump`) {
-              if (entity.body.blocked.down) {
-                entity.anim = `${entity.name}Run`;
-              } else {
-                entity.anim = `${entity.name}Fall`;
-              }
+            if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
+              this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
             }
-          }
-        }
-        // Jumping logic
-        if (jumping) {
-          if (entity.jumpCount < entity.maxJump) {
-            entity.jumpCount += 1;
-
-            entity.setVelocityY(-entity.jumpHeight);
-            if (entity.body.blocked.down) {
-              entity.anim = `${entity.name}Jump`;
-            } else if (entity.jumpCount >= 1) {
-              entity.anim = `${entity.name}DoubleJump`;
-            }
-          } else if (entity.jumpCount >= entity.maxJump) {
-            entity.anim = `${entity.name}Fall`;
           }
         }
         // Attacking logic
@@ -262,11 +271,7 @@ export default class ClientMatch extends Phaser.Scene {
         entity.setVelocityX(0);
 
         if (!fixedAnimations.includes(animKey)) {
-          if (entity.body.blocked.down) {
-            entity.anim = `${entity.name}Idle`;
-          } else {
-            entity.anim = `${entity.name}Fall`;
-          }
+          this.applyAirborneAnimCorrection(entity, 'Idle', 'Fall');
         }
       }
 
@@ -307,18 +312,20 @@ export default class ClientMatch extends Phaser.Scene {
           }
           entity.setFlipX(flipX);
 
+          entity.anims.play(gem.anim, true);
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
-            entity.anims.play(gem.anim, true);
             entity.once('animationcomplete', () => {
               if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
-                entity.anims.play(`${gem.gameEntityType}Idle`, true);
+                entity.anim = `${gem.gameEntityType}Idle`;
+                //entity.anims.play(`${gem.gameEntityType}Idle`, true);
                 // TODO : Generate attack hitboxes
                 console.log(`Generate ${entity.name}${animKey} from ${this.playerId} at ${entity.x}, ${entity.y}`);
-              } else entity.anims.play(`${gem.gameEntityType}Fall`, true);
+              } else {
+                //entity.anims.play(`${gem.gameEntityType}Fall`, true);
+                entity.anim = `${gem.gameEntityType}Fall`;
+              }
             });
-          } else {
-            entity.anims.play(gem.anim, true);
           }
         }
       });
