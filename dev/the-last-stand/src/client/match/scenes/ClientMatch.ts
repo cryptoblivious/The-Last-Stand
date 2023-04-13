@@ -76,14 +76,15 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
-    if (entity.body.blocked.down) {
-      entity.anim = `${entity.name}${groundedAnim}`;
-      entity.airborneCount = 0;
-    } else {
+    if (!entity.body.blocked.down) {
       entity.airborneCount += 1;
       if (entity.airborneCount >= this.airborneCorrection) {
         entity.anim = `${entity.name}${airborneAnim}`;
+      } else {
+        entity.anim = `${entity.name}${groundedAnim}`;
       }
+    } else {
+      entity.airborneCount = 0;
     }
   }
 
