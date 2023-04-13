@@ -14,16 +14,15 @@ const UserInfoCard = () => {
 
   const [user, setUser] = useState<IUser | null>(null);
 
-  // // SKIPPER : Removed user since no acces to db
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   async function fetchData() {
-  //     const user = await getCurrentUser();
-  //     setUser(user);
-  //   }
-  //   fetchData();
-  //   setIsLoading(false);
-  // }, [isDoneEditing]);
+  useEffect(() => {
+    setIsLoading(true);
+    async function fetchData() {
+      const user = await getCurrentUser();
+      setUser(user);
+    }
+    fetchData();
+    setIsLoading(false);
+  }, [isDoneEditing]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
