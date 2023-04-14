@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="31" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="objets" tilewidth="32" tileheight="32" tilecount="42" columns="7">
+  <image source="../../../../../../Downloads/Objects.jpg" width="224" height="192"/>
+ </tileset>
+ <tileset firstgid="43" name="tuiles" tilewidth="32" tileheight="32" tilecount="81" columns="9">
+  <image source="../../../../../../Downloads/Tiles.jpg" width="288" height="288"/>
+ </tileset>
  <layer id="1" name="Calque de Tuiles 1" width="31" height="19">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
