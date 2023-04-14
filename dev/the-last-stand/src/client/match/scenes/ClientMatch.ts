@@ -5,6 +5,8 @@ import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 import GameEntityFactory from '../GameEntityFactory';
+import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
+//const tuile03 = '/assets/craftpix/tiles/IndustrialTile_03.png';
 
 interface MovePlayerMessage {
   x: number;
@@ -112,7 +114,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     // Load backgrounds and tiles
     this.load.image('background', '/assets/craftpix/backgrounds/background.png');
-    this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
+    this.load.image('tuile03', tuile03);
   }
 
   // Get the client from the Boostrap scene
@@ -165,9 +167,9 @@ export default class ClientMatch extends Phaser.Scene {
     //   .setScale(2)
     //   .refreshBody();
     // create a platform with the platform builder
-    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, '/assets/craftpix/tiles/IndustrialTile_03.png');
-    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, '/assets/craftpix/tiles/IndustrialTile_03.png');
-    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, '/assets/craftpix/tiles/IndustrialTile_03.png');
+    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, tuile03);
+    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, tuile03);
+    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, tuile03);
 
     this.physics.add.existing(platform1, true);
     this.physics.add.existing(platform2, true);
@@ -290,12 +292,7 @@ export default class ClientMatch extends Phaser.Scene {
               entity.body.blocked.down ? entity.setVelocityX(-entity.baseSpeed) : entity.setVelocityX(-entity.airborneSpeed);
               entity.direction = 'left';
             } else if (this.keys.S?.isDown || this.keys.DOWN?.isDown) {
-              if (entity.body.blocked.down) {
-                entity.anim = `${entity.name}Death`;
-              } else {
-                console.log('falling straight down');
-                entity.setVelocityX(0);
-              }
+              entity.setVelocityX(0);
             }
             if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
               this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
