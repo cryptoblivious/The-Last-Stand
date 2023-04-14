@@ -16,10 +16,6 @@ interface MovePlayerMessage {
   direction?: string;
 }
 
-interface CustomAnimation extends Phaser.Animations.Animation {
-  frameCallbacks?: number[];
-}
-
 interface GenerateAttackHitboxMessage {
   attackType: string;
   attackerWidth: number;
@@ -144,11 +140,11 @@ export default class ClientMatch extends Phaser.Scene {
           frames: this.anims.generateFrameNumbers(animKey, { start: key.startFrame, end: key.endFrame }),
           frameRate: key.frameRate,
           repeat: key.repeat,
-          frameCallbacks: key.frameCallbacks,
-        } as CustomAnimationy);
+        });
       });
     });
 
+    console.log(this.spriteSheetsLoader);
     //  CREATION DU BACKGROUND ET DU TUILAGE
     // Background
     this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
@@ -218,6 +214,13 @@ export default class ClientMatch extends Phaser.Scene {
         entity.jumpCount = 0;
         entity.airborneCount = 0;
         entity.maxJump = maxJumpHandler[message.gameEntityType];
+        entity.frameEvents = {};
+        this.spriteSheetsLoader
+          .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
+          ?.spriteSheets.forEach((spritesheet) => {
+            entity.frameEvents[spritesheet.key] = spritesheet.frameEvents;
+          });
+        console.log(entity.frameEvents);
       }
 
       //console.log(this.gameEntities);
@@ -342,41 +345,32 @@ export default class ClientMatch extends Phaser.Scene {
           entity.setFlipX(flipX);
 
           entity.anims.play(gem.anim, true);
+
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
             if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
-              // Add a callback to the third frame of the animation
               entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
-                const cAnim = anim;
-                const cFrame = frame;
-                const cSprite = sprite;
-                const cFrameKey = frameKey;
+                if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
+                  this.generateAttackHitboxMessage = {
+                    attackType: entity.name + animKey,
+                    attackerWidth: entity.width,
+                    attackerHeight: entity.height,
+                    direction: entity.direction,
+                    x: entity.x,
+                    y: entity.y,
+                  };
 
-                if (frame.index === 2) {
-                  console.log('on frame 2');
+                  console.log('generate_attack_hitbox', frame.index + this.generateAttackHitboxMessage);
+
+                  this.mo!.send('generate_attack_hitbox', this.generateAttackHitboxMessage);
                 }
               });
             }
+
             entity.once('animationcomplete', () => {
-              //console.log("I'm done!");
               if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
-                //entity.anim = `${gem.gameEntityType}Idle`;
-                //entity.anims.play(`${gem.gameEntityType}Idle`, true);
-
-                this.generateAttackHitboxMessage = {
-                  attackType: entity.name + animKey,
-                  attackerWidth: entity.width,
-                  attackerHeight: entity.height,
-                  direction: entity.direction,
-                  x: entity.x,
-                  y: entity.y,
-                };
-
-                this.mo!.send('generate_attack_hitbox', this.generateAttackHitboxMessage);
-
-                //console.log(`Generate ${entity.name}${animKey} from ${this.playerId} at ${entity.x}, ${entity.y}`);
+                entity.anim = `${gem.gameEntityType}Idle`;
               } else {
-                //entity.anims.play(`${gem.gameEntityType}Fall`, true);
                 entity.anim = `${gem.gameEntityType}Fall`;
               }
             });

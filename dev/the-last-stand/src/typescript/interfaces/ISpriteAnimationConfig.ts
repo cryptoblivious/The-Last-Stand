@@ -7,5 +7,5 @@ export default interface ISpriteAnimationConfig {
   endFrame: number;
   frameRate: number;
   repeat: number;
-  frameCallbacks?: number[];
+  frameEvents?: number[];
 }
