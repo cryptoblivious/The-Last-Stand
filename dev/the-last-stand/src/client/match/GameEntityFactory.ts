@@ -9,7 +9,6 @@ export default class GameEntityFactory {
 
   constructor() {
     this.idSequencer = 0;
-    console.log('factory', this);
 
     //console.log('instantiating idSequencer: ' + this.idSequencer);
     this.gameEntityPrefabs = new Map<string, IGameEntityProducer>();
@@ -19,8 +18,8 @@ export default class GameEntityFactory {
     //this.gameEntityPrefabs.set(); // add more prefabs here
   }
 
-  produceSolana(position: { x: number; y: number }): GameEntity {
-    let solana = new GameEntity({
+  produceSolana = (position: { x: number; y: number }): GameEntity => {
+    const solana = new GameEntity({
       id: this.idSequencer,
       name: 'solana',
       size: { width: 0, height: 0 },
@@ -33,14 +32,10 @@ export default class GameEntityFactory {
     //solana.addComponent(); // add more components here
 
     return solana;
-  }
+  };
 
-  produceRectangle(position: { x: number; y: number }): GameEntity {
-    //TODO: Get idSequencer to be defined here
-    console.log('this: ', this);
-    console.log('idSequencer: ', this.idSequencer);
-
-    let rectangle = new GameEntity({
+  produceRectangle = (position: { x: number; y: number }): GameEntity => {
+    const rectangle = new GameEntity({
       id: this.idSequencer,
       name: 'rectangle',
       size: { width: 100, height: 25 },
@@ -48,9 +43,9 @@ export default class GameEntityFactory {
     });
 
     return rectangle;
-  }
+  };
 
-  produce(name: string, position: { x: number; y: number }): GameEntity {
+  produce = (name: string, position: { x: number; y: number }): GameEntity => {
     const gameEntityProducer = this.gameEntityPrefabs.get(name);
 
     if (gameEntityProducer) {
@@ -60,5 +55,5 @@ export default class GameEntityFactory {
     } else {
       throw new Error(`No prefab with name ${name} exists`);
     }
-  }
+  };
 }

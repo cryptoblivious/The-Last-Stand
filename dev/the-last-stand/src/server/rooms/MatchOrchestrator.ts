@@ -1,6 +1,5 @@
 import { Room, Client } from 'colyseus';
-import { MatchState } from './schema/MatchState';
-import { GameEntityMapper } from './schema/MatchState';
+import { MatchState, GameEntityMapper } from './schema/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 
 interface IClient extends Client {
@@ -10,7 +9,7 @@ export class MatchOrchestrator extends Room<MatchState> {
   maxClients: number = 4;
 
   private positionHandler: Record<number, { x: number; y: number }> = {
-    0: { x: 50, y: 400 },
+    0: { x: 200, y: 400 },
     1: { x: 100, y: 400 },
     2: { x: 150, y: 400 },
     3: { x: 200, y: 400 },
@@ -55,6 +54,7 @@ export class MatchOrchestrator extends Room<MatchState> {
     const index = this.clients.indexOf(client);
     client.selectedHero = this.heroHandler[index];
     client.send('assign_player_id', { id: client.sessionId });
+    this.state.player_ids.push(client.sessionId);
 
     // Create the new player's hero and broadcast it to all clients
     const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };

@@ -73,6 +73,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 7,
         frameRate: 16,
         repeat: 0,
+        frameCallbacks: [4, 7],
       },
       {
         key: 'attack3',

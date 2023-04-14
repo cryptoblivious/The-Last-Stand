@@ -15,8 +15,8 @@ const Match = () => {
 
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: 992,
+        height: 608,
         physics: {
           default: 'arcade',
           arcade: {
@@ -38,6 +38,7 @@ const Match = () => {
 
   return (
     <div
+      className='bg-black h-screen flex justify-center '
       id='match-canvas'
       ref={gameRef}
     />
