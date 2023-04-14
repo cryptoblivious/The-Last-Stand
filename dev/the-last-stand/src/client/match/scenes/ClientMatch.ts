@@ -4,8 +4,6 @@ import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
-import backgroundImage from '/assets/craftpix/backgrounds/Background.png';
-import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
 import GameEntityFactory from '../GameEntityFactory';
 
 interface MovePlayerMessage {
@@ -113,8 +111,8 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // Load backgrounds and tiles
-    this.load.image('background', backgroundImage);
-    this.load.image('tuile03', tuile03);
+    this.load.image('background', '/assets/craftpix/backgrounds/background.png');
+    this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
   }
 
   // Get the client from the Boostrap scene
