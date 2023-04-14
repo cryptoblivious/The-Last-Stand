@@ -4,7 +4,7 @@ import { MatchState } from '../../../server/rooms/schema/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
-import backgroundImage from '/assets/craftpix/backgrounds/background.png';
+import backgroundImage from '/assets/craftpix/backgrounds/Background.png';
 import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
 import GameEntityFactory from '../GameEntityFactory';
 
@@ -194,14 +194,21 @@ export default class ClientMatch extends Phaser.Scene {
       if (message.gameEntityType == 'rectangle') {
         const entity = this.gameEntityFactory.produce('rectangle', { x: message.position.x, y: message.position.y });
         const rect = this.add.rectangle(message.position.x, message.position.y, entity.size.width, entity.size.height, 0xff0000);
+        this.physics.add.existing(rect, true);
         this.gameEntities.set(entity.id.toString(), rect);
-        //console.log(this.gameEntities);
+        this.physics.add.collider(rect, this.gameEntities.get(this.playerId!));
+        // , () => {
+        //   this.mo?.state.playerIds.forEach((playerId: string) => {
+        //     //if (playerId != this.playerId) {
+        //       console.log('setting' + playerId + 'velocity to -100')
+        //     this.gameEntities.get(playerId)?.setVelocityX(-100);
+        //     //}
+        //   });
+        // }
       } else {
-        //console.log('creating entity');
         this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
         const entity = this.gameEntities.get(message.id);
         entity.setName(message.gameEntityType);
-        //entity.setCollideWorldBounds(true);
         this.physics.add.collider(entity, platforms);
         entity.setBounce(bounceHandler[message.gameEntityType]);
         entity.setGravityY(weightHandler[message.gameEntityType]);
