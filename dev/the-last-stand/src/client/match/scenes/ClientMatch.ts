@@ -16,6 +16,10 @@ interface MovePlayerMessage {
   direction?: string;
 }
 
+interface CustomAnimation extends Phaser.Animations.Animation {
+  frameCallbacks?: number[];
+}
+
 interface GenerateAttackHitboxMessage {
   attackType: string;
   attackerWidth: number;
@@ -73,6 +77,7 @@ export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
   private gameEntities: Map<string, any> = new Map<string, any>();
+  private opponentIds: string[] = [];
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
   private updateSpriteMessage?: MovePlayerMessage;
@@ -120,10 +125,8 @@ export default class ClientMatch extends Phaser.Scene {
   async create(data: { client: Client }) {
     const { client } = data;
     this.gameClient = client;
-    if (this.gameClient) {
-    } else {
-      throw new Error('client not found');
-    }
+    if (!this.gameClient) throw new Error('client not found');
+    //this.scale.startFullscreen();
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>('match_orchestrator');
@@ -141,7 +144,8 @@ export default class ClientMatch extends Phaser.Scene {
           frames: this.anims.generateFrameNumbers(animKey, { start: key.startFrame, end: key.endFrame }),
           frameRate: key.frameRate,
           repeat: key.repeat,
-        });
+          frameCallbacks: key.frameCallbacks,
+        } as CustomAnimationy);
       });
     });
 
@@ -186,15 +190,18 @@ export default class ClientMatch extends Phaser.Scene {
       this.playerId = message.id;
     });
 
+    this.mo.onMessage('add_opponent_id', (message: { id: string }) => {
+      this.opponentIds.push(message.id);
+    });
+
     this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
       if (message.gameEntityType == 'rectangle') {
         const entity = this.gameEntityFactory.produce('rectangle', { x: message.position.x, y: message.position.y });
-        const graphics = this.add.graphics();
-        graphics.fillStyle(0xff0000, 1);
-        graphics.fillRect(message.position.x, message.position.y, entity.size.x, entity.size.y);
-        this.gameEntities.set(message.id, graphics);
+        const rect = this.add.rectangle(message.position.x, message.position.y, entity.size.width, entity.size.height, 0xff0000);
+        this.gameEntities.set(entity.id.toString(), rect);
+        //console.log(this.gameEntities);
       } else {
-        console.log('creating entity');
+        //console.log('creating entity');
         this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
         const entity = this.gameEntities.get(message.id);
         entity.setName(message.gameEntityType);
@@ -213,7 +220,7 @@ export default class ClientMatch extends Phaser.Scene {
         entity.maxJump = maxJumpHandler[message.gameEntityType];
       }
 
-      console.log(this.gameEntities);
+      //console.log(this.gameEntities);
     });
 
     this.mo.onMessage('remove_entity', (message: { id: string }) => {
@@ -337,11 +344,25 @@ export default class ClientMatch extends Phaser.Scene {
           entity.anims.play(gem.anim, true);
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
+            if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
+              // Add a callback to the third frame of the animation
+              entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
+                const cAnim = anim;
+                const cFrame = frame;
+                const cSprite = sprite;
+                const cFrameKey = frameKey;
+
+                if (frame.index === 2) {
+                  console.log('on frame 2');
+                }
+              });
+            }
             entity.once('animationcomplete', () => {
+              //console.log("I'm done!");
               if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
-                entity.anim = `${gem.gameEntityType}Idle`;
+                //entity.anim = `${gem.gameEntityType}Idle`;
                 //entity.anims.play(`${gem.gameEntityType}Idle`, true);
-                // TODO : Generate attack hitboxes
+
                 this.generateAttackHitboxMessage = {
                   attackType: entity.name + animKey,
                   attackerWidth: entity.width,
@@ -353,7 +374,7 @@ export default class ClientMatch extends Phaser.Scene {
 
                 this.mo!.send('generate_attack_hitbox', this.generateAttackHitboxMessage);
 
-                console.log(`Generate ${entity.name}${animKey} from ${this.playerId} at ${entity.x}, ${entity.y}`);
+                //console.log(`Generate ${entity.name}${animKey} from ${this.playerId} at ${entity.x}, ${entity.y}`);
               } else {
                 //entity.anims.play(`${gem.gameEntityType}Fall`, true);
                 entity.anim = `${gem.gameEntityType}Fall`;
