@@ -67,7 +67,7 @@ const bounceHandler: Record<string, number> = {
   logan: 0.1,
 };
 
-const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3'];
+const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3', 'Hurt', 'Death'];
 
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
@@ -196,19 +196,21 @@ export default class ClientMatch extends Phaser.Scene {
         const rect = this.add.rectangle(message.position.x, message.position.y, entity.size.width, entity.size.height, 0xff0000);
         this.physics.add.existing(rect, true);
         this.gameEntities.set(entity.id.toString(), rect);
-        this.physics.add.collider(rect, this.gameEntities.get(this.playerId!));
-        // , () => {
-        //   this.mo?.state.playerIds.forEach((playerId: string) => {
-        //     //if (playerId != this.playerId) {
-        //       console.log('setting' + playerId + 'velocity to -100')
-        //     this.gameEntities.get(playerId)?.setVelocityX(-100);
-        //     //}
-        //   });
-        // }
+        this.physics.add.overlap(rect, this.gameEntities.get(this.playerId!), () => {
+          this.mo?.state.playerIds.forEach((playerId: string) => {
+            //if (playerId != this.playerId) {ad
+            this.gameEntities.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
+            this.gameEntities.get(playerId)?.setVelocity(-1000, -500);
+            //}
+          });
+        });
+        //console.log(this.gameEntities);
       } else {
+        //console.log('creating entity');
         this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
         const entity = this.gameEntities.get(message.id);
         entity.setName(message.gameEntityType);
+        //entity.setCollideWorldBounds(true);
         this.physics.add.collider(entity, platforms);
         entity.setBounce(bounceHandler[message.gameEntityType]);
         entity.setGravityY(weightHandler[message.gameEntityType]);
@@ -247,7 +249,7 @@ export default class ClientMatch extends Phaser.Scene {
       const canvasHeight: number = this.game.config.height as number;
       const spriteBottom = entity.y + entity.height;
       const bounceCorrection = 10;
-      const keyboardPressed = this.keys.D?.isDown || this.keys.A?.isDown || this.keys.W?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown;
+      const keyboardPressed = this.keys.A?.isDown || this.keys.W?.isDown || this.keys.S?.isDown || this.keys.D?.isDown || this.keys.J?.isDown || this.keys.K?.isDown || this.keys.L?.isDown || this.keys.U?.isDown || this.keys.I?.isDown || this.keys.O?.isDown || this.keys.SPACE?.isDown || this.keys.UP?.isDown || this.keys.DOWN?.isDown || this.keys.LEFT?.isDown || this.keys.RIGHT?.isDown;
       const jumping = Phaser.Input.Keyboard.JustDown(this.keys.W) || Phaser.Input.Keyboard.JustDown(this.keys.UP) || Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
       const attacking = Phaser.Input.Keyboard.JustDown(this.keys.J) || Phaser.Input.Keyboard.JustDown(this.keys.K) || Phaser.Input.Keyboard.JustDown(this.keys.L);
 
@@ -257,60 +259,71 @@ export default class ClientMatch extends Phaser.Scene {
       if (entity.body.blocked.down) {
         entity.jumpCount = 0;
       }
-
-      // Input logic
-      if (keyboardPressed) {
-        // Jumping logic
-        if (jumping) {
-          if (entity.jumpCount < entity.maxJump) {
-            entity.setVelocityY(-entity.jumpHeight);
-            if (entity.jumpCount == 0) {
-              entity.anim = `${entity.name}Jump`;
-            } else if (entity.jumpCount >= 1) {
-              entity.anim = `${entity.name}DoubleJump`;
+      if (entity.anim != `${entity.name}Hurt`) {
+        // Input logic
+        if (keyboardPressed) {
+          // Jumping logic
+          if (jumping) {
+            if (entity.jumpCount < entity.maxJump) {
+              entity.setVelocityY(-entity.jumpHeight);
+              if (entity.jumpCount == 0) {
+                entity.anim = `${entity.name}Jump`;
+              } else if (entity.jumpCount >= 1) {
+                entity.anim = `${entity.name}DoubleJump`;
+              }
+              entity.jumpCount += 1;
+            } else if (entity.jumpCount >= entity.maxJump) {
+              entity.anim = `${entity.name}Fall`;
             }
-            entity.jumpCount += 1;
-          } else if (entity.jumpCount >= entity.maxJump) {
-            entity.anim = `${entity.name}Fall`;
           }
-        }
-        // Moving logic
-        if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown) {
-          if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
-            entity.anim = `${entity.name}Idle`;
-            entity.setVelocityX(0);
-          } else {
-            if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
+          // Moving logic
+          if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown || this.keys.S?.isDown || this.keys.DOWN?.isDown) {
+            if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
+              if (entity.body.blocked.down) {
+                entity.anim = `${entity.name}Idle`;
+              } else {
+                entity.anim = `${entity.name}Fall`;
+              }
+              entity.setVelocityX(0);
+            } else if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
               entity.body.blocked.down ? entity.setVelocityX(entity.baseSpeed) : entity.setVelocityX(entity.airborneSpeed);
               entity.direction = 'right';
             } else if (this.keys.A?.isDown || this.keys.LEFT?.isDown) {
               entity.body.blocked.down ? entity.setVelocityX(-entity.baseSpeed) : entity.setVelocityX(-entity.airborneSpeed);
               entity.direction = 'left';
+            } else if (this.keys.S?.isDown || this.keys.DOWN?.isDown) {
+              if (entity.body.blocked.down) {
+                entity.anim = `${entity.name}Death`;
+              } else {
+                console.log('falling straight down');
+                entity.setVelocityX(0);
+              }
             }
             if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
               this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
             }
           }
-        }
-        // Attacking logic
-        if (attacking && entity.body.blocked.down) {
-          if (!fixedAnimations.includes(animKey)) {
-            if (this.keys.J?.isDown) {
-              entity.anim = `${entity.name}Attack1`;
-            } else if (this.keys.K?.isDown) {
-              entity.anim = `${entity.name}Attack2`;
-            } else if (this.keys.L?.isDown) {
-              entity.anim = `${entity.name}Attack3`;
+          // Attacking logic
+          if (attacking && entity.body.blocked.down) {
+            if (!fixedAnimations.includes(animKey)) {
+              if (this.keys.J?.isDown) {
+                entity.anim = `${entity.name}Attack1`;
+              } else if (this.keys.K?.isDown) {
+                entity.anim = `${entity.name}Attack2`;
+              } else if (this.keys.L?.isDown) {
+                entity.anim = `${entity.name}Attack3`;
+              }
             }
           }
         }
-      }
-      // Idle logic
-      else {
-        entity.setVelocityX(0);
-
-        if (!fixedAnimations.includes(animKey)) {
-          this.applyAirborneAnimCorrection(entity, 'Idle', 'Fall');
+        // Idle logicw
+        else {
+          if (entity.body.blocked.down) {
+            entity.setVelocityX(0);
+          }
+          if (!fixedAnimations.includes(animKey)) {
+            this.applyAirborneAnimCorrection(entity, 'Idle', 'Fall');
+          }
         }
       }
 
@@ -355,7 +368,11 @@ export default class ClientMatch extends Phaser.Scene {
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
-            if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
+            if (animKey == 'Hurt') {
+              entity.once('animationcomplete', () => {
+                entity.anim = `${gem.gameEntityType}Idle`;
+              });
+            } else if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
               entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
                 if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
                   this.generateAttackHitboxMessage = {

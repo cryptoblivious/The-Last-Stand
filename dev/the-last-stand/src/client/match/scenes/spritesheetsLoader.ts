@@ -112,8 +112,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 1,
-        frameRate: 10,
-        repeat: 0,
+        frameRate: 4,
+        repeat: 1,
       },
       {
         key: 'kick',
@@ -209,6 +209,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 7,
         frameRate: 8,
         repeat: 0,
+        frameEvents: [4, 7],
       },
       {
         key: 'attack3',
@@ -247,8 +248,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         frameHeight: 48,
         startFrame: 0,
         endFrame: 1,
-        frameRate: 10,
-        repeat: 0,
+        frameRate: 4,
+        repeat: 1,
       },
       {
         key: 'kick',
