@@ -165,9 +165,9 @@ export default class ClientMatch extends Phaser.Scene {
     //   .setScale(2)
     //   .refreshBody();
     // create a platform with the platform builder
-    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, 'tuile03');
-    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
-    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
+    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, '/assets/craftpix/tiles/IndustrialTile_03.png');
+    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, '/assets/craftpix/tiles/IndustrialTile_03.png');
+    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, '/assets/craftpix/tiles/IndustrialTile_03.png');
 
     this.physics.add.existing(platform1, true);
     this.physics.add.existing(platform2, true);
