@@ -3,25 +3,77 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "industrial_level.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "industrial_level.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 658,
+                "y": 495.99999999999994
+            }
+        },
+        "industrial_level.tmx#9": {
+            "dynamicWrapping": false
+        },
+        "industrial_level.tmx#Pointer1": {
+            "dynamicWrapping": false
+        },
+        "industrial_level.tmx#movingbackground": {
+            "dynamicWrapping": true
+        },
+        "industrial_level.tmx#objets": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "industrial_level.tmx#objets tuiles": {
+            "dynamicWrapping": true
+        },
+        "industrial_level.tmx#objets_sans_bg": {
+            "dynamicWrapping": true
+        },
+        "industrial_level.tmx#red_plate": {
+            "scaleInDock": 1
+        },
+        "industrial_level.tmx#roller_1": {
+            "scaleInDock": 1
+        },
+        "industrial_level.tmx#roller_2": {
+            "scaleInDock": 1
+        },
+        "industrial_level.tmx#roller_3": {
+            "scaleInDock": 1
+        },
+        "industrial_level.tmx#tuiles": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.75
+        },
         "tiles.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Users/Administrateur.UTILISA-NP9BJDC/Downloads",
+    "last.imagePath": "C:/Users/Administrateur.UTILISA-NP9BJDC/Desktop/The-Last-Stand/dev/the-last-stand/src/tiled/images",
     "map.height": 19,
     "map.lastUsedFormat": "tmx",
     "map.width": 31,
     "openFiles": [
+        "industrial_level.tmx"
     ],
     "project": "sans titre.tiled-project",
     "recentFiles": [
+        "industrial_level.tmx",
         "tiles.tsx"
     ],
     "tileset.embedInMap": true,
-    "tileset.lastUsedFormat": "tsx"
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.transparentColor": "#ffffff",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": true
 }
