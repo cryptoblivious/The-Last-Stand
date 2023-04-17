@@ -5,8 +5,6 @@ import spriteSheetsLoader from './spritesheetsLoader';
 import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 import GameEntityFactory from '../GameEntityFactory';
-import tuile03 from '/assets/craftpix/tiles/IndustrialTile_03.png';
-//const tuile03 = '/assets/craftpix/tiles/IndustrialTile_03.png';
 
 interface MovePlayerMessage {
   x: number;
@@ -47,7 +45,7 @@ const jumpHeightHandler: Record<string, number> = {
 };
 
 const weightHandler: Record<string, number> = {
-  chuck: 400,
+  chuck: 200,
   solana: 300,
   sirius: 300,
   logan: 300,
@@ -77,7 +75,6 @@ export default class ClientMatch extends Phaser.Scene {
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
   private updateSpriteMessage?: MovePlayerMessage;
-  private generateAttackHitboxMessage?: GenerateAttackHitboxMessage;
   private background?: Phaser.GameObjects.Image;
   private airborneCorrection: integer = 3;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
@@ -114,7 +111,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     // Load backgrounds and tiles
     this.load.image('background', '/assets/craftpix/backgrounds/background.png');
-    this.load.image('tuile03', tuile03);
+    this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
   }
 
   // Get the client from the Boostrap scene
@@ -144,7 +141,6 @@ export default class ClientMatch extends Phaser.Scene {
       });
     });
 
-    console.log(this.spriteSheetsLoader);
     //  CREATION DU BACKGROUND ET DU TUILAGE
     // Background
     this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
@@ -167,9 +163,9 @@ export default class ClientMatch extends Phaser.Scene {
     //   .setScale(2)
     //   .refreshBody();
     // create a platform with the platform builder
-    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, tuile03);
-    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, tuile03);
-    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, tuile03);
+    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, 'tuile03');
+    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
+    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
 
     this.physics.add.existing(platform1, true);
     this.physics.add.existing(platform2, true);
@@ -196,22 +192,34 @@ export default class ClientMatch extends Phaser.Scene {
         const rect = this.add.rectangle(message.position.x, message.position.y, entity.size.width, entity.size.height, 0xff0000);
         this.physics.add.existing(rect, true);
         this.gameEntities.set(entity.id.toString(), rect);
-        this.physics.add.overlap(rect, this.gameEntities.get(this.playerId!), () => {
-          this.mo?.state.playerIds.forEach((playerId: string) => {
-            //if (playerId != this.playerId) {ad
-            this.gameEntities.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
-            this.gameEntities.get(playerId)?.setVelocity(-1000, -500);
-            //}
-          });
+        rect.setData('timer', 0);
+        rect.setData('lifespan', 1);
+        this.mo?.state.playerIds.forEach((playerId: string) => {
+          if (playerId !== this.playerId) {
+            this.physics.add.overlap(rect, this.gameEntities.get(playerId), () => {
+              this.gameEntities.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
+              this.gameEntities.get(playerId)?.setVelocity(-1000, -500);
+            });
+          }
         });
-        //console.log(this.gameEntities);
       } else {
-        //console.log('creating entity');
         this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
         const entity = this.gameEntities.get(message.id);
         entity.setName(message.gameEntityType);
-        //entity.setCollideWorldBounds(true);
+        const colliderPercentage = 0.3;
+        const colliderWidth = entity.width * colliderPercentage;
+        const colliderHeight = entity.height;
         this.physics.add.collider(entity, platforms);
+        // this.physics.add.collider(entity, platform1, (entity, platform) => {
+        //   if (entity.body.touching.up && platform.body.touching.down) {
+        //     return false;
+        //   }
+        //   this.physics.add.collider(entity, platform2);
+        //   this.physics.add.collider(entity, platform3);
+        //  });
+
+        //this.physics.add.collider(entity, platforms);
+        entity.body.setSize(colliderWidth, colliderHeight);
         entity.setBounce(bounceHandler[message.gameEntityType]);
         entity.setGravityY(weightHandler[message.gameEntityType]);
         entity.setScale(2);
@@ -229,10 +237,7 @@ export default class ClientMatch extends Phaser.Scene {
           ?.spriteSheets.forEach((spritesheet) => {
             entity.frameEvents[spritesheet.key] = spritesheet.frameEvents;
           });
-        console.log(entity.frameEvents);
       }
-
-      //console.log(this.gameEntities);
     });
 
     this.mo.onMessage('remove_entity', (message: { id: string }) => {
@@ -245,6 +250,7 @@ export default class ClientMatch extends Phaser.Scene {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       const entity = this.gameEntities.get(this.playerId!);
+
       const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
       const canvasHeight: number = this.game.config.height as number;
       const spriteBottom = entity.y + entity.height;
@@ -259,6 +265,7 @@ export default class ClientMatch extends Phaser.Scene {
       if (entity.body.blocked.down) {
         entity.jumpCount = 0;
       }
+
       if (entity.anim != `${entity.name}Hurt`) {
         // Input logic
         if (keyboardPressed) {
@@ -292,7 +299,7 @@ export default class ClientMatch extends Phaser.Scene {
               entity.body.blocked.down ? entity.setVelocityX(-entity.baseSpeed) : entity.setVelocityX(-entity.airborneSpeed);
               entity.direction = 'left';
             } else if (this.keys.S?.isDown || this.keys.DOWN?.isDown) {
-              entity.setVelocityX(0);
+              entity.setVelocity(0, entity.airborneSpeed + weightHandler[entity.name]);
             }
             if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
               this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
@@ -311,12 +318,11 @@ export default class ClientMatch extends Phaser.Scene {
             }
           }
         }
-        // Idle logicw
+        // Idle logic
         else {
-          if (entity.body.blocked.down) {
-            entity.setVelocityX(0);
-          }
           if (!fixedAnimations.includes(animKey)) {
+            entity.setVelocityX(0);
+
             this.applyAirborneAnimCorrection(entity, 'Idle', 'Fall');
           }
         }
@@ -334,14 +340,15 @@ export default class ClientMatch extends Phaser.Scene {
         entity.y = this.sys.canvas.height * 1.2;
       }
 
-      this.updateSpriteMessage = {
+      // Send the sprite's information to the server
+      const updateSpriteMessage = {
         x: entity.x,
         y: entity.y,
         direction: entity.direction,
         anim: entity.anim,
       };
 
-      this.mo.send('update_sprite', this.updateSpriteMessage);
+      this.mo.send('update_sprite', updateSpriteMessage);
 
       //Render all the sprites
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
@@ -368,24 +375,26 @@ export default class ClientMatch extends Phaser.Scene {
                 entity.anim = `${gem.gameEntityType}Idle`;
               });
             } else if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
+              // Send an attack's information to the server
               entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
                 if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
-                  this.generateAttackHitboxMessage = {
-                    attackType: entity.name + animKey,
-                    attackerWidth: entity.width,
-                    attackerHeight: entity.height,
-                    direction: entity.direction,
-                    x: entity.x,
-                    y: entity.y,
+                  const createAttackHitboxMessage = {
+                    data: {
+                      entityType: 'rectangle',
+                      attackType: entity.name + animKey,
+                      attackerWidth: entity.width,
+                      attackerHeight: entity.height,
+                      direction: entity.direction,
+                      x: entity.x,
+                      y: entity.y,
+                    },
                   };
-
-                  console.log('generate_attack_hitbox', frame.index + this.generateAttackHitboxMessage);
-
-                  this.mo!.send('generate_attack_hitbox', this.generateAttackHitboxMessage);
+                  this.mo!.send('create_entity', createAttackHitboxMessage);
                 }
               });
             }
 
+            // Set the animation to idle or fall after the fixed animation is finished
             entity.once('animationcomplete', () => {
               if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
                 entity.anim = `${gem.gameEntityType}Idle`;
@@ -393,6 +402,16 @@ export default class ClientMatch extends Phaser.Scene {
                 entity.anim = `${gem.gameEntityType}Fall`;
               }
             });
+          }
+          //console.log(this.gameEntities);
+          // Remove the attack hitbox as soon as the hitbox is present for an iteration
+          for (let [key, value] of this.gameEntities) {
+            if (value.type.toLowerCase() === 'rectangle') {
+              value.setData('timer', value.getData('timer') + 1);
+              if (value.getData('timer') > value.getData('lifespan')) {
+                this.mo!.send('remove_attack_hitbox', { id: key });
+              }
+            }
           }
         }
       });

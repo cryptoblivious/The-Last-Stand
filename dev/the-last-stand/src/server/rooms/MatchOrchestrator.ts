@@ -35,15 +35,16 @@ export class MatchOrchestrator extends Room<MatchState> {
     this.onMessage('update_sprite', (player, message: { x: number; y: number; direction?: string; anim?: string }) => {
       const { x, y, direction, anim } = message;
       this.state.updateSprite(player.id, x, y, direction, anim);
-      // console.log(this.state.gem.get(player.id)?.flipX)
     });
 
-    this.onMessage('generate_attack_hitbox', (player, message: { attackType: string; attackerWidth: number; attackerHeight: number; direction: string; x: number; y: number }) => {
-      //console.log('generating attack hitbox', message);
-      const { attackType, attackerWidth, attackerHeight, direction, x, y } = message;
-      const entity: IGameEntityMapper = { id: player.id, gameEntityType: 'rectangle', position: { x: x, y: y }, direction: direction };
-      console.log('generating_attack_hitbox', entity);
+    this.onMessage('create_entity', (player, message: any) => {
+      const { entityType, attackType, attackerWidth, attackerHeight, direction, x, y } = message.data;
+      const entity: IGameEntityMapper = { id: player.id, gameEntityType: entityType, position: { x: x, y: y }, direction: direction };
       this.broadcast('create_entity', entity);
+    });
+
+    this.onMessage('remove_attack_hitbox', (player, message: { id: string }) => {
+      this.broadcast('remove_entity', { id: message.id });
     });
   }
 
