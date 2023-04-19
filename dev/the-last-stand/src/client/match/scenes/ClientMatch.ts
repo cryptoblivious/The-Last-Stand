@@ -200,7 +200,8 @@ export default class ClientMatch extends Phaser.Scene {
               // this.gameEntities.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
               // set the anim to hurt
               this.mo!.state.gem.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
-              this.gameEntities.get(playerId)?.setVelocity(-1000, -500);
+              // this.gameEntities.get(playerId)?.setVelocity(-1000, -500);
+              this.mo?.send("player_hurt", { id: playerId, velocity : { x: -1000, y: -500 } })
             });
           }
         });
