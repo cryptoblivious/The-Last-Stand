@@ -1,6 +1,7 @@
 import { Room, Client } from 'colyseus';
 import { MatchState, GameEntityMapper } from './schema/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
+import { IHitbox } from '../../typescript/interfaces/IHitbox';
 
 interface IClient extends Client {
   selectedHero: string;
@@ -43,8 +44,19 @@ export class MatchOrchestrator extends Room<MatchState> {
       this.broadcast('create_entity', entity);
     });
 
+    this.onMessage('create_hitbox', (player, message: any) => {
+      const { entityType, attackerWidth, attackerHeight, position } = message.data;
+      const entity: IHitbox = { owner: player.id, gameEntityType: entityType, position: position };
+      this.broadcast('create_hitbox', entity);
+    });
+
     this.onMessage('remove_attack_hitbox', (player, message: { id: string }) => {
       this.broadcast('remove_entity', { id: message.id });
+    });
+
+    this.onMessage('player_hurt', (player, message: { victim: string; attackForce: { x: string; y: string } }) => {
+      const index = this.clients.findIndex((client) => client.id === message.victim);
+      this.clients[index].send('player_hurt', { attackForce: message.attackForce });
     });
   }
 

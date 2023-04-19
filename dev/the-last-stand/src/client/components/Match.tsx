@@ -21,6 +21,13 @@ const Match = () => {
           default: 'arcade',
           arcade: {
             gravity: { y: 200 },
+            debug: true,
+            debugShowBody: true,
+            debugShowStaticBody: true,
+            debugShowVelocity: true,
+            debugBodyColor: 0xff0000,
+            debugStaticBodyColor: 0x0000ff,
+            debugVelocityColor: 0x00ff00,
           },
         },
         scene: [Bootstrap, ClientMatch],

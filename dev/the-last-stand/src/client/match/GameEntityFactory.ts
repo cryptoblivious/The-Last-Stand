@@ -38,7 +38,7 @@ export default class GameEntityFactory {
     const rectangle = new GameEntity({
       id: this.idSequencer,
       name: 'rectangle',
-      size: { width: 100, height: 25 },
+      size: { width: 50, height: 25 },
       position: position,
     });
 
