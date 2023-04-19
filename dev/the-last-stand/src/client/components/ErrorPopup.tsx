@@ -6,12 +6,14 @@ function ErrorPopup(props: IErrorPopupProps) {
   const { message, onClick } = props;
   let title = '';
   let text;
+  console.log('ErrorPopup: message = ' + message);
 
-  if (message === 'Server error') {
+  if (message === 'Server Error') {
     title = 'Server Error';
     text = (
       <>
-        <p>There was an error communicating with the server.</p> <p>Please try again later.</p>
+        <p>The server is not responding at the moment.</p>
+        <p>Please try again later.</p>
       </>
     );
   } else if (message === 'Unauthorized') {

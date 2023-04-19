@@ -24,7 +24,7 @@ export class MatchOrchestrator extends Room<MatchState> {
   };
 
   private heroHandler: Record<number, string> = {
-    0: 'chuck',
+    0: 'solana',
     1: 'solana',
     2: 'chuck',
     3: 'solana',

@@ -18,7 +18,6 @@ export const isAuth = () => {
         return { status: false, data: { message: 'Not Authenticated' } };
       }
     } catch (error) {
-      console.log(error);
       return { status: false, data: { error: 'Server Error' } };
     }
   };

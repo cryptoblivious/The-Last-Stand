@@ -166,10 +166,10 @@ export default class ClientMatch extends Phaser.Scene {
     //   .setScale(2)
     //   .refreshBody();
     // create a platform with the platform builder
-    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.25, 32, 'tuile03');
+    const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.26, 32, 'tuile03');
     const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
     const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
-    const wall1 = this.add.tileSprite(this.sys.canvas.width * 0.52, this.sys.canvas.height * 0.185, 128, this.sys.canvas.height * 0.3, 'tuile03');
+    const wall1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.185, 36, this.sys.canvas.height * 0.3, 'tuile03');
     this.physics.add.existing(platform1, true);
     this.physics.add.existing(platform2, true);
     this.physics.add.existing(platform3, true);
@@ -227,13 +227,14 @@ export default class ClientMatch extends Phaser.Scene {
       entity.setName(message.gameEntityType);
       const colliderWidthPercentage = 0.4;
       const colloderHeightPercentage = 0.7;
-      const colliderWidth = entity.width; // * colliderWidthPercentage;
-      const colliderHeight = entity.height; //w * colloderHeightPercentage;
-      const colliderOffset = (0, 0);
+      //const colliderWidth = entity.width; // * colliderWidthPercentage;
+      //const colliderHeight = entity.height; //w * colloderHeightPercentage;
+      //const colliderOffset = 0;
       this.physics.add.collider(entity, platforms);
       this.physics.add.collider(entity, walls);
-      entity.body.setSize(colliderWidth, colliderHeight);
-      entity.body.setOffset(colliderOffset);
+      //entity.body.setSize(colliderWidth, colliderHeight);
+      //dentity.body.setOffset(colliderOffset);
+      //aentity.setCollideWorldBounds(true);
       entity.setBounce(bounceHandler[message.gameEntityType]);
       entity.setGravityY(weightHandler[message.gameEntityType]);
       entity.setScale(2);
@@ -379,7 +380,7 @@ export default class ClientMatch extends Phaser.Scene {
             flipX = false;
           }
           entity.setFlipX(flipX);
-
+          console.log(this.anims);
           entity.anims.play(gem.anim, true);
 
           // wait for fixed animations do be finished before playing other animations
