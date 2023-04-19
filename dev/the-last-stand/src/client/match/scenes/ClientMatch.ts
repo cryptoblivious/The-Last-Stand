@@ -197,7 +197,9 @@ export default class ClientMatch extends Phaser.Scene {
         this.mo?.state.playerIds.forEach((playerId: string) => {
           if (playerId !== this.playerId) {
             this.physics.add.overlap(rect, this.gameEntities.get(playerId), () => {
-              this.gameEntities.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
+              // this.gameEntities.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
+              // set the anim to hurt
+              this.mo!.state.gem.get(playerId).anim = `${this.gameEntities.get(playerId).name}Hurt`;
               this.gameEntities.get(playerId)?.setVelocity(-1000, -500);
             });
           }
