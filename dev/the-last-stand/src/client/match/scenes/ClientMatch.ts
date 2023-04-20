@@ -6,7 +6,8 @@ import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 import GameEntityFactory from '../GameEntityFactory';
 import { IHitbox } from '../../../typescript/interfaces/IHitbox';
-
+import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
+import { Index } from '../../../../../tutorials/react-router/src/routes/index';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -259,6 +260,22 @@ export default class ClientMatch extends Phaser.Scene {
     this.mo.onMessage('remove_entity', (message: { id: string }) => {
       this.gameEntities.get(message.id)?.destroy();
       this.gameEntities.delete(message.id);
+    });
+
+    this.mo.onMessage('create_hud', (data: any[]) => {
+      data.playerNamesAndIndex.forEach((playerNameAndIndex: any) => {
+        const { name, index } = playerNameAndIndex;
+        const newHudPlayer: INewhudplayer = {
+          name: name,
+          index: index,
+          damagePercentage: 0,
+        };
+        this.events.emit('new_hud_player', newHudPlayer);
+      });
+
+      // playerNamesAndIndex.forEach((playerNameAndIndex) => {
+      //   console.log(playerNameAndIndex.toString());
+      // });
     });
   }
 
