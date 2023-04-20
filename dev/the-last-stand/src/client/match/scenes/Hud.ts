@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
 
 export default class Hud extends Phaser.Scene {
-
-   private playerNumber: number = 0;
+    
+    private playerList : string[] = [];
 
     constructor() {
         super('hud');
@@ -29,7 +29,15 @@ export default class Hud extends Phaser.Scene {
         const clientMatch = this.scene.get('canvas');
         clientMatch.events.on("new_hud_player", (data : INewhudplayer) => {
             const {name: playerName, index: playerIndex, damagePercentage: playerDamage} = data;
+            if (this.playerList.includes(playerName)) {
+                return;
+            }
+            this.playerList.push(playerName);
             this.createNewPlayer( playerName, hudPositionhandler[playerIndex], hudElementYpos, bgRadius, hudYpos, playerDamage);
+        });
+
+        clientMatch.events.on("update_hud_damage", (data : {playerName: string, damagePercentage: number}) => {
+            console.log(data);
         });
 
     }
