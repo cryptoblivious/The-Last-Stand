@@ -37,7 +37,8 @@ export default class Hud extends Phaser.Scene {
         });
 
         clientMatch.events.on("update_hud_damage", (data : {playerName: string, damagePercentage: number}) => {
-            console.log(data);
+            const playerPercentageText = this.children.getByName(data.playerName) as Phaser.GameObjects.Text;
+            playerPercentageText.setText(`${data.damagePercentage}%`);
         });
 
     }
@@ -51,9 +52,11 @@ export default class Hud extends Phaser.Scene {
         hudPlayer.fillRoundedRect(hudXpos1 - 50, hudYpos, 100, 75, bgRadius );
         playerNameText.setDepth(1);
         const percentageText = this.add.text(hudXpos1, hudElementYpos + 20, `${playerDamage}%` , { font: '32px Courier', color: '#00ff00' });
+        percentageText.name = playerName;
         const boundsPercentageText = percentageText.getBounds();
         percentageText.setPosition(hudXpos1 - boundsPercentageText.width / 2, hudElementYpos + 20);
         percentageText.setDepth(1);
+        console.log(percentageText);
 
     }
 }
