@@ -28,28 +28,28 @@ const baseSpeedHandler: Record<string, number> = {
   chuck: 1000,
   solana: 500,
   sirius: 150,
-  logan: 150,
+  logan: 1500,
 };
 
 const airborneSpeedHandler: Record<string, number> = {
   chuck: 500,
   solana: 1000,
   sirius: 150,
-  logan: 150,
+  logan: 300,
 };
 
 const jumpHeightHandler: Record<string, number> = {
   chuck: 800,
   solana: 800,
   sirius: 1500,
-  logan: 1500,
+  logan: 1200,
 };
 
 const weightHandler: Record<string, number> = {
   chuck: 200,
   solana: 300,
   sirius: 300,
-  logan: 300,
+  logan: 600,
 };
 
 const maxJumpHandler: Record<string, number> = {
@@ -186,10 +186,8 @@ export default class ClientMatch extends Phaser.Scene {
     this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
       // Emit messages to the HUD scene
-      this.events.emit('hudNewPlayer', ({playerName : this.playerId, playerIndex : this.mo?.state.playerIds.length}));
+      this.events.emit('hudNewPlayer', { playerName: this.playerId, playerIndex: this.mo?.state.playerIds.length });
     });
-
-    
 
     this.mo.onMessage('add_opponent_id', (message: { id: string }) => {
       this.opponentIds.push(message.id);
@@ -262,9 +260,6 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.get(message.id)?.destroy();
       this.gameEntities.delete(message.id);
     });
-
-    
-
   }
 
   update() {
