@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';
 import ClientMatch from '../match/scenes/ClientMatch';
+import Hud from '../match/scenes/Hud';
 
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ const Match = () => {
             debugVelocityColor: 0x00ff00,
           },
         },
-        scene: [Bootstrap, ClientMatch],
+        scene: [Bootstrap, ClientMatch, Hud],
         parent: 'match-canvas',
       };
 
