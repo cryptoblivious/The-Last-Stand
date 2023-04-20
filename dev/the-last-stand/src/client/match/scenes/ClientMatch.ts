@@ -202,7 +202,7 @@ export default class ClientMatch extends Phaser.Scene {
         this.gameEntities.set(entity.id.toString(), rect);
         rect.setData('owner', message.owner);
         rect.setData('timer', 0);
-        rect.setData('lifespan', 5);
+        rect.setData('lifespan', 1);
         this.mo?.state.playerIds.forEach((playerId: string) => {
           if (playerId !== rect.getData('owner')) {
             this.physics.add.overlap(rect, this.gameEntities.get(playerId), () => {
@@ -221,6 +221,12 @@ export default class ClientMatch extends Phaser.Scene {
       const hero = this.gameEntities.get(this.playerId!);
       hero.anim = hero.name + 'Hurt';
       hero.setVelocity(attackForce.x, attackForce.y);
+
+      hero.damagePercentage += 10;
+      const updatePlayerDamage = { playerName: hero.id, damagePercentage: hero.damagePercentage}
+      this.events.emit('update_hud_damage', updatePlayerDamage);
+      console.log(hero.damagePercentage);
+      
     });
 
     this.mo.onMessage('create_entity', (message: any) => {
@@ -249,6 +255,7 @@ export default class ClientMatch extends Phaser.Scene {
       entity.jumpCount = 0;
       entity.airborneCount = 0;
       entity.maxJump = maxJumpHandler[message.gameEntityType];
+      entity.damagePercentage = 0;
       entity.frameEvents = {};
       this.spriteSheetsLoader
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
