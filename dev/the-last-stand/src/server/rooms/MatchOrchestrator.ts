@@ -73,16 +73,12 @@ export class MatchOrchestrator extends Room<MatchState> {
     const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };
     this.broadcast('create_entity', entity);
 
-    const playerNamesAndIndex: any[] = this.clients.map((client) => {
-      return { name: client.id, index: this.clients.indexOf(client) };
     // Create an array of every players name(id) and index
     const players = this.clients.map((client) => {
       return { name: client.sessionId, index: this.clients.indexOf(client) };
     });
 
-    this.broadcast('create_hud', { playerNamesAndIndex: playerNamesAndIndex });
-
-    this.broadcast('create_hud', players)
+    this.broadcast('create_hud', players);
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {

@@ -28,7 +28,7 @@ async function ColyseusProvider({ children }: ColyseusProviderProps) {
       setClient(client);
       setGlobalRoom(room);
 
-      console.log(client);
+      console.log('client : ', client, 'room : ', room);
     };
 
     connect();
@@ -36,8 +36,6 @@ async function ColyseusProvider({ children }: ColyseusProviderProps) {
     return () => {
       if (globalRoom) {
         globalRoom.leave();
-      }
-      if (client) {
       }
     };
   }, [globalRoom, client]);
