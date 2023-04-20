@@ -428,12 +428,10 @@ export default class ClientMatch extends Phaser.Scene {
                 if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
                   if (entity.id == this.playerId) {
                     const createAttackHitboxMessage = {
-                      data: {
-                        entityType: 'rectangle',
-                        attackerWidth: entity.width,
-                        attackerHeight: entity.height,
-                        position: { x: entity.x, y: entity.y },
-                      },
+                      entityType: 'rectangle',
+                      attackerWidth: entity.width,
+                      attackerHeight: entity.height,
+                      position: { x: entity.x, y: entity.y },
                     };
                     this.mo!.send('create_hitbox', createAttackHitboxMessage);
                   }

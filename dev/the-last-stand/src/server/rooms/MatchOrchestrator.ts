@@ -38,14 +38,14 @@ export class MatchOrchestrator extends Room<MatchState> {
       this.state.updateSprite(player.id, x, y, direction, anim);
     });
 
-    this.onMessage('create_entity', (player, message: any) => {
-      const { entityType, attackType, attackerWidth, attackerHeight, direction, x, y } = message.data;
-      const entity: IGameEntityMapper = { id: player.id, gameEntityType: entityType, position: { x: x, y: y }, direction: direction };
-      this.broadcast('create_entity', entity);
-    });
+    // this.onMessage('create_entity', (player, message: any) => {
+    //   const { entityType, attackType, attackerWidth, attackerHeight, direction, x, y } = message.data;
+    //   const entity: IGameEntityMapper = { id: player.id, gameEntityType: entityType, position: { x: x, y: y }, direction: direction };
+    //   this.broadcast('create_entity', entity);
+    // });
 
     this.onMessage('create_hitbox', (player, message: any) => {
-      const { entityType, attackerWidth, attackerHeight, position } = message.data;
+      const { entityType, attackerWidth, attackerHeight, position } = message;
       const entity: IHitbox = { owner: player.id, gameEntityType: entityType, position: position };
       this.broadcast('create_hitbox', entity);
     });
@@ -58,9 +58,6 @@ export class MatchOrchestrator extends Room<MatchState> {
       const index = this.clients.findIndex((client) => client.id === message.victim);
       this.clients[index].send('player_hurt', { attackForce: message.attackForce });
     });
-
-    
-
   }
 
   onJoin(client: IClient, options: any) {
@@ -76,10 +73,14 @@ export class MatchOrchestrator extends Room<MatchState> {
     const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };
     this.broadcast('create_entity', entity);
 
+    const playerNamesAndIndex: any[] = this.clients.map((client) => {
+      return { name: client.id, index: this.clients.indexOf(client) };
     // Create an array of every players name(id) and index
     const players = this.clients.map((client) => {
       return { name: client.sessionId, index: this.clients.indexOf(client) };
     });
+
+    this.broadcast('create_hud', { playerNamesAndIndex: playerNamesAndIndex });
 
     this.broadcast('create_hud', players)
 
