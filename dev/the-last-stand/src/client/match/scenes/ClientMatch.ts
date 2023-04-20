@@ -7,7 +7,6 @@ import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMap
 import GameEntityFactory from '../GameEntityFactory';
 import { IHitbox } from '../../../typescript/interfaces/IHitbox';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
-import { Index } from '../../../../../tutorials/react-router/src/routes/index';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -186,10 +185,10 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
-
+      
     });
 
-
+    
 
     this.mo.onMessage('add_opponent_id', (message: { id: string }) => {
       this.opponentIds.push(message.id);
@@ -257,7 +256,7 @@ export default class ClientMatch extends Phaser.Scene {
           entity.frameEvents[spritesheet.key] = spritesheet.frameEvents;
         });
 
-
+      
 
     });
 
@@ -266,24 +265,25 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.delete(message.id);
     });
 
-    this.mo.onMessage('create_hud', (data: any[]) => {
-      data.playerNamesAndIndex.forEach((playerNameAndIndex: any) => {
-        const { name, index } = playerNameAndIndex;
-        const newHudPlayer: INewhudplayer = {
-          name: name,
-          index: index,
+    this.mo.onMessage('create_hud', (players:any) => {
+      players.forEach((player: any) => {
+        const hudNewPlayerMessage: INewhudplayer = {
+          name: player.name,
+          index: player.index + 1,
           damagePercentage: 0,
         };
-        this.events.emit('new_hud_player', newHudPlayer);
+        this.events.emit('new_hud_player', hudNewPlayerMessage);
       });
 
-      // playerNamesAndIndex.forEach((playerNameAndIndex) => {
-      //   console.log(playerNameAndIndex.toString());
-      // });
-
+      // const hudNewPlayerMessage: INewhudplayer = {
+      //   name: message.name,
+      //   index: message.index + 1,
+      //   damagePercentage: 0,
+      // };
+      // this.events.emit('new_hud_player', hudNewPlayerMessage);
     });
 
-
+    
 
   }
 
