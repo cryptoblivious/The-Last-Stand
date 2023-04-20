@@ -153,8 +153,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       {
         key: 'run',
         path: '/assets/heroes/solana/spritesheets/solana_run.png',
-        frameWidth: 20,
-        frameHeight: 35,
+        frameWidth: 28,
+        frameHeight: 34,
         startFrame: 0,
         endFrame: 5,
         frameRate: 10,
@@ -173,8 +173,8 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       {
         key: 'doubleJump',
         path: '/assets/heroes/solana/spritesheets/solana_doublejump.png',
-        frameWidth: 20,
-        frameHeight: 35,
+        frameWidth: 33,
+        frameHeight: 34,
         startFrame: 0,
         endFrame: 5,
         frameRate: 4,
@@ -193,7 +193,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       {
         key: 'attack1',
         path: '/assets/heroes/solana/spritesheets/solana_attack_1.png',
-        frameWidth: 20,
+        frameWidth: 22,
         frameHeight: 35,
         startFrame: 0,
         endFrame: 5,
@@ -203,7 +203,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       {
         key: 'attack2',
         path: '/assets/heroes/solana/spritesheets/solana_attack_2.png',
-        frameWidth: 20,
+        frameWidth: 27,
         frameHeight: 35,
         startFrame: 0,
         endFrame: 7,
@@ -214,7 +214,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       {
         key: 'attack3',
         path: '/assets/heroes/solana/spritesheets/solana_attack_3.png',
-        frameWidth: 20,
+        frameWidth: 37,
         frameHeight: 35,
         startFrame: 0,
         endFrame: 7,
@@ -244,7 +244,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
       {
         key: 'hurt',
         path: '/assets/heroes/solana/spritesheets/solana_hurt.png',
-        frameWidth: 20,
+        frameWidth: 23,
         frameHeight: 35,
         startFrame: 0,
         endFrame: 1,
