@@ -58,6 +58,9 @@ export class MatchOrchestrator extends Room<MatchState> {
       const index = this.clients.findIndex((client) => client.id === message.victim);
       this.clients[index].send('player_hurt', { attackForce: message.attackForce });
     });
+
+    
+
   }
 
   onJoin(client: IClient, options: any) {
@@ -72,6 +75,12 @@ export class MatchOrchestrator extends Room<MatchState> {
     // Create the new player's hero and broadcast it to all clients
     const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };
     this.broadcast('create_entity', entity);
+
+   const playerNamesAndIndex : any[] = this.clients.map((client) => {
+      return { name: client.id, index: this.clients.indexOf(client) };
+    });
+   
+    this.broadcast('create_hud', { playerNamesAndIndex: playerNamesAndIndex  })
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
