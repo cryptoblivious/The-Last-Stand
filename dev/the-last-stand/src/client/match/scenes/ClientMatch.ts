@@ -84,7 +84,7 @@ export default class ClientMatch extends Phaser.Scene {
   private keys?: any;
 
   constructor() {
-    super('the-last-stand');
+    super('canvas');
   }
 
   applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
@@ -167,8 +167,8 @@ export default class ClientMatch extends Phaser.Scene {
     //   .refreshBody();
     // create a platform with the platform builder
     const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.26, 32, 'tuile03');
-    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
-    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.95, this.sys.canvas.width * 0.22, 32, 'tuile03');
+    const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.75, this.sys.canvas.width * 0.22, 32, 'tuile03');
+    const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.75, this.sys.canvas.width * 0.22, 32, 'tuile03');
     //const wall1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.185, 36, this.sys.canvas.height * 0.3, 'tuile03');
     this.physics.add.existing(platform1, true);
     this.physics.add.existing(platform2, true);
@@ -185,7 +185,11 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage('assign_player_id', (message: { id: string }) => {
       this.playerId = message.id;
+      // Emit messages to the HUD scene
+      this.events.emit('hudNewPlayer', ({playerName : this.playerId, playerIndex : this.mo?.state.playerIds.length}));
     });
+
+    
 
     this.mo.onMessage('add_opponent_id', (message: { id: string }) => {
       this.opponentIds.push(message.id);
@@ -258,6 +262,9 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.get(message.id)?.destroy();
       this.gameEntities.delete(message.id);
     });
+
+    
+
   }
 
   update() {
