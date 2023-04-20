@@ -24,8 +24,8 @@ export class MatchOrchestrator extends Room<MatchState> {
   };
 
   private heroHandler: Record<number, string> = {
-    0: 'logan',
-    1: 'logan',
+    0: 'solana',
+    1: 'solana',
     2: 'chuck',
     3: 'solana',
   };
@@ -75,9 +75,14 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     const playerNamesAndIndex: any[] = this.clients.map((client) => {
       return { name: client.id, index: this.clients.indexOf(client) };
+    // Create an array of every players name(id) and index
+    const players = this.clients.map((client) => {
+      return { name: client.sessionId, index: this.clients.indexOf(client) };
     });
 
     this.broadcast('create_hud', { playerNamesAndIndex: playerNamesAndIndex });
+
+    this.broadcast('create_hud', players)
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
