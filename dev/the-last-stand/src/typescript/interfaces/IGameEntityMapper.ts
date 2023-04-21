@@ -1,4 +1,4 @@
-import { Position } from '../../server/rooms/schema/MatchState';
+import { Position } from '../../server/rooms/states/MatchState';
 
 export interface IGameEntityMapper {
   id: string;

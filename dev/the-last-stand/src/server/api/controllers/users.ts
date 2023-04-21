@@ -59,15 +59,17 @@ export const patchCurrentUser = async (req: any, res: any) => {
     return res.status(400).json({ err: 'Invalid user ID' });
   }
   try {
-    const userWithSameName = await User.findOne({ username: req.body.username });
-    let username;
-    req.body.userNo, (username = await User.findOne({ _id: id }).select('userNo username').exec());
-    if (userWithSameName && username !== req.body.username) {
-      const availableUsernameNo = await findAvailableUsernameNumber(req.body.username);
-      if (req.body.userNo === '-1') {
-        return res.status(400).json({ err: `No available username number associated with ${req.body.username}` });
+    if (req.body.username) {
+      const userWithSameName = await User.findOne({ username: req.body.username });
+      let username;
+      req.body.userNo, (username = await User.findOne({ _id: id }).select('userNo username').exec());
+      if (userWithSameName && username !== req.body.username) {
+        const availableUsernameNo = await findAvailableUsernameNumber(req.body.username);
+        if (req.body.userNo === '-1') {
+          return res.status(400).json({ err: `No available username number associated with ${req.body.username}` });
+        }
+        req.body.userNo = availableUsernameNo;
       }
-      req.body.userNo = availableUsernameNo;
     }
     const user = await User.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
     if (!user) {

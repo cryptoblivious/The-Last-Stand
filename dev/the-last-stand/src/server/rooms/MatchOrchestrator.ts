@@ -1,5 +1,5 @@
 import { Room, Client } from 'colyseus';
-import { MatchState, GameEntityMapper } from './schema/MatchState';
+import { MatchState, GameEntityMapper } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 import { IHitbox } from '../../typescript/interfaces/IHitbox';
 

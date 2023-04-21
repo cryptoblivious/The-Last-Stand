@@ -1,5 +1,5 @@
 import { Client, Room } from 'colyseus';
-import { ArchivesRoomState } from './schema/ArchivesRoomState';
+import { ArchivesRoomState } from './states/ArchivesRoomState';
 import { EMessage } from '../../typescript/enumerations/EMessage';
 import { Dispatcher } from '@colyseus/command';
 import PlayerSelectionCommand from '../commands/PlayerSelectionCommands';

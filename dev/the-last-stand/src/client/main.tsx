@@ -8,6 +8,8 @@ import Router from './routes/components/Router';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={Router} />
+    <ColyseusProvider>
+      <RouterProvider router={Router} />
+    </ColyseusProvider>
   </React.StrictMode>
 );

@@ -5,8 +5,7 @@ import fs from 'fs';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import session from 'express-session';
-import { Session, SessionData } from 'express-session';
+import session, { Session, SessionData } from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 
@@ -14,6 +13,7 @@ import passport from 'passport';
 import { Server } from '@colyseus/core';
 import { WebSocketTransport } from '@colyseus/ws-transport';
 import { MatchOrchestrator } from './rooms/MatchOrchestrator';
+import { AppRoom } from './rooms/AppRoom';
 import { monitor } from '@colyseus/monitor';
 
 // Homemade models
@@ -26,7 +26,6 @@ import { initializeGoogleOAuthStrategy } from './api/controllers/auth';
 import authRouter from './api/routes/auth';
 import usersRouter from './api/routes/users';
 import heroesRouter from './api/routes/heroes';
-import Match from '../client/components/Match';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -182,8 +181,8 @@ console.log('✅ Websocket transport initiated.');
 
 // Define rooms here
 gameServer.define('match_orchestrator', MatchOrchestrator);
-gameServer.define('global_room', MatchOrchestrator);
-console.log('✅ match_orchestrator room defined.');
+gameServer.define('app_room', AppRoom);
+console.log('✅ Colyseus rooms defined.');
 
 // Attach the express instance to the Colyseus server
 if (APP_MODE === 'dev') {

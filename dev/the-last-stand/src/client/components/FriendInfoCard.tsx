@@ -23,7 +23,7 @@ const FriendInfoCard = ({ user }: { user: IUser }) => {
       <div className='flex flex-col justify-center w-4/5'>
         <h4>
           {`${username} `}
-          <span className='text-pink-800'>{`#${userNo ?? '0000'}`}</span>
+          <span className='text-pink-800'>{`#${userNo ?? '0000'} last online : ${lastOnline}`}</span>
         </h4>
         <h5 className='text-cyan-300'> - {title}</h5>
       </div>
