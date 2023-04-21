@@ -26,6 +26,7 @@ import { initializeGoogleOAuthStrategy } from './api/controllers/auth';
 import authRouter from './api/routes/auth';
 import usersRouter from './api/routes/users';
 import heroesRouter from './api/routes/heroes';
+import Match from '../client/components/Match';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -181,6 +182,7 @@ console.log('✅ Websocket transport initiated.');
 
 // Define rooms here
 gameServer.define('match_orchestrator', MatchOrchestrator);
+gameServer.define('global_room', MatchOrchestrator);
 console.log('✅ match_orchestrator room defined.');
 
 // Attach the express instance to the Colyseus server

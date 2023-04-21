@@ -1,16 +1,7 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import ColyseusProvider from './ColyseusProvider';
+import { Outlet } from 'react-router-dom';
 
 const App = () => {
-  const location = useLocation();
-
-  location.pathname === '/login' ? (
-    <Outlet />
-  ) : (
-    <ColyseusProvider>
-      <Outlet />
-    </ColyseusProvider>
-  );
+  return <Outlet />;
 };
 
 export default App;
