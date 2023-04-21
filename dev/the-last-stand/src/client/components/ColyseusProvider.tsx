@@ -56,6 +56,7 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
         appRoom.leave();
       }
       async function fetchData() {
+        // TODO : make it so that it only updates the lastOnline if the user is not already online in the AppRoom
         if (user) {
           const updatedUser = {
             lastOnline: new Date(),
