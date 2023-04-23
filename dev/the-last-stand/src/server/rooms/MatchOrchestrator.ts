@@ -10,10 +10,10 @@ export class MatchOrchestrator extends Room<MatchState> {
   maxClients: number = 4;
 
   private positionHandler: Record<number, { x: number; y: number }> = {
-    0: { x: 200, y: 400 },
-    1: { x: 100, y: 400 },
-    2: { x: 150, y: 400 },
-    3: { x: 200, y: 400 },
+    0: { x: 200, y: 500 },
+    1: { x: 100, y: 500 },
+    2: { x: 150, y: 500 },
+    3: { x: 200, y: 500 },
   };
 
   private directionHandler: Record<number, string> = {
@@ -77,8 +77,11 @@ export class MatchOrchestrator extends Room<MatchState> {
     const players = this.clients.map((client) => {
       return { name: client.sessionId, index: this.clients.indexOf(client) };
     });
-
+    // broadcast the array to all clients
     this.broadcast('create_hud', players);
+
+    // Assign each player to the damage mapschema
+    this.state.damagePercentageMap.set(client.sessionId, 0);
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {

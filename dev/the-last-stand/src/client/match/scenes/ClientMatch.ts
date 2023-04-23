@@ -7,6 +7,7 @@ import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMap
 import GameEntityFactory from '../GameEntityFactory';
 import { IHitbox } from '../../../typescript/interfaces/IHitbox';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
+import { onStateChange } from '../../../../../tutorials/colyseus-ng/my-colyseus-app/loadtest/example';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -117,7 +118,7 @@ export default class ClientMatch extends Phaser.Scene {
 
   // Get the client from the Boostrap scene
   async create(data: { client: Client }) {
-    console.log(this.physics.world);
+    // console.log(this.physics.world);
     const { client } = data;
     this.gameClient = client;
     if (!this.gameClient) throw new Error('client not found');
@@ -220,9 +221,11 @@ export default class ClientMatch extends Phaser.Scene {
       hero.setVelocity(attackForce.x, attackForce.y);
 
       hero.damagePercentage += 10;
-      const updatePlayerDamage = { playerName: hero.id, damagePercentage: hero.damagePercentage };
-      this.events.emit('update_hud_damage', updatePlayerDamage);
-      console.log(hero.damagePercentage);
+      this.mo?.state.damagePercentageMap.set(this.playerId!, hero.damagePercentage);
+      console.log(this.mo?.state.damagePercentageMap);
+      // const updatePlayerDamage = { playerName: hero.id, damagePercentage: hero.damagePercentage };
+      // this.events.emit('update_hud_damage', updatePlayerDamage);
+      // console.log(hero.damagePercentage);
     });
 
     this.mo.onMessage('create_entity', (message: any) => {
@@ -274,6 +277,10 @@ export default class ClientMatch extends Phaser.Scene {
         };
         this.events.emit('new_hud_player', hudNewPlayerMessage);
       });
+
+      
+      
+
 
       // const hudNewPlayerMessage: INewhudplayer = {
       //   name: message.name,
@@ -341,7 +348,7 @@ export default class ClientMatch extends Phaser.Scene {
             }
             if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
               this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
-              console.log('checking if running or falling');
+              // console.log('checking if running or falling');
             }
           }
           // Attacking logic
