@@ -38,6 +38,9 @@ export default class Hud extends Phaser.Scene {
 
         clientMatch.events.on("update_hud_damage", (data : {playerName: string, damagePercentage: number}) => {
             const playerPercentageText = this.children.getByName(data.playerName) as Phaser.GameObjects.Text;
+            if (!playerPercentageText) {
+                return;
+            }
             playerPercentageText.setText(`${data.damagePercentage}%`);
         });
 

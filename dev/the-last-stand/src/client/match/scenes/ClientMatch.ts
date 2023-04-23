@@ -220,9 +220,15 @@ export default class ClientMatch extends Phaser.Scene {
       hero.anim = hero.name + 'Hurt';
       hero.setVelocity(attackForce.x, attackForce.y);
 
-      hero.damagePercentage += 10;
-      this.mo?.state.damagePercentageMap.set(this.playerId!, hero.damagePercentage);
-      console.log(this.mo?.state.damagePercentageMap);
+      // hero.damagePercentage += 10;
+      const damagePercentage = this.mo?.state.damagePercentageMap.get(this.playerId);
+      this.mo?.state.damagePercentageMap.set(this.playerId, damagePercentage + 10);
+      // this.mo?.state.damagePercentageMap.set(this.playerId, hero.damagePercentage);
+      // console.log(this.mo?.state.damagePercentageMap);
+      this.mo?.state.damagePercentageMap.forEach((value:number, key:string) => {
+      const updatePlayerDamage = { playerName: key, damagePercentage: value };
+      this.events.emit('update_hud_damage', updatePlayerDamage);
+      });
       // const updatePlayerDamage = { playerName: hero.id, damagePercentage: hero.damagePercentage };
       // this.events.emit('update_hud_damage', updatePlayerDamage);
       // console.log(hero.damagePercentage);
@@ -277,10 +283,6 @@ export default class ClientMatch extends Phaser.Scene {
         };
         this.events.emit('new_hud_player', hudNewPlayerMessage);
       });
-
-      
-      
-
 
       // const hudNewPlayerMessage: INewhudplayer = {
       //   name: message.name,
@@ -457,5 +459,6 @@ export default class ClientMatch extends Phaser.Scene {
         }
       });
     }
+    // Update the damagePercentages of the players
   }
 }
