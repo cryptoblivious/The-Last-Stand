@@ -19,10 +19,10 @@ export default class Hud extends Phaser.Scene {
         const hudXpos4 = this.sys.canvas.width * 0.80;
 
         const hudPositionhandler : Record <number,number> = {
-            1: hudXpos1,
-            2: hudXpos2,
-            3: hudXpos3,
-            4: hudXpos4
+            0: hudXpos1,
+            1: hudXpos2,
+            2: hudXpos3,
+            3: hudXpos4
         }
         const hudElementYpos = hudYpos +10;
         const bgRadius = 10;
@@ -45,12 +45,23 @@ export default class Hud extends Phaser.Scene {
             playerPercentageText.setText(`${data.damagePercentage}%`);
         });
 
+        clientMatch.events.on("remove_hud_player", (data : string) => {
+            const playerPercentageText = this.children.getByName(data) as Phaser.GameObjects.Text;
+            const playerNameText = this.children.getByName(data) as Phaser.GameObjects.Text;
+            if (playerPercentageText.name === null || playerPercentageText.name === undefined) {
+                return;
+            }
+            playerNameText.destroy();
+            playerPercentageText.destroy();
+        });
+
     }
 
     createNewPlayer(playerName:string, hudXpos1: number, hudElementYpos: number, bgRadius: number, hudYpos: number, playerDamage: number) {
         const playerNameText = this.add.text(hudXpos1, hudElementYpos , playerName, { font: '16px Courier', color: '#00ff00' });
         const boundsPlayerNameText = playerNameText.getBounds();
         playerNameText.setPosition(hudXpos1 - boundsPlayerNameText.width / 2, hudElementYpos);
+        playerNameText.name = 'player' + playerName;
         const hudPlayer = this.add.graphics();
         hudPlayer.fillStyle( 0x000000, 0.5  );
         hudPlayer.fillRoundedRect(hudXpos1 - 50, hudYpos, 100, 75, bgRadius );

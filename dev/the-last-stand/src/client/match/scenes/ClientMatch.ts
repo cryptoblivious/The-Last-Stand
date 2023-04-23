@@ -286,7 +286,7 @@ export default class ClientMatch extends Phaser.Scene {
       players.forEach((player: any) => {
         const hudNewPlayerMessage: INewhudplayer = {
           name: player.name,
-          index: player.index + 1,
+          index: player.index,
           damagePercentage: 0,
         };
         this.events.emit('new_hud_player', hudNewPlayerMessage);
