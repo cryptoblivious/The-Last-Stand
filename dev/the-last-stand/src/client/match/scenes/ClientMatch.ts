@@ -7,7 +7,7 @@ import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMap
 import GameEntityFactory from '../GameEntityFactory';
 import { IHitbox } from '../../../typescript/interfaces/IHitbox';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
-import { onStateChange } from '../../../../../tutorials/colyseus-ng/my-colyseus-app/loadtest/example';
+import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -15,6 +15,7 @@ interface MovePlayerMessage {
   flipX?: boolean;
   direction?: string;
 }
+
 
 interface GenerateAttackHitboxMessage {
   attackType: string;
@@ -220,18 +221,25 @@ export default class ClientMatch extends Phaser.Scene {
       hero.anim = hero.name + 'Hurt';
       hero.setVelocity(attackForce.x, attackForce.y);
 
-      // hero.damagePercentage += 10;
-      const damagePercentage = this.mo?.state.damagePercentageMap.get(this.playerId);
-      this.mo?.state.damagePercentageMap.set(this.playerId, damagePercentage + 10);
-      // this.mo?.state.damagePercentageMap.set(this.playerId, hero.damagePercentage);
-      // console.log(this.mo?.state.damagePercentageMap);
-      this.mo?.state.damagePercentageMap.forEach((value:number, key:string) => {
-      const updatePlayerDamage = { playerName: key, damagePercentage: value };
-      this.events.emit('update_hud_damage', updatePlayerDamage);
-      });
-      // const updatePlayerDamage = { playerName: hero.id, damagePercentage: hero.damagePercentage };
+      hero.damagePercentage += 10;
+      const updatePlayerDamage : IUpdatePercentagesMessage =  { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
+
+      this.mo?.send('server_update_hud_damage', updatePlayerDamage);
       // this.events.emit('update_hud_damage', updatePlayerDamage);
       // console.log(hero.damagePercentage);
+
+
+      // gossage avec le state du mo.. ben de la misere
+      // const damagePercentage = this.mo?.state.damagePercentageMap.get(this.playerId);
+      // this.mo?.state.damagePercentageMap.set(this.playerId, damagePercentage + 10);
+      // console.log(this.mo?.state.damagePercentageMap);
+      // this.mo?.state.damagePercentageMap.set(this.playerId, hero.damagePercentage);
+      // console.log(this.mo?.state.damagePercentageMap);
+      // this.mo?.state.damagePercentageMap.forEach((value:number, key:string) => {
+      // const updatePlayerDamage = { playerName: key, damagePercentage: value };
+      // this.events.emit('update_hud_damage', updatePlayerDamage);
+      // });
+      
     });
 
     this.mo.onMessage('create_entity', (message: any) => {
@@ -284,6 +292,10 @@ export default class ClientMatch extends Phaser.Scene {
         this.events.emit('new_hud_player', hudNewPlayerMessage);
       });
 
+      
+
+     
+
       // const hudNewPlayerMessage: INewhudplayer = {
       //   name: message.name,
       //   index: message.index + 1,
@@ -291,6 +303,14 @@ export default class ClientMatch extends Phaser.Scene {
       // };
       // this.events.emit('new_hud_player', hudNewPlayerMessage);
     });
+    // this.mo.onMessage('update_damage_percentages', (message: any) => {
+    //   console.log(message);
+    // });
+    this.mo.onMessage('server_update_hud_damage', (message: any) => {
+      console.log(message);
+      this.events.emit('update_hud_damage', message);
+    });
+    
   }
 
   update() {

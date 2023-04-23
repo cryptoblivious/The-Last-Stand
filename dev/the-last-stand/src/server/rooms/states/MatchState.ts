@@ -1,4 +1,4 @@
-import { Schema, type, MapSchema, ArraySchema } from '@colyseus/schema';
+import { Schema, type, MapSchema, ArraySchema, DataChange } from '@colyseus/schema';
 
 export class Position extends Schema {
   @type('number') x: number = 0;

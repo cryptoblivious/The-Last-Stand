@@ -2,6 +2,7 @@ import { Room, Client } from 'colyseus';
 import { MatchState, GameEntityMapper } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 import { IHitbox } from '../../typescript/interfaces/IHitbox';
+import IUpdatePercentagesMessage from '../../typescript/interfaces/IUpdatePercentagesMessage';
 
 interface IClient extends Client {
   selectedHero: string;
@@ -57,6 +58,11 @@ export class MatchOrchestrator extends Room<MatchState> {
     this.onMessage('player_hurt', (player, message: { victim: string; attackForce: { x: string; y: string } }) => {
       const index = this.clients.findIndex((client) => client.id === message.victim);
       this.clients[index].send('player_hurt', { attackForce: message.attackForce });
+    });
+
+    this.onMessage('server_update_hud_damage', (player, data:IUpdatePercentagesMessage) => {
+      // console.log('server_update_hud_damage', data);
+      this.broadcast('server_update_hud_damage', data);
     });
   }
 

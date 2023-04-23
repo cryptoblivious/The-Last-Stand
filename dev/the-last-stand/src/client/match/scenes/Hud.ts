@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
+import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
 
 export default class Hud extends Phaser.Scene {
     
@@ -36,9 +37,9 @@ export default class Hud extends Phaser.Scene {
             this.createNewPlayer( playerName, hudPositionhandler[playerIndex], hudElementYpos, bgRadius, hudYpos, playerDamage);
         });
 
-        clientMatch.events.on("update_hud_damage", (data : {playerName: string, damagePercentage: number}) => {
-            const playerPercentageText = this.children.getByName(data.playerName) as Phaser.GameObjects.Text;
-            if (!playerPercentageText) {
+        clientMatch.events.on("update_hud_damage", (data : IUpdatePercentagesMessage) => {
+            const playerPercentageText = this.children.getByName(data.playerNameOrID) as Phaser.GameObjects.Text;
+            if (playerPercentageText.name === null || playerPercentageText.name === undefined) {
                 return;
             }
             playerPercentageText.setText(`${data.damagePercentage}%`);
