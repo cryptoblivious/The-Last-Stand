@@ -221,7 +221,7 @@ export default class ClientMatch extends Phaser.Scene {
       hero.anim = hero.name + 'Hurt';
       hero.setVelocity(attackForce.x, attackForce.y);
 
-      hero.damagePercentage += 10;
+      hero.damagePercentage += 1;
       const updatePlayerDamage : IUpdatePercentagesMessage =  { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
 
       this.mo?.send('server_update_hud_damage', updatePlayerDamage);
