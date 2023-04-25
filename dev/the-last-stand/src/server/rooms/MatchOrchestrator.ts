@@ -108,6 +108,7 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     // Tell all clients to remove the player's hero
     this.broadcast('remove_entity', { id: client.sessionId });
+    this.broadcast('server_remove_hud_player', { playerNameOrID: client.sessionId });
 
     // Remove the player's hero game state data from the game state
     this.state.gem.delete(client.sessionId);

@@ -307,10 +307,12 @@ export default class ClientMatch extends Phaser.Scene {
     //   console.log(message);
     // });
     this.mo.onMessage('server_update_hud_damage', (message: any) => {
-      console.log(message);
       this.events.emit('update_hud_damage', message);
     });
-    
+    this.mo.onMessage('server_remove_hud_player', (message: any) => {
+      this.events.emit('remove_hud_player', message);
+    });
+        
   }
 
   update() {
