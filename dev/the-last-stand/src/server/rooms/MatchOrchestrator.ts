@@ -2,6 +2,7 @@ import { Room, Client } from 'colyseus';
 import { MatchState, GameEntityMapper } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 import { IHitbox } from '../../typescript/interfaces/IHitbox';
+import IUpdatePercentagesMessage from '../../typescript/interfaces/IUpdatePercentagesMessage';
 
 interface IClient extends Client {
   selectedHero: string;
@@ -10,10 +11,10 @@ export class MatchOrchestrator extends Room<MatchState> {
   maxClients: number = 4;
 
   private positionHandler: Record<number, { x: number; y: number }> = {
-    0: { x: 200, y: 400 },
-    1: { x: 100, y: 400 },
-    2: { x: 150, y: 400 },
-    3: { x: 200, y: 400 },
+    0: { x: 300, y: 400 },
+    1: { x: 300, y: 400 },
+    2: { x: 350, y: 400 },
+    3: { x: 300, y: 400 },
   };
 
   private directionHandler: Record<number, string> = {
@@ -58,6 +59,11 @@ export class MatchOrchestrator extends Room<MatchState> {
       const index = this.clients.findIndex((client) => client.id === message.victim);
       this.clients[index].send('player_hurt', { attackForce: message.attackForce });
     });
+
+    this.onMessage('server_update_hud_damage', (player, data:IUpdatePercentagesMessage) => {
+      // console.log('server_update_hud_damage', data);
+      this.broadcast('server_update_hud_damage', data);
+    });
   }
 
   onJoin(client: IClient, options: any) {
@@ -77,8 +83,11 @@ export class MatchOrchestrator extends Room<MatchState> {
     const players = this.clients.map((client) => {
       return { name: client.sessionId, index: this.clients.indexOf(client) };
     });
-
+    // broadcast the array to all clients
     this.broadcast('create_hud', players);
+
+    // Assign each player to the damage mapschema
+    this.state.damagePercentageMap.set(client.sessionId, 0);
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
@@ -99,6 +108,7 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     // Tell all clients to remove the player's hero
     this.broadcast('remove_entity', { id: client.sessionId });
+    this.broadcast('server_remove_hud_player', { playerNameOrID: client.sessionId });
 
     // Remove the player's hero game state data from the game state
     this.state.gem.delete(client.sessionId);
