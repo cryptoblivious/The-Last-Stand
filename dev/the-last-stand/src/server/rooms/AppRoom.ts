@@ -7,6 +7,15 @@ export class AppRoom extends Room<AppState> {
     this.setState(new AppState());
   }
 
+  onAuth(client: Client, user: any) {
+    // Check if the user is already connected
+    const { username, userNo } = user;
+    if (this.state.users.get(username + userNo)) {
+      return false;
+    }
+    return true;
+  }
+
   onJoin(client: Client, user: any) {
     console.log('app room joined!', user);
     const { username, userNo } = user;
@@ -17,7 +26,7 @@ export class AppRoom extends Room<AppState> {
     userMap.username = username;
     userMap.userNo = userNo;
 
-    this.state.users.set(client.id, userMap);
+    this.state.users.set(username + userNo, userMap);
   }
 
   onLeave(client: Client, consented: boolean) {

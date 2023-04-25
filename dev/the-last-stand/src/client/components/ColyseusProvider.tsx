@@ -21,30 +21,36 @@ interface ColyseusProviderProps {
 
 const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
   const [client, setClient] = useState<Client | null>(null);
-  const [appRoom, setAppRoom] = useState<Room | null>(null);
+  const [appRoom, setAppRoom] = useState<Room<AppState> | null>(null);
   const [user, setUser] = useState<IUser | null>(null);
 
   const connect = async () => {
-    //const user = await getCurrentUser();
-    //setUser(user);
-    console.log('connecting...');
-    const updatedUser = {
-      lastOnline: 'now',
-    };
+    console.log('getting current user');
+    const user = await getCurrentUser();
+    if (user) {
+      const updatedUser = {
+        lastOnline: 'now',
+      };
+      const patchedUser = await patchCurrentUser(updatedUser);
+      setUser(patchedUser);
+    } else {
+      console.log('no user found');
+    }
 
-    const patchedUser = await patchCurrentUser(updatedUser);
-    setUser(patchedUser);
+    const userData = user ?? { username: 'guest', userNo: '0000' };
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
-    const room = await client.joinOrCreate('app_room', patchedUser);
-
+    try {
+      const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
+    } catch (error) {
+      console.log('error', error);
+    }
     setClient(client);
-    setAppRoom(room);
+    setAppRoom(appRoom);
   };
 
   useEffect(() => {
     async function fetchData() {
       if (!client && !appRoom && !user) {
-        console.log('user', user);
         connect();
       }
     }
@@ -52,7 +58,6 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
 
     return () => {
       if (appRoom) {
-        console.log('users', appRoom.state.users);
         appRoom.leave();
       }
       async function fetchData() {
@@ -67,15 +72,9 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
       }
       fetchData();
     };
-  }, [client]);
+  }, []);
 
   const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user }), [client, appRoom]);
-
-  if (!appRoom) {
-    {
-      return children;
-    }
-  }
 
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };

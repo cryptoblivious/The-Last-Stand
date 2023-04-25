@@ -82,7 +82,9 @@ export const isAdmin = async (req: any, res: any, next: any) => {
 };
 
 // Logout user v6
-export const logoutUser = (req: any, res: any) => {
+export const logoutUser = async (req: any, res: any) => {
+  const user = await User.findOneAndUpdate({ email: req.user.email }, { lastOnline: new Date() });
+
   req.logout((err: any) => {
     if (err) {
       return res.status(500).json({ message: err });

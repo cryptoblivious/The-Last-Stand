@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { isAuth } from '../controllers/isAuth';
+import { fetchAuth } from '../../fetches/fetchAuth';
 import { IProtectedRouteProps } from '../../../typescript/interfaces/IProtectedRouteProps';
 
 export const ProtectedRoute = ({ element: Component, userAuth = true, redirects = '/login' }: IProtectedRouteProps) => {
@@ -8,20 +8,27 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<any>([]);
 
+  const fetchData = async () => {
+    // TODO : Find why this is being called twice
+    console.log('fetching', new Date().getTime());
+    const result = await fetchAuth();
+    const { status, data } = result;
+    setIsAuthenticated(status);
+    setData(data);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const fetchAuth = async () => {
-      const { status, data } = await isAuth();
-      setIsAuthenticated(status);
-      setData(data);
-      setIsLoading(false);
-    };
-    fetchAuth();
-  }, [isAuthenticated]);
+    console.log('ProtectedRoute rendered');
+    fetchData();
+  }, []);
 
   if (isLoading) {
+    console.log('loading');
     return <div className='bg-black text-white h-screen'>Checking authentication...</div>;
   }
 
+  console.log('loaded');
   return isAuthenticated === userAuth || userAuth === 'both' ? (
     React.cloneElement(Component, { data })
   ) : (

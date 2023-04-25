@@ -1,12 +1,17 @@
 import LoginNavbar from './LoginNavbar';
 import ErrorPopup from './ErrorPopup';
-import { login } from '../../public/assets/';
 import '../styles/index.css';
 import { useState } from 'react';
 
 const Login = (props: any) => {
   const { data } = props;
-  const error = data.error ?? null;
+  let msg;
+  if (data) {
+    msg = data.error;
+  } else {
+    msg = null;
+  }
+  const error = msg;
   const [popupOpen, setPopupOpen] = useState(error);
 
   const closePopup = () => {
