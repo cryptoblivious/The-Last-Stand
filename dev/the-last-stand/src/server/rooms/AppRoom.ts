@@ -1,6 +1,6 @@
 import { Room, Client } from 'colyseus';
 import { AppState, UserMapper } from './states/AppState';
-
+import { userModel as User } from '../api/models/user';
 export class AppRoom extends Room<AppState> {
   onCreate(options: any) {
     this.roomId = 'app'; // set the room ID to "my_room"
@@ -25,6 +25,7 @@ export class AppRoom extends Room<AppState> {
     const userMap = new UserMapper();
     userMap.username = username;
     userMap.userNo = userNo;
+    userMap.clientId = client.id;
 
     this.state.users.set(username + userNo, userMap);
   }
@@ -32,8 +33,18 @@ export class AppRoom extends Room<AppState> {
   onLeave(client: Client, consented: boolean) {
     console.log(client.id, 'left the app room');
 
+    // Find the user in the appState using the client ID
+    this.state.users.forEach((user: any) => {
+      console.log('user.clientId: ', user.clientId, 'client.id: ', client.id);
+      if (user.clientId === client.id) {
+        console.log('user leaving: ', user.username + user.userNo);
+      }
+    });
+
     // Remove the user's app state data from the app state
     this.state.users.delete(client.id);
+
+    //User.findOneAndUpdate({ username: user.username,  }, { lastOnline: new Date() });
   }
 
   onDispose() {
