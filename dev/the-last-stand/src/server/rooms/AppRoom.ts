@@ -38,13 +38,14 @@ export class AppRoom extends Room<AppState> {
       console.log('user.clientId: ', user.clientId, 'client.id: ', client.id);
       if (user.clientId === client.id) {
         console.log('user leaving: ', user.username + user.userNo);
+        if (user.username !== 'guest') {
+          User.findOneAndUpdate({ username: user.username, userNo: user.userNo }, { lastOnline: new Date() });
+        }
       }
     });
 
     // Remove the user's app state data from the app state
     this.state.users.delete(client.id);
-
-    //User.findOneAndUpdate({ username: user.username,  }, { lastOnline: new Date() });
   }
 
   onDispose() {
