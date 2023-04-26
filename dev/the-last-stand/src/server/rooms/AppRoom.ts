@@ -33,19 +33,17 @@ export class AppRoom extends Room<AppState> {
   onLeave(client: Client, consented: boolean) {
     console.log(client.id, 'left the app room');
 
-    // Find the user in the appState using the client ID
     this.state.users.forEach((user: any) => {
       console.log('user.clientId: ', user.clientId, 'client.id: ', client.id);
       if (user.clientId === client.id) {
         console.log('user leaving: ', user.username + user.userNo);
+        this.state.users.delete(user.username + user.userNo);
+
         if (user.username !== 'guest') {
           User.findOneAndUpdate({ username: user.username, userNo: user.userNo }, { lastOnline: new Date() });
         }
       }
     });
-
-    // Remove the user's app state data from the app state
-    this.state.users.delete(client.id);
   }
 
   onDispose() {
