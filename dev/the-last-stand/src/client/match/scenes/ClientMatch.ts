@@ -222,7 +222,7 @@ export default class ClientMatch extends Phaser.Scene {
       hero.setVelocity(attackForce.x, attackForce.y);
 
       hero.damagePercentage += 1;
-      const updatePlayerDamage : IUpdatePercentagesMessage =  { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
+      const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
 
       this.mo?.send('server_update_hud_damage', updatePlayerDamage);
       // this.events.emit('update_hud_damage', updatePlayerDamage);
@@ -239,10 +239,10 @@ export default class ClientMatch extends Phaser.Scene {
       // const updatePlayerDamage = { playerName: key, damagePercentage: value };
       // this.events.emit('update_hud_damage', updatePlayerDamage);
       // });
-      
+
     });
 
-    this.mo.onMessage('create_entity', (message: any) => {
+    this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
       this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
       const entity = this.gameEntities.get(message.id);
       entity.setName(message.gameEntityType);
@@ -275,6 +275,12 @@ export default class ClientMatch extends Phaser.Scene {
         ?.spriteSheets.forEach((spritesheet) => {
           entity.frameEvents[spritesheet.key] = spritesheet.frameEvents;
         });
+
+      // add player name text and attach it to the player
+      entity.playerName = message.id
+      const playerNameText = this.add.text(entity.x, entity.y - 50, entity.playerName, { fontSize: '24px', color: '#000000' });
+      playerNameText.setOrigin(0.5, 0.5);
+      entity.playerNameText = playerNameText;
     });
 
     this.mo.onMessage('remove_entity', (message: { id: string }) => {
@@ -292,9 +298,9 @@ export default class ClientMatch extends Phaser.Scene {
         this.events.emit('new_hud_player', hudNewPlayerMessage);
       });
 
-      
 
-     
+
+
 
       // const hudNewPlayerMessage: INewhudplayer = {
       //   name: message.name,
@@ -312,7 +318,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.mo.onMessage('server_remove_hud_player', (message: any) => {
       this.events.emit('remove_hud_player', message);
     });
-        
+
   }
 
   update() {
@@ -478,9 +484,13 @@ export default class ClientMatch extends Phaser.Scene {
               }
             }
           }
+          // update the player name text position
+          const playerName = entity.playerNameText;
+          if (playerName) {
+            playerName.setPosition(entity.x, entity.y - 50);
+          }
         }
       });
     }
-    // Update the damagePercentages of the players
   }
 }
