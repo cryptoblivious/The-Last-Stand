@@ -67,6 +67,15 @@ const bounceHandler: Record<string, number> = {
   sirius: 0.1,
   logan: 0.1,
 };
+ interface IParticlesEmitterJsonObject {
+  frame: string[], 
+  lifespan: number,
+  speed: { min: number, max: number },
+  scale: { start: number, end: number },
+  gravityY: number,
+  blendMode: string,
+  emitting: boolean,
+} 
 
 const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3', 'Hurt', 'Death'];
 
@@ -79,8 +88,10 @@ export default class ClientMatch extends Phaser.Scene {
   private spriteSheetsLoader = spriteSheetsLoader;
   private updateSpriteMessage?: MovePlayerMessage;
   private background?: Phaser.GameObjects.Image;
-  private airborneCorrection: integer = 10;
+  private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
+  private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitterManager;
+  
 
   // TOUTES LES KEYS
   private keys?: any;
@@ -88,6 +99,8 @@ export default class ClientMatch extends Phaser.Scene {
   constructor() {
     super('canvas');
   }
+
+  
 
   applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
     if (!entity.body.blocked.down) {
@@ -115,6 +128,9 @@ export default class ClientMatch extends Phaser.Scene {
     // Load backgrounds and tiles
     this.load.image('background', '/assets/craftpix/backgrounds/background.png');
     this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
+
+    // Load flares
+    this.load.atlas('flares', '/assets/particles/flares.png', '/assets/particles/flares.json');
   }
 
   // Get the client from the Boostrap scene
