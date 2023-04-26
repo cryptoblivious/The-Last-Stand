@@ -67,15 +67,15 @@ const bounceHandler: Record<string, number> = {
   sirius: 0.1,
   logan: 0.1,
 };
- interface IParticlesEmitterJsonObject {
-  frame: string[], 
+interface IParticlesEmitterJsonObject {
+  frame: string[],
   lifespan: number,
   speed: { min: number, max: number },
   scale: { start: number, end: number },
   gravityY: number,
   blendMode: string,
   emitting: boolean,
-} 
+}
 
 const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3', 'Hurt', 'Death'];
 
@@ -90,8 +90,8 @@ export default class ClientMatch extends Phaser.Scene {
   private background?: Phaser.GameObjects.Image;
   private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
-  private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitterManager;
-  
+  private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitter;
+
 
   // TOUTES LES KEYS
   private keys?: any;
@@ -100,7 +100,6 @@ export default class ClientMatch extends Phaser.Scene {
     super('canvas');
   }
 
-  
 
   applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
     if (!entity.body.blocked.down) {
@@ -129,8 +128,9 @@ export default class ClientMatch extends Phaser.Scene {
     this.load.image('background', '/assets/craftpix/backgrounds/background.png');
     this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
 
-    // Load flares
+    // Load particles
     this.load.atlas('flares', '/assets/particles/flares.png', '/assets/particles/flares.json');
+    this.load.image('purple_spark', '/assets/particles/purple_sparkle.png');
   }
 
   // Get the client from the Boostrap scene
@@ -161,28 +161,42 @@ export default class ClientMatch extends Phaser.Scene {
       });
     });
 
+    // CREATION DES PARTICULES
+    this.particlesEmitter = this.add.particles('flares').createEmitter({
+      frame: ['red', 'blue', 'green', 'yellow', 'white'],
+      lifespan: 1000,
+      speed: { min: 150, max: 250 },
+      scale: { start: 2.5, end: 0 },
+      gravityY: 50,
+      blendMode: 'ADD',
+      on: false,
+    });
+
+    // const particles = this.add.particles('purple_spark');
+    // this.particlesEmitter = particles.createEmitter({
+    //   speed: 100,
+    //   scale: { start: 0.1, end: 0 },
+    //   blendMode: 'ADD',
+    //   lifespan: 1000,
+    //   gravityY: 100,
+    //   on: false,
+    // });
+
+
+
     //  CREATION DU BACKGROUND ET DU TUILAGE
     // Background
     this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
     // stretch the background to fit the whole screen
     this.background.displayWidth = this.sys.canvas.width;
     this.background.displayHeight = this.sys.canvas.height;
+    this,this.background.setDepth(-1);
 
-    // Tileset platform principale
-    //const tileMap = this.make.tilemap({ tileWidth: 32, tileHeight: 32, width: 10, height: 1 });
-    //const tileSet = tileMap.addTilesetImage('tuile03');
-    //const layer = tileMap.createBlankLayer('Tile Layer 1', tileSet, 100, 100);
-    //this.add.existing(layer);
-
-    //tileMap.setCollisionBetween(0, 14);
 
     // Create platforms
     const platforms = this.physics.add.staticGroup();
     const walls = this.physics.add.staticGroup();
-    // platforms
-    //   .create(100, this.sys.canvas.height - 100, 'tuile03')
-    //   .setScale(2)
-    //   .refreshBody();
+   
     // create a platform with the platform builder
     const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.26, 32, 'tuile03');
     const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.75, this.sys.canvas.width * 0.22, 32, 'tuile03');
@@ -241,20 +255,6 @@ export default class ClientMatch extends Phaser.Scene {
       const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
 
       this.mo?.send('server_update_hud_damage', updatePlayerDamage);
-      // this.events.emit('update_hud_damage', updatePlayerDamage);
-      // console.log(hero.damagePercentage);
-
-
-      // gossage avec le state du mo.. ben de la misere
-      // const damagePercentage = this.mo?.state.damagePercentageMap.get(this.playerId);
-      // this.mo?.state.damagePercentageMap.set(this.playerId, damagePercentage + 10);
-      // console.log(this.mo?.state.damagePercentageMap);
-      // this.mo?.state.damagePercentageMap.set(this.playerId, hero.damagePercentage);
-      // console.log(this.mo?.state.damagePercentageMap);
-      // this.mo?.state.damagePercentageMap.forEach((value:number, key:string) => {
-      // const updatePlayerDamage = { playerName: key, damagePercentage: value };
-      // this.events.emit('update_hud_damage', updatePlayerDamage);
-      // });
 
     });
 
@@ -314,20 +314,8 @@ export default class ClientMatch extends Phaser.Scene {
         this.events.emit('new_hud_player', hudNewPlayerMessage);
       });
 
-
-
-
-
-      // const hudNewPlayerMessage: INewhudplayer = {
-      //   name: message.name,
-      //   index: message.index + 1,
-      //   damagePercentage: 0,
-      // };
-      // this.events.emit('new_hud_player', hudNewPlayerMessage);
     });
-    // this.mo.onMessage('update_damage_percentages', (message: any) => {
-    //   console.log(message);
-    // });
+
     this.mo.onMessage('server_update_hud_damage', (message: any) => {
       this.events.emit('update_hud_damage', message);
     });
@@ -338,6 +326,7 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   update() {
+
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       const entity = this.gameEntities.get(this.playerId!);
@@ -420,16 +409,41 @@ export default class ClientMatch extends Phaser.Scene {
         }
       }
 
+      // explosion logic
+      const explosionPosition = { x: 0, y: 0 };
+      let playerIsDead = false;
       // Make the sprite appear on the other side of the screen when it goes off screen
       if (entity.x > this.sys.canvas.width * 1.2) {
-        entity.x = 0 - this.sys.canvas.width * 0.2;
+        // entity.x = 0 - this.sys.canvas.width * 0.2;
+
+        // get the position of the explosion relative to the player
+        explosionPosition.x = entity.x - (entity.x - this.sys.canvas.width);
+        explosionPosition.y = entity.y;
+        playerIsDead = true;
       } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
-        entity.x = this.sys.canvas.width * 1.2;
+        // entity.x = this.sys.canvas.width * 1.2;
+        explosionPosition.x = 0
+        explosionPosition.y = entity.y;
+        playerIsDead = true;
       }
       if (entity.y > this.sys.canvas.height * 1.2) {
-        entity.y = 0 - this.sys.canvas.height * 0.2;
+        // entity.y = 0 - this.sys.canvas.height * 0.2;
+
+        explosionPosition.x = entity.x;
+        explosionPosition.y = entity.y - (entity.y - this.sys.canvas.height);
+        playerIsDead = true;
       } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
-        entity.y = this.sys.canvas.height * 1.2;
+        // entity.y = this.sys.canvas.height * 1.2;
+
+        explosionPosition.x = entity.x;
+        explosionPosition.y = 0;
+        playerIsDead = true;
+      }
+      if (playerIsDead) {
+        console.log(`player ${entity.name} is dead at position: ${explosionPosition.x}, ${explosionPosition.y}`);
+        // set the depth of the explosion to be the same as the player
+        // console.log(this.particlesEmitter)
+        this.particlesEmitter?.explode(10, explosionPosition.x, explosionPosition.y);
       }
 
       // Send the sprite's information to the server
@@ -509,4 +523,5 @@ export default class ClientMatch extends Phaser.Scene {
       });
     }
   }
+
 }
