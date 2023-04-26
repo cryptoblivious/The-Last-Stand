@@ -190,13 +190,13 @@ export default class ClientMatch extends Phaser.Scene {
     // stretch the background to fit the whole screen
     this.background.displayWidth = this.sys.canvas.width;
     this.background.displayHeight = this.sys.canvas.height;
-    this,this.background.setDepth(-1);
+    this, this.background.setDepth(-1);
 
 
     // Create platforms
     const platforms = this.physics.add.staticGroup();
     const walls = this.physics.add.staticGroup();
-   
+
     // create a platform with the platform builder
     const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.26, 32, 'tuile03');
     const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.75, this.sys.canvas.width * 0.22, 32, 'tuile03');
@@ -426,7 +426,7 @@ export default class ClientMatch extends Phaser.Scene {
         explosionPosition.y = entity.y;
         playerIsDead = true;
       }
-      if (entity.y > this.sys.canvas.height * 1.2) {
+      else if (entity.y > this.sys.canvas.height * 1.2) {
         // entity.y = 0 - this.sys.canvas.height * 0.2;
 
         explosionPosition.x = entity.x;
@@ -439,6 +439,7 @@ export default class ClientMatch extends Phaser.Scene {
         explosionPosition.y = 0;
         playerIsDead = true;
       }
+      // TODO -> send a message to the server to tell it that the player is dead to render the explosion using a broadcast
       if (playerIsDead) {
         console.log(`player ${entity.name} is dead at position: ${explosionPosition.x}, ${explosionPosition.y}`);
         // set the depth of the explosion to be the same as the player
