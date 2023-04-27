@@ -1,26 +1,22 @@
-import { IChatbox } from '../../typescript/interfaces/IChatbox';
 import Button from './Button';
 import { GiAbstract053, GiAzulFlake } from 'react-icons/gi';
-import Chatbox from './Chatbox';
-import { useState } from 'react';
+import { IChatboxSwitcherProps } from '../../typescript/interfaces/IChatboxSwitcherProps';
 
-const ChatboxSwitcher = ({ users, messages, icon }: IChatbox) => {
-  const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
-
-  const toggleChatbox = () => {
-    console.log('toggleChatbox');
-    setChatboxOpen(!chatboxOpen);
-  };
+const ChatboxSwitcher = (props: IChatboxSwitcherProps) => {
+  const { onClick, chatboxOpen } = props;
+  const toggleChatbox = onClick;
+  console.log(onClick);
+  console.log(chatboxOpen);
 
   return (
     <>
       {chatboxOpen ? (
         <Button
           onClick={toggleChatbox}
-          classNameAdditions={`relative p-2`}
+          classNameAdditions={`p-2 z-50`}
           icon={
-            <GiAbstract053
-              aria-label='GiFeather'
+            <GiAzulFlake
+              aria-label='GiAzulFlake'
               fontSize='1.69rem'
               color='rgb(103 232 249)'
             />
@@ -29,17 +25,16 @@ const ChatboxSwitcher = ({ users, messages, icon }: IChatbox) => {
       ) : (
         <Button
           onClick={toggleChatbox}
-          classNameAdditions={`relative p-2`}
+          classNameAdditions={`absolute right-96 -top-1 p-2 z-50`}
           icon={
-            <GiAzulFlake
-              aria-label='GiFeather'
+            <GiAbstract053
+              aria-label='GiAbstract053'
               fontSize='1.69rem'
               color='rgb(103 232 249)'
             />
           }
         />
       )}
-      <Chatbox className={chatboxOpen ? 'w-96 h-64' : 'w-0 h-0'} />
     </>
   );
 };

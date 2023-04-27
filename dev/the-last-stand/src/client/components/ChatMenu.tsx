@@ -1,4 +1,4 @@
-import ChatboxSwitcher from './ChatboxSwitcher';
+import Chatbox from './Chatbox';
 import { useState } from 'react';
 
 const ChatMenu = () => {
@@ -6,16 +6,16 @@ const ChatMenu = () => {
   const [globalChat, setGlobalChat] = useState<null | any>(null);
 
   return (
-    <div className='z-50 flex flex-col gap-2 py-6 items-end '>
-      <ChatboxSwitcher chatbox={globalChat} />
-      <ChatboxSwitcher chatbox={globalChat} />
-      <ChatboxSwitcher chatbox={globalChat} />
+    <div className='z-30 flex flex-col relative gap-4 py-8 items-end '>
+      <Chatbox name={globalChat} />
+      <Chatbox name={globalChat} />
+      <Chatbox name={globalChat} />
 
       {chatboxes &&
         chatboxes.map((chatbox: any) => (
-          <ChatboxSwitcher
+          <Chatbox
             key={chatbox._id}
-            chatbox={chatbox}
+            name={chatbox.name}
           />
         ))}
     </div>
