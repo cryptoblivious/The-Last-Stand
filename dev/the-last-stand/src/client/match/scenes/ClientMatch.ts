@@ -10,6 +10,7 @@ import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
 import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
 import { EMessage } from '../../../typescript/enumerations/EMessage';
 import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMessage';
+import {IUpdateSpriteMessage} from '../../../typescript/interfaces/IUpdateSpriteMessage';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -147,7 +148,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.mo = await this.gameClient.joinOrCreate<MatchState>('match_orchestrator');
 
     //  TOUTES LES KEYS DES MOUVEMENTS
-    this.keys = this.input.keyboard.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
+    this.keys = this.input.keyboard?.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
 
     //  CREATION DES ANIMATIONS AVEC LES SPRITESHEETS DU SPRITESHEET LOADER
     this.spriteSheetsLoader.forEach((spritePaths) => {
@@ -164,26 +165,15 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // CREATION DES PARTICULES
-    this.particlesEmitter = this.add.particles('flares').createEmitter({
+    this.particlesEmitter = this.add.particles(0,0, 'flares', {
       frame: ['red', 'blue', 'green', 'yellow', 'white'],
       lifespan: 1000,
       speed: { min: 150, max: 250 },
       scale: { start: 2.5, end: 0 },
       gravityY: 50,
       blendMode: 'ADD',
-      on: false,
+      emitting: false,
     });
-
-    // const particles = this.add.particles('purple_spark');
-    // this.particlesEmitter = particles.createEmitter({
-    //   speed: 100,
-    //   scale: { start: 0.1, end: 0 },
-    //   blendMode: 'ADD',
-    //   lifespan: 1000,
-    //   gravityY: 100,
-    //   on: false,
-    // });
-
 
 
     //  CREATION DU BACKGROUND ET DU TUILAGE
@@ -452,7 +442,7 @@ export default class ClientMatch extends Phaser.Scene {
       }
 
       // Send the sprite's information to the server
-      const updateSpriteMessage = {
+      const updateSpriteMessage : IUpdateSpriteMessage = {
         x: entity.x,
         y: entity.y,
         direction: entity.direction,

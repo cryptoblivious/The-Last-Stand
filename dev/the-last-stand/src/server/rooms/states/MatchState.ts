@@ -1,13 +1,10 @@
 import { Schema, type, MapSchema, ArraySchema, DataChange } from '@colyseus/schema';
 
-export class Position extends Schema {
-  @type('number') x: number = 0;
-  @type('number') y: number = 0;
-}
+
 export class GameEntityMapper extends Schema {
   @type('string') id: string = '';
   @type('string') gameEntityType: string = '';
-  @type(Position) position: Position = new Position();
+  @type({map:'number'}) position: {x: number, y: number} = {x: 0, y: 0};
   @type('string') anim?: string = '';
   @type('string') direction?: string = '';
 }
