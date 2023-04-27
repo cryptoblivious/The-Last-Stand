@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { fetchAuth } from '../../fetches/fetchAuth';
 import { IProtectedRouteProps } from '../../../typescript/interfaces/IProtectedRouteProps';
+import { useCallback } from 'react';
 
 export const ProtectedRoute = ({ element: Component, userAuth = true, redirects = '/login' }: IProtectedRouteProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -17,6 +18,8 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
     setData(data);
     setIsLoading(false);
   };
+
+  
 
   useEffect(() => {
     console.log('ProtectedRoute rendered');

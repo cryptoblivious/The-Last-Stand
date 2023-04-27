@@ -1,3 +1,17 @@
 export enum EMessage {
-  PlayerSelection,
+  AssignPlayerID,
+  AddOpponentID,
+  CreateHitbox,
+  PlayerHurt,
+  ServerUpdateHudDamage,
+  CreateEntity,
+  RemoveEntity,
+  CreateHud, 
+  NewHudPlayer, 
+  UpdateHudDamage,
+  ServerRemoveHudPlayer,
+  RemoveHudPlayer,
+  UpdateSprite,
+  RemoveAttackHitbox,
+  PlayerDead,
 }

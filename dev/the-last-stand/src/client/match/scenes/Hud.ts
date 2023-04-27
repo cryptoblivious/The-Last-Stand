@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
 import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
+import { EMessage } from '../../../typescript/enumerations/EMessage';
 
 export default class Hud extends Phaser.Scene {
 
@@ -11,7 +12,6 @@ export default class Hud extends Phaser.Scene {
         super('hud');
     }
 
-    
     async create() {
         
         const bgRadius = 10;
@@ -28,7 +28,7 @@ export default class Hud extends Phaser.Scene {
         const clientMatch = this.scene.get('canvas');
 
         // Manage the signals from the main canvas scene
-        clientMatch.events.on("new_hud_player", (data: INewhudplayer) => {
+        clientMatch.events.on(EMessage.NewHudPlayer.toString(), (data: INewhudplayer) => {
             const { name: playerName, index: playerIndex, damagePercentage: playerDamage } = data;
             if (this.playerList.includes(playerName)) {
                 return;
@@ -38,7 +38,7 @@ export default class Hud extends Phaser.Scene {
         });
 
         // TODO -> Break down the signals logic into functions and use binds and callbacks
-        clientMatch.events.on("update_hud_damage", (data: IUpdatePercentagesMessage) => {
+        clientMatch.events.on(EMessage.UpdateHudDamage.toString(), (data: IUpdatePercentagesMessage) => {
             
             const elementNames = {
                 player: `nameText-${data.playerNameOrID}`,
@@ -64,7 +64,7 @@ export default class Hud extends Phaser.Scene {
             playerPercentageText.setPosition(percentageTextXPos, playerPercentageText.y);
         });
 
-        clientMatch.events.on("remove_hud_player", (data:{playerNameOrID:string}) => {
+        clientMatch.events.on(EMessage.RemoveHudPlayer.toString(), (data:{playerNameOrID:string}) => {
             const containerName = `hudContainer-${data.playerNameOrID}`;
             const container = this.playerContainers[containerName];
             if (!container) {

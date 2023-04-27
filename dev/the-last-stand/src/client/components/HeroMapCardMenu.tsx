@@ -84,7 +84,7 @@ const HeroMapCardMenu: React.FC<IHeroMapCardMenuProps> = ({ cardsArray, selected
     <div className={cardMenuContainerCSS}>
       <Arrow
         direction='up'
-        onClick={() => goToCard(false, carrouselStartIndex, setSelectedHeroMapCardId, centerCardIndex, cardsArray)}
+        onClick={() => goToCard(false)}
       />
 
       {/* use our function to get the array of wanted visible cards and map throught it to render them*/}
@@ -99,7 +99,7 @@ const HeroMapCardMenu: React.FC<IHeroMapCardMenuProps> = ({ cardsArray, selected
 
       <Arrow
         direction='down'
-        onClick={() => goToCard(true, carrouselStartIndex, setSelectedHeroMapCardId, centerCardIndex, cardsArray)}
+        onClick={() => goToCard(true)}
       />
     </div>
   );

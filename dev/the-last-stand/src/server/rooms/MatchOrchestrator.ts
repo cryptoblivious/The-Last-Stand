@@ -3,6 +3,8 @@ import { MatchState, GameEntityMapper } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 import { IHitbox } from '../../typescript/interfaces/IHitbox';
 import IUpdatePercentagesMessage from '../../typescript/interfaces/IUpdatePercentagesMessage';
+import { EMessage } from '../../typescript/enumerations/EMessage';
+import { IPlayerDeadMessage } from '../../typescript/interfaces/IPlayerDeadMessage';
 
 interface IClient extends Client {
   selectedHero: string;
@@ -34,36 +36,38 @@ export class MatchOrchestrator extends Room<MatchState> {
   onCreate(options: any) {
     this.setState(new MatchState());
 
-    this.onMessage('update_sprite', (player, message: { x: number; y: number; direction?: string; anim?: string }) => {
+    this.onMessage(EMessage.UpdateSprite, (player, message: { x: number; y: number; direction?: string; anim?: string }) => {
       const { x, y, direction, anim } = message;
       this.state.updateSprite(player.id, x, y, direction, anim);
     });
 
-    // this.onMessage('create_entity', (player, message: any) => {
-    //   const { entityType, attackType, attackerWidth, attackerHeight, direction, x, y } = message.data;
-    //   const entity: IGameEntityMapper = { id: player.id, gameEntityType: entityType, position: { x: x, y: y }, direction: direction };
-    //   this.broadcast('create_entity', entity);
-    // });
-
-    this.onMessage('create_hitbox', (player, message: any) => {
+    this.onMessage(EMessage.CreateHitbox, (player, message: any) => {
       const { entityType, attackerWidth, attackerHeight, position } = message;
       const entity: IHitbox = { owner: player.id, gameEntityType: entityType, position: position };
-      this.broadcast('create_hitbox', entity);
+      this.broadcast(EMessage.CreateHitbox, entity);
     });
 
-    this.onMessage('remove_attack_hitbox', (player, message: { id: string }) => {
-      this.broadcast('remove_entity', { id: message.id });
+    this.onMessage(EMessage.RemoveAttackHitbox, (player, message: { id: string }) => {
+      this.broadcast(EMessage.RemoveEntity, { id: message.id });
     });
 
-    this.onMessage('player_hurt', (player, message: { victim: string; attackForce: { x: string; y: string } }) => {
+    this.onMessage(EMessage.PlayerHurt, (player, message: { victim: string; attackForce: { x: string; y: string } }) => {
       const index = this.clients.findIndex((client) => client.id === message.victim);
-      this.clients[index].send('player_hurt', { attackForce: message.attackForce });
+      this.clients[index].send(EMessage.PlayerHurt, { attackForce: message.attackForce });
     });
 
-    this.onMessage('server_update_hud_damage', (player, data:IUpdatePercentagesMessage) => {
+    this.onMessage(EMessage.ServerUpdateHudDamage, (player, data:IUpdatePercentagesMessage) => {
       // console.log('server_update_hud_damage', data);
-      this.broadcast('server_update_hud_damage', data);
+      this.broadcast(EMessage.ServerUpdateHudDamage, data);
     });
+
+    this.onMessage(EMessage.PlayerDead, (player, message: IPlayerDeadMessage) => {
+      // broadcast the message only once to all 
+      
+      this.broadcast(EMessage.PlayerDead, message);
+      // console.log('player dead', message);
+    });
+    
   }
 
   onJoin(client: IClient, options: any) {
@@ -72,26 +76,26 @@ export class MatchOrchestrator extends Room<MatchState> {
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
     client.selectedHero = this.heroHandler[index];
-    client.send('assign_player_id', { id: client.sessionId });
+    client.send(EMessage.AssignPlayerID, { id: client.sessionId });
     this.state.playerIds.push(client.sessionId);
 
     // Create the new player's hero and broadcast it to all clients
     const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };
-    this.broadcast('create_entity', entity);
+    this.broadcast(EMessage.CreateEntity, entity);
 
     // Create an array of every players name(id) and index
     const players = this.clients.map((client) => {
       return { name: client.sessionId, index: this.clients.indexOf(client) };
     });
     // broadcast the array to all clients
-    this.broadcast('create_hud', players);
+    this.broadcast(EMessage.CreateHud, players);
 
     // Assign each player to the damage mapschema
     this.state.damagePercentageMap.set(client.sessionId, 0);
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
-      client.send('create_entity', ge);
+      client.send(EMessage.CreateEntity, ge);
     });
 
     // Create the new player's hero game state data and add it to the game state
@@ -107,8 +111,8 @@ export class MatchOrchestrator extends Room<MatchState> {
     console.log(client.sessionId, 'left');
 
     // Tell all clients to remove the player's hero
-    this.broadcast('remove_entity', { id: client.sessionId });
-    this.broadcast('server_remove_hud_player', { playerNameOrID: client.sessionId });
+    this.broadcast(EMessage.RemoveEntity, { id: client.sessionId });
+    this.broadcast(EMessage.ServerRemoveHudPlayer, { playerNameOrID: client.sessionId });
 
     // Remove the player's hero game state data from the game state
     this.state.gem.delete(client.sessionId);

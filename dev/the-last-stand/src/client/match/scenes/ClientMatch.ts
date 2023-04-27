@@ -8,6 +8,8 @@ import GameEntityFactory from '../GameEntityFactory';
 import { IHitbox } from '../../../typescript/interfaces/IHitbox';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
 import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
+import { EMessage } from '../../../typescript/enumerations/EMessage';
+import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMessage';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -215,15 +217,15 @@ export default class ClientMatch extends Phaser.Scene {
     // adjust the scale of the platform
     //platform.setScale(2);
 
-    this.mo.onMessage('assign_player_id', (message: { id: string }) => {
+    this.mo.onMessage(EMessage.AssignPlayerID, (message: { id: string }) => {
       this.playerId = message.id;
     });
 
-    this.mo.onMessage('add_opponent_id', (message: { id: string }) => {
+    this.mo.onMessage(EMessage.AddOpponentID, (message: { id: string }) => {
       this.opponentIds.push(message.id);
     });
 
-    this.mo.onMessage('create_hitbox', (message: IHitbox) => {
+    this.mo.onMessage(EMessage.CreateHitbox, (message: IHitbox) => {
       if (message.gameEntityType == 'rectangle') {
         const entity = this.gameEntityFactory.produce('rectangle', { x: message.position.x, y: message.position.y });
         const rect = this.add.rectangle(message.position.x, message.position.y, entity.size.width, entity.size.height);
@@ -237,7 +239,7 @@ export default class ClientMatch extends Phaser.Scene {
             this.physics.add.overlap(rect, this.gameEntities.get(playerId), () => {
               const attackVector = new Phaser.Math.Vector2(this.gameEntities.get(playerId)?.x! - rect.x, this.gameEntities.get(playerId)?.y! - rect.y).normalize();
               const attackForce = attackVector.scale(1000);
-              this.mo?.send('player_hurt', { victim: playerId, attackForce: { x: attackForce.x, y: attackForce.y } });
+              this.mo?.send(EMessage.PlayerHurt, { victim: playerId, attackForce: { x: attackForce.x, y: attackForce.y } });
               return true;
             });
           }
@@ -245,7 +247,7 @@ export default class ClientMatch extends Phaser.Scene {
       }
     });
 
-    this.mo.onMessage('player_hurt', (message) => {
+    this.mo.onMessage(EMessage.PlayerHurt, (message) => {
       const { attackForce } = message;
       const hero = this.gameEntities.get(this.playerId!);
       hero.anim = hero.name + 'Hurt';
@@ -254,11 +256,11 @@ export default class ClientMatch extends Phaser.Scene {
       hero.damagePercentage += 1;
       const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
 
-      this.mo?.send('server_update_hud_damage', updatePlayerDamage);
+      this.mo?.send(EMessage.ServerUpdateHudDamage, updatePlayerDamage);
 
     });
 
-    this.mo.onMessage('create_entity', (message: IGameEntityMapper) => {
+    this.mo.onMessage(EMessage.CreateEntity, (message: IGameEntityMapper) => {
       this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
       const entity = this.gameEntities.get(message.id);
       entity.setName(message.gameEntityType);
@@ -286,6 +288,7 @@ export default class ClientMatch extends Phaser.Scene {
       entity.maxJump = maxJumpHandler[message.gameEntityType];
       entity.damagePercentage = 0;
       entity.frameEvents = {};
+      entity.isAlive = true;
       this.spriteSheetsLoader
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
         ?.spriteSheets.forEach((spritesheet) => {
@@ -299,28 +302,32 @@ export default class ClientMatch extends Phaser.Scene {
       entity.playerNameText = playerNameText;
     });
 
-    this.mo.onMessage('remove_entity', (message: { id: string }) => {
+    this.mo.onMessage(EMessage.RemoveEntity, (message: { id: string }) => {
       this.gameEntities.get(message.id)?.destroy();
       this.gameEntities.delete(message.id);
     });
 
-    this.mo.onMessage('create_hud', (players: any) => {
+    this.mo.onMessage(EMessage.CreateHud, (players: any) => {
       players.forEach((player: any) => {
         const hudNewPlayerMessage: INewhudplayer = {
           name: player.name,
           index: player.index,
           damagePercentage: 0,
         };
-        this.events.emit('new_hud_player', hudNewPlayerMessage);
+        this.events.emit(EMessage.NewHudPlayer.toString(), hudNewPlayerMessage);
       });
 
     });
 
-    this.mo.onMessage('server_update_hud_damage', (message: any) => {
-      this.events.emit('update_hud_damage', message);
+    this.mo.onMessage(EMessage.ServerUpdateHudDamage, (message: any) => {
+      this.events.emit(EMessage.UpdateHudDamage.toString(), message);
     });
-    this.mo.onMessage('server_remove_hud_player', (message: any) => {
-      this.events.emit('remove_hud_player', message);
+    this.mo.onMessage(EMessage.ServerRemoveHudPlayer, (message: any) => {
+      this.events.emit(EMessage.RemoveHudPlayer.toString(), message);
+    });
+
+    this.mo.onMessage(EMessage.PlayerDead, (message: IPlayerDeadMessage) => {
+      this.particlesEmitter?.explode(1, message.position.x, message.position.y);
     });
 
   }
@@ -410,41 +417,38 @@ export default class ClientMatch extends Phaser.Scene {
       }
 
       // explosion logic
-      const explosionPosition = { x: 0, y: 0 };
-      let playerIsDead = false;
+
       // Make the sprite appear on the other side of the screen when it goes off screen
-      if (entity.x > this.sys.canvas.width * 1.2) {
-        // entity.x = 0 - this.sys.canvas.width * 0.2;
+      if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
+        let explosionPosition = {x:0,y:0}
+        if (entity.x > this.sys.canvas.width * 1.2) {
+          // entity.x = 0 - this.sys.canvas.width * 0.2;
 
-        // get the position of the explosion relative to the player
-        explosionPosition.x = entity.x - (entity.x - this.sys.canvas.width);
-        explosionPosition.y = entity.y;
-        playerIsDead = true;
-      } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
-        // entity.x = this.sys.canvas.width * 1.2;
-        explosionPosition.x = 0
-        explosionPosition.y = entity.y;
-        playerIsDead = true;
-      }
-      else if (entity.y > this.sys.canvas.height * 1.2) {
-        // entity.y = 0 - this.sys.canvas.height * 0.2;
+          // get the position of the explosion relative to the player
+          explosionPosition = { x: entity.x - (entity.x - this.sys.canvas.width), y: entity.y };
+          // explosionPosition.y = entity.y;
+          entity.isAlive = false;
+        } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
+          explosionPosition = { x: 0, y: entity.y };
+          entity.isAlive = false;
+        }
+        else if (entity.y > this.sys.canvas.height * 1.2) {
+          // entity.y = 0 - this.sys.canvas.height * 0.2;
 
-        explosionPosition.x = entity.x;
-        explosionPosition.y = entity.y - (entity.y - this.sys.canvas.height);
-        playerIsDead = true;
-      } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
-        // entity.y = this.sys.canvas.height * 1.2;
 
-        explosionPosition.x = entity.x;
-        explosionPosition.y = 0;
-        playerIsDead = true;
-      }
-      // TODO -> send a message to the server to tell it that the player is dead to render the explosion using a broadcast
-      if (playerIsDead) {
-        console.log(`player ${entity.name} is dead at position: ${explosionPosition.x}, ${explosionPosition.y}`);
-        // set the depth of the explosion to be the same as the player
-        // console.log(this.particlesEmitter)
-        this.particlesEmitter?.explode(10, explosionPosition.x, explosionPosition.y);
+          explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
+          entity.isAlive = false;
+        } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
+          // entity.y = this.sys.canvas.height * 1.2;
+
+          explosionPosition = { x: entity.x, y: 0 };
+          entity.isAlive = false;
+        }
+        if (!entity.isAlive) {
+          
+          const playerDeadMessage: IPlayerDeadMessage = { id: entity.id, position: explosionPosition };
+          this.mo.send(EMessage.PlayerDead, playerDeadMessage)
+        }
       }
 
       // Send the sprite's information to the server
@@ -455,7 +459,7 @@ export default class ClientMatch extends Phaser.Scene {
         anim: entity.anim,
       };
 
-      this.mo.send('update_sprite', updateSpriteMessage);
+      this.mo.send(EMessage.UpdateSprite, updateSpriteMessage);
 
       //Render all the sprites
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
@@ -491,7 +495,7 @@ export default class ClientMatch extends Phaser.Scene {
                       attackerHeight: entity.height,
                       position: { x: entity.x, y: entity.y },
                     };
-                    this.mo!.send('create_hitbox', createAttackHitboxMessage);
+                    this.mo?.send(EMessage.CreateHitbox, createAttackHitboxMessage);
                   }
                 }
               });
@@ -511,7 +515,7 @@ export default class ClientMatch extends Phaser.Scene {
             if (value.type.toLowerCase() === 'rectangle') {
               value.setData('timer', value.getData('timer') + 1);
               if (value.getData('timer') > value.getData('lifespan')) {
-                this.mo!.send('remove_attack_hitbox', { id: key });
+                this.mo!.send(EMessage.RemoveAttackHitbox, { id: key });
               }
             }
           }
