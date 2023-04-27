@@ -36,7 +36,6 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     } else {
       console.log('no user found');
     }
-
     const userData = user ?? { username: 'guest', userNo: String(Math.floor(Math.random() * 10000)).padStart(4, '0') };
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {

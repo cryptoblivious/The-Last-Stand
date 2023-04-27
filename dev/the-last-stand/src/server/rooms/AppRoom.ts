@@ -30,17 +30,25 @@ export class AppRoom extends Room<AppState> {
     this.state.users.set(username + userNo, userMap);
   }
 
+  updateLastOnline = async (user: any) => {
+    const { username, userNo } = user;
+    try {
+      await User.findOneAndUpdate({ username: username, userNo: userNo }, { lastOnline: new Date() });
+    } catch (error) {
+      console.error('Error updating lastOnline date:', error);
+    }
+  };
+
   onLeave(client: Client, consented: boolean) {
     console.log(client.id, 'left the app room');
 
     this.state.users.forEach((user: any) => {
-      console.log('user.clientId: ', user.clientId, 'client.id: ', client.id);
       if (user.clientId === client.id) {
         console.log('user leaving: ', user.username + user.userNo);
         this.state.users.delete(user.username + user.userNo);
 
         if (user.username !== 'guest') {
-          User.findOneAndUpdate({ username: user.username, userNo: user.userNo }, { lastOnline: new Date() });
+          this.updateLastOnline(user);
         }
       }
     });
