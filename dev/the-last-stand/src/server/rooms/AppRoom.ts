@@ -5,6 +5,9 @@ export class AppRoom extends Room<AppState> {
   onCreate(options: any) {
     this.roomId = 'app'; // set the room ID to "my_room"
     this.setState(new AppState());
+    this.onMessage('message', (client, message) => {
+      this.broadcast('message', `${client.sessionId} said: ${message} at ${new Date().toLocaleTimeString()}`);
+    });
   }
 
   onAuth(client: Client, user: any) {

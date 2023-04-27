@@ -5,8 +5,6 @@ import { IChatboxSwitcherProps } from '../../typescript/interfaces/IChatboxSwitc
 const ChatboxSwitcher = (props: IChatboxSwitcherProps) => {
   const { onClick, chatboxOpen } = props;
   const toggleChatbox = onClick;
-  console.log(onClick);
-  console.log(chatboxOpen);
 
   return (
     <>

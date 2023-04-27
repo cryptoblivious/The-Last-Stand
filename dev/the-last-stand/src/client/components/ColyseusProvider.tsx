@@ -10,7 +10,7 @@ interface ColyseusContextProps {
   appRoom: Room<AppState> | null;
 }
 
-const ColyseusContext = createContext<ColyseusContextProps>({
+export const ColyseusContext = createContext<ColyseusContextProps>({
   client: null,
   appRoom: null,
 });
@@ -25,7 +25,6 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
   const [user, setUser] = useState<IUser | null>(null);
 
   const connect = async () => {
-    console.log('getting current user');
     const user = await getCurrentUser();
     if (user) {
       const updatedUser = {
@@ -40,11 +39,11 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
+      setClient(client);
+      setAppRoom(appRoom);
     } catch (error) {
       console.log('error', error);
     }
-    setClient(client);
-    setAppRoom(appRoom);
   };
 
   useEffect(() => {
@@ -74,7 +73,6 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
   }, []);
 
   const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user }), [client, appRoom]);
-
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 

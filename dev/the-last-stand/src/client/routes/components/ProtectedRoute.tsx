@@ -11,7 +11,6 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
 
   const fetchData = async () => {
     // TODO : Find why this is being called twice
-    console.log('fetching', new Date().getTime());
     const result = await fetchAuth();
     const { status, data } = result;
     setIsAuthenticated(status);
@@ -19,19 +18,15 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
     setIsLoading(false);
   };
 
-  
-
   useEffect(() => {
     console.log('ProtectedRoute rendered');
     fetchData();
   }, []);
 
   if (isLoading) {
-    console.log('loading');
     return <div className='bg-black text-white h-screen'>Checking authentication...</div>;
   }
 
-  console.log('loaded');
   return isAuthenticated === userAuth || userAuth === 'both' ? (
     React.cloneElement(Component, { data })
   ) : (
