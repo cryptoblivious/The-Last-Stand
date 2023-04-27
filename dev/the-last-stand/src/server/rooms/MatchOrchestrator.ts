@@ -1,5 +1,5 @@
 import { Room, Client } from 'colyseus';
-import { MatchState, GameEntityMapper } from './states/MatchState';
+import { MatchState, GameEntityMapper, Position } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 import { IHitbox } from '../../typescript/interfaces/IHitbox';
 import IUpdatePercentagesMessage from '../../typescript/interfaces/IUpdatePercentagesMessage';
@@ -11,6 +11,7 @@ interface IClient extends Client {
 }
 export class MatchOrchestrator extends Room<MatchState> {
   maxClients: number = 4;
+  private explosionsMap: Map<string, { x: number, y: number }> = new Map();
 
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
@@ -56,18 +57,37 @@ export class MatchOrchestrator extends Room<MatchState> {
       this.clients[index].send(EMessage.PlayerHurt, { attackForce: message.attackForce });
     });
 
-    this.onMessage(EMessage.ServerUpdateHudDamage, (player, data:IUpdatePercentagesMessage) => {
+    this.onMessage(EMessage.ServerUpdateHudDamage, (player, data: IUpdatePercentagesMessage) => {
       // console.log('server_update_hud_damage', data);
       this.broadcast(EMessage.ServerUpdateHudDamage, data);
     });
 
     this.onMessage(EMessage.PlayerDead, (player, message: IPlayerDeadMessage) => {
+
+      // if (this.explosionsMap.has(message.id)) {
+      //   return
+      // }
+
+      // if (this.state.explosions.has(message.id)) {
+      //   return
+      // }
+
+      // this.state.explosions.set(message.id, new Position(message.position.x, message.position.y));
       // broadcast the message only once to all 
-      
       this.broadcast(EMessage.PlayerDead, message);
-      // console.log('player dead', message);
+      // console.log(this.state.explosions.get(message.id)?.x, this.state.explosions.get(message.id)?.y);
     });
-    
+
+    this.onMessage(EMessage.RespawnPlayer, (player, message: { id: string }) => {
+      console.log('respawn player', message.id);
+    });
+
+    // this.onMessage(EMessage.ExplosionDone, (player, message: { id: string }) => {
+    //   if (this.explosionsMap.has(message.id)) {
+    //     this.explosionsMap.delete(message.id);
+    //   }
+    // });
+
   }
 
   onJoin(client: IClient, options: any) {
@@ -116,6 +136,7 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     // Remove the player's hero game state data from the game state
     this.state.gem.delete(client.sessionId);
+
   }
 
   onDispose() {
