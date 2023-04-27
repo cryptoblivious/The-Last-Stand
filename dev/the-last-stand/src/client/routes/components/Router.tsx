@@ -1,5 +1,6 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
+import MainPageSwitcher from '../../components/MainPageSwitcher';
 import Error from '../../components/Error';
 import Home from '../../components/Home';
 import Lobby from '../../components/Lobby';
@@ -12,7 +13,7 @@ const Router = createBrowserRouter(
     <Route errorElement={<Error />}>
       <Route
         path='/'
-        element={<ProtectedRoute element={<Home />} />}
+        element={<ProtectedRoute element={<MainPageSwitcher />} />}
       />
       <Route
         path='login'
@@ -20,7 +21,6 @@ const Router = createBrowserRouter(
           <ProtectedRoute
             element={<Login />}
             userAuth='both'
-            redirects='/home'
           />
         }
       />
