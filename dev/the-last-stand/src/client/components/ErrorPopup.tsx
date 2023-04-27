@@ -35,7 +35,7 @@ function ErrorPopup(props: IErrorPopupProps) {
           className={`items-center absolute -top-5 -right-2 justify-center flex transition rounded-full bg-gray-900 border-cyan-300 border-2 ease-in-out origin-center duration-500 w-12 h-12 hover:scale-110`}
           icon={
             <GiAzulFlake
-              aria-label='GiPaperArrow'
+              aria-label='GiAzulFlake'
               fontSize='2rem'
               color='rgb(103 232 249)'
             />

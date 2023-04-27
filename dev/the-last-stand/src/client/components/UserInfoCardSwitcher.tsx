@@ -46,7 +46,7 @@ const UserInfoCard = () => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
         <EditButton
-          className={`absolute top-2 left-1 w-fit h-fit ${isHovered ? 'opacity-100' : 'opacity-0'} transition duration-1000`}
+          className={`absolute top-2 left-2 w-fit h-fit ${isHovered ? 'opacity-100' : 'opacity-0'} transition duration-1000`}
           onClick={handleToggleEdit}
         />
         <EditUserInfo

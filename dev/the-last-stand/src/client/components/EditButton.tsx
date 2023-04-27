@@ -38,7 +38,8 @@ function EditButton(props: IButtonProps) {
             color='rgb(103 232 249)'
           />
         )
-      }></Button>
+      }
+    />
   );
 }
 
