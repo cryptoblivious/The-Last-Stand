@@ -14,4 +14,6 @@ export enum EMessage {
   UpdateSprite,
   RemoveAttackHitbox,
   PlayerDead,
+  ExplosionDone,
+  RespawnPlayer,
 }

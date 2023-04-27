@@ -10,7 +10,7 @@ import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
 import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
 import { EMessage } from '../../../typescript/enumerations/EMessage';
 import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMessage';
-import {IUpdateSpriteMessage} from '../../../typescript/interfaces/IUpdateSpriteMessage';
+import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpriteMessage';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -94,6 +94,7 @@ export default class ClientMatch extends Phaser.Scene {
   private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
   private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitter;
+  private explosionsMap = new Map<string, { x: number, y: number }>();
 
 
   // TOUTES LES KEYS
@@ -165,11 +166,11 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // CREATION DES PARTICULES
-    this.particlesEmitter = this.add.particles(0,0, 'flares', {
+    this.particlesEmitter = this.add.particles(0, 0, 'flares', {
       frame: ['red', 'blue', 'green', 'yellow', 'white'],
       lifespan: 1000,
       speed: { min: 150, max: 250 },
-      scale: { start: 2.5, end: 0 },
+      scale: { start: 10, end: 0 },
       gravityY: 50,
       blendMode: 'ADD',
       emitting: false,
@@ -317,7 +318,22 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.PlayerDead, (message: IPlayerDeadMessage) => {
+      const entity = this.gameEntities.get(message.id);
+      // set the entity to invisible and remove it from the physics world
+      if (entity) {
+        entity.setVisible(false);
+        entity.setActive(false);
+        entity.body.enable = false;
+        entity.setPosition(500, 500);
+      }
+        
       this.particlesEmitter?.explode(1, message.position.x, message.position.y);
+      this.mo?.send(EMessage.RespawnPlayer, { id: message.id });
+      // if (this.explosionsMap.has(message.id)) {
+      //   return
+      // }
+      // this.explosionsMap.set(message.id, {x: message.position.x, y: message.position.y})
+      // this.mo?.send(EMessage.ExplosionDone, { id: message.id });
     });
 
   }
@@ -410,7 +426,7 @@ export default class ClientMatch extends Phaser.Scene {
 
       // Make the sprite appear on the other side of the screen when it goes off screen
       if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
-        let explosionPosition = {x:0,y:0}
+        let explosionPosition = { x: 0, y: 0 }
         if (entity.x > this.sys.canvas.width * 1.2) {
           // entity.x = 0 - this.sys.canvas.width * 0.2;
 
@@ -424,8 +440,6 @@ export default class ClientMatch extends Phaser.Scene {
         }
         else if (entity.y > this.sys.canvas.height * 1.2) {
           // entity.y = 0 - this.sys.canvas.height * 0.2;
-
-
           explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
           entity.isAlive = false;
         } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
@@ -435,14 +449,14 @@ export default class ClientMatch extends Phaser.Scene {
           entity.isAlive = false;
         }
         if (!entity.isAlive) {
-          
+          // hide and disable the sprite
           const playerDeadMessage: IPlayerDeadMessage = { id: entity.id, position: explosionPosition };
           this.mo.send(EMessage.PlayerDead, playerDeadMessage)
         }
       }
 
       // Send the sprite's information to the server
-      const updateSpriteMessage : IUpdateSpriteMessage = {
+      const updateSpriteMessage: IUpdateSpriteMessage = {
         x: entity.x,
         y: entity.y,
         direction: entity.direction,
@@ -517,6 +531,33 @@ export default class ClientMatch extends Phaser.Scene {
         }
       });
     }
+    // Check if the explosions mapschema has explosions in it
+    // if (this.mo?.state.explosions.size > 0) {
+    //   // Render all the explosions
+    //   // trigger the explosion at the position then delete it from the map
+    //   this.mo?.state.explosions.forEach((value: {x:number,y:number}, key: string) => {
+    //     this.particlesEmitter?.explode(10, value.x, value.y);
+    //     // delete the explosion from the map after it has been triggered
+    //     if (this.mo?.state.explosions.has(key)) {
+    //       this.mo?.state.explosions.delete(key);
+
+    //       // also delete the index from the mapSchema
+
+    //     }
+    //   });
+
+    // }
+
+    // if (this.explosionsMap.size > 0) {
+    //   // Render all the explosions
+    //   // trigger the explosion at the position then delete it from the map
+    //   for (const [key, position] of this.explosionsMap.entries()) {
+    //     this.particlesEmitter?.explode(10, position.x, position.y);
+    //     // delete the explosion from the map after it has been triggered
+    //     this.explosionsMap.delete(key);
+    //   }
+    // }
+
   }
 
 }
