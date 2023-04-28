@@ -305,19 +305,19 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage(EMessage.CreateHud, (players: {name:string, index:number}[]) => {
       players.forEach((player: {name:string, index:number}) => {
-        const playerEntity = this.gameEntities.get(player.name);
-        
+
         const hudNewPlayerMessage: INewhudplayer = {
           name: player.name,
           index: player.index,
           damagePercentage: 0,
-          lives : playerEntity.lives
+          lives : 3
 
         };
         this.events.emit(EMessage.NewHudPlayer.toString(), hudNewPlayerMessage);
       });
 
     });
+
 
     this.mo.onMessage(EMessage.ServerUpdateHudDamage, (message: any) => {
       this.events.emit(EMessage.UpdateHudDamage.toString(), message);
@@ -335,15 +335,12 @@ export default class ClientMatch extends Phaser.Scene {
         entity.body.enable = false;
         entity.setPosition(500, 500);
         entity.playerNameText?.setVisible(false);
+        entity.lives -= 1;
+        this.events.emit(EMessage.UpdateHudLives.toString(), { name: message.id, lives: entity.lives });
+        this.particlesEmitter?.explode(1, message.position.x, message.position.y);
+        this.mo?.send(EMessage.RespawnPlayer, { id: message.id });
       }
-        
-      this.particlesEmitter?.explode(1, message.position.x, message.position.y);
-      this.mo?.send(EMessage.RespawnPlayer, { id: message.id });
-      // if (this.explosionsMap.has(message.id)) {
-      //   return
-      // }
-      // this.explosionsMap.set(message.id, {x: message.position.x, y: message.position.y})
-      // this.mo?.send(EMessage.ExplosionDone, { id: message.id });
+      
     });
 
   }

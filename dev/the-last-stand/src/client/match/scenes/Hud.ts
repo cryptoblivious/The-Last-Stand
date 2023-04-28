@@ -73,6 +73,21 @@ export default class Hud extends Phaser.Scene {
             container.destroy();
         });
 
+        clientMatch.events.on(EMessage.UpdateHudLives.toString(), (data:{name:string, lives:number}) => {
+            const containerName = `hudContainer-${data.name}`;
+            const livesTextName = `livesText-${data.name}`;
+
+            const container = this.playerContainers[containerName];
+            if (!container) {
+                return;
+            }
+            const livesText = container.getByName(livesTextName) as Phaser.GameObjects.Text;
+            if (!livesText) {
+                return;
+            }
+            livesText.setText(`Lives: ${data.lives}`);
+        });
+
     }
     
     createNewPlayer(playerName: string, hudXpos: number, hudElementYpos: number, bgRadius: number, hudYpos: number, playerDamage: number, playerLives:number, padding:number = 20) {
@@ -98,8 +113,7 @@ export default class Hud extends Phaser.Scene {
         // Player lives in the hud
         const livesText = this.add.text(hudXpos, hudElementYpos, `Lives: ${playerLives}`, { font: '16px Courier', color: '#00ff00' });
         livesText.name = elementNames.lives;
-        const boundsLivesText = livesText.getBounds();
-        livesText.setPosition(hudXpos - boundsLivesText.width / 2, hudElementYpos + playerNameText.height + percentageText.height);
+        livesText.setPosition(hudXpos - livesText.width / 2, hudElementYpos + playerNameText.height + percentageText.height);
 
         // Container for the hud elements
         const hudContainer = this.add.container();
