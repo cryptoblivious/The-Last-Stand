@@ -16,4 +16,5 @@ export enum EMessage {
   PlayerDead,
   ExplosionDone,
   RespawnPlayer,
+  UpdateHudLives,
 }
