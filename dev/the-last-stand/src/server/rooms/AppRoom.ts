@@ -10,14 +10,14 @@ export class AppRoom extends Room<AppState> {
     });
   }
 
-  onAuth(client: Client, user: any) {
-    // Check if the user is already connected
-    const { username, userNo } = user;
-    if (this.state.users.get(username + userNo)) {
-      return false;
-    }
-    return true;
-  }
+  // onAuth(client: Client, user: any) {
+  //   // Check if the user is already connected
+  //   const { username, userNo } = user;
+  //   if (this.state.users.get(username + userNo)) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   onJoin(client: Client, user: any) {
     console.log('app room joined!', user);

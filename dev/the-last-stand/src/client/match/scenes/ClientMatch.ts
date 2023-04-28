@@ -11,6 +11,7 @@ import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePer
 import { EMessage } from '../../../typescript/enumerations/EMessage';
 import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMessage';
 import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpriteMessage';
+import { type } from '@colyseus/schema';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -97,7 +98,6 @@ export default class ClientMatch extends Phaser.Scene {
   private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
   private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitter;
-  private explosionsMap = new Map<string, { x: number, y: number }>();
 
 
   // TOUTES LES KEYS
@@ -106,6 +106,53 @@ export default class ClientMatch extends Phaser.Scene {
   constructor() {
     super('canvas');
   }
+
+  disablePlayerSprite(playerSprite: any, x: number, y: number) {
+    if (playerSprite) {
+      playerSprite.setVisible(false);
+      playerSprite.setActive(false);
+      playerSprite.body!.enable = false;
+      playerSprite.setPosition(x, y);
+      playerSprite.playerNameText.setVisible(false);
+      // playerSprite.setEnable(false)
+    }
+  }
+  enablePlayerSprite(playerSprite: any) {
+    if (playerSprite) {
+      playerSprite.setVisible(true);
+      playerSprite.setActive(true);
+      playerSprite.body!.enable = true;
+      playerSprite.playerNameText.setVisible(true);
+      // playerSprite.setEnable(true)
+    }
+  }
+
+
+  respawnPlayerSprite(playerSprite: any) {
+    if (playerSprite) {
+      playerSprite.alpha = 0.5;
+      playerSprite.setVisible(true);
+      
+      let flashTimer = this.time.addEvent({
+        delay: 100,
+        callback: () => {
+          playerSprite.alpha = playerSprite.alpha === 0.5 ? 1 : 0.5; //toggle alpha
+        },
+        callbackScope: this,
+        loop: true,
+      });
+
+      this.time.addEvent({
+        delay: 3000,
+        callback: () => {
+          playerSprite.alpha = 1;
+          flashTimer.remove();
+        },
+        callbackScope: this,
+      });
+    }
+  }
+
 
 
   applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
@@ -141,9 +188,9 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   // Get the client from the Boostrap scene
-  async create(data: { client: Client }) {
+  async create(data:any) {
     // console.log(this.physics.world);
-    const { client } = data;
+    const  client  = data.client;
     this.gameClient = client;
     if (!this.gameClient) throw new Error('client not found');
     //this.scale.startFullscreen();
@@ -169,11 +216,11 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // CREATION DES PARTICULES
-    const particlesConfig : IParticlesEmitterJsonObject = { 
+    const particlesConfig: IParticlesEmitterJsonObject = {
       frame: ['red', 'blue', 'green', 'yellow', 'white'],
       lifespan: 1000,
-      speed: { min: 150, max: 250 },
-      scale: { start: 10, end: 0 },
+      speed: { min: 0, max: 250 },
+      scale: { start: 2, end: 0 },
       gravityY: 50,
       blendMode: 'ADD',
       emitting: false,
@@ -303,14 +350,14 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.delete(message.id);
     });
 
-    this.mo.onMessage(EMessage.CreateHud, (players: {name:string, index:number}[]) => {
-      players.forEach((player: {name:string, index:number}) => {
+    this.mo.onMessage(EMessage.CreateHud, (players: { name: string, index: number }[]) => {
+      players.forEach((player: { name: string, index: number }) => {
 
         const hudNewPlayerMessage: INewhudplayer = {
           name: player.name,
           index: player.index,
           damagePercentage: 0,
-          lives : 3
+          lives: 3
 
         };
         this.events.emit(EMessage.NewHudPlayer.toString(), hudNewPlayerMessage);
@@ -330,17 +377,15 @@ export default class ClientMatch extends Phaser.Scene {
       const entity = this.gameEntities.get(message.id);
       // set the entity to invisible and remove it from the physics world
       if (entity) {
-        entity.setVisible(false);
-        entity.setActive(false);
-        entity.body.enable = false;
-        entity.setPosition(500, 500);
-        entity.playerNameText?.setVisible(false);
+        this.particlesEmitter?.explode(75, message.explosionPosition.x, message.explosionPosition.y);
+        this.disablePlayerSprite(entity, message.respawnPosition!.x, message.respawnPosition!.y);
         entity.lives -= 1;
         this.events.emit(EMessage.UpdateHudLives.toString(), { name: message.id, lives: entity.lives });
-        this.particlesEmitter?.explode(1, message.position.x, message.position.y);
         this.mo?.send(EMessage.RespawnPlayer, { id: message.id });
+        // this.respawnPlayerSprite(entity);
+        // this.enablePlayerSprite(entity);
       }
-      
+
     });
 
   }
@@ -432,33 +477,36 @@ export default class ClientMatch extends Phaser.Scene {
       // explosion logic
 
       // Make the sprite appear on the other side of the screen when it goes off screen
-      if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
-        let explosionPosition = { x: 0, y: 0 }
-        if (entity.x > this.sys.canvas.width * 1.2) {
-          // entity.x = 0 - this.sys.canvas.width * 0.2;
+      if (entity.isAlive) {
+        if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
+          let explosionPosition = { x: 0, y: 0 }
+          if (entity.x > this.sys.canvas.width * 1.2) {
+            // entity.x = 0 - this.sys.canvas.width * 0.2;
 
-          // get the position of the explosion relative to the player
-          explosionPosition = { x: entity.x - (entity.x - this.sys.canvas.width), y: entity.y };
-          // explosionPosition.y = entity.y;
-          entity.isAlive = false;
-        } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
-          explosionPosition = { x: 0, y: entity.y };
-          entity.isAlive = false;
-        }
-        else if (entity.y > this.sys.canvas.height * 1.2) {
-          // entity.y = 0 - this.sys.canvas.height * 0.2;
-          explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
-          entity.isAlive = false;
-        } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
-          // entity.y = this.sys.canvas.height * 1.2;
+            // get the position of the explosion relative to the player
+            explosionPosition = { x: entity.x - (entity.x - this.sys.canvas.width), y: entity.y };
+            // explosionPosition.y = entity.y;
+            entity.isAlive = false;
+          } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
+            explosionPosition = { x: 0, y: entity.y };
+            entity.isAlive = false;
+          }
+          else if (entity.y > this.sys.canvas.height * 1.2) {
+            // entity.y = 0 - this.sys.canvas.height * 0.2;
+            explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
+            entity.isAlive = false;
+          } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
+            // entity.y = this.sys.canvas.height * 1.2;
 
-          explosionPosition = { x: entity.x, y: 0 };
-          entity.isAlive = false;
-        }
-        if (!entity.isAlive) {
-          // hide and disable the sprite
-          const playerDeadMessage: IPlayerDeadMessage = { id: entity.id, position: explosionPosition };
-          this.mo.send(EMessage.PlayerDead, playerDeadMessage)
+            explosionPosition = { x: entity.x, y: 0 };
+            entity.isAlive = false;
+          }
+          
+          if (!entity.isAlive) {
+            // hide and disable the sprite
+            const playerDeadMessage: IPlayerDeadMessage = { id: entity.id, explosionPosition: explosionPosition };
+            this.mo.send(EMessage.PlayerDead, playerDeadMessage)
+          }
         }
       }
 
