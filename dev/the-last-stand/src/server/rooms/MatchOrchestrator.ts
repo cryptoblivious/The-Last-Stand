@@ -10,8 +10,6 @@ interface IClient extends Client {
   selectedHero: string;
 }
 export class MatchOrchestrator extends Room<MatchState> {
-  maxClients: number = 4;
-  private explosionsMap: Map<string, { x: number, y: number }> = new Map();
 
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
@@ -63,31 +61,12 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
 
     this.onMessage(EMessage.PlayerDead, (player, message: IPlayerDeadMessage) => {
-
-      // if (this.explosionsMap.has(message.id)) {
-      //   return
-      // }
-
-      // if (this.state.explosions.has(message.id)) {
-      //   return
-      // }
-
-      // this.state.explosions.set(message.id, new Position(message.position.x, message.position.y));
-      // broadcast the message only once to all 
       this.broadcast(EMessage.PlayerDead, message);
-      // console.log(this.state.explosions.get(message.id)?.x, this.state.explosions.get(message.id)?.y);
     });
 
     this.onMessage(EMessage.RespawnPlayer, (player, message: { id: string }) => {
       console.log('respawn player', message.id);
     });
-
-    // this.onMessage(EMessage.ExplosionDone, (player, message: { id: string }) => {
-    //   if (this.explosionsMap.has(message.id)) {
-    //     this.explosionsMap.delete(message.id);
-    //   }
-    // });
-
   }
 
   onJoin(client: IClient, options: any) {
@@ -100,7 +79,11 @@ export class MatchOrchestrator extends Room<MatchState> {
     this.state.playerIds.push(client.sessionId);
 
     // Create the new player's hero and broadcast it to all clients
-    const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: this.positionHandler[index], direction: this.directionHandler[index] };
+    const entity: IGameEntityMapper = { id: client.sessionId,
+      gameEntityType: client.selectedHero,
+      position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y}, 
+      direction: this.directionHandler[index]
+     };
     this.broadcast(EMessage.CreateEntity, entity);
 
     // Create an array of every players name(id) and index
@@ -110,8 +93,6 @@ export class MatchOrchestrator extends Room<MatchState> {
     // broadcast the array to all clients
     this.broadcast(EMessage.CreateHud, players);
 
-    // Assign each player to the damage mapschema
-    this.state.damagePercentageMap.set(client.sessionId, 0);
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {

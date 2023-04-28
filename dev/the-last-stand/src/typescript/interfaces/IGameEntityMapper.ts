@@ -1,9 +1,11 @@
-import { Position } from '../../server/rooms/states/MatchState';
-
+interface IPosition {
+  x: number;
+  y: number;
+}
 export interface IGameEntityMapper {
   id: string;
   gameEntityType: string;
-  position: Position;
+  position: IPosition;
   anim?: string | undefined;
   direction?: string;
 }

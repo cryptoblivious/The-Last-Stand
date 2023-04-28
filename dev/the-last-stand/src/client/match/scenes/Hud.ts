@@ -29,12 +29,12 @@ export default class Hud extends Phaser.Scene {
 
         // Manage the signals from the main canvas scene
         clientMatch.events.on(EMessage.NewHudPlayer.toString(), (data: INewhudplayer) => {
-            const { name: playerName, index: playerIndex, damagePercentage: playerDamage } = data;
+            const { name: playerName, index: playerIndex, damagePercentage: playerDamage, lives: playerLives } = data;
             if (this.playerList.includes(playerName)) {
                 return;
             }
             this.playerList.push(playerName);
-            this.createNewPlayer(playerName, getHudXPosition(playerIndex) , hudElementYpos, bgRadius, hudYpos, playerDamage, bgPadding);
+            this.createNewPlayer(playerName, getHudXPosition(playerIndex) , hudElementYpos, bgRadius, hudYpos, playerDamage, playerLives,  bgPadding);
         });
 
         // TODO -> Break down the signals logic into functions and use binds and callbacks
@@ -75,33 +75,38 @@ export default class Hud extends Phaser.Scene {
 
     }
     
-    createNewPlayer(playerName: string, hudXpos: number, hudElementYpos: number, bgRadius: number, hudYpos: number, playerDamage: number, padding = 20) {
+    createNewPlayer(playerName: string, hudXpos: number, hudElementYpos: number, bgRadius: number, hudYpos: number, playerDamage: number, playerLives:number, padding:number = 20) {
         
         const elementNames = {
             player: `nameText-${playerName}`,
             hud: `hudBackground-${playerName}`,
             percentage: `percentageText-${playerName}`,
+            lives : `livesText-${playerName}`,
             container: `hudContainer-${playerName}`
         }
 
         // Player name in the hud
         const playerNameText = this.add.text(hudXpos, hudElementYpos, playerName, { font: '16px Courier', color: '#00ff00' });
-        const playerNameTextBounds = playerNameText.getBounds();
-        playerNameText.setPosition(hudXpos - playerNameTextBounds.width / 2, hudElementYpos);
+        playerNameText.setPosition(hudXpos - playerNameText.width / 2, hudElementYpos);
         playerNameText.name = elementNames.player;
 
         // Player damage percentage in the hud
         const percentageText = this.add.text(hudXpos, hudElementYpos + padding , `${playerDamage}%`, { font: '32px Courier', color: '#00ff00' });
         percentageText.name = elementNames.percentage;
-        const boundsPercentageText = percentageText.getBounds();
-        percentageText.setPosition(hudXpos - boundsPercentageText.width / 2, hudElementYpos + padding);
+        percentageText.setPosition(hudXpos - percentageText.width / 2, hudElementYpos + playerNameText.height);
+
+        // Player lives in the hud
+        const livesText = this.add.text(hudXpos, hudElementYpos, `Lives: ${playerLives}`, { font: '16px Courier', color: '#00ff00' });
+        livesText.name = elementNames.lives;
+        const boundsLivesText = livesText.getBounds();
+        livesText.setPosition(hudXpos - boundsLivesText.width / 2, hudElementYpos + playerNameText.height + percentageText.height);
 
         // Container for the hud elements
         const hudContainer = this.add.container();
         hudContainer.setDepth(1);
         hudContainer.name = elementNames.container;
-        hudContainer.width = Math.max(playerNameTextBounds.width, boundsPercentageText.width) + padding;
-        hudContainer.height = playerNameTextBounds.height + boundsPercentageText.height + padding;
+        hudContainer.width = Math.max(playerNameText.width, percentageText.width, livesText.width) + padding;
+        hudContainer.height = playerNameText.height + percentageText.height + livesText.height + padding;
 
         // Add a background to the hud
         const hudBackground = this.add.graphics();
@@ -110,7 +115,7 @@ export default class Hud extends Phaser.Scene {
         hudBackground.name = elementNames.hud;
 
         // Add the elements to the container and save the container
-        hudContainer.add([playerNameText, hudBackground, percentageText]);
+        hudContainer.add([playerNameText, hudBackground, percentageText, livesText]);
         this.playerContainers[elementNames.container] = hudContainer;
 
     }

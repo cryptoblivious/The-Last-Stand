@@ -4838,7 +4838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"phaser@npm:^3.55.0":
+"phaser@npm:^3.55.2":
   version: 3.60.0
   resolution: "phaser@npm:3.60.0"
   dependencies:
@@ -5978,7 +5978,7 @@ __metadata:
     mongodb: ^5.1.0
     passport: ^0.6.0
     passport-google-oauth20: ^2.0.0
-    phaser: ^3.55.0
+    phaser: ^3.55.2
     postcss-cli: ^10.1.0
     prettier: ^2.8.4
     react: ^18.2.0

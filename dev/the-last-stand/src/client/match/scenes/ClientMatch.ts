@@ -70,6 +70,9 @@ const bounceHandler: Record<string, number> = {
   sirius: 0.1,
   logan: 0.1,
 };
+
+// Create doc for the interface IParticlesEmitterJsonObject
+
 interface IParticlesEmitterJsonObject {
   frame: string[],
   lifespan: number,
@@ -166,7 +169,7 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // CREATION DES PARTICULES
-    this.particlesEmitter = this.add.particles(0, 0, 'flares', {
+    const particlesConfig : IParticlesEmitterJsonObject = { 
       frame: ['red', 'blue', 'green', 'yellow', 'white'],
       lifespan: 1000,
       speed: { min: 150, max: 250 },
@@ -174,7 +177,8 @@ export default class ClientMatch extends Phaser.Scene {
       gravityY: 50,
       blendMode: 'ADD',
       emitting: false,
-    });
+    };
+    this.particlesEmitter = this.add.particles(0, 0, 'flares', particlesConfig);
 
 
     //  CREATION DU BACKGROUND ET DU TUILAGE
@@ -280,6 +284,7 @@ export default class ClientMatch extends Phaser.Scene {
       entity.damagePercentage = 0;
       entity.frameEvents = {};
       entity.isAlive = true;
+      entity.lives = 3;
       this.spriteSheetsLoader
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
         ?.spriteSheets.forEach((spritesheet) => {
@@ -298,12 +303,16 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.delete(message.id);
     });
 
-    this.mo.onMessage(EMessage.CreateHud, (players: any) => {
-      players.forEach((player: any) => {
+    this.mo.onMessage(EMessage.CreateHud, (players: {name:string, index:number}[]) => {
+      players.forEach((player: {name:string, index:number}) => {
+        const playerEntity = this.gameEntities.get(player.name);
+        
         const hudNewPlayerMessage: INewhudplayer = {
           name: player.name,
           index: player.index,
           damagePercentage: 0,
+          lives : playerEntity.lives
+
         };
         this.events.emit(EMessage.NewHudPlayer.toString(), hudNewPlayerMessage);
       });
@@ -325,6 +334,7 @@ export default class ClientMatch extends Phaser.Scene {
         entity.setActive(false);
         entity.body.enable = false;
         entity.setPosition(500, 500);
+        entity.playerNameText?.setVisible(false);
       }
         
       this.particlesEmitter?.explode(1, message.position.x, message.position.y);
