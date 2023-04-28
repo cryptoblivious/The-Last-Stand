@@ -1,4 +1,5 @@
 export interface IPlayerDeadMessage {
     id: string;
-    position : {x: number, y: number};
+    explosionPosition : {x: number, y: number};
+    respawnPosition? : {x: number, y: number};
 }
