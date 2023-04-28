@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useState, useEffect, useMemo, useRef } from 'react';
 import { Room, Client } from 'colyseus.js';
 import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from './../appConfig';
 import { IUser } from './../../typescript/interfaces/IUser';
@@ -6,13 +6,15 @@ import { AppState } from './../../server/rooms/states/AppState';
 import { patchCurrentUser, getCurrentUser } from './../fetches/users';
 
 interface ColyseusContextProps {
-  client: Client | null;
-  appRoom: Room<AppState> | null;
+  client: React.MutableRefObject<Client | null>;
+  appRoom: React.MutableRefObject<Room<AppState> | null>;
+  user: React.MutableRefObject<IUser | null>;
 }
 
 export const ColyseusContext = createContext<ColyseusContextProps>({
-  client: null,
-  appRoom: null,
+  client: { current: null },
+  appRoom: { current: null },
+  user: { current: null },
 });
 
 interface ColyseusProviderProps {
@@ -20,27 +22,27 @@ interface ColyseusProviderProps {
 }
 
 const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
-  const [client, setClient] = useState<Client | null>(null);
-  const [appRoom, setAppRoom] = useState<Room<AppState> | null>(null);
-  const [user, setUser] = useState<IUser | null>(null);
+  const client = useRef<Client | null>(null);
+  const appRoom = useRef<Room<AppState> | null>(null);
+  const user = useRef<IUser | null>(null);
 
   const connect = async () => {
-    const user = await getCurrentUser();
-    if (user) {
+    const fetchedUser = await getCurrentUser();
+    if (fetchedUser) {
       const updatedUser = {
         lastOnline: 'now',
       };
       const patchedUser = await patchCurrentUser(updatedUser);
-      setUser(patchedUser);
+      user.current = patchedUser;
     } else {
       console.log('no user found');
     }
-    const userData = user ?? { username: 'guest', userNo: String(Math.floor(Math.random() * 10000)).padStart(4, '0') };
-    const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
+    const userData = fetchedUser ?? { username: 'guest', userNo: String(Math.floor(Math.random() * 10000)).padStart(4, '0') };
+    const newClient = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
-      const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
-      setClient(client);
-      setAppRoom(appRoom);
+      const newAppRoom: Room<AppState> = await newClient.joinOrCreate('app_room', userData);
+      client.current = newClient;
+      appRoom.current = newAppRoom;
     } catch (error) {
       console.log('error', error);
     }
@@ -48,31 +50,30 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
 
   useEffect(() => {
     async function fetchData() {
-      if (!client && !appRoom && !user) {
+      if (!client.current && !appRoom.current && !user.current) {
         connect();
       }
     }
     fetchData();
 
     return () => {
-      if (appRoom) {
-        appRoom.leave();
+      if (appRoom.current) {
+        appRoom.current.leave();
       }
-      async function fetchData() {
+      async function updateLastOnline() {
         // TODO : make it so that it only updates the lastOnline if the user is not already online in the AppRoom
-        if (user) {
+        if (user.current) {
           const updatedUser = {
             lastOnline: new Date(),
           };
-
           patchCurrentUser(updatedUser);
         }
       }
-      fetchData();
+      updateLastOnline();
     };
   }, []);
 
-  const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user }), [client, appRoom]);
+  const contextValue = useMemo(() => ({ client, appRoom, user }), [client, appRoom, user]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 
