@@ -19,6 +19,7 @@ const Chatbox = () => {
   };
 
   useEffect(() => {
+    console.log('chatbox rendered');
     if (appRoom) {
       appRoom.onMessage('message', (message) => {
         console.log('message', message);
@@ -26,7 +27,7 @@ const Chatbox = () => {
         appRoom.state.messages.push(message);
       });
     }
-  }, [appRoom]);
+  }, []);
 
   return (
     <div className={`bg-black border-2 border-pink-600 text-white border-r-0 transition-all duration-300 p-2 w-96 flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-5/6' : ' h-12 translate-x-full'}`}>
