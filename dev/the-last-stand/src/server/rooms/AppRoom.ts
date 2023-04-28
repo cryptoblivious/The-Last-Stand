@@ -1,24 +1,37 @@
 import { Room, Client } from 'colyseus';
 import { AppState, UserMapper } from './states/AppState';
 import { userModel as User } from '../api/models/user';
+import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 export class AppRoom extends Room<AppState> {
   onCreate(options: any) {
     this.roomId = 'app'; // set the room ID to "my_room"
     this.setState(new AppState());
 
     this.onMessage('message', (client, message) => {
-      this.broadcast('message', `${client.sessionId} said: ${message} at ${new Date().toLocaleTimeString()}`);
+      this.state.users.forEach((user: any) => {
+        if (user.clientId === client.id) {
+          const messageMapper = new IMessageMapper();
+          messageMapper.username = user.username;
+          messageMapper.userNo = user.userNo;
+          messageMapper.content = message;
+          messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
+          messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
+
+          //this.state.messages.push(messageMapper);
+          this.broadcast('message', messageMapper);
+        }
+      });
     });
   }
 
-  onAuth(client: Client, user: any) {
-    // Check if the user is already connected
-    const { username, userNo } = user;
-    if (this.state.users.get(username + userNo)) {
-      return false;
-    }
-    return true;
-  }
+  // onAuth(client: Client, user: any) {
+  //   // Check if the user is already connected
+  //   const { username, userNo } = user;
+  //   if (this.state.users.get(username + userNo)) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   onJoin(client: Client, user: any) {
     console.log('app room joined!', user);
