@@ -6,7 +6,7 @@ import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 
 const Chatbox = () => {
   const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
-  const { client, appRoom } = useContext(ColyseusContext);
+  const { appRoom, user } = useContext(ColyseusContext);
   const [messages, setMessages] = useState<IMessageMapper[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +35,7 @@ const Chatbox = () => {
   }, [appRoom]);
 
   return (
-    <div className={`bg-black border-2 border-pink-600 text-white border-r-0 transition-all duration-300 p-2 w-96 flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-5/6' : ' h-12 translate-x-full'}`}>
+    <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 p-2 w-96 flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-5/6' : ' h-12 translate-x-full'}`}>
       <div className='flex gap-2 items-center'>
         <h1 className='text-center w-10/12 text-3xl'>Global Chat</h1>
         <ChatboxSwitcher
@@ -46,15 +46,19 @@ const Chatbox = () => {
       {/* <MessageList messages={messages} /> */}
       <div className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-2 grow'>
         {messages.map((message, index) => (
-          // TODO: add logic to check if message is from current user
-          <div key={index}>
+          <div
+            key={index}
+            className={user!.username === message.username && user!.userNo === message.userNo ? 'text-right' : ''}>
             <p className='italic text-green-500'>
               {message.date} at {message.time}
             </p>
-            <p>
-              <span className='text-pink-600'>{message.username}</span>
-              <span className='text-pink-900'>#{message.userNo}</span> {message.content}
-            </p>
+            <div className={`flex gap-2 ${user!.username === message.username && user!.userNo === message.userNo ? 'justify-end' : ''}`}>
+              <div>
+                <span className='text-pink-600'>{message.username}</span>
+                <span className='text-pink-900'>#{message.userNo}</span>
+              </div>
+              <div>{message.content}</div>
+            </div>
           </div>
         ))}
       </div>

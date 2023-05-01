@@ -8,11 +8,13 @@ import { patchCurrentUser, getCurrentUser } from './../fetches/users';
 interface ColyseusContextProps {
   client: Client | null;
   appRoom: Room<AppState> | null;
+  user: IUser | null;
 }
 
 export const ColyseusContext = createContext<ColyseusContextProps>({
   client: null,
   appRoom: null,
+  user: null,
 });
 
 interface ColyseusProviderProps {
@@ -72,7 +74,7 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     };
   }, []);
 
-  const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user }), [client, appRoom]);
+  const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user }), [client, appRoom, user]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 
