@@ -1,4 +1,5 @@
 import { Schema, type, MapSchema, ArraySchema } from '@colyseus/schema';
+import { IMessageMapper } from '../../../typescript/interfaces/IMessageMapper';
 
 export class UserMapper extends Schema {
   @type('string') username?: string = '';
@@ -8,5 +9,5 @@ export class UserMapper extends Schema {
 
 export class AppState extends Schema {
   @type({ map: UserMapper }) users: MapSchema<UserMapper> = new MapSchema<UserMapper>();
-  @type({ array: 'string' }) messages: ArraySchema<IMessageMapper> = new ArraySchema<IMessageMapper>();
+  @type({ array: IMessageMapper }) messages: ArraySchema<IMessageMapper> = new ArraySchema<IMessageMapper>();
 }

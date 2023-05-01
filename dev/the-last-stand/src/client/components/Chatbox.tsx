@@ -2,21 +2,20 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import ChatboxSwitcher from './ChatboxSwitcher';
 import { ColyseusContext } from './ColyseusProvider';
 import MessageList from './MessageList';
+import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 
 const Chatbox = () => {
   const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
   const { client, appRoom } = useContext(ColyseusContext);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<IMessageMapper[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const toggleChatbox = () => {
-    console.log('toggleChatbox');
     setChatboxOpen(!chatboxOpen);
   };
 
   const sendMessage = () => {
     if (!inputRef.current?.value) return;
-    console.log('sendMessage');
     appRoom!.send('message', inputRef.current?.value);
     inputRef.current!.value = '';
   };
@@ -24,11 +23,14 @@ const Chatbox = () => {
   useEffect(() => {
     console.log('chatbox rendered');
     if (appRoom) {
-      appRoom.onMessage('message', (message) => {
-        console.log('message', message);
-        const content = `${message.date} ${message.time} -${message.username}#${message.userNo}: ${message.content}`;
-        setMessages([...messages, content]);
+      appRoom.onMessage('message', (message: IMessageMapper) => {
+        console.log('message received');
+        setMessages((prev) => [...prev, message]);
       });
+
+      return () => {
+        appRoom.removeAllListeners();
+      };
     }
   }, [appRoom]);
 
@@ -44,7 +46,16 @@ const Chatbox = () => {
       {/* <MessageList messages={messages} /> */}
       <div className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-2 grow'>
         {messages.map((message, index) => (
-          <p key={index}>{message}</p>
+          // TODO: add logic to check if message is from current user
+          <div key={index}>
+            <p className='italic text-green-500'>
+              {message.date} at {message.time}
+            </p>
+            <p>
+              <span className='text-pink-600'>{message.username}</span>
+              <span className='text-pink-900'>#{message.userNo}</span> {message.content}
+            </p>
+          </div>
         ))}
       </div>
       <div className='flex gap-2 items-center'>

@@ -4,7 +4,6 @@ import Bootstrap from '../match/scenes/Bootstrap';
 import ClientMatch from '../match/scenes/ClientMatch';
 import Hud from '../match/scenes/Hud';
 import { ColyseusContext } from './ColyseusProvider';
-import { ColyseusContext } from './ColyseusProvider';
 
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
