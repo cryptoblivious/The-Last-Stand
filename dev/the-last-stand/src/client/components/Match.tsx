@@ -14,8 +14,7 @@ const Match = () => {
     if (!client) {
       return;
     }
-
-    // if (gameRef.current) {
+    const bootstrap = (Bootstrap as any).bind(null, client);
     const matchCanvas = document.createElement('div');
     matchCanvas.id = 'match-canvas';
     gameRef.current?.appendChild(matchCanvas);
@@ -37,7 +36,7 @@ const Match = () => {
           debugVelocityColor: 0x00ff00,
         },
       },
-      scene: [Bootstrap, ClientMatch, Hud],
+      scene: [bootstrap, ClientMatch, Hud],
       parent: 'match-canvas',
     };
 
@@ -47,7 +46,6 @@ const Match = () => {
       newGame.destroy(true);
       setGame(null);
     };
-    // }
   }, [client]);
 
   // if (!client || !appRoom || !game) {

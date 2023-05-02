@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import FriendInfoCard from './FriendInfoCard';
 import { getUsers } from '../fetches/users';
-
+// TODO : Add collection stream to update friend list in real time
 const FriendList = () => {
   const [users, setUsers] = useState<null | any[]>(null);
 
