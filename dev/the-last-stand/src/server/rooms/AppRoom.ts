@@ -2,11 +2,58 @@ import { Room, Client } from 'colyseus';
 import { AppState, UserMapper } from './states/AppState';
 import { userModel as User } from '../api/models/user';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
+import { MongoClient, ChangeStream } from 'mongodb';
+import dotenv from 'dotenv';
+dotenv.config();
+const { MONGO_URI } = process.env;
 export class AppRoom extends Room<AppState> {
+  private client: MongoClient;
+  private usersChangeStream: ChangeStream;
+  private messagesChangeStream: ChangeStream;
+
+  constructor() {
+    super();
+    this.client = new MongoClient(MONGO_URI!);
+    const db = this.client.db('tls');
+    const users = db.collection('users');
+    const usersPipeline = [
+      {
+        $match: {
+          operationType: 'update',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          fullDocument: 1,
+        },
+      },
+    ];
+    this.usersChangeStream = users.watch(usersPipeline, { fullDocument: 'updateLookup' });
+
+    this.usersChangeStream.on('change', (change: any) => {
+      console.log('usersChange:', change);
+      const data = {
+        username: change.fullDocument.username,
+        userNo: change.fullDocument.userNo,
+        title: change.fullDocument.title,
+        lastOnline: change.fullDocument.lastOnline,
+      };
+      console.log('data: ', data);
+      this.broadcast('usersChange', data);
+    });
+
+    const messages = db.collection('messages');
+    this.messagesChangeStream = messages.watch();
+    this.messagesChangeStream.on('change', (change) => {
+      console.log('messagesChange:', change);
+      this.broadcast('messagesChange', change);
+    });
+  }
+
   onCreate(options: any) {
     this.roomId = 'app'; // set the room ID to "my_room"
     this.setState(new AppState());
-
     this.onMessage('message', (client, message) => {
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
@@ -34,7 +81,6 @@ export class AppRoom extends Room<AppState> {
   // }
 
   onJoin(client: Client, user: any) {
-    console.log('app room joined!', user);
     const { username, userNo } = user;
     console.log(client.id, 'joined the app room');
     const messageMapper = new IMessageMapper();
@@ -86,7 +132,10 @@ export class AppRoom extends Room<AppState> {
     });
   }
 
-  onDispose() {
+  async onDispose() {
     console.log('app room', this.roomId, 'disposing...');
+    await this.usersChangeStream.close();
+    await this.messagesChangeStream.close();
+    await this.client.close();
   }
 }
