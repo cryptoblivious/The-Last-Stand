@@ -31,6 +31,7 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     if (user) {
       const updatedUser = {
         lastOnline: 'now',
+        avatar: '/assets/heroes/chuck/avatar.png',
       };
       const patchedUser = await patchCurrentUser(updatedUser);
       setUser(patchedUser);

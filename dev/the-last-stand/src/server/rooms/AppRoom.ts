@@ -32,7 +32,7 @@ export class AppRoom extends Room<AppState> {
     this.usersChangeStream = users.watch(usersPipeline, { fullDocument: 'updateLookup' });
 
     this.usersChangeStream.on('change', (change: any) => {
-      console.log('usersChange:', change);
+      console.log('userChange:', change);
       const data = {
         username: change.fullDocument.username,
         userNo: change.fullDocument.userNo,
@@ -40,7 +40,7 @@ export class AppRoom extends Room<AppState> {
         lastOnline: change.fullDocument.lastOnline,
       };
       console.log('data: ', data);
-      this.broadcast('usersChange', data);
+      this.broadcast('userChange', data);
     });
 
     const messages = db.collection('messages');

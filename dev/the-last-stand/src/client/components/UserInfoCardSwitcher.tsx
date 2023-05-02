@@ -2,27 +2,44 @@ import EditButton from './EditButton';
 import ShowUserInfo from './ShowUserInfo';
 import EditUserInfo from './EditUserInfo';
 import { IUser } from '../../typescript/interfaces/IUser';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { getCurrentUser } from '../fetches/users';
+import { ColyseusContext } from './ColyseusProvider';
 
 // TODO: ADD LISTENER TO USER INFO CARD TO DETECT IF USER DATA HAS CHANGED
 const UserInfoCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isDoneEditing, setIsDoneEditing] = useState(false);
+  const isDoneEditing = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [user, setUser] = useState<IUser | null>(null);
+  //const [user, setUser] = useState<IUser | null>(null);
+
+  const { client, appRoom, user } = useContext(ColyseusContext);
 
   useEffect(() => {
-    setIsLoading(true);
-    async function fetchData() {
-      const user = await getCurrentUser();
-      setUser(user);
+    if (appRoom) {
+      console.log('appRoom loaded');
+      appRoom.onMessage('userChange', (user: any) => {
+        const { username, userNo, title, lastOnline } = user;
+        user.username = username;
+        user.userNo = userNo;
+        user.title = title;
+        user.lastOnline = lastOnline;
+      });
     }
-    fetchData();
     setIsLoading(false);
-  }, [isDoneEditing]);
+
+    return () => {
+      if (appRoom) appRoom.removeAllListeners();
+    };
+    // setIsLoading(true);
+    // async function fetchData() {
+    //   const user = await getCurrentUser();
+    //   setUser(user);
+    // }
+    // fetchData();
+  }, [user, appRoom]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -33,7 +50,7 @@ const UserInfoCard = () => {
   };
 
   const handleToggleEdit = () => {
-    isEditing ? setIsDoneEditing(true) : setIsDoneEditing(false);
+    isEditing ? (isDoneEditing.current = true) : (isDoneEditing.current = false);
     setIsEditing(!isEditing);
   };
 
@@ -52,7 +69,7 @@ const UserInfoCard = () => {
         <EditUserInfo
           className={`${isEditing ? '' : 'hidden'}`}
           user={user}
-          isDoneEditing={isDoneEditing}
+          isDoneEditing={isDoneEditing.current}
         />
         <ShowUserInfo
           user={user}
