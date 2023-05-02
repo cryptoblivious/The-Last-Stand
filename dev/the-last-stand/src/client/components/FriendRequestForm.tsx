@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from './Button';
+import UpcomingOverlay from './UpcomingOverlay';
 
 const FriendRequestForm = () => {
   const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
@@ -46,7 +47,8 @@ const FriendRequestForm = () => {
       {isOpen && (
         <form
           onSubmit={handleSubmit}
-          className='flex flex-col gap-2'>
+          className='flex flex-col gap-2 relative'>
+          <UpcomingOverlay />
           <p className='text-sm'>Enter the username and number of the player you want to invite.</p>
           <div>
             <input

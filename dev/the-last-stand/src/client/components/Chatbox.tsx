@@ -11,13 +11,19 @@ const Chatbox = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const toggleChatbox = () => {
-    setChatboxOpen(!chatboxOpen);
+    setChatboxOpen((prev) => {
+      if (!prev) {
+        inputRef.current?.focus();
+      }
+      return !prev;
+    });
   };
 
   const sendMessage = () => {
     if (!inputRef.current?.value) return;
     appRoom!.send('message', inputRef.current?.value);
     inputRef.current!.value = '';
+    inputRef.current?.focus();
   };
 
   useEffect(() => {

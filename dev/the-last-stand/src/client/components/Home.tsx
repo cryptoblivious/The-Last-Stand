@@ -1,5 +1,6 @@
 import SocialOverlay from './SocialOverlay';
 import HomeSection from './HomeSection';
+import UpcomingOverlay from './UpcomingOverlay';
 
 const Home = () => {
   return (
@@ -19,18 +20,24 @@ const Home = () => {
             link='/heroes'
             backgroundImg={'/assets/wallpapers/94f0594713f945197564bc0ef499774f.jpg'}
           />
-          <HomeSection
-            title='Maps'
-            subtitle='Browse maps.'
-            link='/heroes'
-            backgroundImg={'/assets/wallpapers/2282b8ab3e009bcddbb32cbff485aa6c.jpg'}
-          />
-          <HomeSection
-            title='Stats'
-            subtitle='Check your stats.'
-            link='/heroes'
-            backgroundImg={'/assets/wallpapers/57da00c688947107588d5bfadd77540d.jpg'}
-          />
+          <div className='relative flex-grow'>
+            <UpcomingOverlay />
+            <HomeSection
+              title='Maps'
+              subtitle='Browse maps.'
+              link='/heroes'
+              backgroundImg={'/assets/wallpapers/2282b8ab3e009bcddbb32cbff485aa6c.jpg'}
+            />
+          </div>
+          <div className='relative flex-grow'>
+            <UpcomingOverlay />
+            <HomeSection
+              title='Stats'
+              subtitle='Check your stats.'
+              link='/heroes'
+              backgroundImg={'/assets/wallpapers/57da00c688947107588d5bfadd77540d.jpg'}
+            />
+          </div>
         </div>
       </main>
     </>

@@ -33,7 +33,7 @@ const FriendInfoCard = ({ user }: { user: IUser }) => {
   };
 
   return (
-    <div className='flex w-full gap-2 justify-center items-center border-pink-900 hover:bg-zinc-900 transition duration-500 border-2 p-1 rounded-xl'>
+    <div className='flex w-full gap-2 justify-center items-center border-pink-900 hover:bg-zinc-900 hover:cursor-pointer transition duration-500 border-2 p-1 rounded-xl'>
       <div className='flex w-1/5'>
         {lastOnline === 'now' ? (
           <GiCyberEye

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import BigRoundedInput from './BigRoundedInput';
+import UpcomingOverlay from './UpcomingOverlay';
 
 const SignupForm = () => {
   return (
-    <form className='flex flex-col gap-4'>
+    <form className='flex flex-col gap-4 relative'>
+      <UpcomingOverlay />
       <BigRoundedInput
         color='green-900'
         type='text'
