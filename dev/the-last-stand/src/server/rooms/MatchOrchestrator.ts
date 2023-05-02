@@ -61,6 +61,8 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
 
     this.onMessage(EMessage.PlayerDead, (player, message: IPlayerDeadMessage) => {
+      const index = this.clients.findIndex((client) => client.id === message.id);
+      message.respawnPosition = this.positionHandler[index];
       this.broadcast(EMessage.PlayerDead, message);
     });
     

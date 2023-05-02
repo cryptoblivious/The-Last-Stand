@@ -9,16 +9,16 @@ export default class Bootstrap extends Phaser.Scene {
     private client?: Client;
 
 
-  constructor(client:Client) {
+  constructor(client?:Client) {
     super('bootstrap');
-    this.client = client;
+    // this.client = client;
   }
 
   init() {
     
     //this.client = new Client(`ws://${HOST_NAME}:${HOST_PORT}`);
     //this.client = new Client('ws://localhost:9001')
-    // this.client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
+    this.client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
   }
   
   create() {

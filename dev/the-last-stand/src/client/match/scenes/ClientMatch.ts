@@ -123,10 +123,10 @@ export default class ClientMatch extends Phaser.Scene {
       playerSprite.setActive(true);
       playerSprite.body!.enable = true;
       playerSprite.playerNameText.setVisible(true);
+      playerSprite.isAlive = true;
       // playerSprite.setEnable(true)
     }
   }
-
 
   respawnPlayerSprite(playerSprite: any) {
     if (playerSprite) {
@@ -147,9 +147,11 @@ export default class ClientMatch extends Phaser.Scene {
         callback: () => {
           playerSprite.alpha = 1;
           flashTimer.remove();
+          this.enablePlayerSprite(playerSprite);
         },
         callbackScope: this,
       });
+      // enable player sprite
     }
   }
 
@@ -382,8 +384,8 @@ export default class ClientMatch extends Phaser.Scene {
         entity.lives -= 1;
         this.events.emit(EMessage.UpdateHudLives.toString(), { name: message.id, lives: entity.lives });
         this.mo?.send(EMessage.RespawnPlayer, { id: message.id });
-        // this.respawnPlayerSprite(entity);
         // this.enablePlayerSprite(entity);
+        this.respawnPlayerSprite(entity);
       }
 
     });
