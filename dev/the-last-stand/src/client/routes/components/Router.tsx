@@ -13,7 +13,12 @@ const Router = createBrowserRouter(
     <Route errorElement={<Error />}>
       <Route
         path='/'
-        element={<ProtectedRoute element={<MainPageSwitcher />} />}
+        element={
+          <ProtectedRoute
+            element={<MainPageSwitcher />}
+            userAuth='both'
+          />
+        }
       />
       <Route
         path='login'
