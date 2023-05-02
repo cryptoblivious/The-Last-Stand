@@ -27,8 +27,8 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
   const [user, setUser] = useState<IUser | null>(null);
 
   const connect = async () => {
-    const user = await getCurrentUser();
-    if (user) {
+    const currentUser = await getCurrentUser();
+    if (currentUser) {
       const updatedUser = {
         lastOnline: 'now',
         avatar: '/assets/heroes/chuck/avatar.png',
@@ -42,6 +42,22 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
+      appRoom.onMessage('change', (updatedUser: any) => {
+        const { username, userNo, title, lastOnline } = updatedUser;
+        updatedUser.username = username;
+        updatedUser.userNo = userNo;
+        updatedUser.title = title;
+        updatedUser.lastOnline = lastOnline;
+        setUser((prevUser) => {
+          return {
+            ...prevUser,
+            username: updatedUser.username ?? prevUser!.username,
+            userNo: updatedUser.userNo ?? prevUser!.userNo,
+            title: updatedUser.title ?? prevUser!.title,
+            lastOnline: updatedUser.lastOnline ?? prevUser!.lastOnline,
+          };
+        });
+      });
       setClient(client);
       setAppRoom(appRoom);
     } catch (error) {

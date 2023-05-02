@@ -20,18 +20,13 @@ const UserInfoCard = () => {
   useEffect(() => {
     if (appRoom) {
       console.log('appRoom loaded');
-      appRoom.onMessage('userChange', (user: any) => {
-        const { username, userNo, title, lastOnline } = user;
-        user.username = username;
-        user.userNo = userNo;
-        user.title = title;
-        user.lastOnline = lastOnline;
-      });
+      console.log('appRoom listener added');
+      console.log(appRoom);
     }
     setIsLoading(false);
 
     return () => {
-      if (appRoom) appRoom.removeAllListeners();
+      //if (appRoom) appRoom.removeAllListeners();
     };
     // setIsLoading(true);
     // async function fetchData() {
