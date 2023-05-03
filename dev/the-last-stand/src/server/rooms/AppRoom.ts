@@ -101,6 +101,7 @@ export class AppRoom extends Room<AppState> {
     const { username, userNo } = user;
     try {
       await User.findOneAndUpdate({ username: username, userNo: userNo }, { lastOnline: new Date() });
+      console.log('updated lastOnline date for: ', username + userNo);
     } catch (error) {
       console.error('Error updating lastOnline date:', error);
     }
@@ -121,7 +122,6 @@ export class AppRoom extends Room<AppState> {
         messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
         messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
         this.broadcast('message', messageMapper);
-
         if (user.username !== 'guest') {
           this.updateLastOnline(user);
         }
