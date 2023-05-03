@@ -65,6 +65,7 @@ const UserInfoCard = () => {
           className={`${isEditing ? '' : 'hidden'}`}
           user={user}
           isDoneEditing={isDoneEditing.current}
+          inputFunction={handleToggleEdit}
         />
         <ShowUserInfo
           user={user}

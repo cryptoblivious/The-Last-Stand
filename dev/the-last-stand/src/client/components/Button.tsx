@@ -7,6 +7,11 @@ function Button(props: IButtonProps) {
     <button
       className={`${className} ${classNameAdditions}`}
       onClick={onClick}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          onClick();
+        }
+      }}
       disabled={disabled}
       type={type}>
       <>
