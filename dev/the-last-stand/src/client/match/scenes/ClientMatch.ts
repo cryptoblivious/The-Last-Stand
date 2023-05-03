@@ -214,7 +214,7 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // CREATION DES PARTICULES
-    const particlesConfig: IParticlesEmitterJsonObject = {
+    const flaresParticlesConfig: IParticlesEmitterJsonObject = {
       frame: ['red', 'blue', 'green', 'yellow', 'white'],
       lifespan: 1000,
       speed: { min: 0, max: 250 },
@@ -223,7 +223,7 @@ export default class ClientMatch extends Phaser.Scene {
       blendMode: 'ADD',
       emitting: false,
     };
-    this.particlesEmitter = this.add.particles(0, 0, 'flares', particlesConfig);
+    this.particlesEmitter = this.add.particles(0, 0, 'flares', flaresParticlesConfig);
 
     //  CREATION DU BACKGROUND ET DU TUILAGE
     // Background

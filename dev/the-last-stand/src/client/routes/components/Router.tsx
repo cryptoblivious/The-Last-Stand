@@ -7,6 +7,7 @@ import Lobby from '../../components/Lobby';
 import Login from '../../components/Login';
 import Match from '../../components/Match';
 import Heroes from '../../components/Heroes';
+import GameLobby from '../../components/GameLobby';
 
 const Router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,10 @@ const Router = createBrowserRouter(
       <Route
         path='heroes'
         element={<ProtectedRoute element={<Heroes />} />}
+      />
+      <Route
+        path='gamelobby'
+        element={<ProtectedRoute element={<GameLobby />} />}
       />
     </Route>
   )

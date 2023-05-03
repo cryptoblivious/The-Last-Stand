@@ -11,7 +11,9 @@ const Home = () => {
           <HomeSection
             title='Play'
             subtitle='Play a match.'
-            link='/match/123'
+            // uncomment this line to test the match page
+            // link='/match/123'
+            link='/gameLobby'
             backgroundImg={'/assets/wallpapers/616c2d7aeec658a610945fde5d997459.jpg'}
           />
           <HomeSection
