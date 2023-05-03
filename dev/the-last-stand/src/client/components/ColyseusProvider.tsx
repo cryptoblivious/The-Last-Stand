@@ -52,12 +52,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
-      appRoom.onMessage('change', (updatedUser: any) => {
-        const { username, userNo, title, lastOnline } = updatedUser;
-        updatedUser.username = username;
-        updatedUser.userNo = userNo;
-        updatedUser.title = title;
-        updatedUser.lastOnline = lastOnline;
+      appRoom.onMessage('userChange', (updatedUser: any) => {
         setUser((prevUser) => {
           return {
             ...prevUser,
@@ -66,6 +61,18 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
             title: updatedUser.title ?? prevUser!.title,
             lastOnline: updatedUser.lastOnline ?? prevUser!.lastOnline,
           };
+        });
+        // check in the users array and update the user if it exists
+        setUsers((prevUsers) => {
+          const updatedUsers = prevUsers.map((prevUser) => {
+            console.log('prevUser', prevUser, 'updatedUser', updatedUser);
+            if (prevUser && prevUser._id === updatedUser._id) {
+              return updatedUser;
+            } else {
+              return prevUser;
+            }
+          });
+          return updatedUsers;
         });
       });
 

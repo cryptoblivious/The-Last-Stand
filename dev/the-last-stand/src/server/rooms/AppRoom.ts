@@ -33,12 +33,13 @@ export class AppRoom extends Room<AppState> {
 
     this.usersChangeStream.on('change', (change: any) => {
       const data = {
+        _id: change.fullDocument._id,
         username: change.fullDocument.username,
         userNo: change.fullDocument.userNo,
         title: change.fullDocument.title,
         lastOnline: change.fullDocument.lastOnline,
       };
-      this.broadcast('change', data);
+      this.broadcast('userChange', data);
     });
 
     const messages = db.collection('messages');
