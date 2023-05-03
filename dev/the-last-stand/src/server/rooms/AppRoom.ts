@@ -97,7 +97,7 @@ export class AppRoom extends Room<AppState> {
     userMap.username = username;
     userMap.userNo = userNo;
     userMap.clientId = client.id;
-
+    console.log('user before sending to state: ', username + userNo);
     this.state.users.set(username + userNo, userMap);
   }
 
