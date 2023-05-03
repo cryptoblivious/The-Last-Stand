@@ -17,7 +17,7 @@ const FriendList = () => {
   // }, []);
 
   return (
-    <div className='flex flex-col gap-1'>
+    <div className='flex flex-col gap-1 w-full'>
       <h1>Friend List</h1>
       {users &&
         users.map(
