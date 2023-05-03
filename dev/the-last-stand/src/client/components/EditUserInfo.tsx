@@ -2,7 +2,7 @@ import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/users';
 import { useEffect, useRef } from 'react';
 
-const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; className?: string; isDoneEditing: boolean }) => {
+const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user: IUser; className?: string; isDoneEditing: boolean; inputFunction: () => void }) => {
   const { avatar, username, title } = user;
   const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
   const titleRef = useRef<HTMLSelectElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
@@ -40,6 +40,12 @@ const EditUserInfo = ({ user, className, isDoneEditing }: { user: IUser; classNa
           type='text'
           defaultValue={username}
           placeholder='Username'
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              inputFunction();
+            }
+          }}
         />
         <select
           id='my-dropdown'
