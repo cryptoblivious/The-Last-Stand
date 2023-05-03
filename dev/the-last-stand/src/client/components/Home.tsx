@@ -13,6 +13,8 @@ const Home = () => {
             subtitle='Play a match.'
             // uncomment this line to test the match page
             // link='/match/123'
+
+            // comment this line to test the match page
             link='/gameLobby'
             backgroundImg={'/assets/wallpapers/616c2d7aeec658a610945fde5d997459.jpg'}
           />
