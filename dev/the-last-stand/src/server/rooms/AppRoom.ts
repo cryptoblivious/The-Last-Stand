@@ -54,15 +54,17 @@ export class AppRoom extends Room<AppState> {
     this.onMessage('message', (client, message) => {
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
-          const messageMapper = new IMessageMapper();
-          messageMapper.username = user.username;
-          messageMapper.userNo = user.userNo;
-          messageMapper.content = message;
-          messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-          messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
+          if (user.username !== 'guest') {
+            const messageMapper = new IMessageMapper();
+            messageMapper.username = user.username;
+            messageMapper.userNo = user.userNo;
+            messageMapper.content = message;
+            messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
+            messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
 
-          //this.state.messages.push(messageMapper);
-          this.broadcast('message', messageMapper);
+            //this.state.messages.push(messageMapper);
+            this.broadcast('message', messageMapper);
+          }
         }
       });
     });
@@ -80,13 +82,15 @@ export class AppRoom extends Room<AppState> {
   onJoin(client: Client, user: any) {
     const { username, userNo } = user;
     console.log(client.id, 'joined the app room');
-    const messageMapper = new IMessageMapper();
-    messageMapper.username = username;
-    messageMapper.userNo = userNo;
-    messageMapper.content = 'joined the global chat';
-    messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-    messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
-    this.broadcast('message', messageMapper);
+    if (username !== 'guest') {
+      const messageMapper = new IMessageMapper();
+      messageMapper.username = username;
+      messageMapper.userNo = userNo;
+      messageMapper.content = 'joined the global chat';
+      messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
+      messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
+      this.broadcast('message', messageMapper);
+    }
 
     // Create the user's app state data and add it to the app state
     const userMap = new UserMapper();
@@ -111,20 +115,19 @@ export class AppRoom extends Room<AppState> {
 
     this.state.users.forEach((user: any) => {
       if (user.clientId === client.id) {
-        console.log('user leaving: ', user.username + user.userNo);
-        this.state.users.delete(user.username + user.userNo);
-        const { username, userNo } = user;
-        const messageMapper = new IMessageMapper();
-        messageMapper.username = username;
-        messageMapper.userNo = userNo;
-        messageMapper.content = 'left the global chat';
-        messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-        messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
-        this.broadcast('message', messageMapper);
-
         if (user.username !== 'guest') {
+          console.log('user leaving: ', user.username + user.userNo);
+          const { username, userNo } = user;
+          const messageMapper = new IMessageMapper();
+          messageMapper.username = username;
+          messageMapper.userNo = userNo;
+          messageMapper.content = 'left the global chat';
+          messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
+          messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
+          this.broadcast('message', messageMapper);
           this.updateLastOnline(user);
         }
+        this.state.users.delete(user.username + user.userNo);
       }
     });
   }

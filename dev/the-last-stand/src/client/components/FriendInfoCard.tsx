@@ -16,13 +16,13 @@ const FriendInfoCard = ({ user }: { user: IUser }) => {
         const diffMinutes = Math.floor(diff / (1000 * 60));
         const diffSeconds = Math.floor(diff / 1000);
         if (diffSeconds < 60) {
-          return `${diffSeconds} seconds ago`;
+          return `${diffSeconds} sec${diffSeconds > 1 ? 's' : ''} ago`;
         } else if (diffMinutes < 60) {
-          return `${diffMinutes} minutes ago`;
+          return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
         } else if (diffHours < 24) {
-          return `${diffHours} hours ago`;
+          return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
         } else if (diffDays < 30) {
-          return `${diffDays} days ago`;
+          return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
         } else {
           return ' > 30 days ago';
         }
@@ -50,9 +50,9 @@ const FriendInfoCard = ({ user }: { user: IUser }) => {
         )}
       </div>
       <div className='flex flex-col justify-center w-4/5'>
-        <h4>
+        <h4 className={`${lastOnline === 'now' && 'text-green-600'}`}>
           {`${username} `}
-          <span className='text-pink-800'>{`#${userNo ?? '0000'} last online : ${calculateLastOnline()}`}</span>
+          <span className={`${lastOnline === 'now' ? 'text-green-700' : 'text-pink-800'}`}>{`#${userNo} (hacktive : ${calculateLastOnline()})`}</span>
         </h4>
         <h5 className='text-cyan-300'> - {title}</h5>
       </div>
