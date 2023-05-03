@@ -8,11 +8,11 @@ const ShowUserInfo = ({ user, className }: { user: IUser; className?: string }) 
         className='border-purple-900 h-24 w-24 border-2 rounded-full'
         src={avatar}></img>
       <div className='flex flex-col gap-2 justify-center w-80'>
-        <h4>
+        <h4 className='text-green-500'>
           {`${username} `}
-          <span className='text-pink-800'>{`#${userNo ?? '0000'}`}</span>
+          <span className='text-green-700'>{`#${userNo ?? '0000'}`}</span>
         </h4>
-        <h4>{`${title}`}</h4>
+        <h4 className='text-cyan-300'>{` - ${title}`}</h4>
       </div>
     </div>
   );

@@ -24,16 +24,6 @@ const UserInfoCard = () => {
       console.log(appRoom);
     }
     setIsLoading(false);
-
-    return () => {
-      //if (appRoom) appRoom.removeAllListeners();
-    };
-    // setIsLoading(true);
-    // async function fetchData() {
-    //   const user = await getCurrentUser();
-    //   setUser(user);
-    // }
-    // fetchData();
   }, [user, appRoom]);
 
   const handleMouseEnter = () => {

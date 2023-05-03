@@ -1,15 +1,16 @@
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { Room, Client } from 'colyseus.js';
-import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from './../appConfig';
-import { IUser } from './../../typescript/interfaces/IUser';
-import { AppState } from './../../server/rooms/states/AppState';
-import { patchCurrentUser, getCurrentUser } from './../fetches/users';
+import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from '../appConfig';
+import { IUser } from '../../typescript/interfaces/IUser';
+import { AppState } from '../../server/rooms/states/AppState';
+import { patchCurrentUser, getCurrentUser, getUsers } from '../fetches/users';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 
 interface ColyseusContextProps {
   client: Client | null;
   appRoom: Room<AppState> | null;
   user: IUser | null;
+  users: IUser[];
   messages: IMessageMapper[];
 }
 
@@ -17,21 +18,26 @@ export const ColyseusContext = createContext<ColyseusContextProps>({
   client: null,
   appRoom: null,
   user: null,
+  users: [],
   messages: [],
 });
 
-interface ColyseusProviderProps {
+interface ColyseusServerProviderProps {
   children: React.ReactNode;
 }
 
-const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
+const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
   const [client, setClient] = useState<Client | null>(null);
   const [appRoom, setAppRoom] = useState<Room<AppState> | null>(null);
   const [user, setUser] = useState<IUser | null>(null);
+  const [users, setUsers] = useState<IUser[]>([]);
   const [messages, setMessages] = useState<IMessageMapper[]>([]);
 
   const connect = async () => {
     const currentUser = await getCurrentUser();
+    const currentUsers = await getUsers();
+    setUsers(currentUsers);
+    console.log('currentUsers', currentUsers);
     if (currentUser) {
       const updatedUser = {
         lastOnline: 'now',
@@ -42,7 +48,7 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     } else {
       console.log('no user found');
     }
-    const userData = user ?? { username: 'guest', userNo: String(Math.floor(Math.random() * 10000)).padStart(4, '0') };
+    const userData = currentUser ?? { username: 'guest', userNo: String(Math.floor(Math.random() * 10000)).padStart(4, '0') };
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
@@ -100,8 +106,8 @@ const ColyseusProvider = ({ children }: ColyseusProviderProps) => {
     };
   }, []);
 
-  const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user, messages: messages }), [client, appRoom, user, messages]);
+  const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user, users: users, messages: messages }), [client, appRoom, user, messages]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 
-export default ColyseusProvider;
+export default ColyseusServerProvider;
