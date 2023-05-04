@@ -63,19 +63,19 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
               lastOnline: updatedUser.lastOnline ?? prevUser!.lastOnline,
             };
           });
-          // check in the users array and update the user if it exists
-          setUsers((prevUsers) => {
-            const updatedUsers = prevUsers.map((prevUser) => {
-              console.log('prevUser', prevUser, 'updatedUser', updatedUser);
-              if (prevUser && prevUser._id === updatedUser._id) {
-                return updatedUser;
-              } else {
-                return prevUser;
-              }
-            });
-            return updatedUsers;
-          });
         }
+        // check in the users array and update the user if it exists
+        setUsers((prevUsers) => {
+          const updatedUsers = prevUsers.map((prevUser) => {
+            console.log('prevUser', prevUser, 'updatedUser', updatedUser);
+            if (prevUser && prevUser._id === updatedUser._id) {
+              return updatedUser;
+            } else {
+              return prevUser;
+            }
+          });
+          return updatedUsers;
+        });
       });
 
       appRoom.onMessage('message', (message: IMessageMapper) => {
