@@ -1,12 +1,18 @@
 import { Room, Client } from 'colyseus';
 import { AppState } from './states/AppState';
 import { userModel as User } from '../api/models/user';
+import { conversationModel as Conversation } from '../api/models/conversation';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
 dotenv.config();
 const { MONGO_URI } = process.env;
+
+interface IHandleMessageKwargs {
+  conversationId: string;
+  content: string;
+}
 export class AppRoom extends Room<AppState> {
   private client: MongoClient;
   private usersChangeStream: ChangeStream;
@@ -57,14 +63,8 @@ export class AppRoom extends Room<AppState> {
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
           if (user.username !== 'guest') {
-            const messageMapper = new IMessageMapper();
-            messageMapper.username = user.username;
-            messageMapper.userNo = user.userNo;
-            messageMapper.content = message;
-            messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-            messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
-
-            this.broadcast('message', messageMapper);
+            console.log('handling message', message);
+            this.handleMessage(message, user._id, user.username, user.userNo);
           }
         }
       });
@@ -80,25 +80,21 @@ export class AppRoom extends Room<AppState> {
   //   return true;
   // }
 
-  onJoin(client: Client, user: any) {
-    const { username, userNo } = user;
-    console.log(client.id, 'joined the app room');
+  async onJoin(client: Client, user: any) {
+    const { _id, username, userNo } = user;
+
+    const globalChat = await Conversation.findOne({ isGlobal: true });
+
     if (username !== 'guest') {
-      const messageMapper = new IMessageMapper();
-      messageMapper.username = username;
-      messageMapper.userNo = userNo;
-      messageMapper.content = 'joined the global chat';
-      messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-      messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
-      this.broadcast('message', messageMapper);
+      this.handleMessage({ conversationId: globalChat._id, content: 'joined the global chat' }, _id, username, userNo);
     }
 
     // Create the user's app state data and add it to the app state
     const userMap = new IUserMapper();
+    userMap._id = _id;
     userMap.username = username;
     userMap.userNo = userNo;
     userMap.clientId = client.id;
-    console.log('user before sending to state: ', username + userNo);
     this.state.users.set(username + userNo, userMap);
   }
 
@@ -111,21 +107,30 @@ export class AppRoom extends Room<AppState> {
     }
   };
 
-  onLeave(client: Client, consented: boolean) {
-    console.log(client.id, 'left the app room');
+  handleMessage = async (message: IHandleMessageKwargs, _id?: string, username?: string, userNo?: string) => {
+    const messageMapper = new IMessageMapper();
+    messageMapper.userId = _id;
+    messageMapper.username = username;
+    messageMapper.userNo = userNo;
+    messageMapper.content = message.content;
+    messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
+    messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
+    this.broadcast('message', messageMapper);
+    try {
+      await Conversation.findOneAndUpdate({ _id: message.conversationId }, { $push: { messages: messageMapper } });
+    } catch (error) {
+      console.error('Error updating conversation:', error);
+    }
+  };
+
+  async onLeave(client: Client, consented: boolean) {
+    const globalChat = await Conversation.findOne({ isGlobal: true });
 
     this.state.users.forEach((user: any) => {
       if (user.clientId === client.id) {
         if (user.username !== 'guest') {
-          console.log('user leaving: ', user.username + user.userNo);
-          const { username, userNo } = user;
-          const messageMapper = new IMessageMapper();
-          messageMapper.username = username;
-          messageMapper.userNo = userNo;
-          messageMapper.content = 'left the global chat';
-          messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-          messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
-          this.broadcast('message', messageMapper);
+          const { _id, username, userNo } = user;
+          this.handleMessage({ conversationId: globalChat._id, content: 'left the global chat' }, _id, username, userNo);
           this.updateLastOnline(user);
         }
         this.state.users.delete(user.username + user.userNo);

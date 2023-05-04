@@ -32,7 +32,7 @@ const Chatbox = (props: IChatboxProps) => {
   const sendMessage = () => {
     //check if the textarea is empty or only contains whitespaces or newlines
     if (!textareaRef.current?.value.trim()) return;
-    appRoom!.send('message', textareaRef.current?.value);
+    appRoom!.send('message', { conversationId: id, content: textareaRef.current?.value });
     textareaRef.current!.value = '';
     textareaRef.current?.focus();
   };
@@ -44,7 +44,20 @@ const Chatbox = (props: IChatboxProps) => {
       console.log('conversation', data);
     };
     fetchData();
-  }, []);
+
+    if (appRoom) {
+      appRoom.onMessage('conversationChange', (updatedConversation: any) => {
+        if (updatedConversation._id === id) {
+          setConversation((prevConversation: any) => {
+            return {
+              ...prevConversation,
+              messages: updatedConversation.messages ?? prevConversation!.username,
+            };
+          });
+        }
+      });
+    }
+  }, [appRoom]);
 
   if (!conversation) return <div>Loading...</div>;
 

@@ -15,7 +15,6 @@ export const createConversation = async (req: any, res: any) => {
 
 // GET all conversations
 export const readConversations = async (req: any, res: any) => {
-  console.log('readConversations');
   try {
     const conversations = await Conversation.find({});
     res.status(200).json(conversations);
@@ -39,8 +38,6 @@ export const readGlobalConversation = async (req: any, res: any) => {
 
 // Get one conversation by id
 export const readConversationById = async (req: any, res: any) => {
-  console.log('readConversationById');
-  console.log('req.params.id', req.params.id);
   try {
     const conversation = await Conversation.findById(req.params.id);
     if (!conversation) {
