@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ERooms } from '../../typescript/enumerations/ERooms';
 import { fetchHeroesNames } from '../fetches/heroes';
 import { fetchScenesNames } from '../fetches/scenes';
+import { EMessage } from '../../typescript/enumerations/EMessage';
 
 const gl_mainContainerStyle = "flex flex-col h-screen p-4 bg-[url('/assets/wallpapers/gl_poker_players2.jpg')] bg-cover bg-center bg-no-repeat"
 const gl_gridsContainerStyle = 'flex flex-1 mb-4 items-center justify-around'
@@ -19,14 +20,28 @@ const GameLobby = () => {
     const [selectedCharacter, setSelectedCharacter] = useState<gl_GridCardData | null>(null);
     const [selectedScene, setSelectedScene] = useState<gl_GridCardData | null>(null);
     const [characters, setCharacters] = useState<gl_GridCardData[]>([]);
+    const [buttonState, setButtonState] = useState({text :' Play', isPlaying: false});
     const [scenes, setScenes] = useState<gl_GridCardData[]>([]);
     const [gameLobbyRoom, setGameLobbyRoom] = useState<any>(null); 
-    const [buttonState, setButtonState] = useState({text :' Play', isPlaying: false});
-
-    const connect = async () => {
+    // const [matchMakerRoom, setMatchMakerRoom] = useState<any>(null);
+    
+    const connectToGameLobbyRoom = async () => {
         try{
             const gameLobbyRoom = await client?.joinOrCreate(ERooms.GameLobbyRoom.toString(), user);
+            gameLobbyRoom?.onMessage(EMessage.JoinQueue, (message) => {
+                console.log(message);
+            });
             return gameLobbyRoom;
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    const connectToMatchMakerRoom = async () => {
+        try{
+            const matchMakerRoom = await client?.joinOrCreate(ERooms.MatchMakerRoom.toString(), {character: selectedCharacter, scene: selectedScene});
+            return matchMakerRoom;
         }
         catch(error){
             console.log(error);
@@ -35,13 +50,11 @@ const GameLobby = () => {
 
     useEffect(() => {
         if (!client) return;
-
-        connect().then((room) => {
+        connectToGameLobbyRoom().then((room) => {
             if(room){
                 setGameLobbyRoom(room);
             }
         });
-
         fetchHeroesNames().then(({heroes}) => {
             setCharacters(heroes);
             if (heroes.length > 0) {
@@ -54,9 +67,6 @@ const GameLobby = () => {
                 setSelectedScene(scenes[0]);
             }
         });
-
-        
-        
         return () => {
             gameLobbyRoom?.leave();
         }
@@ -73,14 +83,19 @@ const GameLobby = () => {
     const handlePlayCancelClick = () => {
         if (!gameLobbyRoom) return;
         if (!selectedCharacter || !selectedScene) { return console.log('select character and scene')};
+        
         setButtonState((prevState) => ({
             text: prevState.isPlaying ? 'Play' : 'Cancel',
             isPlaying: !prevState.isPlaying
         }));
-        if (buttonState.isPlaying) {
-            console.log('cancel clicked');
-        }else {
+
+        if (!buttonState.isPlaying) {
             console.log('play clicked');
+            gameLobbyRoom.send(EMessage.JoinQueue, {character: selectedCharacter, scene: selectedScene})
+
+        }else {
+            console.log('cancel clicked');
+
         }
 
         // console.log(`play clicked with ${selectedCharacter?.name} and ${selectedScene?.name}`);

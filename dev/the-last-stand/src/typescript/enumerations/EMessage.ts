@@ -17,5 +17,10 @@ export enum EMessage {
   ExplosionDone,
   RespawnPlayer,
   UpdateHudLives,
+  MatchMakerFull,
+  JoinQueue,
+  JoinGame, 
+  StartGame,
+  LeaveGame,
   
 }
