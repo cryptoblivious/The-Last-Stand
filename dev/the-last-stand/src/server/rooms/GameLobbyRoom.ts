@@ -8,24 +8,29 @@ export class GameLobbyRoom extends Room {
     async onCreate (options: any) {
         this.setState(new GameLobbyState());
         console.log("GameLobbyRoom created!", options);
-        const room = await matchMaker.joinOrCreate(ERooms.MatchMakerRoom.toString());
-        console.log("MatchMakerRoom joined!", room);
+        
 
         // messages
-        this.onMessage(EMessage.JoinQueue, (client, message) => {
-            console.log("JoinQueue", message);
-            
-            // this.broadcast(EMessage.JoinQueue, message);
+        this.onMessage(EMessage.JoinQueue, async (client, message) => {
+            // console.log("JoinQueue", message);
+            // const room = await this.joinMatchMakerRoom();
+            // console.log("MatchMakerRoom joined!", room);
+            this.broadcast(EMessage.JoinQueue, {client, message});
         });
+    }
+
+    async joinMatchMakerRoom() {
+        const room = await matchMaker.joinOrCreate('match_maker_room');
+        return room;
     }
 
     onJoin (client: Client, options: any) {
         this.state.players.set(client.sessionId, options.username)
-        console.log("client joined!", options.username);
+        console.log("client joined game lobby room ", options.username);
     }
 
     onLeave (client: Client, consented: boolean) {
-        console.log("client left!", client.sessionId);
+        console.log("client left game lobby room !", client.sessionId);
     }
 
     onDispose() {
