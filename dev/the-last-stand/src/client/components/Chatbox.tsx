@@ -56,7 +56,6 @@ const Chatbox = (props: IChatboxProps) => {
 
     if (appRoom) {
       appRoom.onMessage('conversationsChange', (updatedConversation: any) => {
-        console.log('updatedConversation', updatedConversation);
         if (updatedConversation._id === id) {
           setConversation((prevConversation: any) => {
             return {
@@ -101,7 +100,11 @@ const Chatbox = (props: IChatboxProps) => {
                 </div>
                 <div>
                   {message.content!.split('\n').map((line, index) => (
-                    <p key={index}>{line}</p>
+                    <div
+                      className='whitespace-normal break-words'
+                      key={index}>
+                      {line}
+                    </div>
                   ))}
                 </div>
               </div>
