@@ -27,6 +27,8 @@ import { initializeGoogleOAuthStrategy } from './api/controllers/auth';
 import authRouter from './api/routes/auth';
 import usersRouter from './api/routes/users';
 import heroesRouter from './api/routes/heroes';
+import messagesRouter from './api/routes/messages';
+import conversationsRouter from './api/routes/conversations';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -157,6 +159,8 @@ app.get('/', (req: any, res: any) => {
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/heroes', heroesRouter);
+//app.use('/messages', messagesRouter);
+app.use('/conversations', conversationsRouter);
 
 /**
  * Bind @colyseus/monitor
@@ -183,7 +187,7 @@ console.log('✅ Websocket transport initiated.');
 // Define rooms here
 gameServer.define('match_orchestrator', MatchOrchestrator);
 gameServer.define('app_room', AppRoom);
-gameServer.define('game_lobby_room', GameLobbyRoom )
+gameServer.define('game_lobby_room', GameLobbyRoom);
 console.log('✅ Colyseus rooms defined.');
 
 // Attach the express instance to the Colyseus server

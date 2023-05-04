@@ -8,13 +8,6 @@ const FriendList = () => {
   //const [users, setUsers] = useState<null | any[]>(null);à
   const { users } = useContext(ColyseusContext);
   console.log('users', users);
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const users = await getUsers();
-  //     setUsers(users);
-  //   }
-  //   fetchData();
-  // }, []);
 
   return (
     <div className='flex flex-col gap-1 w-full'>

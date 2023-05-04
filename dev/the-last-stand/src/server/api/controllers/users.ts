@@ -1,5 +1,4 @@
 import { userModel as User } from '../models/user';
-import { roleModel as Role } from '../models/role';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
 
 // Find an available username number
@@ -95,7 +94,7 @@ export const deleteUserByEmail = async (req: any, res: any) => {
 };
 
 // GET current user
-export const readCurrentUser = (req, res) => {
+export const readCurrentUser = (req: any, res: any) => {
   if (req.user) {
     res.status(200).json(req.user);
   } else {
