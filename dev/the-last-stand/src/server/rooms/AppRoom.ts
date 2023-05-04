@@ -15,6 +15,7 @@ interface IHandleMessageKwargs {
 }
 export class AppRoom extends Room<AppState> {
   private client: MongoClient;
+  private conversationsChangeStream: ChangeStream;
   private usersChangeStream: ChangeStream;
   private messagesChangeStream: ChangeStream;
 
@@ -23,7 +24,7 @@ export class AppRoom extends Room<AppState> {
     this.client = new MongoClient(MONGO_URI!);
     const db = this.client.db('tls');
     const users = db.collection('users');
-    const usersPipeline = [
+    const updateFullDocumentWithIdPipeline = [
       {
         $match: {
           operationType: 'update',
@@ -36,7 +37,7 @@ export class AppRoom extends Room<AppState> {
         },
       },
     ];
-    this.usersChangeStream = users.watch(usersPipeline, { fullDocument: 'updateLookup' });
+    this.usersChangeStream = users.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
 
     this.usersChangeStream.on('change', (change: any) => {
       const data = {
@@ -47,6 +48,17 @@ export class AppRoom extends Room<AppState> {
         lastOnline: change.fullDocument.lastOnline,
       };
       this.broadcast('userChange', data);
+    });
+
+    const conversations = db.collection('conversations');
+    this.conversationsChangeStream = conversations.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
+    this.conversationsChangeStream.on('change', (change: any) => {
+      const data = {
+        _id: change.fullDocument._id,
+        messages: change.fullDocument.messages,
+      };
+      console.log('conversationsChange', data);
+      this.broadcast('conversationsChange', data);
     });
 
     const messages = db.collection('messages');
