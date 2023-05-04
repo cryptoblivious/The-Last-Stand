@@ -192,7 +192,7 @@ console.log('✅ Websocket transport initiated.');
 gameServer.define(ERooms.GameRoom.toString(), MatchOrchestrator);
 gameServer.define('app_room', AppRoom);
 gameServer.define(ERooms.GameLobbyRoom.toString(), GameLobbyRoom )
-gameServer.define(ERooms.MatchMakerRoom.toString(), MatchmakerRoom)
+gameServer.define('match_maker_room', MatchmakerRoom)
 console.log('✅ Colyseus rooms defined.');
 
 // Attach the express instance to the Colyseus server

@@ -23,14 +23,14 @@ const GameLobby = () => {
     const [buttonState, setButtonState] = useState({text :' Play', isPlaying: false});
     const [scenes, setScenes] = useState<gl_GridCardData[]>([]);
     const [gameLobbyRoom, setGameLobbyRoom] = useState<any>(null); 
-    // const [matchMakerRoom, setMatchMakerRoom] = useState<any>(null);
+    const [matchMakerRoom, setMatchMakerRoom] = useState<any>(null);
     
     const connectToGameLobbyRoom = async () => {
         try{
             const gameLobbyRoom = await client?.joinOrCreate(ERooms.GameLobbyRoom.toString(), user);
-            gameLobbyRoom?.onMessage(EMessage.JoinQueue, (message) => {
-                console.log(message);
-            });
+            // gameLobbyRoom?.onMessage(EMessage.JoinQueue, (message) => {
+            //     console.log(message);
+            // });
             return gameLobbyRoom;
         }
         catch(error){
@@ -40,7 +40,7 @@ const GameLobby = () => {
 
     const connectToMatchMakerRoom = async () => {
         try{
-            const matchMakerRoom = await client?.joinOrCreate(ERooms.MatchMakerRoom.toString(), {character: selectedCharacter, scene: selectedScene});
+            const matchMakerRoom = await client?.joinOrCreate('match_maker_room', {username : user?.username, character: selectedCharacter, scene: selectedScene});
             return matchMakerRoom;
         }
         catch(error){
@@ -80,7 +80,7 @@ const GameLobby = () => {
         setSelectedScene(scene);
     };
 
-    const handlePlayCancelClick = () => {
+    const handlePlayCancelClick = async () => {
         if (!gameLobbyRoom) return;
         if (!selectedCharacter || !selectedScene) { return console.log('select character and scene')};
         
@@ -92,9 +92,13 @@ const GameLobby = () => {
         if (!buttonState.isPlaying) {
             console.log('play clicked');
             gameLobbyRoom.send(EMessage.JoinQueue, {character: selectedCharacter, scene: selectedScene})
-
+            const room = await connectToMatchMakerRoom();
+            if(room){
+                setMatchMakerRoom(room);
+            }
         }else {
             console.log('cancel clicked');
+            matchMakerRoom?.leave();
 
         }
 
