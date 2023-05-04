@@ -15,6 +15,7 @@ import { WebSocketTransport } from '@colyseus/ws-transport';
 import { MatchOrchestrator } from './rooms/MatchOrchestrator';
 import { AppRoom } from './rooms/AppRoom';
 import { monitor } from '@colyseus/monitor';
+import { GameLobbyRoom } from './rooms/GameLobbyRoom';
 
 // Homemade models
 import { userModel as User } from './api/models/user';
@@ -182,6 +183,7 @@ console.log('✅ Websocket transport initiated.');
 // Define rooms here
 gameServer.define('match_orchestrator', MatchOrchestrator);
 gameServer.define('app_room', AppRoom);
+gameServer.define('game_lobby_room', GameLobbyRoom )
 console.log('✅ Colyseus rooms defined.');
 
 // Attach the express instance to the Colyseus server
