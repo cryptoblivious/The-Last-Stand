@@ -11,20 +11,15 @@ const UserInfoCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const isDoneEditing = useRef(false);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
 
   //const [user, setUser] = useState<IUser | null>(null);
 
-  const { client, appRoom, user } = useContext(ColyseusContext);
+  const { user } = useContext(ColyseusContext);
 
-  useEffect(() => {
-    if (appRoom) {
-      console.log('appRoom loaded');
-      console.log('appRoom listener added');
-      console.log(appRoom);
-    }
-    setIsLoading(false);
-  }, [user, appRoom]);
+  // useEffect(() => {
+  //   //setIsLoading(false);
+  // }, [user, appRoom]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -39,7 +34,7 @@ const UserInfoCard = () => {
     setIsEditing(!isEditing);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  //if (isLoading) return <div>Loading...</div>;
 
   return (
     user && (

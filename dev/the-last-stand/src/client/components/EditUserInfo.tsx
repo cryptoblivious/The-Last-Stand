@@ -15,11 +15,7 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
 
   const checkIfRenamedToGuest = () => {
     if (usernameRef.current?.value === 'guest') {
-      // change the color of the username input to red
-      //usernameRef.current.style.color = 'red';
-      //usernameRef.current.style.backgroundColor = 'red';
       usernameRef.current!.className = 'w-full placeholder-pink-900 placeholder-opacity-50 bg-red-900 border-pink-600 border-2 rounded-xl p-1 text-red-600';
-      // add a message to the user that they cannot change their username to guest
       usernameRef.current!.value += ' (cannot rename to "guest")';
     } else {
       usernameRef.current!.className = 'w-full placeholder-green-900 placeholder-opacity-50 bg-green-900 border-green-600 border-2 rounded-xl p-1 text-green-600';
@@ -27,9 +23,6 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
   };
 
   const handleSubmit = () => {
-    console.log(`Username updated to ${usernameRef.current?.value}`);
-    console.log(`Title updated to ${titleRef.current?.selectedOptions[0].textContent}`);
-
     if (usernameRef.current?.value !== 'guest' && usernameRef.current?.value !== '') {
       const updatedUser = {
         username: usernameRef.current?.value,
