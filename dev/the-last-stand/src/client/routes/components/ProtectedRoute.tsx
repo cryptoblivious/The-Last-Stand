@@ -19,7 +19,7 @@ export const ProtectedRoute = ({ element: Component, userAuth = true, redirects 
 
   useEffect(() => {
     // TODO : Find why this is being called twice
-    console.log('ProtectedRoute rendered');
+    //console.log('ProtectedRoute rendered');
     fetchData();
   }, []);
 

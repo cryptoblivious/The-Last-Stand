@@ -4,17 +4,19 @@ import { userSchema } from './user';
 
 export const conversationSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     usersIds: {
       type: [userSchema],
       required: true,
-      unique: false,
     },
     messages: {
       type: [messageSchema],
       required: true,
-      unique: false,
     },
-    isGlobal: { type: Boolean, default: false, unique: false },
+    isGlobal: { type: Boolean, default: false },
   },
   {
     timestamps: true,

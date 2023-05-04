@@ -1,15 +1,20 @@
 import { useState, useContext, useEffect, useRef } from 'react';
 import ChatboxSwitcher from './ChatboxSwitcher';
 import { ColyseusContext } from './ColyseusProvider';
-import MessageList from './MessageList';
-//import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
+import { HOST_URL, HOST_PORT } from '../appConfig';
+import { fetchConversation } from '../fetches/fetchConversation';
 
-const Chatbox = () => {
+interface IChatboxProps {
+  id: string;
+}
+
+const Chatbox = (props: IChatboxProps) => {
   const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
   const [enterSend, setEnterSend] = useState<boolean>(false);
-  const { appRoom, user, messages } = useContext(ColyseusContext);
-  //const [messages, setMessages] = useState<IMessageMapper[]>([]);
+  const { appRoom, user } = useContext(ColyseusContext);
+  const [conversation, setConversation] = useState<any>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { id } = props;
 
   const toggleChatbox = () => {
     setChatboxOpen((prev) => {
@@ -33,18 +38,15 @@ const Chatbox = () => {
   };
 
   useEffect(() => {
-    // console.log('chatbox rendered');
-    // if (appRoom) {
-    //   appRoom.onMessage('message', (message: IMessageMapper) => {
-    //     console.log('message received', message);
-    //     setMessages((prev) => [...prev, message]);
-    //   });
-    //   return () => {
-    //     appRoom.removeAllListeners();
-    //   };
-    // }
-    //  }, [appRoom]);
+    const fetchData = async () => {
+      const data = await fetchConversation(id);
+      setConversation(data);
+      console.log('conversation', data);
+    };
+    fetchData();
   }, []);
+
+  if (!conversation) return <div>Loading...</div>;
 
   return (
     <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 p-2 w-96 flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-5/6' : ' h-12 translate-x-full'}`}>
@@ -57,26 +59,27 @@ const Chatbox = () => {
       </div>
       {/* <MessageList messages={messages} /> */}
       <div className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-2 grow'>
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={user!.username === message.username && user!.userNo === message.userNo ? 'text-right' : ''}>
-            <p className='italic text-green-500'>
-              {message.date} at {message.time}
-            </p>
-            <div className={`flex gap-2 ${user!.username === message.username && user!.userNo === message.userNo ? 'justify-end' : ''}`}>
-              <div>
-                <span className='text-pink-600'>{message.username}</span>
-                <span className='text-pink-900'>#{message.userNo}</span>
-              </div>
-              <div>
-                {message.content!.split('\n').map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
+        {conversation.messages &&
+          conversation.messages.map((message, index) => (
+            <div
+              key={index}
+              className={user!.username === message.username && user!.userNo === message.userNo ? 'text-right' : ''}>
+              <p className='italic text-green-500'>
+                {message.date} at {message.time}
+              </p>
+              <div className={`flex gap-2 ${user!.username === message.username && user!.userNo === message.userNo ? 'justify-end' : ''}`}>
+                <div>
+                  <span className='text-pink-600'>{message.username}</span>
+                  <span className='text-pink-900'>#{message.userNo}</span>
+                </div>
+                <div>
+                  {message.content!.split('\n').map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <div className='flex gap-2 items-center'>
         <textarea

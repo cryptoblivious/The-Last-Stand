@@ -7,7 +7,7 @@ import { ColyseusContext } from './ColyseusProvider';
 const FriendList = () => {
   //const [users, setUsers] = useState<null | any[]>(null);à
   const { users } = useContext(ColyseusContext);
-  console.log('users', users);
+  //console.log('users', users);
 
   return (
     <div className='flex flex-col gap-1 w-full'>

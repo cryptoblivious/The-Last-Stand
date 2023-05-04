@@ -37,7 +37,6 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     const currentUser = await getCurrentUser();
     const currentUsers = await getUsers();
     setUsers(currentUsers);
-    console.log('currentUsers', currentUsers);
     if (currentUser) {
       const updatedUser = {
         lastOnline: 'now',
