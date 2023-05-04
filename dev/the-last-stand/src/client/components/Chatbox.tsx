@@ -9,12 +9,21 @@ interface IChatboxProps {
 }
 
 const Chatbox = (props: IChatboxProps) => {
+  const { id } = props;
   const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
   const [enterSend, setEnterSend] = useState<boolean>(false);
   const { appRoom, user } = useContext(ColyseusContext);
   const [conversation, setConversation] = useState<any>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { id } = props;
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Add this function to scroll to the bottom of the container
+  const scrollToBottom = () => {
+    const container = containerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
 
   const toggleChatbox = () => {
     setChatboxOpen((prev) => {
@@ -46,7 +55,8 @@ const Chatbox = (props: IChatboxProps) => {
     fetchData();
 
     if (appRoom) {
-      appRoom.onMessage('conversationChange', (updatedConversation: any) => {
+      appRoom.onMessage('conversationsChange', (updatedConversation: any) => {
+        console.log('updatedConversation', updatedConversation);
         if (updatedConversation._id === id) {
           setConversation((prevConversation: any) => {
             return {
@@ -54,12 +64,14 @@ const Chatbox = (props: IChatboxProps) => {
               messages: updatedConversation.messages ?? prevConversation!.username,
             };
           });
+          // Call scrollToBottom after rendering new messages
+          scrollToBottom();
         }
       });
     }
   }, [appRoom]);
 
-  if (!conversation) return <div>Loading...</div>;
+  if (!conversation || !appRoom) return <div>Loading...</div>;
 
   return (
     <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 p-2 w-96 flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-5/6' : ' h-12 translate-x-full'}`}>
@@ -71,7 +83,9 @@ const Chatbox = (props: IChatboxProps) => {
         />{' '}
       </div>
       {/* <MessageList messages={messages} /> */}
-      <div className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-2 grow'>
+      <div
+        ref={containerRef}
+        className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-2 grow'>
         {conversation.messages &&
           conversation.messages.map((message, index) => (
             <div
