@@ -7,6 +7,7 @@ import { ERooms } from '../../typescript/enumerations/ERooms';
 import { fetchHeroesNames } from '../fetches/heroes';
 import { fetchScenesNames } from '../fetches/scenes';
 import { EMessage } from '../../typescript/enumerations/EMessage';
+import SocialOverlay from './SocialOverlay';
 
 const gl_mainContainerStyle = "flex flex-col h-screen p-4 bg-[url('/assets/wallpapers/gl_poker_players2.jpg')] bg-cover bg-center bg-no-repeat"
 const gl_gridsContainerStyle = 'flex flex-1 mb-4 items-center justify-around'
@@ -107,6 +108,7 @@ const GameLobby = () => {
 
     return (
         <div className={gl_mainContainerStyle}>
+            <SocialOverlay />
             <div className={gl_gridsContainerStyle}>
                 <div className={gl_characterSelectionGridContainerStyle}>
                     <GameLobbySelectionGrid cards={characters} selectedCard={selectedCharacter} onSelect={handleCharacterSelect} />

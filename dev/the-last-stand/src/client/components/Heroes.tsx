@@ -7,7 +7,7 @@ const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg
 const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-opacity-0';
 const heroesPageTitleStyle = 'text-4xl font-bold text-center text-fuchsia-400';
 const heroesPageBackstoryContainerStyle = 'row-start-3 col-start-2 row-span-3 col-span-2 flex justify-center items-center bg-opacity-30 rounded-lg mr-10 overflow-y-auto';
-const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400';
+const heroesPageBackstoryStyle = 'text-xl font-bold text-center text-fuchsia-400 overflow-auto h-64 w-full bg-black bg-opacity-50 rounded-lg p-4';
 const heroesPageHeroMapCardMenuContainerStyle = 'place-self-center row-start-3';
 
 
