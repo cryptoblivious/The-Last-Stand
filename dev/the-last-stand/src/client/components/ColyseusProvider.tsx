@@ -52,8 +52,8 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
       appRoom.onMessage('userChange', (updatedUser: any) => {
-        console.log('updatedUser', updatedUser);
-        if (updatedUser._id === user?._id) {
+        console.log('updatedUser', updatedUser, 'user', user);
+        if (updatedUser._id === userData._id) {
           setUser((prevUser) => {
             return {
               ...prevUser,
