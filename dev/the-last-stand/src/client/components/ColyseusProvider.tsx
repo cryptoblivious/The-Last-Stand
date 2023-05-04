@@ -52,27 +52,30 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
       appRoom.onMessage('userChange', (updatedUser: any) => {
-        setUser((prevUser) => {
-          return {
-            ...prevUser,
-            username: updatedUser.username ?? prevUser!.username,
-            userNo: updatedUser.userNo ?? prevUser!.userNo,
-            title: updatedUser.title ?? prevUser!.title,
-            lastOnline: updatedUser.lastOnline ?? prevUser!.lastOnline,
-          };
-        });
-        // check in the users array and update the user if it exists
-        setUsers((prevUsers) => {
-          const updatedUsers = prevUsers.map((prevUser) => {
-            console.log('prevUser', prevUser, 'updatedUser', updatedUser);
-            if (prevUser && prevUser._id === updatedUser._id) {
-              return updatedUser;
-            } else {
-              return prevUser;
-            }
+        console.log('updatedUser', updatedUser);
+        if (updatedUser._id === user?._id) {
+          setUser((prevUser) => {
+            return {
+              ...prevUser,
+              username: updatedUser.username ?? prevUser!.username,
+              userNo: updatedUser.userNo ?? prevUser!.userNo,
+              title: updatedUser.title ?? prevUser!.title,
+              lastOnline: updatedUser.lastOnline ?? prevUser!.lastOnline,
+            };
           });
-          return updatedUsers;
-        });
+          // check in the users array and update the user if it exists
+          setUsers((prevUsers) => {
+            const updatedUsers = prevUsers.map((prevUser) => {
+              console.log('prevUser', prevUser, 'updatedUser', updatedUser);
+              if (prevUser && prevUser._id === updatedUser._id) {
+                return updatedUser;
+              } else {
+                return prevUser;
+              }
+            });
+            return updatedUsers;
+          });
+        }
       });
 
       appRoom.onMessage('message', (message: IMessageMapper) => {
