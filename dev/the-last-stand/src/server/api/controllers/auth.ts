@@ -5,6 +5,7 @@ import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
 import { formatNumber } from '../../../utils/maths';
 import { findAvailableUsernameNumber } from './users';
+import { conversationModel as Conversation } from '../models/conversation';
 
 dotenv.config();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST_URL, HOST_PORT } = process.env;
@@ -22,9 +23,11 @@ export const initializeGoogleOAuthStrategy = () => {
         try {
           const email: string = profile.emails[0].value;
           let user = await User.findOne({ email: email });
+          const globalChat = await Conversation.findOne({ isGlobal: true });
+
           if (user) {
             // user already exists in the database, return it
-            const user = await User.findOneAndUpdate({ email: email }, { lastOnline: 'now' });
+            const user = await User.findOneAndUpdate({ email: email }, { lastOnline: 'now', activeConversationsIds: [globalChat!._id] });
             return done(null, user);
           } else {
             const userWithSameName = await User.findOne({ username: profile.name?.givenName });
@@ -39,6 +42,7 @@ export const initializeGoogleOAuthStrategy = () => {
               title: 'N00bzor',
               avatar: null,
               lastOnline: 'now',
+              activeConversationsIds: [globalChat!._id],
             });
             await user.save();
             return done(null, user);

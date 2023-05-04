@@ -28,6 +28,10 @@ export const userSchema = new Schema(
       type: Schema.Types.Mixed, // Date or 'now'
       required: true,
     },
+    activeConversationsIds: {
+      type: [String],
+      required: true,
+    },
   },
   {
     timestamps: true,
