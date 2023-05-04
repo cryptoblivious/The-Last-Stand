@@ -11,7 +11,7 @@ interface IChatboxProps {
 const Chatbox = (props: IChatboxProps) => {
   const { id } = props;
   const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
-  const [enterSend, setEnterSend] = useState<boolean>(false);
+  const [enterSend, setEnterSend] = useState<boolean>(true);
   const { appRoom, user } = useContext(ColyseusContext);
   const [conversation, setConversation] = useState<any>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -29,6 +29,7 @@ const Chatbox = (props: IChatboxProps) => {
     setChatboxOpen((prev) => {
       if (!prev) {
         textareaRef.current?.focus();
+        scrollToBottom();
       }
       return !prev;
     });
@@ -117,7 +118,9 @@ const Chatbox = (props: IChatboxProps) => {
           ref={textareaRef}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && enterSend) {
-              sendMessage();
+              if (!event.shiftKey) {
+                sendMessage();
+              }
             }
           }}
         />

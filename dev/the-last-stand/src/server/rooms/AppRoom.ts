@@ -22,8 +22,7 @@ export class AppRoom extends Room<AppState> {
   constructor() {
     super();
     this.client = new MongoClient(MONGO_URI!);
-    const db = this.client.db('tls');
-    const users = db.collection('users');
+
     const updateFullDocumentWithIdPipeline = [
       {
         $match: {
@@ -37,35 +36,43 @@ export class AppRoom extends Room<AppState> {
         },
       },
     ];
-    this.usersChangeStream = users.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
 
-    this.usersChangeStream.on('change', (change: any) => {
-      const data = {
-        _id: change.fullDocument._id,
-        username: change.fullDocument.username,
-        userNo: change.fullDocument.userNo,
-        title: change.fullDocument.title,
-        lastOnline: change.fullDocument.lastOnline,
-      };
-      this.broadcast('userChange', data);
-    });
+    const start = async () => {
+      await this.client.connect();
+      const db = this.client.db('tls');
+      const users = db.collection('users');
+      this.usersChangeStream = users.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
 
-    const conversations = db.collection('conversations');
-    this.conversationsChangeStream = conversations.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
-    this.conversationsChangeStream.on('change', (change: any) => {
-      const data = {
-        _id: change.fullDocument._id,
-        messages: change.fullDocument.messages,
-      };
-      console.log('conversationsChange', data);
-      this.broadcast('conversationsChange', data);
-    });
+      this.usersChangeStream.on('change', (change: any) => {
+        const data = {
+          _id: change.fullDocument._id,
+          username: change.fullDocument.username,
+          userNo: change.fullDocument.userNo,
+          title: change.fullDocument.title,
+          lastOnline: change.fullDocument.lastOnline,
+        };
+        this.broadcast('userChange', data);
+      });
 
-    const messages = db.collection('messages');
-    this.messagesChangeStream = messages.watch();
-    this.messagesChangeStream.on('change', (change) => {
-      this.broadcast('messagesChange', change);
-    });
+      const conversations = db.collection('conversations');
+      this.conversationsChangeStream = conversations.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
+      this.conversationsChangeStream.on('change', (change: any) => {
+        const data = {
+          _id: change.fullDocument._id,
+          messages: change.fullDocument.messages,
+        };
+        console.log('conversationsChange', data);
+        this.broadcast('conversationsChange', data);
+      });
+
+      const messages = db.collection('messages');
+      this.messagesChangeStream = messages.watch();
+      this.messagesChangeStream.on('change', (change) => {
+        this.broadcast('messagesChange', change);
+      });
+    };
+    // Call the start function to connect to the client and start the change streams
+    start();
   }
 
   onCreate(options: any) {
