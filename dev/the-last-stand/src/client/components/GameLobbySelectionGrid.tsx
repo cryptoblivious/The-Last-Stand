@@ -1,20 +1,21 @@
 import GameLobbyCharacterCard, { gl_GridCardData } from './GameLobbyCard';
 
-const gl_characterSelectionGridStyle = 'grid grid-cols-3 gap-4 w-full h-full';
+const gl_characterSelectionGridStyle = 'flex w-full h-full bg-black rounded-lg shadow-lg  bg-opacity-30 p-4 gap-4';
 const gl_characterSelectionGridItemStyle = 'flex justify-center items-center w-full h-full';
 
 interface gl_ISelectionGridProps {
-    characters: gl_GridCardData[],
+    cards: gl_GridCardData[],
     onSelect: (character: gl_GridCardData) => void,
+    selectedCard: gl_GridCardData | null, 
 }
 
 const GameLobbySelectionGrid: React.FC<gl_ISelectionGridProps> = (props) => {
-    const { characters, onSelect } = props;
+    const { cards: characters, onSelect, selectedCard } = props;
     return (
         <div className={gl_characterSelectionGridStyle}>
-            {characters.map((character) => (
-                <div key={character.id} className={gl_characterSelectionGridItemStyle}>
-                    <GameLobbyCharacterCard character={character} onSelect={onSelect} />
+            {characters.map((card) => (
+                <div key={card.id} className={gl_characterSelectionGridItemStyle}>
+                    <GameLobbyCharacterCard character={card} isSelected={selectedCard?.id === card.id}  onSelect={onSelect} />
                 </div>
             ))}
         </div>
