@@ -1,13 +1,6 @@
-import { Schema, type, MapSchema, ArraySchema } from '@colyseus/schema';
-import { IMessageMapper } from '../../../typescript/interfaces/IMessageMapper';
-
-export class UserMapper extends Schema {
-  @type('string') username?: string = '';
-  @type('string') userNo?: string = '';
-  @type('string') clientId: string = '';
-}
+import { Schema, type, MapSchema } from '@colyseus/schema';
+import { IUserMapper } from '../../../typescript/interfaces/IUserMapper';
 
 export class AppState extends Schema {
-  @type({ map: UserMapper }) users: MapSchema<UserMapper> = new MapSchema<UserMapper>();
-  @type({ array: IMessageMapper }) messages: ArraySchema<IMessageMapper> = new ArraySchema<IMessageMapper>();
+  @type({ map: IUserMapper }) users: MapSchema<IUserMapper> = new MapSchema<IUserMapper>();
 }

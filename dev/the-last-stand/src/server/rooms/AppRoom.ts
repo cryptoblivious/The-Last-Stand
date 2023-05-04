@@ -1,7 +1,8 @@
 import { Room, Client } from 'colyseus';
-import { AppState, UserMapper } from './states/AppState';
+import { AppState } from './states/AppState';
 import { userModel as User } from '../api/models/user';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
+import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -63,7 +64,6 @@ export class AppRoom extends Room<AppState> {
             messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
             messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
 
-            //this.state.messages.push(messageMapper);
             this.broadcast('message', messageMapper);
           }
         }
@@ -94,7 +94,7 @@ export class AppRoom extends Room<AppState> {
     }
 
     // Create the user's app state data and add it to the app state
-    const userMap = new UserMapper();
+    const userMap = new IUserMapper();
     userMap.username = username;
     userMap.userNo = userNo;
     userMap.clientId = client.id;

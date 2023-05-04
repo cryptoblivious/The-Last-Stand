@@ -29,6 +29,8 @@ import authRouter from './api/routes/auth';
 import usersRouter from './api/routes/users';
 import heroesRouter from './api/routes/heroes';
 import scenesRouter from './api/routes/scenes';
+import messagesRouter from './api/routes/messages';
+import conversationsRouter from './api/routes/conversations';
 
 mongoose.set('strictQuery', false);
 dotenv.config();
@@ -160,6 +162,8 @@ app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/heroes', heroesRouter);
 app.use('/scenes', scenesRouter)
+//app.use('/messages', messagesRouter);
+app.use('/conversations', conversationsRouter);
 
 /**
  * Bind @colyseus/monitor

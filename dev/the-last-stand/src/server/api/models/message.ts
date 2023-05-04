@@ -1,12 +1,10 @@
 import { Schema, model } from 'mongoose';
 
-export const userSchema = new Schema(
+export const messageSchema = new Schema(
   {
-    email: {
+    userId: {
       type: String,
       required: true,
-      unique: true,
-      match: /^\S+@\S+\.\S+$/,
     },
     username: {
       type: String,
@@ -18,18 +16,17 @@ export const userSchema = new Schema(
       required: true,
       match: /^\d{4}$/,
     },
-    title: {
+    content: {
       type: String,
-    },
-    avatar: {
-      type: String,
-    },
-    lastOnline: {
-      type: Schema.Types.Mixed, // Date or 'now'
       required: true,
     },
-    activeConversationsIds: {
-      type: [String],
+    date: {
+      type: String,
+      required: true,
+    },
+    time: {
+      // Use a time type instead of a date type to avoid timezone issues
+      type: String,
       required: true,
     },
   },
@@ -38,6 +35,6 @@ export const userSchema = new Schema(
   }
 );
 
-userSchema.index({ username: 1, userNo: 1 }, { unique: true } as any); // create a compound index on username and userNo fields
+//messageSchema.index({ userId: 1 }, { unique: false } as any); // create anindex on the userId field
 
-export const userModel = model('User', userSchema);
+export const messageModel = model('Message', messageSchema);

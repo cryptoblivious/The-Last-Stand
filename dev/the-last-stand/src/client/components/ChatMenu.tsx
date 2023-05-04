@@ -1,19 +1,21 @@
 import Chatbox from './Chatbox';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { ColyseusContext } from './ColyseusProvider';
 
 const ChatMenu = () => {
   const [chatboxes, setChatboxes] = useState<null | any[]>(null);
   const [globalChat, setGlobalChat] = useState<null | any>(null);
+  const { user } = useContext<any>(ColyseusContext);
 
   return (
     <div className='z-30 flex flex-col relative gap-4 py-8 items-end '>
-      <Chatbox name={globalChat} />
+      {/* <Chatbox name={globalChat} /> */}
 
-      {chatboxes &&
-        chatboxes.map((chatbox: any) => (
+      {user &&
+        user.activeConversationsIds.map((conversationId: any) => (
           <Chatbox
-            key={chatbox._id}
-            name={chatbox.name}
+            key={conversationId}
+            id={conversationId}
           />
         ))}
     </div>
