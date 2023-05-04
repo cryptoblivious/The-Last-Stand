@@ -12,6 +12,7 @@ import { EMessage } from '../../../typescript/enumerations/EMessage';
 import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMessage';
 import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpriteMessage';
 import { type } from '@colyseus/schema';
+import { ERooms } from '../../../typescript/enumerations/ERooms';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -107,10 +108,10 @@ export default class ClientMatch extends Phaser.Scene {
 
   disablePlayerSprite(playerSprite: any, x: number, y: number) {
     if (playerSprite) {
-      playerSprite.setVisible(false);
-      playerSprite.setActive(false);
       playerSprite.body!.enable = false;
       playerSprite.setPosition(x, y);
+      playerSprite.setVisible(false);
+      playerSprite.setActive(false);
       playerSprite.playerNameText.setVisible(false);
       // playerSprite.setEnable(false)
     }
@@ -194,7 +195,7 @@ export default class ClientMatch extends Phaser.Scene {
     //this.scale.startFullscreen();
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
-    this.mo = await this.gameClient.joinOrCreate<MatchState>('match_orchestrator');
+    this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { maxClients: 2 });
 
     //  TOUTES LES KEYS DES MOUVEMENTS
     this.keys = this.input.keyboard?.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');

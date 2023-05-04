@@ -1,43 +1,32 @@
 import GameLobbySelectionGrid from './GameLobbySelectionGrid';
+import GameLobbyPlayButton from './GameLobbyPlayButton';
 import { gl_GridCardData } from './GameLobbyCard';
 import { ColyseusContext } from './ColyseusProvider';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { ERooms } from '../../typescript/enumerations/ERooms';
+import { fetchHeroesNames } from '../fetches/heroes';
+import { fetchScenesNames } from '../fetches/scenes';
 
-const gl_mainContainerStyle = 'flex flex-col h-screen p-4 '
+const gl_mainContainerStyle = "flex flex-col h-screen p-4 bg-[url('/assets/wallpapers/gl_poker_players2.jpg')] bg-cover bg-center bg-no-repeat"
 const gl_gridsContainerStyle = 'flex flex-1 mb-4 items-center justify-around'
 const gl_characterSelectionGridContainerStyle = 'w-1/3 h-1/2 mr-2'
 const gl_sceneSelectionGridContainerStyle = 'w-1/3 h-1/2 ml-2'
 const gl_buttonSectionContainerStyle = 'flex justify-center'
-const gl_buttonStyle = 'px-4 py-2 text-2xl font-bold text-white bg-red-500 rounded-lg shadow-lg cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-xl'
 
-const characters: gl_GridCardData[] = [];
-for (let i = 0; i < 9; i++) {
-    const character: gl_GridCardData = {
-        id: i,
-        name: `character ${i}`,
-        image: 'https://picsum.photos/200/300'
-    };
-    characters.push(character);
-}
-
-const scenes: gl_GridCardData[] = [];
-for (let i = 0; i < 9; i++) {
-    const scene: gl_GridCardData = {
-        id: i,
-        name: `scene ${i}`,
-        image: 'https://picsum.photos/200/300'
-    };
-    scenes.push(scene);
-}
 
 const GameLobby = () => {
-
     const { client, user } = useContext(ColyseusContext)
+    const [selectedCharacter, setSelectedCharacter] = useState<gl_GridCardData | null>(null);
+    const [selectedScene, setSelectedScene] = useState<gl_GridCardData | null>(null);
+    const [characters, setCharacters] = useState<gl_GridCardData[]>([]);
+    const [scenes, setScenes] = useState<gl_GridCardData[]>([]);
+    const [gameLobbyRoom, setGameLobbyRoom] = useState<any>(null); 
+    const [buttonState, setButtonState] = useState({text :' Play', isPlaying: false});
 
     const connect = async () => {
         try{
-            const gameLobbyRoom = await client?.joinOrCreate('game_lobby_room', user);
-            console.log(gameLobbyRoom?.state);
+            const gameLobbyRoom = await client?.joinOrCreate(ERooms.GameLobbyRoom.toString(), user);
+            return gameLobbyRoom;
         }
         catch(error){
             console.log(error);
@@ -46,26 +35,69 @@ const GameLobby = () => {
 
     useEffect(() => {
         if (!client) return;
-        console.log(user);
-        connect();
+
+        connect().then((room) => {
+            if(room){
+                setGameLobbyRoom(room);
+            }
+        });
+
+        fetchHeroesNames().then(({heroes}) => {
+            setCharacters(heroes);
+            if (heroes.length > 0) {
+                setSelectedCharacter(heroes[0]);
+            }
+        });
+        fetchScenesNames().then(({scenes}) => {
+            setScenes(scenes);
+            if (scenes.length > 0) {
+                setSelectedScene(scenes[0]);
+            }
+        });
+
+        
+        
+        return () => {
+            gameLobbyRoom?.leave();
+        }
     }, [client]);
 
     const handleCharacterSelect = (character: gl_GridCardData) => {
-        console.log(character);
+        setSelectedCharacter(character);
     };
+
+    const handleSceneSelect = (scene: gl_GridCardData) => {
+        setSelectedScene(scene);
+    };
+
+    const handlePlayCancelClick = () => {
+        if (!gameLobbyRoom) return;
+        if (!selectedCharacter || !selectedScene) { return console.log('select character and scene')};
+        setButtonState((prevState) => ({
+            text: prevState.isPlaying ? 'Play' : 'Cancel',
+            isPlaying: !prevState.isPlaying
+        }));
+        if (buttonState.isPlaying) {
+            console.log('cancel clicked');
+        }else {
+            console.log('play clicked');
+        }
+
+        // console.log(`play clicked with ${selectedCharacter?.name} and ${selectedScene?.name}`);
+    }
 
     return (
         <div className={gl_mainContainerStyle}>
             <div className={gl_gridsContainerStyle}>
                 <div className={gl_characterSelectionGridContainerStyle}>
-                    <GameLobbySelectionGrid characters={characters} onSelect={handleCharacterSelect} />
+                    <GameLobbySelectionGrid cards={characters} selectedCard={selectedCharacter} onSelect={handleCharacterSelect} />
                 </div>
                 <div className={gl_sceneSelectionGridContainerStyle}>
-                    <GameLobbySelectionGrid characters={scenes} onSelect={handleCharacterSelect} />
+                    <GameLobbySelectionGrid cards={scenes} selectedCard={selectedScene} onSelect={handleSceneSelect} />
                 </div>
             </div>
             <div className={gl_buttonSectionContainerStyle}>
-                <button className={gl_buttonStyle}> Start Game</button>
+                <GameLobbyPlayButton onClick={handlePlayCancelClick} buttonText={buttonState.text} />
             </div>
         </div>
 
