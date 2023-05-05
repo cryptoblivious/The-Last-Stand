@@ -115,7 +115,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     };
   }, []);
 
-  const contextValue = useMemo(() => ({ client, appRoom: appRoom, user: user, users: users, messages: messages }), [client, appRoom, user, messages]);
+  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages }), [client, appRoom, user, messages]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 
