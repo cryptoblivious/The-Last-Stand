@@ -120,7 +120,7 @@ const Chatbox = (props: IChatboxProps) => {
       </div>
       <div className='flex gap-2 items-center justify-evenly border-t-2 border-pink-600 p-2'>
         <textarea
-          className='grow p-4 rounded-3xl resize-y border-slate-900 border-2 bg-slate-950 text-white placeholder-pink-900'
+          className='grow p-4 rounded-3xl resize-y border-slate-900 border-2 bg-slate-950 text-white placeholder-cyan-600'
           placeholder='Type your message here...'
           ref={textareaRef}
           onKeyDown={(event) => {
@@ -134,7 +134,7 @@ const Chatbox = (props: IChatboxProps) => {
 
         <div className='flex flex-col gap-2 items-center'>
           <button
-            className='bg-fuchsia-700 text-white rounded-md p-2 w-full border-4 border-pink-600 hover:bg-pink-600 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110'
+            className='bg-pink-600 text-white rounded-md p-2 w-full border-4 border-purple-900 hover:bg-green-900 hover:border-green-500 transition ease-in-out duration-300 hover:scale-110'
             onClick={sendMessage}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
@@ -147,7 +147,7 @@ const Chatbox = (props: IChatboxProps) => {
             <input
               type='checkbox'
               id='enter-send'
-              className={`${enterSend ? 'bg-green-500 border-cyan-500' : 'border-pink-600 bg-purple-900'} bg-no-repeat border-2  w-4 h-4 rounded-full appearance-none`}
+              className={`${enterSend ? 'bg-green-500 border-cyan-500' : 'border-pink-600 bg-purple-900'} bg-no-repeat border-2  w-4 h-4 rounded-full appearance-none cursor-pointer`}
               onClick={toggleEnterSend}
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
@@ -157,7 +157,7 @@ const Chatbox = (props: IChatboxProps) => {
             />
             <label
               htmlFor='enter-send'
-              className={`${enterSend ? 'text-green-500' : 'text-pink-600'} text-[0.666rem] text-center`}>
+              className={`${enterSend ? 'text-green-500' : 'text-pink-600'} text-[0.666rem] text-center cursor-pointer`}>
               Enter-send
             </label>
           </div>
