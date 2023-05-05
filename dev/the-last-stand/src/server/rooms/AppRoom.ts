@@ -75,7 +75,7 @@ export class AppRoom extends Room<AppState> {
     start();
 
     cron.schedule(
-      '0 10 10 * * *',
+      '10 40 10 * * *',
       () => {
         // Your task code goes here
         this.emptyGlobalChatMessages();
@@ -175,6 +175,7 @@ export class AppRoom extends Room<AppState> {
   }
 
   async emptyGlobalChatMessages() {
+    console.log('accessing cron job');
     if (this.client) {
       const globalChat = await Conversation.findOne({ isGlobal: true });
       await Conversation.findOneAndUpdate({ _id: globalChat._id }, { $set: { messages: [] } });
