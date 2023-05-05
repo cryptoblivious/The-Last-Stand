@@ -6,7 +6,7 @@ import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
-import cron from 'node-cron';
+//import cron from 'node-cron';
 dotenv.config();
 const { MONGO_URI } = process.env;
 
@@ -74,17 +74,26 @@ export class AppRoom extends Room<AppState> {
     // Call the start function to connect to the client and start the change streams
     start();
 
-    cron.schedule(
-      '10 40 10 * * *',
-      () => {
-        // Your task code goes here
-        this.emptyGlobalChatMessages();
-      },
-      {
-        timezone: 'America/New_York',
-      }
-    );
+    // cron.schedule(
+    //   '10 40 10 * * *',
+    //   () => {
+    //     // Your task code goes here
+    //     this.emptyGlobalChatMessages();
+    //   },
+    //   {
+    //     timezone: 'America/New_York',
+    //   }
+    // );
   }
+
+  // async emptyGlobalChatMessages() {
+  //   console.log('accessing cron job');
+  //   if (this.client) {
+  //     const globalChat = await Conversation.findOne({ isGlobal: true });
+  //     await Conversation.findOneAndUpdate({ _id: globalChat._id }, { $set: { messages: [] } });
+  //     console.log('Global chat messages field emptied.');
+  //   }
+  // }
 
   onCreate(options: any) {
     this.roomId = 'app'; // set the room ID to "my_room"
@@ -172,14 +181,5 @@ export class AppRoom extends Room<AppState> {
     await this.messagesChangeStream.close();
     await this.conversationsChangeStream.close();
     await this.client.close();
-  }
-
-  async emptyGlobalChatMessages() {
-    console.log('accessing cron job');
-    if (this.client) {
-      const globalChat = await Conversation.findOne({ isGlobal: true });
-      await Conversation.findOneAndUpdate({ _id: globalChat._id }, { $set: { messages: [] } });
-      console.log('Global chat messages field emptied.');
-    }
   }
 }

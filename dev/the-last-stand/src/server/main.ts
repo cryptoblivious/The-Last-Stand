@@ -8,6 +8,8 @@ import cors from 'cors';
 import session, { Session, SessionData } from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
+import cron from 'node-cron'; // import cron module
+import { cleanGlobalChat } from './cron/configs/database';
 
 // Colyseus
 import { Server } from '@colyseus/core';
@@ -29,7 +31,6 @@ import authRouter from './api/routes/auth';
 import usersRouter from './api/routes/users';
 import heroesRouter from './api/routes/heroes';
 import scenesRouter from './api/routes/scenes';
-import messagesRouter from './api/routes/messages';
 import conversationsRouter from './api/routes/conversations';
 import { MatchmakerRoom } from './rooms/MatchmakerRoom';
 
@@ -162,7 +163,7 @@ app.get('/', (req: any, res: any) => {
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/heroes', heroesRouter);
-app.use('/scenes', scenesRouter)
+app.use('/scenes', scenesRouter);
 //app.use('/messages', messagesRouter);
 app.use('/conversations', conversationsRouter);
 
@@ -191,9 +192,12 @@ console.log('✅ Websocket transport initiated.');
 // Define rooms here
 gameServer.define(ERooms.GameRoom.toString(), MatchOrchestrator);
 gameServer.define('app_room', AppRoom);
-gameServer.define(ERooms.GameLobbyRoom.toString(), GameLobbyRoom )
-gameServer.define('match_maker_room', MatchmakerRoom)
+gameServer.define(ERooms.GameLobbyRoom.toString(), GameLobbyRoom);
+gameServer.define('match_maker_room', MatchmakerRoom);
 console.log('✅ Colyseus rooms defined.');
+
+// Add cron job
+cron.schedule(cleanGlobalChat.cronTime, cleanGlobalChat.onTick, { timezone: cleanGlobalChat.timeZone });
 
 // Attach the express instance to the Colyseus server
 if (APP_MODE === 'dev') {
