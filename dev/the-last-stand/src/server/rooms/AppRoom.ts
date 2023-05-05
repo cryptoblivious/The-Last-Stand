@@ -6,6 +6,7 @@ import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
+import cron from 'node-cron';
 dotenv.config();
 const { MONGO_URI } = process.env;
 
@@ -61,7 +62,6 @@ export class AppRoom extends Room<AppState> {
           _id: change.fullDocument._id,
           messages: change.fullDocument.messages,
         };
-        console.log('conversationsChange', data);
         this.broadcast('conversationsChange', data);
       });
 
@@ -73,6 +73,17 @@ export class AppRoom extends Room<AppState> {
     };
     // Call the start function to connect to the client and start the change streams
     start();
+
+    cron.schedule(
+      '0 10 5 * * *',
+      () => {
+        // Your task code goes here
+        this.emptyGlobalChatMessages();
+      },
+      {
+        timezone: 'America/New_York',
+      }
+    );
   }
 
   onCreate(options: any) {
@@ -105,7 +116,7 @@ export class AppRoom extends Room<AppState> {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
-      this.handleMessage({ conversationId: globalChat._id, content: 'Joined the global chat.' }, _id, username, userNo);
+      //this.handleMessage({ conversationId: globalChat._id, content: 'Joined the global chat.' }, _id, username, userNo);
     }
 
     // Create the user's app state data and add it to the app state
@@ -147,7 +158,7 @@ export class AppRoom extends Room<AppState> {
       if (user.clientId === client.id) {
         if (user.username !== 'guest') {
           const { _id, username, userNo } = user;
-          this.handleMessage({ conversationId: globalChat._id, content: 'Left the global chat.' }, _id, username, userNo);
+          // this.handleMessage({ conversationId: globalChat._id, content: 'Left the global chat.' }, _id, username, userNo);
           this.updateLastOnline(user);
         }
         this.state.users.delete(user.username + user.userNo);
@@ -161,5 +172,13 @@ export class AppRoom extends Room<AppState> {
     await this.messagesChangeStream.close();
     await this.conversationsChangeStream.close();
     await this.client.close();
+  }
+
+  async emptyGlobalChatMessages() {
+    if (this.client) {
+      const globalChat = await Conversation.findOne({ isGlobal: true });
+      await Conversation.findOneAndUpdate({ _id: globalChat._id }, { $set: { messages: [] } });
+      console.log('Global chat messages field emptied.');
+    }
   }
 }
