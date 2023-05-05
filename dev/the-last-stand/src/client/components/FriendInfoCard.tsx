@@ -52,7 +52,7 @@ const FriendInfoCard = ({ user }: { user: IUser }) => {
       <div className='flex flex-col justify-center w-4/5'>
         <h4 className={`${lastOnline === 'now' && 'text-green-600'}`}>
           {`${username} `}
-          <span className={`${lastOnline === 'now' ? 'text-green-700' : 'text-pink-800'}`}>{`#${userNo} (hacktive : ${calculateLastOnline()})`}</span>
+          <span className={`${lastOnline === 'now' ? 'text-green-700' : 'text-pink-800'}`}>{`#${userNo} (hacktive ${calculateLastOnline()})`}</span>
         </h4>
         <h5 className='text-cyan-300'> - {title}</h5>
       </div>
