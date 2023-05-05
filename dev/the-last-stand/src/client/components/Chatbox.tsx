@@ -74,9 +74,9 @@ const Chatbox = (props: IChatboxProps) => {
   if (!conversation || !appRoom) return <div>Loading...</div>;
 
   return (
-    <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 p-2 w-96 flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-5/6' : ' h-12 translate-x-full'}`}>
-      <div className='flex gap-2 items-center'>
-        <h1 className='text-center w-10/12 text-3xl'>Global Chat</h1>
+    <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 py-2 w-full flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-full' : ' h-12 translate-x-full'}`}>
+      <div className='flex gap-2 items-center border-b-2 border-pink-600 p-2'>
+        <h1 className='text-center text-cyan-500 font-bold grow text-3xl'>Global Chat</h1>
         <ChatboxSwitcher
           onClick={toggleChatbox}
           chatboxOpen={chatboxOpen}
@@ -85,36 +85,43 @@ const Chatbox = (props: IChatboxProps) => {
       {/* <MessageList messages={messages} /> */}
       <div
         ref={containerRef}
-        className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-2 grow'>
+        className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-3 grow'>
         {conversation.messages &&
-          conversation.messages.map((message, index) => (
-            <div
-              key={index}
-              className={user!.username === message.username && user!.userNo === message.userNo ? 'text-right' : ''}>
-              <p className='italic text-green-500'>
-                {message.date} at {message.time}
-              </p>
-              <div className={`flex gap-2 ${user!.username === message.username && user!.userNo === message.userNo ? 'justify-end' : ''}`}>
-                <div>
+          conversation.messages.map((message, index) => {
+            // Create a new Date object from the ISO 8601 string
+            const date = new Date(message.updatedAt);
+
+            // Convert the date to the local timezone of the client and format it
+            const localTimestamp = date.toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'medium' });
+
+            return (
+              <div
+                key={index}
+                className={`${user!.username === message.username && user!.userNo === message.userNo ? 'ml-auto' : ''} bg-slate-900 w-fit p-4 rounded-3xl border-2 border-cyan-500 max-w-[75%]`}>
+                <p className='italic text-green-500'>{localTimestamp}</p>
+                {/* <div className={`flex gap-2 ${user!.username === message.username && user!.userNo === message.userNo ? 'justify-end' : ''}`}> */}
+                <p>
                   <span className='text-pink-600'>{message.username}</span>
                   <span className='text-pink-900'>#{message.userNo}</span>
-                </div>
+                </p>
                 <div>
                   {message.content!.split('\n').map((line, index) => (
-                    <div
-                      className='whitespace-normal break-words'
+                    <p
+                      className='whitespace-normal break-all'
                       key={index}>
                       {line}
-                    </div>
+                    </p>
                   ))}
+                  {/* </div> */}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
-      <div className='flex gap-2 items-center'>
+      <div className='flex gap-2 items-center justify-evenly border-t-2 border-pink-600 p-2'>
         <textarea
-          className='text-black w-3/4 p-2'
+          className='grow p-4 rounded-3xl resize-y border-slate-900 border-2 bg-slate-950 text-white placeholder-pink-900'
+          placeholder='Type your message here...'
           ref={textareaRef}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && enterSend) {

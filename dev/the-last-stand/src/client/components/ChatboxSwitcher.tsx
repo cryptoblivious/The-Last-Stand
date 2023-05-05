@@ -23,7 +23,7 @@ const ChatboxSwitcher = (props: IChatboxSwitcherProps) => {
       ) : (
         <Button
           onClick={toggleChatbox}
-          classNameAdditions={`absolute right-96 -top-1 p-2 z-50`}
+          classNameAdditions={`absolute -left-14 -top-1 p-2 z-50`}
           icon={
             <GiAbstract053
               aria-label='GiAbstract053'

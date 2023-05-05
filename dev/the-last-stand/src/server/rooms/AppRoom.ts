@@ -105,7 +105,7 @@ export class AppRoom extends Room<AppState> {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
-      this.handleMessage({ conversationId: globalChat._id, content: 'joined the global chat' }, _id, username, userNo);
+      this.handleMessage({ conversationId: globalChat._id, content: 'Joined the global chat.' }, _id, username, userNo);
     }
 
     // Create the user's app state data and add it to the app state
@@ -132,8 +132,6 @@ export class AppRoom extends Room<AppState> {
     messageMapper.username = username;
     messageMapper.userNo = userNo;
     messageMapper.content = message.content;
-    messageMapper.date = new Date().toLocaleDateString([], { dateStyle: 'full' });
-    messageMapper.time = new Date().toLocaleTimeString([], { timeStyle: 'medium', hour12: false });
     this.broadcast('message', messageMapper);
     try {
       await Conversation.findOneAndUpdate({ _id: message.conversationId }, { $push: { messages: messageMapper } });
@@ -149,7 +147,7 @@ export class AppRoom extends Room<AppState> {
       if (user.clientId === client.id) {
         if (user.username !== 'guest') {
           const { _id, username, userNo } = user;
-          this.handleMessage({ conversationId: globalChat._id, content: 'left the global chat' }, _id, username, userNo);
+          this.handleMessage({ conversationId: globalChat._id, content: 'Left the global chat.' }, _id, username, userNo);
           this.updateLastOnline(user);
         }
         this.state.users.delete(user.username + user.userNo);
@@ -161,6 +159,7 @@ export class AppRoom extends Room<AppState> {
     console.log('app room', this.roomId, 'disposing...');
     await this.usersChangeStream.close();
     await this.messagesChangeStream.close();
+    await this.conversationsChangeStream.close();
     await this.client.close();
   }
 }

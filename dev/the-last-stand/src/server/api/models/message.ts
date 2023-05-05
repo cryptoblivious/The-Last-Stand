@@ -20,15 +20,6 @@ export const messageSchema = new Schema(
       type: String,
       required: true,
     },
-    date: {
-      type: String,
-      required: true,
-    },
-    time: {
-      // Use a time type instead of a date type to avoid timezone issues
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,

@@ -13,6 +13,7 @@ const LogoutButton = () => {
   return (
     <Button
       onClick={logout}
+      classNameAdditions='ml-auto'
       text='Sign out'
     />
   );
