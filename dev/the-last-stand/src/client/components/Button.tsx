@@ -5,7 +5,7 @@ function Button(props: IButtonProps) {
 
   return (
     <button
-      className={`${className} ${classNameAdditions}`}
+      className={`${className} ${classNameAdditions ?? ''}`}
       onClick={onClick}
       onKeyDown={(event) => {
         if (event.key === 'Enter') {

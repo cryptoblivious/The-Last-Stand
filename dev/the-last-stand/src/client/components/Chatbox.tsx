@@ -51,6 +51,7 @@ const Chatbox = (props: IChatboxProps) => {
     const fetchData = async () => {
       const data = await fetchConversation(id);
       setConversation(data);
+      console.log('conversation', data);
     };
     fetchData();
 

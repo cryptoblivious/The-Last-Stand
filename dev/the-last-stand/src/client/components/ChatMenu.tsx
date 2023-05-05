@@ -1,14 +1,12 @@
 import Chatbox from './Chatbox';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { ColyseusContext } from './ColyseusProvider';
 
 const ChatMenu = () => {
-  const [chatboxes, setChatboxes] = useState<null | any[]>(null);
-  const [globalChat, setGlobalChat] = useState<null | any>(null);
   const { user } = useContext<any>(ColyseusContext);
 
   return (
-    <div className='z-30 flex flex-col relative gap-4 py-8 items-end '>
+    <div className='z-30 flex flex-col w-3/4 relative gap-4 py-8 items-end '>
       {/* <Chatbox name={globalChat} /> */}
 
       {user &&
