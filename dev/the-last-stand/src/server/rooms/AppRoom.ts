@@ -75,7 +75,7 @@ export class AppRoom extends Room<AppState> {
     start();
 
     cron.schedule(
-      '0 10 5 * * *',
+      '0 10 10 * * *',
       () => {
         // Your task code goes here
         this.emptyGlobalChatMessages();
