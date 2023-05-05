@@ -53,6 +53,14 @@ export class AppRoom extends Room<AppState> {
           lastOnline: change.fullDocument.lastOnline,
         };
         this.broadcast('userChange', data);
+        // check for the user in the room state and update it if it exists
+        this.state.users.forEach((user: any) => {
+          console.log('user_id', user._id, 'data_id', data._id.toString());
+          if (user._id === data._id) {
+            this.state.users.set(data.username + data.userNo, user);
+            this.state.users.delete(user.username + user.userNo);
+          }
+        });
       });
 
       const conversations = db.collection('conversations');
@@ -137,10 +145,9 @@ export class AppRoom extends Room<AppState> {
     this.state.users.set(username + userNo, userMap);
   }
 
-  updateLastOnline = async (user: any) => {
-    const { username, userNo } = user;
+  updateLastOnline = async (_id: string) => {
     try {
-      await User.findOneAndUpdate({ username: username, userNo: userNo }, { lastOnline: new Date() });
+      await User.findOneAndUpdate({ _id }, { lastOnline: new Date() });
     } catch (error) {
       console.error('Error updating lastOnline date:', error);
     }
@@ -166,9 +173,9 @@ export class AppRoom extends Room<AppState> {
     this.state.users.forEach((user: any) => {
       if (user.clientId === client.id) {
         if (user.username !== 'guest') {
-          const { _id, username, userNo } = user;
+          const { _id } = user;
           // this.handleMessage({ conversationId: globalChat._id, content: 'Left the global chat.' }, _id, username, userNo);
-          this.updateLastOnline(user);
+          this.updateLastOnline(_id);
         }
         this.state.users.delete(user.username + user.userNo);
       }
@@ -177,6 +184,10 @@ export class AppRoom extends Room<AppState> {
 
   async onDispose() {
     console.log('app room', this.roomId, 'disposing...');
+    //set all users offline
+    this.state.users.forEach((user: any) => {
+      this.updateLastOnline(user._id);
+    });
     await this.usersChangeStream.close();
     await this.messagesChangeStream.close();
     await this.conversationsChangeStream.close();

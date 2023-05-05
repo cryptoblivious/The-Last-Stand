@@ -196,8 +196,9 @@ gameServer.define(ERooms.GameLobbyRoom.toString(), GameLobbyRoom);
 gameServer.define('match_maker_room', MatchmakerRoom);
 console.log('✅ Colyseus rooms defined.');
 
-// Add cron job
+// Add cron jobs
 cron.schedule(cleanGlobalChat.cronTime, cleanGlobalChat.onTick, { timezone: cleanGlobalChat.timeZone });
+console.log('✅ Cron jobs added.');
 
 // Attach the express instance to the Colyseus server
 if (APP_MODE === 'dev') {
