@@ -146,6 +146,7 @@ const Chatbox = (props: IChatboxProps) => {
           <div className='flex items-center gap-2'>
             <input
               type='checkbox'
+              id='enter-send'
               className={`${enterSend ? 'bg-green-500 border-cyan-500' : 'border-pink-600 bg-purple-900'} bg-no-repeat border-2  w-4 h-4 rounded-full appearance-none`}
               onClick={toggleEnterSend}
               onKeyDown={(event) => {
@@ -154,7 +155,11 @@ const Chatbox = (props: IChatboxProps) => {
                 }
               }}
             />
-            <p className={`${enterSend ? 'text-green-500' : 'text-pink-600'} text-[0.666rem] text-center`}>Enter-send</p>
+            <label
+              htmlFor='enter-send'
+              className={`${enterSend ? 'text-green-500' : 'text-pink-600'} text-[0.666rem] text-center`}>
+              Enter-send
+            </label>
           </div>
         </div>
       </div>
