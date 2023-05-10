@@ -54,11 +54,18 @@ export class AppRoom extends Room<AppState> {
         };
         this.broadcast('userChange', data);
         // check for the user in the room state and update it if it exists
+
         this.state.users.forEach((user: any) => {
           console.log('user_id', user._id, 'data_id', data._id.toString());
-          if (user._id === data._id) {
-            this.state.users.set(data.username + data.userNo, user);
-            this.state.users.delete(user.username + user.userNo);
+          if (user._id === data._id.toString()) {
+            console.log('changing user data', data);
+            const userMapper = new IUserMapper();
+            userMapper._id = data._id;
+            userMapper.username = data.username;
+            userMapper.userNo = data.userNo;
+            userMapper.title = data.title;
+            userMapper.clientId = user.clientId;
+            this.state.users.set(data._id, userMapper);
           }
         });
       });
@@ -81,27 +88,7 @@ export class AppRoom extends Room<AppState> {
     };
     // Call the start function to connect to the client and start the change streams
     start();
-
-    // cron.schedule(
-    //   '10 40 10 * * *',
-    //   () => {
-    //     // Your task code goes here
-    //     this.emptyGlobalChatMessages();
-    //   },
-    //   {
-    //     timezone: 'America/New_York',
-    //   }
-    // );
   }
-
-  // async emptyGlobalChatMessages() {
-  //   console.log('accessing cron job');
-  //   if (this.client) {
-  //     const globalChat = await Conversation.findOne({ isGlobal: true });
-  //     await Conversation.findOneAndUpdate({ _id: globalChat._id }, { $set: { messages: [] } });
-  //     console.log('Global chat messages field emptied.');
-  //   }
-  // }
 
   onCreate(options: any) {
     this.roomId = 'app'; // set the room ID to "my_room"
@@ -118,14 +105,14 @@ export class AppRoom extends Room<AppState> {
     });
   }
 
-  // onAuth(client: Client, user: any) {
-  //   // Check if the user is already connected
-  //   const { username, userNo } = user;
-  //   if (this.state.users.get(username + userNo)) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
+  onAuth(client: Client, user: any) {
+    // Check if the user is already connected
+    const { username, userNo } = user;
+    if (this.state.users.get(username + userNo)) {
+      return false;
+    }
+    return true;
+  }
 
   async onJoin(client: Client, user: any) {
     const { _id, username, userNo } = user;
@@ -142,7 +129,7 @@ export class AppRoom extends Room<AppState> {
     userMap.username = username;
     userMap.userNo = userNo;
     userMap.clientId = client.id;
-    this.state.users.set(username + userNo, userMap);
+    this.state.users.set(_id, userMap);
   }
 
   updateLastOnline = async (_id: string) => {
@@ -177,7 +164,7 @@ export class AppRoom extends Room<AppState> {
           // this.handleMessage({ conversationId: globalChat._id, content: 'Left the global chat.' }, _id, username, userNo);
           this.updateLastOnline(_id);
         }
-        this.state.users.delete(user.username + user.userNo);
+        this.state.users.delete(user._id);
       }
     });
   }

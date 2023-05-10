@@ -1,9 +1,12 @@
 import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/users';
 import { useEffect, useRef } from 'react';
+import { ColyseusContext } from './ColyseusProvider';
+import { useContext } from 'react';
 
 const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user: IUser; className?: string; isDoneEditing: boolean; inputFunction: () => void }) => {
   const { avatar, username, title } = user;
+  const { appRoom } = useContext(ColyseusContext);
   const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
   const titleRef = useRef<HTMLSelectElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
   const titleToValueMap = {
@@ -28,7 +31,6 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
         username: usernameRef.current?.value,
         title: titleRef.current?.selectedOptions[0].textContent,
       };
-
       patchCurrentUser(updatedUser);
     }
   };
@@ -37,7 +39,7 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
     isDoneEditing && handleSubmit();
   }, [isDoneEditing, title]);
 
-  if (!title) return <div>Loading...</div>;
+  if (!title || !appRoom) return <div>Loading...</div>;
 
   return (
     <div className={`flex w-full gap-4 ${className}`}>

@@ -66,12 +66,15 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
         // check in the users array and update the user if it exists
         setUsers((prevUsers) => {
           const updatedUsers = prevUsers.map((prevUser) => {
-            if (prevUser && prevUser._id === updatedUser._id) {
-              return updatedUser;
-            } else {
-              return prevUser;
+            if (prevUser) {
+              if (prevUser._id === updatedUser._id) {
+                return updatedUser;
+              } else {
+                return prevUser;
+              }
             }
           });
+          console.log('updatedUsers', updatedUsers);
           return updatedUsers;
         });
       });
