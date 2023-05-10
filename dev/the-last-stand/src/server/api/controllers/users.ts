@@ -83,7 +83,7 @@ export const patchCurrentUser = async (req: any, res: any) => {
     if (req.body.username) {
       const userWithSameName = await User.findOne({ username: req.body.username });
       if (userWithSameName && id !== userWithSameName._id.toString()) {
-        const availableUsernameNo = await findAvailableUsernameNumber(req.body.username);
+        const availableUsernameNo: string = await findAvailableUsernameNumber(req.body.username);
         if (availableUsernameNo === '-1') {
           return res.status(400).json({ err: `No available username number associated with ${req.body.username}` });
         }
