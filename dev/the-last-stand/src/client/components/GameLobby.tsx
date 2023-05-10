@@ -41,7 +41,13 @@ const GameLobby = () => {
 
     const connectToMatchMakerRoom = async () => {
         try{
-            const matchMakerRoom = await client?.joinOrCreate('match_maker_room', {username : user?.username, character: selectedCharacter, scene: selectedScene});
+            const matchMakerRoom = await client?.joinOrCreate('match_maker_room', {username : user?.username, character: selectedCharacter?.name, scene: selectedScene?.name});
+            matchMakerRoom?.onMessage(EMessage.JoinGame, (data) => {
+                // redirect to game room
+                console.log(data);
+                const {roomId} = data;
+                window.location.href = `/match/${roomId}`;
+            });
             return matchMakerRoom;
         }
         catch(error){
@@ -92,10 +98,10 @@ const GameLobby = () => {
 
         if (!buttonState.isPlaying) {
             console.log('play clicked');
-            gameLobbyRoom.send(EMessage.JoinQueue, {character: selectedCharacter, scene: selectedScene})
-            const room = await connectToMatchMakerRoom();
-            if(room){
-                setMatchMakerRoom(room);
+            // gameLobbyRoom.send(EMessage.JoinQueue, {character: selectedCharacter, scene: selectedScene})
+            const matchMakeRoom = await connectToMatchMakerRoom();
+            if(matchMakeRoom){
+                setMatchMakerRoom(matchMakeRoom);
             }
         }else {
             console.log('cancel clicked');

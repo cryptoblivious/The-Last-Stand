@@ -5,18 +5,18 @@ import { ERooms } from '../../typescript/enumerations/ERooms';
 
 export class GameLobbyRoom extends Room {
     
-    async onCreate (options: any) {
+    onCreate (options: any) {
         this.setState(new GameLobbyState());
         console.log("GameLobbyRoom created!", options);
         
 
         // messages
-        this.onMessage(EMessage.JoinQueue, async (client, message) => {
-            // console.log("JoinQueue", message);
-            // const room = await this.joinMatchMakerRoom();
-            // console.log("MatchMakerRoom joined!", room);
-            this.broadcast(EMessage.JoinQueue, {client, message});
-        });
+        // this.onMessage(EMessage.JoinQueue, async (client, message) => {
+        //     // console.log("JoinQueue", message);
+        //     // const room = await this.joinMatchMakerRoom();
+        //     // console.log("MatchMakerRoom joined!", room);
+        //     this.broadcast(EMessage.JoinQueue, {client, message});
+        // });
     }
 
     async joinMatchMakerRoom() {
