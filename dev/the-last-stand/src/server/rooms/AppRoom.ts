@@ -56,9 +56,7 @@ export class AppRoom extends Room<AppState> {
         // check for the user in the room state and update it if it exists
 
         this.state.users.forEach((user: any) => {
-          console.log('user_id', user._id, 'data_id', data._id.toString());
           if (user._id === data._id.toString()) {
-            console.log('changing user data', data);
             const userMapper = new IUserMapper();
             userMapper._id = data._id;
             userMapper.username = data.username;
@@ -97,7 +95,6 @@ export class AppRoom extends Room<AppState> {
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
           if (user.username !== 'guest') {
-            console.log('handling message', message);
             this.handleMessage(message, user._id, user.username, user.userNo);
           }
         }
@@ -170,7 +167,6 @@ export class AppRoom extends Room<AppState> {
   }
 
   async onDispose() {
-    console.log('app room', this.roomId, 'disposing...');
     //set all users offline
     this.state.users.forEach((user: any) => {
       this.updateLastOnline(user._id);

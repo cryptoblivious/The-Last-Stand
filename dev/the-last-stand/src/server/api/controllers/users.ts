@@ -1,5 +1,7 @@
 import { userModel as User } from '../models/user';
+import { conversationModel as Conversation } from '../models/conversation';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
+import e from 'express';
 
 // Find an available username number
 export const findAvailableUsernameNumber = async (username: string) => {
@@ -53,6 +55,26 @@ export const readUserByEmail = async (req: any, res: any) => {
 
 // PATCH the current user
 export const patchCurrentUser = async (req: any, res: any) => {
+  const updateUserConversations = async (user: any) => {
+    const userConversations = await Conversation.find({
+      $or: [{ userIds: user._id }, { isGlobal: true }],
+    });
+    userConversations.forEach(async (conversation: any) => {
+      const updatedMessages = conversation.messages.map((message: any) => {
+        if (message.userId === user._id.toString()) {
+          message.username = user.username;
+          message.userNo = user.userNo;
+        }
+        return message;
+      });
+      try {
+        await Conversation.findByIdAndUpdate(conversation._id, { messages: updatedMessages });
+      } catch (err: any) {
+        console.log('err', err);
+      }
+    });
+  };
+
   const id = req.user?._id;
   if (!id) {
     return res.status(400).json({ err: 'Invalid user ID' });
@@ -60,19 +82,29 @@ export const patchCurrentUser = async (req: any, res: any) => {
   try {
     if (req.body.username) {
       const userWithSameName = await User.findOne({ username: req.body.username });
-      const currentUser = await User.findOne({ _id: id }).select('userNo username').exec();
-      if (userWithSameName && currentUser.username !== req.body.username) {
+      if (userWithSameName && id !== userWithSameName._id.toString()) {
         const availableUsernameNo = await findAvailableUsernameNumber(req.body.username);
-        if (req.body.userNo === '-1') {
+        if (availableUsernameNo === '-1') {
           return res.status(400).json({ err: `No available username number associated with ${req.body.username}` });
         }
         req.body.userNo = availableUsernameNo;
+      } else {
+        req.body.userNo = '0000';
       }
     }
     const user = await User.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
     if (!user) {
       return res.status(404).json({ err: 'User not found' });
     }
+    updateUserConversations(user);
+    //   .flat()
+    //   .filter((message: any) => message.userId === user._id.toString());
+    // userMessages.forEach((message: any) => {
+    //   //write code here
+    //   console.log('message', message);
+    //   message.username = user.username;
+    //   message.userNo = user.userNo;
+    // });
     res.status(200).json(user);
   } catch (err: any) {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });
