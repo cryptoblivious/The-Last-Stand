@@ -6,4 +6,5 @@ export class IUserMapper extends Schema {
   @type('string') userNo?: string;
   @type('string') title?: string;
   @type('string') clientId: string = '';
+  @type('string') lastOnline?: string;
 }

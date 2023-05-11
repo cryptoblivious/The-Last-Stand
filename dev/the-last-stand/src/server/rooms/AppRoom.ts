@@ -45,6 +45,7 @@ export class AppRoom extends Room<AppState> {
       this.usersChangeStream = users.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
 
       this.usersChangeStream.on('change', (change: any) => {
+        console.log('a user has changed', change.fullDocument);
         const data = {
           _id: change.fullDocument._id,
           username: change.fullDocument.username,
@@ -52,9 +53,9 @@ export class AppRoom extends Room<AppState> {
           title: change.fullDocument.title,
           lastOnline: change.fullDocument.lastOnline,
         };
-        this.broadcast('userChange', data);
-        // check for the user in the room state and update it if it exists
+        this.broadcast('usersChange', data);
 
+        // check for the user in the room state and update it if it exists
         this.state.users.forEach((user: any) => {
           if (user._id === data._id.toString()) {
             const userMapper = new IUserMapper();
@@ -63,6 +64,7 @@ export class AppRoom extends Room<AppState> {
             userMapper.userNo = data.userNo;
             userMapper.title = data.title;
             userMapper.clientId = user.clientId;
+            userMapper.lastOnline = data.lastOnline;
             this.state.users.set(data._id, userMapper);
           }
         });
