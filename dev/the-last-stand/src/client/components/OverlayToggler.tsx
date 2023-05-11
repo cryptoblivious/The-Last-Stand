@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Button from './Button';
+import { GiFeather, GiBookmarklet } from 'react-icons/gi';
 
 interface IToggleOverlayProps {
   onClick: () => void;
@@ -7,6 +9,7 @@ interface IToggleOverlayProps {
 const OverlayToggler = ({ onClick }: IToggleOverlayProps) => {
   const toggleOverlay = onClick;
   const [active, setActive] = useState<boolean>(false);
+  const icon = active ? 'GiBookmarklet' : 'GiFeather';
 
   const toggleActive = () => {
     setActive((prev) => !prev);
@@ -14,9 +17,25 @@ const OverlayToggler = ({ onClick }: IToggleOverlayProps) => {
   };
 
   return (
-    <button
-      className='z-50 bg-pink-600 text-white border-purple-900 border-4 rounded-full pr-2 pt-2 h-12 w-12 fixed transition duration-500 hover:scale-150 -top-3 -right-3'
-      onClick={toggleActive}>{`${active ? 'X' : 'O'}`}</button>
+    <Button
+      className='z-50 bg-pink-600 text-white border-purple-900 border-4 rounded-full h-14 w-14 fixed transition duration-500 flex justify-center items-center hover:scale-150 right-0 top-0'
+      onClick={toggleActive}
+      icon={
+        icon === 'GiFeather' ? (
+          <GiFeather
+            aria-label='GiFeather'
+            fontSize='1.69rem'
+            color='rgb(103 232 249)'
+          />
+        ) : (
+          <GiBookmarklet
+            aria-label='GiBookmarklet'
+            fontSize='1.69rem'
+            color='rgb(103 232 249)'
+          />
+        )
+      }
+    />
   );
 };
 
