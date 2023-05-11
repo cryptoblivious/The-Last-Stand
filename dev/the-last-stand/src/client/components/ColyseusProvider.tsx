@@ -36,9 +36,10 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
   const connect = async () => {
     const currentUser = await getCurrentUser();
     if (currentUser) {
+      const avatarPathOptions = ['/assets/heroes/logan/avatar.png', '/assets/heroes/chuck/avatar.png', '/assets/heroes/solana/avatar.png'];
       const updatedUser = {
         lastOnline: 'now',
-        avatar: '/assets/heroes/logan/avatar.png',
+        avatar: avatarPathOptions[Math.floor(Math.random() * avatarPathOptions.length)],
       };
       const patchedUser = await patchCurrentUser(updatedUser);
       setUser(patchedUser);
