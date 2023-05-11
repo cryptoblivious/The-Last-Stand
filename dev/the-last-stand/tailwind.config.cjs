@@ -26,6 +26,9 @@ module.exports = {
         '150': '150%',
         '200': '200%',
       },
+      backgroundImage: theme => ({
+        'panning': "url('./public/assets/wallpapers/pixel_city_lights_off.jpg'), url('./public/assets/wallpapers/pixel_city_lights_off.jpg')",
+      }),
       keyframes: {
         'gradient-x': {
           '0%, 100%': {
@@ -37,15 +40,22 @@ module.exports = {
             'background-position': 'right bottom',
           }
         },
-        'pan': {
-          '0%': {'transform': 'translateX(0%)'},
-          '100%': {'transform': 'translateX(-100%)'},
+        'panning': {
+          '0%': {backgroundPosition: '0% 0%',
+                  backgroundSize: '125% 100%'
+                },
+          '50%': {backgroundPosition: '-100% 0%',
+                  backgroundSize: '125% 100%'
+                },
+          '100%': {backgroundPosition: '-200% 0%',
+                  backgroundSize: '125% 100%'
+                },
           
         }
       },
       animation: {
         'gradient-x': 'gradient-x 15s ease infinite',
-        'pan' : 'pan 30s linear infinite',
+        'panning' : 'panning 40s linear infinite',
       }
     },
   },
