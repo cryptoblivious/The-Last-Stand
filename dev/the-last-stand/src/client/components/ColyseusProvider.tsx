@@ -35,8 +35,6 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
 
   const connect = async () => {
     const currentUser = await getCurrentUser();
-    const currentUsers = await getUsers();
-    setUsers(currentUsers);
     if (currentUser) {
       const updatedUser = {
         lastOnline: 'now',
@@ -47,11 +45,13 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     } else {
       console.log('no user found');
     }
+    const currentUsers = await getUsers();
+    setUsers(currentUsers);
     const userData = currentUser ?? { username: 'guest', userNo: String(Math.floor(Math.random() * 10000)).padStart(4, '0') };
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
-      appRoom.onMessage('userChange', (updatedUser: any) => {
+      appRoom.onMessage('usersChange', (updatedUser: any) => {
         if (updatedUser._id === userData._id) {
           setUser((prevUser) => {
             return {
@@ -74,13 +74,11 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
               }
             }
           });
-          console.log('updatedUsers', updatedUsers);
           return updatedUsers;
         });
       });
 
       appRoom.onMessage('message', (message: IMessageMapper) => {
-        console.log('message received', message);
         setMessages((prev) => [...prev, message]);
       });
       setClient(client);
@@ -116,7 +114,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     };
   }, []);
 
-  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages }), [client, appRoom, user, messages]);
+  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages }), [client, appRoom, user, users, messages]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 

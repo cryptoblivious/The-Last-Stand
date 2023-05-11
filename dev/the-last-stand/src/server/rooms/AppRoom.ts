@@ -45,6 +45,7 @@ export class AppRoom extends Room<AppState> {
       this.usersChangeStream = users.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
 
       this.usersChangeStream.on('change', (change: any) => {
+        console.log('a user has changed', change.fullDocument);
         const data = {
           _id: change.fullDocument._id,
           username: change.fullDocument.username,
@@ -52,7 +53,7 @@ export class AppRoom extends Room<AppState> {
           title: change.fullDocument.title,
           lastOnline: change.fullDocument.lastOnline,
         };
-        this.broadcast('userChange', data);
+        this.broadcast('usersChange', data);
 
         // check for the user in the room state and update it if it exists
         this.state.users.forEach((user: any) => {
