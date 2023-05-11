@@ -53,8 +53,8 @@ export class AppRoom extends Room<AppState> {
           lastOnline: change.fullDocument.lastOnline,
         };
         this.broadcast('userChange', data);
-        // check for the user in the room state and update it if it exists
 
+        // check for the user in the room state and update it if it exists
         this.state.users.forEach((user: any) => {
           if (user._id === data._id.toString()) {
             const userMapper = new IUserMapper();
@@ -63,6 +63,7 @@ export class AppRoom extends Room<AppState> {
             userMapper.userNo = data.userNo;
             userMapper.title = data.title;
             userMapper.clientId = user.clientId;
+            userMapper.lastOnline = data.lastOnline;
             this.state.users.set(data._id, userMapper);
           }
         });
