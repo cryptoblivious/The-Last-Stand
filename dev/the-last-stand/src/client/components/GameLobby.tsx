@@ -12,7 +12,8 @@ import LoadingBox from './LoadingBox';
 
 const gl_mainContainerStyle = "relative flex flex-col h-screen p-4  bg-cover bg-center bg-repeat-x "
 // const gl_mainContainerStyle = "flex flex-col h-screen p-4 animate-gradient-x bg-gradient-to-r from-neon-turquoise via-neon-purple to-neon-green"
-const gl_panBackgroundStyle = 'absolute inset-0 -z-50 bg-[url("/assets/wallpapers/cyberpunk_cityscape.png")] bg-cover  bg-no-repeat bg-center'
+const gl_panBackgroundStyle = "absolute inset-0 -z-50 bg-[url('/assets/wallpapers/pixel_city_lights_off.jpg')] bg-repeat-x w-screen h-screen bg-scroll"
+// const gl_panBackgroundStyle2 = 'absolute inset-0 -z-50 bg-panning bg-repeat-x animate-panning w-screen h-screen bg-scroll'
 
 const gl_gridsContainerStyle = 'flex mb-4 items-center justify-around grow '
 const gl_characterSelectionGridContainerStyle = 'w-1/3 h-1/2 mr-2'
@@ -89,32 +90,26 @@ const GameLobby = () => {
                 setSelectedScene(scenes[0]);
             }
         });
-
-        let x1 = 0;
-        let x2 = -window.innerWidth;
+        
         const background1 = backgroundRef1.current;
         const background2 = backgroundRef2.current;
-
-        const resizeBackground = () => {
-            if (background1 && background2) {
-                background1.style.backgroundSize = `${window.innerWidth * 1.2}px ${window.innerHeight * 1.5}px`;
-                background2.style.backgroundSize = `${window.innerWidth * 1.2}px ${window.innerHeight * 1.5}px`;
-            }
-        }
-        resizeBackground();
-
-        window.addEventListener('resize', resizeBackground);
+        let x1 = 0;
+        let x2 = -window.innerWidth;
 
         const panBackground = () => {
+            const size = -window.innerWidth * 1.5;
+            background1.style.backgroundSize = `${size}px 100%`;
+            background2.style.backgroundSize = `${size}px 100%`;
+
             if (background1 && background2) {
                 background1.style.backgroundPositionX = `${x1}px`;
                 background2.style.backgroundPositionX = `${x2}px`;
                 x1++;
                 x2++;
-                if (x1 === window.innerWidth) {
+                if (x1 > window.innerWidth) {
                     x1 = -window.innerWidth;
                 }
-                if (x2 === window.innerWidth) {
+                if (x2 > window.innerWidth) {
                     x2 = -window.innerWidth;
                 }
             }
@@ -122,14 +117,9 @@ const GameLobby = () => {
         }
         panBackground();
 
-        return () => {
-            window.removeEventListener('resize', resizeBackground);
-        }
-    
+        }, []);
 
-    }, []);
 
-    
     const handleCharacterSelect = (character: gl_GridCardData) => {
         if (isInQueue) return;
         setSelectedCharacter(character);
@@ -166,8 +156,8 @@ const GameLobby = () => {
 
     return (
         <div className={gl_mainContainerStyle}>
-            <div ref={backgroundRef1}className={gl_panBackgroundStyle}> </div>
-            <div  ref={backgroundRef2}className={gl_panBackgroundStyle}></div>
+            <div ref={backgroundRef1} className={gl_panBackgroundStyle}> </div>
+            <div ref={backgroundRef2} className={gl_panBackgroundStyle}></div>
             <h1 className={gl_titleStyle}> Game Lobby</h1>
             <SocialOverlay />
             <div className={gl_gridsContainerStyle}>
