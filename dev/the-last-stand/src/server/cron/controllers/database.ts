@@ -11,7 +11,7 @@ export async function emptyGlobalChatMessages() {
     await client.connect();
     const globalChat = await Conversation.findOne({ isGlobal: true });
     const resetMessage = new IMessageMapper();
-    resetMessage.content = `Messages have been reset ${new Date().toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'medium' })}`;
+    resetMessage.content = `Global messages have been reset ${new Date().toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'medium' })}`;
     resetMessage.userNo = '0000';
     resetMessage.username = 'Server';
     await Conversation.findOneAndUpdate({ _id: globalChat._id }, { $set: { messages: [resetMessage] } });

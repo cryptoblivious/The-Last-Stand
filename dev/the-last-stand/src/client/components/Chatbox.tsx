@@ -102,7 +102,7 @@ const Chatbox = (props: IChatboxProps) => {
                   <p>
                     <span className='text-pink-600'>{!message.content.includes('Messages have been reset') ? message.content.split('#')[0] : ''}</span>
                     <span className='text-pink-900'>{!message.content.includes('Messages have been reset') ? `#${message.userNo}` : ''} </span>
-                    <span className='text-cyan-300'>{message.content.substring(message.content.indexOf(' ') + 1)}</span>
+                    <span className='text-cyan-300'>{!message.content.includes('Messages have been reset') ? message.content.substring(message.content.indexOf(' ') + 1) : message.content}</span>
                   </p>
                 ) : (
                   <p>
@@ -111,7 +111,7 @@ const Chatbox = (props: IChatboxProps) => {
                     <div>
                       {message.content!.split('\n').map((line, index) => (
                         <p
-                          className={`whitespace-normal break-all text-white`}
+                          className={`whitespace-normal break-all ${user!.username === message.username && user!.userNo === message.userNo ? 'text-pink-300' : 'text-white'}`}
                           key={index}>
                           {line}
                         </p>
