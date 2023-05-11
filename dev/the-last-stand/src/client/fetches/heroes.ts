@@ -5,7 +5,7 @@ import { gl_GridCardData } from '../components/GameLobbyCard';
 
 // Record of hero names and their portrait images, should be moved to a config file
 const heroImages: Record<string, string> = {
-  solana: '/assets/heroes/solana/portrait.webp',
+  solana: '/assets/heroes/solana/portrait.png',
   logan: '/assets/heroes/logan/portrait.png',
   chuck: '/assets/heroes/chuck/portrait.png',
 };
@@ -39,6 +39,4 @@ export const fetchHeroesNames = async (): Promise<{ heroes: gl_GridCardData[] }>
     });
   });
   return { heroes };
-
-  
-}
+};

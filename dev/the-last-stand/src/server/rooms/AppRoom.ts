@@ -45,7 +45,6 @@ export class AppRoom extends Room<AppState> {
       this.usersChangeStream = users.watch(updateFullDocumentWithIdPipeline, { fullDocument: 'updateLookup' });
 
       this.usersChangeStream.on('change', (change: any) => {
-        console.log('a user has changed', change.fullDocument);
         const data = {
           _id: change.fullDocument._id,
           username: change.fullDocument.username,
@@ -119,7 +118,7 @@ export class AppRoom extends Room<AppState> {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
-      //this.handleMessage({ conversationId: globalChat._id, content: 'Joined the global chat.' }, _id, username, userNo);
+      this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
     }
 
     // Create the user's app state data and add it to the app state
@@ -139,11 +138,17 @@ export class AppRoom extends Room<AppState> {
     }
   };
 
-  handleMessage = async (message: IHandleMessageKwargs, _id?: string, username?: string, userNo?: string) => {
+  handleMessage = async (message: IHandleMessageKwargs, _id?: string, username?: string, userNo?: string, sender?: string) => {
     const messageMapper = new IMessageMapper();
-    messageMapper.userId = _id;
-    messageMapper.username = username;
-    messageMapper.userNo = userNo;
+    if (sender) {
+      messageMapper.userId = '0000';
+      messageMapper.username = sender;
+      messageMapper.userNo = '0000';
+    } else {
+      messageMapper.userId = _id;
+      messageMapper.username = username;
+      messageMapper.userNo = userNo;
+    }
     messageMapper.content = message.content;
     this.broadcast('message', messageMapper);
     try {
@@ -159,8 +164,8 @@ export class AppRoom extends Room<AppState> {
     this.state.users.forEach((user: any) => {
       if (user.clientId === client.id) {
         if (user.username !== 'guest') {
-          const { _id } = user;
-          // this.handleMessage({ conversationId: globalChat._id, content: 'Left the global chat.' }, _id, username, userNo);
+          const { _id, username, userNo } = user;
+          this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
           this.updateLastOnline(_id);
         }
         this.state.users.delete(user._id);

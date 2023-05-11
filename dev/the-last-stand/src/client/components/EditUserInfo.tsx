@@ -16,10 +16,11 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
     'Psycho Fury': 'title-4',
   };
 
-  const checkIfRenamedToGuest = () => {
-    if (usernameRef.current?.value === 'guest') {
+  const checkIfRenamedToIllegalName = () => {
+    const illegalNames = ['guest', 'Server'];
+    if (illegalNames.includes(usernameRef.current?.value as string)) {
       usernameRef.current!.className = 'w-full placeholder-pink-900 placeholder-opacity-50 bg-red-900 border-pink-600 border-2 rounded-xl p-1 text-red-600';
-      usernameRef.current!.value += ' (cannot rename to "guest")';
+      usernameRef.current!.value += ` (cannot rename to "${usernameRef.current?.value})`;
     } else {
       usernameRef.current!.className = 'w-full placeholder-green-900 placeholder-opacity-50 bg-green-900 border-green-600 border-2 rounded-xl p-1 text-green-600';
     }
@@ -62,7 +63,7 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
               inputFunction();
             }
           }}
-          onChange={checkIfRenamedToGuest}
+          onChange={checkIfRenamedToIllegalName}
         />
         <select
           id='my-dropdown'
