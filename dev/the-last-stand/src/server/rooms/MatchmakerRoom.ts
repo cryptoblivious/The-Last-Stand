@@ -21,7 +21,7 @@ export class MatchmakerRoom extends Room {
         if (this.queue.length >= this.maxPlayers) {
             // splice maxPlayers from queue
             const playersIds = this.queue.splice(0, this.maxPlayers);
-            const roomId = this.genereateRandomId();
+            const roomId = this.genereateRandomUID();
             playersIds.forEach(playerId => {
                 const index = this.clients.findIndex((client) => client.id === playerId);
                 this.clients[index].send(EMessage.JoinGame, { roomId: roomId });
@@ -43,18 +43,18 @@ export class MatchmakerRoom extends Room {
     onLeave(client: Client, consented: boolean) {
         console.log("Client left MatchmakerRoom");
         // this.waitingPlayers.delete(client.id);
+
     }
 
-    genereateRandomId(): string {
+    genereateRandomUID(): string {
         const roomId =  Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
 
         if (this.roomIds.has(roomId)) {
-            return this.genereateRandomId();
+            return this.genereateRandomUID();
         }
         this.roomIds.add(roomId);
         return roomId;
     }
 
-    
 
 }
