@@ -86,9 +86,9 @@ const Chatbox = (props: IChatboxProps) => {
         ref={containerRef}
         className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-3 grow'>
         {conversation.messages &&
-          conversation.messages.map((message, index) => {
+          conversation.messages.map((message:any, index:any) => {
             const date = new Date(message.updatedAt);
-            console.log('message', message);
+            // console.log('message', message);
 
             // Convert the date to the local timezone of the client and format it
             const localTimestamp = date.toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'medium' });
@@ -109,7 +109,7 @@ const Chatbox = (props: IChatboxProps) => {
                     <span className='text-pink-600'>{message.username}</span>
                     <span className='text-pink-900'>#{message.userNo}</span>
                     <div>
-                      {message.content!.split('\n').map((line, index) => (
+                      {message.content!.split('\n').map((line:any, index:any) => (
                         <p
                           className={`whitespace-normal break-all ${user!.username === message.username && user!.userNo === message.userNo ? 'text-pink-300' : 'text-white'}`}
                           key={index}>
