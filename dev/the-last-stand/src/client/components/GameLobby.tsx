@@ -12,27 +12,24 @@ import LoadingBox from './LoadingBox';
 import { IStatBarProps } from './StatBar';
 import StatsWrapper from './StatsWrapper';
 import AnimatedSpriteCanvas from './AnimatedSpriteCanvas';
-import spriteSheetsLoader from '../match/scenes/spritesheetsLoader';
-import { IHeroesSpritePaths } from '../../typescript/interfaces/IHeroesSpritesPaths';
+import GameLobbyOptionsBox from './GameLobbyOptionsBox';
 
 const gl_mainContainerStyle = "relative grid grid-rows-[minmax(100px,0.1fr)_1fr_minmax(200px,0.2fr)] h-screen p-4  bg-cover bg-center bg-repeat-x "
-// const gl_mainContainerStyle = "flex flex-col h-screen p-4 animate-gradient-x bg-gradient-to-r from-neon-turquoise via-neon-purple to-neon-green"
 const gl_panBackgroundStyle = "absolute inset-0 -z-50 bg-[url('/assets/wallpapers/pixel_city_lights_off.jpg')] bg-repeat-x w-screen h-screen bg-scroll"
-// const gl_panBackgroundStyle2 = 'absolute inset-0 -z-50 bg-panning bg-repeat-x animate-panning w-screen h-screen bg-scroll'
 
-const gl_gridsContainerStyle = 'flex mb-4 items-center justify-around grow '
+const gl_gridsContainerStyle = 'flex mb-4 items-center justify-around grow shrink-0 h-full '
 const gl_characterSelectionGridContainerStyle = 'w-1/3 h-1/2 mr-2'
 const gl_sceneSelectionGridContainerStyle = 'w-1/3 h-1/2 ml-2'
 const gl_buttonSectionContainerStyle = ' flex justify-center'
-const gl_BottomContainer = 'grid grid-cols-3 gap-4 h-full'
+const gl_BottomContainer = 'grid grid-cols-3 gap-4 h-full grow shrink'
 const gl_titleStyle = 'text-4xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center grow-0 mt-10';
 const gl_SubtitleStyle = 'text-2xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center bg-black bg-opacity-50 rounded-lg shadow-lg p-2';
 const gl_CharacterPreviewContainerStyle = 'grid grid-cols-2 gap-4'
 const gl_PlayLoadingContainerStyle = 'flex flex-col items-center justify-center p-2'
-const gl_GameOptionsContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full border-neon-green border-4 rounded-lg shadow-lg'
+const gl_GameOptionsContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg'
 const gl_CharPreviewCanvasContainerStyle = 'w-full h-full bg-transparent rounded-lg shadow-lg'
 const gl_CharPreviewStatsContainer = 'w-full h-full bg-transparent border-4 border-neon-green rounded-lg shadow-lg'
-const gl_TitleContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg '
+const gl_TitleContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg shrink'
 
 const gl_LoadingBoxText = 'Looking for players...'
 
@@ -54,6 +51,7 @@ const defenseStat: IStatBarProps = {
     maxValue: 10,
 }
 
+
 const stats = [powerStat, speedStat, defenseStat]
 
 const GameLobby = () => {
@@ -68,6 +66,7 @@ const GameLobby = () => {
     const [isInQueue, setIsInQueue] = useState(false);
     const backgroundRef1 = useRef<HTMLDivElement>(null);
     const backgroundRef2 = useRef<HTMLDivElement>(null);
+    const [selectedOptions, setSelectedOptions] = useState<{gameMode:string, playerCount:number}>();
 
     const connectToGameLobbyRoom = async () => {
         try {
@@ -113,10 +112,7 @@ const GameLobby = () => {
             setCharacters(heroes);
             if (heroes.length > 0) {
                 setSelectedCharacter(heroes[0]);
-                // const characterSpriteSheets = getSpriteSheets(heroes[0].name);
-                // if (characterSpriteSheets) {
-                //     setCharacterSpriteSheets(characterSpriteSheets);
-                // }
+                
             }
         });
         fetchScenesNames().then(({ scenes }) => {
@@ -159,23 +155,13 @@ const GameLobby = () => {
     const handleCharacterSelect = (character: gl_GridCardData) => {
         if (isInQueue) return;
         setSelectedCharacter(character);
-        // const characterSpriteSheets = getSpriteSheets(character.name);
-        // if (characterSpriteSheets) {
-        //     setCharacterSpriteSheets(characterSpriteSheets);
-        //     console.log(characterSpriteSheets);
-        // }
+        
     };
 
     const handleSceneSelect = (scene: gl_GridCardData) => {
         if (isInQueue) return;
         setSelectedScene(scene);
     };
-
-    // const getSpriteSheets = (characterName: string) => {
-    //     characterName = characterName.toLowerCase();
-    //     const foundSpriteSheets = spriteSheetsLoader.find((spriteSheet) => spriteSheet.heroName === characterName);
-    //     return foundSpriteSheets ? foundSpriteSheets : null;
-    // }
 
     const handlePlayCancelClick = async () => {
         if (!gameLobbyRoom) return;
@@ -238,7 +224,7 @@ const GameLobby = () => {
                     </div>
                 </div>
                 <div className={`${gl_GameOptionsContainerStyle} text-neon-green`}>
-                    <p>Game Options</p>
+                    <GameLobbyOptionsBox setSelectionOptions={setSelectedOptions}/>
                 </div>
             </div>
         </div>
