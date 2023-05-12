@@ -1,8 +1,8 @@
 import Button from './Button';
-import { GiAbstract053, GiAzulFlake } from 'react-icons/gi';
-import { IChatboxSwitcherProps } from '../../typescript/interfaces/IChatboxSwitcherProps';
+import { GiAbstract053, GiNinjaHead } from 'react-icons/gi';
+import { IChatboxTogglerProps } from '../../typescript/interfaces/IChatboxTogglerProps';
 
-const ChatboxSwitcher = (props: IChatboxSwitcherProps) => {
+const ChatboxToggler = (props: IChatboxTogglerProps) => {
   const { onClick, chatboxOpen } = props;
   const toggleChatbox = onClick;
 
@@ -13,8 +13,8 @@ const ChatboxSwitcher = (props: IChatboxSwitcherProps) => {
           onClick={toggleChatbox}
           classNameAdditions={`p-2 z-50`}
           icon={
-            <GiAzulFlake
-              aria-label='GiAzulFlake'
+            <GiNinjaHead
+              aria-label='GiNinjaHead'
               fontSize='1.69rem'
               color='rgb(103 232 249)'
             />
@@ -37,4 +37,4 @@ const ChatboxSwitcher = (props: IChatboxSwitcherProps) => {
   );
 };
 
-export default ChatboxSwitcher;
+export default ChatboxToggler;

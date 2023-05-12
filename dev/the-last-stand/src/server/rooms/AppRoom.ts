@@ -6,6 +6,7 @@ import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
+import { EMessage } from '../../typescript/enumerations/EMessage';
 //import cron from 'node-cron';
 dotenv.config();
 const { MONGO_URI } = process.env;
@@ -102,7 +103,7 @@ export class AppRoom extends Room<AppState> {
         }
       });
     });
-    this.onMessage('toggleConversation', (client, conversationId) => {
+    this.onMessage(EMessage.ToggleConversation, (client, conversationId) => {
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
           this.handleToggleConversation(user._id, conversationId);
@@ -170,14 +171,9 @@ export class AppRoom extends Room<AppState> {
     try {
       // get the user's active conversations
       const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
-      console.log('activeConversationsIds:', activeConversationsIds, 'conversationId:', conversationId);
       if (!activeConversationsIds.includes(conversationId)) {
-        console.log("conversation not currently active, adding to user's active conversations");
-        // add the conversation to the user's active conversations
         await User.findOneAndUpdate({ _id: userId }, { $push: { activeConversationsIds: conversationId } });
       } else {
-        console.log("conversation currently active, removing from user's active conversations");
-        // remove the conversation from the user's active conversations
         await User.findOneAndUpdate({ _id: userId }, { $pull: { activeConversationsIds: conversationId } });
       }
     } catch (error) {

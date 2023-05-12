@@ -1,4 +1,4 @@
-export interface IChatboxSwitcherProps {
+export interface IChatboxTogglerProps {
   onClick?: () => void;
   chatboxOpen: boolean;
 }
