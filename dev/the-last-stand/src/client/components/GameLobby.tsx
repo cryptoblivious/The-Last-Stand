@@ -9,6 +9,7 @@ import { fetchScenesNames } from '../fetches/scenes';
 import { EMessage } from '../../typescript/enumerations/EMessage';
 import SocialOverlay from './SocialOverlay';
 import LoadingBox from './LoadingBox';
+import StatBar from './StatBar';
 
 const gl_mainContainerStyle = "relative flex flex-col h-screen p-4  bg-cover bg-center bg-repeat-x "
 // const gl_mainContainerStyle = "flex flex-col h-screen p-4 animate-gradient-x bg-gradient-to-r from-neon-turquoise via-neon-purple to-neon-green"
@@ -20,7 +21,7 @@ const gl_characterSelectionGridContainerStyle = 'w-1/3 h-1/2 mr-2'
 const gl_sceneSelectionGridContainerStyle = 'w-1/3 h-1/2 ml-2'
 const gl_buttonSectionContainerStyle = ' flex justify-center'
 const gl_buttonSectionAndLoadingBoxContainerStyle = 'flex items-center justify-center flex-col grow-0'
-const gl_titleStyle = 'text-4xl mb-4 font-bold text-center text-shadow-md text-neon-turquoise flex justify-center items-center grow-0';
+const gl_titleStyle = 'text-4xl mb-4 font-bold text-center text-shadow-md text-neon-turquoise flex justify-center items-center grow-0 mt-10';
 const gl_SubtitleStyle = 'text-2xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center bg-black bg-opacity-50 rounded-lg shadow-lg p-2';
 
 const gl_LoadingBoxText = 'Looking for players...'
@@ -156,6 +157,7 @@ const GameLobby = () => {
 
     return (
         <div className={gl_mainContainerStyle}>
+
             <div ref={backgroundRef1} className={gl_panBackgroundStyle}> </div>
             <div ref={backgroundRef2} className={gl_panBackgroundStyle}></div>
             <h1 className={gl_titleStyle}> Game Lobby</h1>
@@ -176,6 +178,8 @@ const GameLobby = () => {
                 </div>
                 <div style={isInQueue ? { visibility: 'visible' } : { visibility: 'hidden' }}>
                     <LoadingBox text={gl_LoadingBoxText} isVisibile={isInQueue} />
+                </div>
+                <div className='absolute w-100 h-100'>
                 </div>
             </div>
         </div>
