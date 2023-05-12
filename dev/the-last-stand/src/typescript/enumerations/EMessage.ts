@@ -6,8 +6,8 @@ export enum EMessage {
   ServerUpdateHudDamage,
   CreateEntity,
   RemoveEntity,
-  CreateHud, 
-  NewHudPlayer, 
+  CreateHud,
+  NewHudPlayer,
   UpdateHudDamage,
   ServerRemoveHudPlayer,
   RemoveHudPlayer,
@@ -19,8 +19,8 @@ export enum EMessage {
   UpdateHudLives,
   MatchMakerFull,
   JoinQueue,
-  JoinGame, 
+  JoinGame,
   StartGame,
   LeaveGame,
-  
+  ToggleConversation,
 }

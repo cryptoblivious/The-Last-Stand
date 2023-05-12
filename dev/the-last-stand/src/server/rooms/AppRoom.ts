@@ -6,6 +6,7 @@ import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
+import { EMessage } from '../../typescript/enumerations/EMessage';
 //import cron from 'node-cron';
 dotenv.config();
 const { MONGO_URI } = process.env;
@@ -51,6 +52,7 @@ export class AppRoom extends Room<AppState> {
           userNo: change.fullDocument.userNo,
           title: change.fullDocument.title,
           lastOnline: change.fullDocument.lastOnline,
+          activeConversationsIds: change.fullDocument.activeConversationsIds,
         };
         this.broadcast('usersChange', data);
 
@@ -101,6 +103,13 @@ export class AppRoom extends Room<AppState> {
         }
       });
     });
+    this.onMessage(EMessage.ToggleConversation, (client, conversationId) => {
+      this.state.users.forEach((user: any) => {
+        if (user.clientId === client.id) {
+          this.handleToggleConversation(user._id, conversationId);
+        }
+      });
+    });
   }
 
   onAuth(client: Client, user: any) {
@@ -118,7 +127,7 @@ export class AppRoom extends Room<AppState> {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
-      this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
+      //this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
     }
 
     // Create the user's app state data and add it to the app state
@@ -158,6 +167,20 @@ export class AppRoom extends Room<AppState> {
     }
   };
 
+  handleToggleConversation = async (userId: string, conversationId: string) => {
+    try {
+      // get the user's active conversations
+      const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
+      if (!activeConversationsIds.includes(conversationId)) {
+        await User.findOneAndUpdate({ _id: userId }, { $push: { activeConversationsIds: conversationId } });
+      } else {
+        await User.findOneAndUpdate({ _id: userId }, { $pull: { activeConversationsIds: conversationId } });
+      }
+    } catch (error) {
+      console.error('Error finding conversation:', error);
+    }
+  };
+
   async onLeave(client: Client, consented: boolean) {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
@@ -165,7 +188,7 @@ export class AppRoom extends Room<AppState> {
       if (user.clientId === client.id) {
         if (user.username !== 'guest') {
           const { _id, username, userNo } = user;
-          this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
+          //this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
           this.updateLastOnline(_id);
         }
         this.state.users.delete(user._id);

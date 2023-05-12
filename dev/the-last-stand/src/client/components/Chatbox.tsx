@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useRef } from 'react';
-import ChatboxSwitcher from './ChatboxSwitcher';
+import ChatboxToggler from './ChatboxToggler';
+import ChatboxCloseButton from './ChatboxCloseButton';
 import { ColyseusContext } from './ColyseusProvider';
 import { HOST_URL, HOST_PORT } from '../appConfig';
 import { fetchConversation } from '../fetches/fetchConversation';
@@ -76,17 +77,18 @@ const Chatbox = (props: IChatboxProps) => {
     <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 py-2 w-full flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-full' : ' h-12 translate-x-full'}`}>
       <div className='flex gap-2 items-center border-b-2 border-pink-600 p-2'>
         <h1 className='text-center text-cyan-500 font-bold grow text-3xl'>Global Chat</h1>
-        <ChatboxSwitcher
+        <ChatboxToggler
           onClick={toggleChatbox}
           chatboxOpen={chatboxOpen}
-        />{' '}
+        />
+        <ChatboxCloseButton conversationId={id} />
       </div>
       {/* <MessageList messages={messages} /> */}
       <div
         ref={containerRef}
         className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-3 grow'>
         {conversation.messages &&
-          conversation.messages.map((message:any, index:any) => {
+          conversation.messages.map((message: any, index: any) => {
             const date = new Date(message.updatedAt);
 
             // Convert the date to the local timezone of the client and format it
@@ -110,7 +112,7 @@ const Chatbox = (props: IChatboxProps) => {
                       <span className='text-pink-900'>#{message.userNo}</span>
                     </p>
                     <div>
-                      {message.content!.split('\n').map((line:any, index:any) => (
+                      {message.content!.split('\n').map((line: any, index: any) => (
                         <p
                           className={`whitespace-normal break-all ${user!.username === message.username && user!.userNo === message.userNo ? 'text-pink-300' : 'text-white'}`}
                           key={index}>

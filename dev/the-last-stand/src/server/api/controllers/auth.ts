@@ -23,11 +23,11 @@ export const initializeGoogleOAuthStrategy = () => {
         try {
           const email: string = profile.emails[0].value;
           let user = await User.findOne({ email: email });
-          const globalChat = await Conversation.findOne({ isGlobal: true });
+          //const globalChat = await Conversation.findOne({ isGlobal: true });
 
           if (user) {
             // user already exists in the database, return it
-            const user = await User.findOneAndUpdate({ email: email }, { lastOnline: 'now', activeConversationsIds: [globalChat!._id] });
+            const user = await User.findOneAndUpdate({ email: email }, { lastOnline: 'now' });
             return done(null, user);
           } else {
             const userWithSameName = await User.findOne({ username: profile.name?.givenName });
@@ -42,7 +42,7 @@ export const initializeGoogleOAuthStrategy = () => {
               title: 'N00bzor',
               avatar: null,
               lastOnline: 'now',
-              activeConversationsIds: [globalChat!._id],
+              //activeConversationsIds: [globalChat!._id],
             });
             await user.save();
             return done(null, user);

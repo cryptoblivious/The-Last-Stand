@@ -6,4 +6,5 @@ export interface IUser {
   title?: string;
   avatar?: string;
   lastOnline?: Date | string;
+  activeConversationsIds?: string[];
 }
