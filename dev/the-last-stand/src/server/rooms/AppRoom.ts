@@ -54,7 +54,7 @@ export class AppRoom extends Room<AppState> {
           lastOnline: change.fullDocument.lastOnline,
           activeConversationsIds: change.fullDocument.activeConversationsIds,
         };
-        this.broadcast('usersChange', data);
+        this.broadcast(EMessage.UsersChange, data);
 
         // check for the user in the room state and update it if it exists
         this.state.users.forEach((user: any) => {
@@ -78,7 +78,7 @@ export class AppRoom extends Room<AppState> {
           _id: change.fullDocument._id,
           messages: change.fullDocument.messages,
         };
-        this.broadcast('conversationsChange', data);
+        this.broadcast(EMessage.ConversationsChange, data);
       });
 
       const messages = db.collection('messages');
@@ -104,6 +104,7 @@ export class AppRoom extends Room<AppState> {
       });
     });
     this.onMessage(EMessage.ToggleConversation, (client, conversationId) => {
+      console.log("received 'toggle conversation' message from client: ", client.id, ' with conversationId: ', conversationId);
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
           this.handleToggleConversation(user._id, conversationId);
@@ -172,8 +173,10 @@ export class AppRoom extends Room<AppState> {
       // get the user's active conversations
       const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
       if (!activeConversationsIds.includes(conversationId)) {
-        await User.findOneAndUpdate({ _id: userId }, { $push: { activeConversationsIds: conversationId } });
+        console.log("adding conversationId to user's activeConversationsIds");
+        await User.findOneAndUpdate({ _id: userId }, { $addToSet: { activeConversationsIds: conversationId } });
       } else {
+        console.log("removing conversationId from user's activeConversationsIds");
         await User.findOneAndUpdate({ _id: userId }, { $pull: { activeConversationsIds: conversationId } });
       }
     } catch (error) {

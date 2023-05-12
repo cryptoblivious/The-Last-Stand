@@ -5,6 +5,7 @@ import { IUser } from '../../typescript/interfaces/IUser';
 import { AppState } from '../../server/rooms/states/AppState';
 import { patchCurrentUser, getCurrentUser, getUsers } from '../fetches/users';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
+import { EMessage } from '../../typescript/enumerations/EMessage';
 
 interface ColyseusContextProps {
   client: Client | null;
@@ -52,7 +53,8 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     const client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
-      appRoom.onMessage('usersChange', (updatedUser: any) => {
+      appRoom.onMessage(EMessage.UsersChange, (updatedUser: any) => {
+        console.log('received usersChange', 'activeConversationsIds', updatedUser.activeConversationsIds);
         if (updatedUser._id === userData._id) {
           setUser((prevUser) => {
             return {

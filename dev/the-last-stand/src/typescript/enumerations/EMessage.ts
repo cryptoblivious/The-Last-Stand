@@ -23,4 +23,6 @@ export enum EMessage {
   StartGame,
   LeaveGame,
   ToggleConversation,
+  ConversationsChange,
+  UsersChange,
 }

@@ -4,6 +4,7 @@ import ChatboxCloseButton from './ChatboxCloseButton';
 import { ColyseusContext } from './ColyseusProvider';
 import { HOST_URL, HOST_PORT } from '../appConfig';
 import { fetchConversation } from '../fetches/fetchConversation';
+import { EMessage } from '../../typescript/enumerations/EMessage';
 
 interface IChatboxProps {
   id: string;
@@ -56,7 +57,7 @@ const Chatbox = (props: IChatboxProps) => {
     fetchData();
 
     if (appRoom) {
-      appRoom.onMessage('conversationsChange', (updatedConversation: any) => {
+      appRoom.onMessage(EMessage.ConversationsChange, (updatedConversation: any) => {
         if (updatedConversation._id === id) {
           setConversation((prevConversation: any) => {
             return {
