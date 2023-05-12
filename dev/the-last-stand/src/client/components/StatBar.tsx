@@ -1,24 +1,25 @@
 
-const sb_ContainerStyle = ' w-full bg-gray-300 rounded flex '
+const sb_ContainerStyle = 'flex justify-start items-center p-2 bg-black bg-opacity-50  rounded-md w-full '
 
-interface IStatBarProps {
-    stat: string;
+export interface IStatBarProps {
+    statName: string;
     value: number;
-    max: number;
+    maxValue: number;
 }
 
 
 const StatBar = (props: IStatBarProps) => {
-    const { stat, value, max } = props;
-    const barWidth = (value / max) * 100;
+    const { statName, value, maxValue } = props;
+    const barWidth = (value / maxValue) * 100;
 
-    // change the color from green to red as the bar gets lower
-    const color = `rgb(${255 - (barWidth * 2.55)}, ${barWidth * 2.55}, 0)`;
+    const hue = (barWidth / 100)  * 120;
+    // hue to get from green to red
+    const hue2 = (barWidth / 100) * 120;
 
     return (
         <div className={sb_ContainerStyle}>
-            <h1> {stat} </h1>
-            <div style={{width : `${barWidth}`}} className={`h-4 bg-[${color}] rounded`}></div>
+            <h1 className="mr-2"> {statName} </h1>
+            <div style={{width : `${barWidth}%` , backgroundColor:`hsl(${hue}, 100%, 50%)`}} className="h-4 rounded-md align-start"></div>
         </div>
     );
 
