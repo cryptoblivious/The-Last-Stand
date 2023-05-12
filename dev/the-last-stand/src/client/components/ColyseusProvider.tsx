@@ -61,6 +61,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
               userNo: updatedUser.userNo ?? prevUser!.userNo,
               title: updatedUser.title ?? prevUser!.title,
               lastOnline: updatedUser.lastOnline ?? prevUser!.lastOnline,
+              activeConversationsIds: updatedUser.activeConversationsIds ?? prevUser!.activeConversationsIds,
             };
           });
         }

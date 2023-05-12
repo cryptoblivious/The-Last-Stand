@@ -51,6 +51,7 @@ export class AppRoom extends Room<AppState> {
           userNo: change.fullDocument.userNo,
           title: change.fullDocument.title,
           lastOnline: change.fullDocument.lastOnline,
+          activeConversationsIds: change.fullDocument.activeConversationsIds,
         };
         this.broadcast('usersChange', data);
 
@@ -98,6 +99,13 @@ export class AppRoom extends Room<AppState> {
           if (user.username !== 'guest') {
             this.handleMessage(message, user._id, user.username, user.userNo);
           }
+        }
+      });
+    });
+    this.onMessage('toggleConversation', (client, conversationId) => {
+      this.state.users.forEach((user: any) => {
+        if (user.clientId === client.id) {
+          this.handleToggleConversation(user._id, conversationId);
         }
       });
     });
@@ -155,6 +163,25 @@ export class AppRoom extends Room<AppState> {
       await Conversation.findOneAndUpdate({ _id: message.conversationId }, { $push: { messages: messageMapper } });
     } catch (error) {
       console.error('Error updating conversation:', error);
+    }
+  };
+
+  handleToggleConversation = async (userId: string, conversationId: string) => {
+    try {
+      // get the user's active conversations
+      const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
+      console.log('activeConversationsIds:', activeConversationsIds, 'conversationId:', conversationId);
+      if (!activeConversationsIds.includes(conversationId)) {
+        console.log("conversation not currently active, adding to user's active conversations");
+        // add the conversation to the user's active conversations
+        await User.findOneAndUpdate({ _id: userId }, { $push: { activeConversationsIds: conversationId } });
+      } else {
+        console.log("conversation currently active, removing from user's active conversations");
+        // remove the conversation from the user's active conversations
+        await User.findOneAndUpdate({ _id: userId }, { $pull: { activeConversationsIds: conversationId } });
+      }
+    } catch (error) {
+      console.error('Error finding conversation:', error);
     }
   };
 
