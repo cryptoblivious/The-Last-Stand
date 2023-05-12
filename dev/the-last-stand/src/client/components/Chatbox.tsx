@@ -96,10 +96,10 @@ const Chatbox = (props: IChatboxProps) => {
             return (
               <div
                 key={index}
-                className={`${user!.username === message.username && user!.userNo === message.userNo ? 'ml-auto' : ''} bg-slate-900 w-fit p-4 rounded-3xl border-2 border-cyan-500 max-w-[75%]`}>
-                <p className='italic text-green-500'>{localTimestamp}</p>
+                className={`${user!.username === message.username && user!.userNo === message.userNo ? 'ml-auto' : ''} ${message.username == 'Server' ? 'border-neon-green bg-green-950' : 'bg-slate-900 border-cyan-500'} w-fit p-4 rounded-3xl border-2 max-w-[75%]`}>
+                <p className={`italic text-green-500 ${message.username === 'Server' && 'text-sm'}`}>{localTimestamp}</p>
                 {message.username === 'Server' ? (
-                  <p>
+                  <p className='text-xs'>
                     <span className='text-pink-600'>{!message.content.includes('Messages have been reset') ? message.content.split('#')[0] : ''}</span>
                     <span className='text-pink-900'>{!message.content.includes('Messages have been reset') ? `#${message.userNo}` : ''} </span>
                     <span className='text-cyan-300'>{!message.content.includes('Messages have been reset') ? message.content.substring(message.content.indexOf(' ') + 1) : message.content}</span>
