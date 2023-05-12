@@ -1,17 +1,35 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import spriteSheetsLoader from '../match/scenes/spritesheetsLoader';
+import { IHeroesSpritePaths } from '../../typescript/interfaces/IHeroesSpritesPaths';
 
-export interface IAnimatedSpriteCanvasProps {
-    src: string;
-    frameCount: number;
-    frameWidth: number;
-    frameHeight: number;
+interface IAnimatedSpriteCanvasProps {
+    characterName: string;
+    delay : number;
 }
 
-const AnimatedSpriteCanvas = (props: IAnimatedSpriteCanvasProps) => {
-    const { src, frameCount, frameWidth, frameHeight } = props;
+const AnimatedSpriteCanvas = (props : IAnimatedSpriteCanvasProps) => {
+    const { characterName, delay} = props;
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [spriteSheets, setSpriteSheets] = useState<IHeroesSpritePaths>();
+    const [animationIndex, setAnimationIndex] = useState<number>(0);
+
+    const getSpriteSheets = (characterName: string) => {
+        characterName = characterName.toLowerCase();
+        const foundSpriteSheets = spriteSheetsLoader.find((spriteSheet) => spriteSheet.heroName === characterName);
+        return foundSpriteSheets ? foundSpriteSheets : null;
+    }
 
     useEffect(() => {
+        const spriteSheets = getSpriteSheets(characterName);
+        if (spriteSheets) {
+            setSpriteSheets(spriteSheets);
+            console.log('spriteSheets', spriteSheets);
+        }
+    }, [characterName])
+
+    useEffect(() => {
+        if(!spriteSheets) return;
+
         const canvas = canvasRef.current;
         if (canvas) {
             const parentContainer = canvas.parentElement;
@@ -25,13 +43,16 @@ const AnimatedSpriteCanvas = (props: IAnimatedSpriteCanvasProps) => {
             let tickCount = 0;
             let ticksPerFrame = 0;
             let image = new Image();
-            image.src = src;
+            image.src = spriteSheets.spriteSheets[animationIndex].path;
+            
+            const frameWidth = spriteSheets.spriteSheets[animationIndex].frameWidth;
+            const frameHeight = spriteSheets.spriteSheets[animationIndex].frameHeight;
+            const frameCount = spriteSheets.spriteSheets[animationIndex].endFrame;
 
 
             if (context) {
-                context.setTransform(4,0,0,4,0,0)
-                
-                
+                const scale = 4;
+                // context.scale(2,2)
                 const render = () => {
                     tickCount += 1;
                     if (tickCount > ticksPerFrame) {
@@ -42,21 +63,26 @@ const AnimatedSpriteCanvas = (props: IAnimatedSpriteCanvasProps) => {
                             frameIndex = 0;
                         }
                     }
-
-                    const x = canvas.width / 8 - frameWidth / 4;
-                    const y = canvas.height / 8 - frameHeight / 4;
-
+                    
                     context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    const scaledFrameWidth = frameWidth * scale;
+                    const scaledFrameHeight = frameHeight * scale;
+
+                    const x = (canvas.width - scaledFrameWidth)/ 2;
+                    const y = (canvas.height - scaledFrameHeight) / 2 ;
+
+
                     context.drawImage(
                         image,
                         frameIndex * frameWidth,
                         0,
                         frameWidth,
                         frameHeight,
-                        30,
-                        5,
-                        frameWidth ,
-                        frameHeight
+                        x,
+                        y,
+                        scaledFrameWidth,
+                        scaledFrameHeight
                     );
                 }
 
@@ -70,14 +96,28 @@ const AnimatedSpriteCanvas = (props: IAnimatedSpriteCanvasProps) => {
                     loop();
                 }
                 let animationID:number;
-                return () => {
-                    window.cancelAnimationFrame(animationID);
-                }
+                return () => window.cancelAnimationFrame(animationID);
             }
         }
-    }, [src, frameCount, frameWidth, frameHeight])
+    }, [spriteSheets, canvasRef, animationIndex])
 
 
+    useEffect(() => {
+        if(!spriteSheets) return;
+        const interval = setInterval(() => {
+            setAnimationIndex((prev) => {
+                if (prev < spriteSheets.spriteSheets.length - 1) {
+                    return prev + 1;
+                } else {
+                    return 0;
+                }
+            })
+        }, delay);
+
+        return () => clearInterval(interval);
+
+    }, [spriteSheets, delay])
+    
         
 
     return (
