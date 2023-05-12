@@ -88,7 +88,6 @@ const Chatbox = (props: IChatboxProps) => {
         {conversation.messages &&
           conversation.messages.map((message:any, index:any) => {
             const date = new Date(message.updatedAt);
-            // console.log('message', message);
 
             // Convert the date to the local timezone of the client and format it
             const localTimestamp = date.toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'medium' });
@@ -105,9 +104,11 @@ const Chatbox = (props: IChatboxProps) => {
                     <span className='text-cyan-300'>{!message.content.includes('Messages have been reset') ? message.content.substring(message.content.indexOf(' ') + 1) : message.content}</span>
                   </p>
                 ) : (
-                  <p>
-                    <span className='text-pink-600'>{message.username}</span>
-                    <span className='text-pink-900'>#{message.userNo}</span>
+                  <div>
+                    <p>
+                      <span className='text-pink-600'>{message.username}</span>
+                      <span className='text-pink-900'>#{message.userNo}</span>
+                    </p>
                     <div>
                       {message.content!.split('\n').map((line:any, index:any) => (
                         <p
@@ -117,7 +118,7 @@ const Chatbox = (props: IChatboxProps) => {
                         </p>
                       ))}
                     </div>
-                  </p>
+                  </div>
                 )}
               </div>
             );
