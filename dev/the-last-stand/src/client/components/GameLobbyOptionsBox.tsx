@@ -2,10 +2,14 @@ import ButtonLayer from './ButtonLayer';
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 
 const buttonsStyle = `w-fit bg-purple-900 rounded-xl p-1 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110`;
-const GameLobbyOptionsBox = () => {
+const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
+    const { setSelectionOptions } = props;
     const firstLayer: IButtonProps[] = [
         {
-            onClick: () => console.log('casual!'),
+            onClick: () => {
+                console.log('casual!')
+                setSelectionOptions((prevOptions:any) => ({...prevOptions, gameMode: 'casual'}) );
+            },
             text: 'Casual',
             className: buttonsStyle,
             classNameAdditions: 'text-2xl ',
@@ -14,7 +18,10 @@ const GameLobbyOptionsBox = () => {
             type: 'button'
         },
         {
-            onClick: () => console.log('ranked!'),
+            onClick: () => {
+                console.log('ranked!')
+                setSelectionOptions((prevOptions:any) => ({...prevOptions, gameMode: 'ranked'}) );
+            },
             text: 'Ranked',
             className: buttonsStyle,
             classNameAdditions: 'text-2xl ',
@@ -26,7 +33,10 @@ const GameLobbyOptionsBox = () => {
 
     const secondLayer: IButtonProps[] = [
         {
-            onClick: () => console.log('2 players!'),
+            onClick: () => {
+                console.log('2 players!')
+                setSelectionOptions((prevOptions:any) => ({...prevOptions, playerCount: 2}) );
+            },
             text: '2',
             className: buttonsStyle,
             classNameAdditions: 'text-2xl p-3',
@@ -35,7 +45,10 @@ const GameLobbyOptionsBox = () => {
             type: 'button'
         },
         {
-            onClick: () => console.log('3 players!'),
+            onClick: () => {
+                console.log('3 players!')
+                setSelectionOptions((prevOptions:any) => ({...prevOptions, playerCount: 3}) );
+            },
             text: '3',
             className: buttonsStyle,
             classNameAdditions: 'text-2xl p-3',
@@ -44,7 +57,10 @@ const GameLobbyOptionsBox = () => {
             type: 'button'
         },
         {
-            onClick: () => console.log('4 players!'),
+            onClick: () => {
+                console.log('4 players!')
+                setSelectionOptions((prevOptions:any) => ({...prevOptions, playerCount: 4}) );
+            },
             text: '4',
             className: buttonsStyle,
             classNameAdditions: 'text-2xl p-3',
