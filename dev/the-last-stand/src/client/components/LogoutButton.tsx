@@ -11,11 +11,13 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button
-      onClick={logout}
-      classNameAdditions='ml-auto'
-      text='Sign out'
-    />
+    <div className='flex grow items-end'>
+      <Button
+        onClick={logout}
+        classNameAdditions='ml-auto h-fit'
+        text='Sign out'
+      />
+    </div>
   );
 };
 
