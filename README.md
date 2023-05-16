@@ -55,7 +55,7 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 
 ## Construit avec
 
-[![Colyseus][colyseus-img]][colyseus-url]
+[![Colyseus][colyseus-img]][colyseus-url] <a href="https://nodejs.org/" target="_blank">![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)</a>
 
 ## Installation
 

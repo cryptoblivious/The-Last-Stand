@@ -60,7 +60,7 @@ export class AppRoom extends Room<AppState> {
         this.state.users.forEach((user: any) => {
           if (user._id === data._id.toString()) {
             const userMapper = new IUserMapper();
-            userMapper._id = data._id;
+            userMapper._id = data._id.toString();
             userMapper.username = data.username;
             userMapper.userNo = data.userNo;
             userMapper.title = data.title;
