@@ -23,7 +23,7 @@
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Construit à l'aide de 
-* [![Colyseus][colyseus-img]][colyseus-url]
+[![Colyseus][colyseus-img]][colyseus-url]
 
 ## Installation
 
