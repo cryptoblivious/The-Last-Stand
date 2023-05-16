@@ -11,7 +11,7 @@
       </li>
       <li>
         <a
-        href="#construit-à-l'aide-de">Construit à l'aide de
+        href="#construit-à-l&#39;aide-de">Construit à l'aide de
         </a>
       </li>
       <li>
