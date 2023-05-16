@@ -26,7 +26,7 @@
       </li>
       <li>
         <a
-        href="#references">Références
+        href="#références">Références
         </a>
       </li>
       <li>
@@ -53,7 +53,8 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Construit à l'aide de 
+## Construit à l'aide de
+
 [![Colyseus][colyseus-img]][colyseus-url]
 
 ## Installation
@@ -91,5 +92,6 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [colyseus-img]: https://img.shields.io/badge/Server-Colyseus-%23CC7DFF
 [colyseus-url]: https://colyseus.io/
