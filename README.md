@@ -57,6 +57,8 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 
 [![Colyseus][colyseus-img]][colyseus-url]
 [![NodeJS][nodedotjs-img]][nodedotjs-url]
+[![Insomnia][insomnia-img]][insomnia-url]
+[![Title][placeholder-img]][placeholder-url]
 
 ## Installation
 
@@ -98,3 +100,7 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 [colyseus-url]: https://colyseus.io/
 [nodedotjs-img]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
 [nodedotjs-url]: https://nodejs.org/
+[insomnia-img]: https://img.shields.io/badge/insomnia-4000BF?style=for-the-badge&logo=insomnia&logoColor=white
+[insomnia-url]: https://insomnia.rest/
+[placeholder-img]: 
+[placeholder-url]: 
