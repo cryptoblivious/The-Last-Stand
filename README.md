@@ -104,7 +104,7 @@ Bienvenue dans le code source du projet [The Last Stand](https://tls.woodchuckga
 [insomnia-img]: https://img.shields.io/badge/insomnia-4000BF?style=for-the-badge&logo=insomnia&logoColor=white
 [insomnia-url]: https://insomnia.rest/
 [tailwind-img]: https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white
-[tailwind-url]: [https://insomnia.rest/](https://tailwindcss.com/)
+[tailwind-url]: https://tailwindcss.com/
 
 
 [placeholder-img]: https://img.shields.io/badge/placeholder-FAB040?style=for-the-badge&logo=precommit&logoColor=red
