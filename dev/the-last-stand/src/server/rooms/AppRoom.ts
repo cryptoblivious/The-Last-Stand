@@ -104,7 +104,8 @@ export class AppRoom extends Room<AppState> {
       });
     });
     this.onMessage(EMessage.ToggleConversation, (client, conversationId) => {
-      console.log("received 'toggle conversation' message from client: ", client.id, ' with conversationId: ', conversationId);
+      console.log('users in the room : ', this.state.users);
+      // TODO : Find out why the user is being added multiple times to the room state
       this.state.users.forEach((user: any) => {
         if (user.clientId === client.id) {
           this.handleToggleConversation(user._id, conversationId);
@@ -170,8 +171,12 @@ export class AppRoom extends Room<AppState> {
 
   handleToggleConversation = async (userId: string, conversationId: string) => {
     try {
+      console.log(`handleToggleConversation called with userId: ${userId} and conversationId: ${conversationId}`);
+
       // get the user's active conversations
       const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
+      console.log(`User with userId: ${userId} has activeConversationsIds: ${activeConversationsIds}`);
+
       if (!activeConversationsIds.includes(conversationId)) {
         console.log("adding conversationId to user's activeConversationsIds");
         await User.findOneAndUpdate({ _id: userId }, { $addToSet: { activeConversationsIds: conversationId } });

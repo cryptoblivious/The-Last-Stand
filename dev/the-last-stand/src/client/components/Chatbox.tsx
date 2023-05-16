@@ -12,7 +12,7 @@ interface IChatboxProps {
 
 const Chatbox = (props: IChatboxProps) => {
   const { id } = props;
-  const [chatboxOpen, setChatboxOpen] = useState<boolean>(false);
+  const [chatboxOpen, setChatboxOpen] = useState<boolean>(true);
   const [enterSend, setEnterSend] = useState<boolean>(true);
   const { appRoom, user } = useContext(ColyseusContext);
   const [conversation, setConversation] = useState<any>(null);

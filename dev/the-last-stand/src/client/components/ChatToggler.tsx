@@ -10,12 +10,10 @@ interface IChatTogglerProps {
 const ChatToggler = (props: IChatTogglerProps) => {
   const chatId = props.id;
   const { user, appRoom } = useContext(ColyseusContext);
-  const [chatOpen, setChatOpen] = useState<boolean>(false);
 
   const toggleChat = () => {
     console.log('sending toggleConversation');
     appRoom!.send(EMessage.ToggleConversation, chatId);
-    setChatOpen((prev) => !prev);
   };
 
   if (!user || !appRoom) return <div>Loading...</div>;

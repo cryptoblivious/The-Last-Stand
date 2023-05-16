@@ -54,9 +54,13 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     try {
       const appRoom: Room<AppState> = await client.joinOrCreate('app_room', userData);
       appRoom.onMessage(EMessage.UsersChange, (updatedUser: any) => {
-        console.log('received usersChange', 'activeConversationsIds', updatedUser.activeConversationsIds);
         if (updatedUser._id === userData._id) {
           setUser((prevUser) => {
+            if (prevUser?.activeConversationsIds !== updatedUser.activeConversationsIds) {
+              console.log('activeConversationsIds changed', updatedUser.activeConversationsIds);
+            } else {
+              console.log('activeConversationsIds did not change', updatedUser.activeConversationsIds);
+            }
             return {
               ...prevUser,
               username: updatedUser.username ?? prevUser!.username,
