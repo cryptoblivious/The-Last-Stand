@@ -2,23 +2,54 @@
 
 # The Last Stand
 
-(Le titre de votre projet)
-
-## Sommaire
-
-- [The Last Stand](#the-last-stand)
-  - [Sommaire](#sommaire)
-  - [Présentation du Projet](#présentation-du-projet)
-  - [Installation](#installation)
-  - [Utilisation](#utilisation)
-  - [Références](#références)
-  - [Contact](#contact)
-  - [Remerciements](#remerciements)
-  - [Licence](#licence)
+  <!-- TABLE OF CONTENTS -->
+  <details>
+    <summary><span style="font-size: x-large;">Sommaire</span></summary>
+    <ol>
+      <li>
+        <a href="#presentation-du-projet">Présentation du projet</a>
+      </li>
+      <li>
+        <a
+        href="#construit-avec">Construit avec
+        </a>
+      </li>
+      <li>
+        <a
+        href="#Installation">Installation
+        </a>
+      </li>
+      <li>
+        <a
+        href="#Utilisation">Utilisation
+        </a>
+      </li>
+      <li>
+        <a
+        href="#references">Références
+        </a>
+      </li>
+      <li>
+        <a
+        href="#contact">Contact
+        </a>
+      </li>
+      <li>
+        <a
+        href="#remerciements">Remerciements
+        </a>
+      </li>
+      <li>
+        <a
+        href="#license">License
+        </a>
+      </li>
+    </ol>
+  </details>
 
 ## Présentation du Projet
 
-(Insérez ici une brève description de votre projet)
+Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en ligne de type platform fighter. Ce projet a été développé avec le souci de répondre aux exigences du cours de Projet synthèse (420-C61-IN) du programme de Techniques de l'Informatique au Cégep du Vieux Montréal à la session d'hiver 2023. En utilisant une combinaison de technologies modernes comme [indiquer les technologies utilisées], nous avons créé une solution qui est non seulement robuste et évolutive, mais aussi facile à utiliser.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
