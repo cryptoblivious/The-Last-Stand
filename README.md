@@ -13,7 +13,7 @@
 ## Présentation du Projet
 (Insérez ici une brève description de votre projet)
 
-<div style="text-align: right">[Back to top](#the-last-stand)</div>
+<p align="right">[Back to top](#the-last-stand)</p>
 
 
 ## Installation
