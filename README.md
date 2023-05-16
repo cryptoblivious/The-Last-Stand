@@ -49,7 +49,7 @@
 
 ## Présentation du Projet
 
-Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en ligne de type platform fighter. Ce projet a été développé avec le souci de répondre aux exigences du cours de Projet synthèse (420-C61-IN) du programme de Techniques de l'Informatique au Cégep du Vieux Montréal à la session d'hiver 2023. En utilisant une combinaison de technologies modernes comme [indiquer les technologies utilisées], nous avons créé une solution qui est non seulement robuste et évolutive, mais aussi facile à utiliser.
+Bienvenue dans le code source du projet [The Last Stand](https://github.com/cryptoblivious/The-Last-Stand), un jeu multijoueur en ligne de type platform fighter. Ce projet a été développé avec le souci de répondre aux exigences du cours de Projet synthèse (420-C61-IN) du programme de Techniques de l'Informatique au Cégep du Vieux Montréal à la session d'hiver 2023. En utilisant une combinaison de technologies modernes comme [indiquer les technologies utilisées], nous avons créé une solution qui est non seulement robuste et évolutive, mais aussi facile à utiliser.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
