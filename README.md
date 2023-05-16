@@ -55,7 +55,11 @@ Bienvenue dans le code source du projet [The Last Stand](https://tls.woodchuckga
 
 ## Construit avec
 
-[![Colyseus][colyseus-img]][colyseus-url] [![NodeJS][nodedotjs-img]][nodedotjs-url] [![Insomnia][insomnia-img]][insomnia-url] [![Title][placeholder-img]][placeholder-url]
+[![Colyseus][colyseus-img]][colyseus-url]
+[![NodeJS][nodedotjs-img]][nodedotjs-url]
+[![Insomnia][insomnia-img]][insomnia-url]
+[![TailwindCSS][tailwind-img]][tailwind-url]
+[![Title][placeholder-img]][placeholder-url]
 
 ## Installation
 
@@ -99,5 +103,10 @@ Bienvenue dans le code source du projet [The Last Stand](https://tls.woodchuckga
 [nodedotjs-url]: https://nodejs.org/
 [insomnia-img]: https://img.shields.io/badge/insomnia-4000BF?style=for-the-badge&logo=insomnia&logoColor=white
 [insomnia-url]: https://insomnia.rest/
+[tailwind-img]: https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white
+[tailwind-url]: https://tailwindcss.com/
 
-[placeholder-img]: [placeholder-url]:
+
+[placeholder-img]: https://img.shields.io/badge/placeholder-FAB040?style=for-the-badge&logo=precommit&logoColor=red
+[placeholder-url]: https://perdu.com/
+
