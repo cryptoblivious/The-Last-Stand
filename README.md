@@ -11,7 +11,7 @@
       </li>
       <li>
         <a
-        href="#construit-à-l&#39;aide-de">Construit à l'aide de
+        href="#construit-avec">Construit avec
         </a>
       </li>
       <li>
@@ -53,7 +53,7 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Construit à l'aide de
+## Construit avec
 
 [![Colyseus][colyseus-img]][colyseus-url]
 
