@@ -7,11 +7,11 @@
     <summary><span style="font-size: x-large;">Sommaire</span></summary>
     <ol>
       <li>
-        <a href="#presentation-du-projet">Présentation du projet</a>
+        <a href="#présentation-du-projet">Présentation du projet</a>
       </li>
       <li>
         <a
-        href="#construit-avec">Construit avec
+        href="#construit-à-l'aide-de">Construit à l'aide de
         </a>
       </li>
       <li>
@@ -41,7 +41,7 @@
       </li>
       <li>
         <a
-        href="#license">License
+        href="#licence">Licence
         </a>
       </li>
     </ol>
