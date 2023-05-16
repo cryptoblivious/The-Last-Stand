@@ -93,5 +93,5 @@ Bienvenue dans le code source du projet The Last Stand, un jeu multijoueur en li
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[colyseus-img]: [https://img.shields.io/badge/Server-Colyseus-%23CC7DFF](https://img.shields.io/badge/colyseus-A100FF?style=for-the-badge&logo=c&logoColor=white)
+[colyseus-img]:https://img.shields.io/badge/colyseus-A100FF?style=for-the-badge&logo=c&logoColor=white
 [colyseus-url]: https://colyseus.io/
