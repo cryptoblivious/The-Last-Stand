@@ -7,33 +7,50 @@ import DoublyLinkedListNode from "./DoublyLinkedListNode";
  * @implements {Iterator<DoublyLinkedListNode<T>>}
  */
 export default class DoublyLinkedList<T> {
-    private head: DoublyLinkedListNode<T> | null;
-    private tail: DoublyLinkedListNode<T> | null;
-    private size: number;
+    private _head: DoublyLinkedListNode<T> | null;
+    private _tail: DoublyLinkedListNode<T> | null;
+    private _size: number;
 
     /**
      * Creates a new instance of DoublyLinkedList.
      */
     constructor() {
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
+        this._head = null;
+        this._tail = null;
+        this._size = 0;
     }
 
-    /**
-     * Gets the size of the linked list.
-     * @returns The number of elements in the linked list.
-     */
-    public getSize(): number {
-        return this.size;
+    get head (): DoublyLinkedListNode<T> | null {
+        return this._head;
     }
+
+    set head(node: DoublyLinkedListNode<T> | null) {
+        this._head = node;
+    }
+
+    get tail (): DoublyLinkedListNode<T> | null {
+        return this._tail;
+    }
+
+    set tail(node: DoublyLinkedListNode<T> | null) {
+        this._tail = node;
+    }
+
+    get size (): number {
+        return this._size;
+    }
+
+    set size(size: number) {
+        this._size = size;
+    }
+
 
     /**
      * Checks if the linked list is empty.
      * @returns True if the linked list is empty, false otherwise.
      */
     public isEmpty(): boolean {
-        return this.size === 0;
+        return this._size === 0;
     }
 
     /**
@@ -41,7 +58,7 @@ export default class DoublyLinkedList<T> {
    * @returns An iterator for the linked list.
    */
     public [Symbol.iterator](): Iterator<DoublyLinkedListNode<T>> {
-        return new DoublyLinkedListIterator<T>(this.head);
+        return new DoublyLinkedListIterator<T>(this._head);
     }
 
     /**
@@ -66,7 +83,7 @@ export default class DoublyLinkedList<T> {
      * @returns True if the nodes were successfully swapped, false otherwise.
      */
     public swapNodes(index1: number, index2: number): boolean {
-        if (index1 < 0 || index1 >= this.size || index2 < 0 || index2 >= this.size || index1 === index2) {
+        if (index1 < 0 || index1 >= this._size || index2 < 0 || index2 >= this._size || index1 === index2) {
             return false;
         }
 
@@ -92,12 +109,12 @@ export default class DoublyLinkedList<T> {
         if (prev1) {
             prev1.next = node2;
         } else {
-            this.head = node2;
+            this._head = node2;
         }
         if (next1) {
             next1.prev = node2;
         } else {
-            this.tail = node2;
+            this._tail = node2;
         }
 
         // Handle node2
@@ -106,14 +123,14 @@ export default class DoublyLinkedList<T> {
                 prev2.next = node1;
             }
         } else {
-            this.head = node1;
+            this._head = node1;
         }
         if (next2) {
             if (next2 !== node1) {
                 next2.prev = node1;
             }
         } else {
-            this.tail = node1;
+            this._tail = node1;
         }
 
         // Swap the nodes
@@ -159,14 +176,14 @@ export default class DoublyLinkedList<T> {
         const newNode = new DoublyLinkedListNode<T>(data);
 
         if (this.isEmpty()) {
-            this.head = newNode;
-            this.tail = newNode;
+            this._head = newNode;
+            this._tail = newNode;
         } else {
-            newNode.next = this.head;
-            this.head!.prev = newNode;
-            this.head = newNode;
+            newNode.next = this._head;
+            this._head!.prev = newNode;
+            this._head = newNode;
         }
-        ++this.size;
+        ++this._size;
         return true;
     }
 
@@ -179,14 +196,14 @@ export default class DoublyLinkedList<T> {
         const newNode = new DoublyLinkedListNode<T>(data);
 
         if (this.isEmpty()) {
-            this.head = newNode;
-            this.tail = newNode;
+            this._head = newNode;
+            this._tail = newNode;
         } else {
-            newNode.prev = this.tail;
-            this.tail!.next = newNode;
-            this.tail = newNode;
+            newNode.prev = this._tail;
+            this._tail!.next = newNode;
+            this._tail = newNode;
         }
-        ++this.size;
+        ++this._size;
         return true;
     }
 
@@ -198,16 +215,16 @@ export default class DoublyLinkedList<T> {
         if (this.isEmpty()) {
             return null;
         }
-        const removedNode = this.head;
-        if (this.getSize() === 1) {
-            this.head = null;
-            this.tail = null;
+        const removedNode = this._head;
+        if (this.size=== 1) {
+            this._head = null;
+            this._tail = null;
         } else {
-            this.head = this.head!.next;
-            this.head!.prev = null;
+            this._head = this._head!.next;
+            this._head!.prev = null;
             removedNode!.next = null;
         }
-        --this.size;
+        --this._size;
         return removedNode!.data;
     }
 
@@ -219,16 +236,16 @@ export default class DoublyLinkedList<T> {
         if (this.isEmpty()) {
             return null;
         }
-        const removedNode = this.tail;
-        if (this.getSize() === 1) {
-            this.head = null;
-            this.tail = null;
+        const removedNode = this._tail;
+        if (this.size === 1) {
+            this._head = null;
+            this._tail = null;
         } else {
-            this.tail = this.tail!.prev;
-            this.tail!.next = null;
+            this._tail = this._tail!.prev;
+            this._tail!.next = null;
             removedNode!.prev = null;
         }
-        --this.size;
+        --this._size;
         return removedNode!.data;
     }
 
@@ -239,7 +256,7 @@ export default class DoublyLinkedList<T> {
  * @returns A boolean indicating whether the operation was successful.
  */
     public insertAt(index: number, data: T): boolean {
-        if (index < 0 || index > this.size) {
+        if (index < 0 || index > this._size) {
             return false
         }
 
@@ -247,7 +264,7 @@ export default class DoublyLinkedList<T> {
             return this.addFirst(data)
         }
 
-        if (index === this.size) {
+        if (index === this._size) {
             return this.addLast(data)
         }
 
@@ -259,7 +276,7 @@ export default class DoublyLinkedList<T> {
         node.next = current
         current!.prev = node
         prev!.next = node
-        ++this.size
+        ++this._size
 
         return true
     }
@@ -272,7 +289,7 @@ export default class DoublyLinkedList<T> {
  */
 
     public removeAt(index: number): T | null {
-        if (index < 0 || index >= this.size) {
+        if (index < 0 || index >= this._size) {
             return null
         }
 
@@ -280,21 +297,21 @@ export default class DoublyLinkedList<T> {
         const prev = current!.prev
         const next = current!.next
 
-        if (current === this.head) {
-            this.head = next
+        if (current === this._head) {
+            this._head = next
         } else {
             prev!.next = next
             current!.prev = null
         }
 
-        if (current === this.tail) {
-            this.tail = prev
+        if (current === this._tail) {
+            this._tail = prev
         } else {
             next!.prev = prev
             current!.next = null
         }
 
-        --this.size
+        --this._size
         return current!.data
     }
 
@@ -340,55 +357,42 @@ export default class DoublyLinkedList<T> {
 
     /**
  * Removes the first occurrence of the specified data from the linked list.
- * @param data - The data to remove.
+ * @param data - The node to remove.
  * @returns A boolean indicating whether the data was successfully removed.
  */
-    public remove(data: T): boolean {
-        let current = this.head;
-        while (current !== null) {
-            if (current.data === data) {
-                if (current === this.head) {
-                    this.head = current.next;
-                    if (this.head) {
-                        this.head.prev = null;
-                    } else {
-                        this.tail = null;
-                    }
-                } else if (current === this.tail) {
-                    this.tail = current.prev;
-                    if (this.tail) {
-                        this.tail.next = null;
-                    } else {
-                        this.head = null;
-                    }
-                } else {
-                    current.prev!.next = current.next;
-                    current.next!.prev = current.prev;
-                }
-                current.prev = null;
-                current.next = null;
-                this.size--;
-                return true;
-            }
-            current = current.next;
+    public remove(node: DoublyLinkedListNode<T>): void {
+        if (node.prev) {
+            node.prev.next = node.next;
+        } else {
+            this._head = node.next;
         }
-        return false;
+    
+        if (node.next) {
+            node.next.prev = node.prev;
+        } else {
+            this._tail = node.prev;
+        }
+    
+        node.prev = null;
+        node.next = null;
+        this._size--;
     }
+    
 
     /**
-     * Returns the head node of the linked list.
-     * @returns The head node or null if the linked list is empty.
+     * Returns the _head node of the linked list.
+     * @returns The _head node or null if the linked list is empty.
      */
     public getHead(): DoublyLinkedListNode<T> | null {
-        return this.head;
+        return this._head;
     }
 
     /**
- * Returns the tail node of the linked list.
- * @returns The tail node or null if the linked list is empty.
+ * Returns the _tail node of the linked list.
+ * @returns The _tail node or null if the linked list is empty.
  */
     public getTail(): DoublyLinkedListNode<T> | null {
-        return this.tail;
+        return this._tail;
     }
 
     /**
@@ -397,18 +401,18 @@ export default class DoublyLinkedList<T> {
  * @returns The node at the specified index or null if the index is out of bounds.
  */
     public getNodeAt(index: number): DoublyLinkedListNode<T> | null {
-        if (index < 0 || index >= this.size) {
+        if (index < 0 || index >= this._size) {
             return null;
         }
         let current: DoublyLinkedListNode<T> | null;
-        if (index <= this.size / 2) {
-            current = this.head;
+        if (index <= this._size / 2) {
+            current = this._head;
             for (let i = 0; i < index; i++) {
                 current = current!.next;
             }
         } else {
-            current = this.tail;
-            for (let i = this.size - 1; i > index; i--) {
+            current = this._tail;
+            for (let i = this._size - 1; i > index; i--) {
                 current = current!.prev;
             }
         }
@@ -420,13 +424,13 @@ export default class DoublyLinkedList<T> {
  * If the linked list is empty or contains only one node, no changes are made.
  */
     public reverse(): void {
-        if (this.size <= 1) {
+        if (this._size <= 1) {
             return;
         }
 
-        let current = this.head;
-        this.head = this.tail;
-        this.tail = current;
+        let current = this._head;
+        this._head = this._tail;
+        this._tail = current;
 
         while (current) {
             const next = current.next;
@@ -443,7 +447,7 @@ export default class DoublyLinkedList<T> {
     public shuffle(): void {
         // Convert the linked list to an array of nodes
         let arr: DoublyLinkedListNode<T>[] = [];
-        for (let node = this.head; node !== null; node = node.next) {
+        for (let node = this._head; node !== null; node = node.next) {
             arr.push(node);
         }
 
@@ -454,10 +458,10 @@ export default class DoublyLinkedList<T> {
         }
 
         // Reconstruct the list with the shuffled nodes
-        this.head = arr[0];
-        this.tail = arr[arr.length - 1];
-        this.head.prev = null;
-        this.tail.next = null;
+        this._head = arr[0];
+        this._tail = arr[arr.length - 1];
+        this._head.prev = null;
+        this._tail.next = null;
 
         for (let i = 1; i < arr.length; i++) {
             arr[i].prev = arr[i - 1];
@@ -486,8 +490,8 @@ export default class DoublyLinkedList<T> {
  * @param callback - A function to be called for each node in reverse order. It accepts the data value and index as arguments.
  */
     public forEachReverse(callback: (data: T, index: number) => void): void {
-        let index = this.size - 1;
-        const reverseIterator = new DoublyLinkedListReverseIterator(this.tail!);
+        let index = this._size - 1;
+        const reverseIterator = new DoublyLinkedListReverseIterator(this._tail!);
         for (const node of reverseIterator) {
             callback(node.data, index);
             index--;
@@ -502,9 +506,9 @@ export default class DoublyLinkedList<T> {
             node.prev = null;
             node.next = null;
         }
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
+        this._head = null;
+        this._tail = null;
+        this._size = 0;
     }
 
     /**

@@ -5,6 +5,7 @@ export default class DoublyLinkedListNode<T> {
     private _data: T;
     private _prev: DoublyLinkedListNode<T> | null;
     private _next: DoublyLinkedListNode<T> | null;
+    private _key : T | null;
 
     /**
      * Creates a new instance of DoublyLinkedListNode.
@@ -14,6 +15,7 @@ export default class DoublyLinkedListNode<T> {
         this._data = data;
         this._prev = null;
         this._next = null;
+        this._key = null;
     }
 
     /**
@@ -36,6 +38,20 @@ export default class DoublyLinkedListNode<T> {
      */
     get next(): DoublyLinkedListNode<T> | null {
         return this._next;
+    }
+
+    /**
+     * Gets the key value stored in the node.
+     */
+    get key(): T | null {
+        return this._key;
+    }
+
+    /**
+     * Sets the key value stored in the node.
+     */
+    set key(key: T | null) {
+        this._key = key;
     }
 
     /**
