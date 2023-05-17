@@ -1,4 +1,4 @@
-export interface IChatboxTogglerProps {
+export interface IChatboxResizerProps {
   onClick?: () => void;
   chatboxOpen: boolean;
 }

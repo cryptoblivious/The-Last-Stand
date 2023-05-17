@@ -1,6 +1,6 @@
 import Button from './Button';
 import { GiAzulFlake } from 'react-icons/gi';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { ColyseusContext } from './ColyseusProvider';
 import { IChatboxCloseButtonProps } from '../../typescript/interfaces/IChatboxCloseButtonProps';
 import { EMessage } from '../../typescript/enumerations/EMessage';

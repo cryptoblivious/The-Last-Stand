@@ -8,16 +8,18 @@ const FriendList = () => {
   return (
     <div className='flex flex-col gap-1 w-full'>
       <h1>Friend List</h1>
-      {users &&
-        users.map(
-          (user: any) =>
-            user && (
-              <FriendInfoCard
-                key={user._id}
-                user={user}
-              />
-            )
-        )}
+      <div className='overflow-y-scroll scrollbar-custom max-h-80'>
+        {users &&
+          users.map(
+            (user: any) =>
+              user && (
+                <FriendInfoCard
+                  key={user._id}
+                  user={user}
+                />
+              )
+          )}
+      </div>
     </div>
   );
 };

@@ -5,20 +5,22 @@ import { useState, useEffect } from 'react';
 import LogoutButton from './LogoutButton';
 import OverlayToggler from './OverlayToggler';
 import ChatMenu from './ChatMenu';
-import ChatToggler from './ChatToggler';
-import { fetchGlobalChatId } from '../fetches/fetchGlobalChatId';
+import ChatboxToggler from './ChatboxToggler';
+import { GiDiscGolfBasket } from 'react-icons/gi';
+import GlobalChatInfoCard from './GlobalChatInfoCard';
+//import { fetchGlobalChatId } from '../fetches/fetchGlobalChatId';
 
 const SocialOverlay = () => {
   const [overlaying, setOverlaying] = useState<boolean>(false);
-  const [globalChatId, setGlobalChatId] = useState<string>('');
+  //const [globalChatId, setGlobalChatId] = useState<string>('');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchGlobalChatId();
-      setGlobalChatId(data);
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await fetchGlobalChatId();
+  //     setGlobalChatId(data);
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <>
@@ -27,7 +29,7 @@ const SocialOverlay = () => {
         <ChatMenu />
         <div className={`z-30 bg-black text-pink-600 border-pink-600 border-2 p-3 pr-12 rounded-3xl border-r-0 rounded-r-none relative flex flex-col gap-3 overflow-y-scroll scrollbar-custom`}>
           <UserInfoCardSwitcher />
-          <ChatToggler id={globalChatId} />
+          <GlobalChatInfoCard />
           <FriendList />
           <FriendRequestForm />
           <LogoutButton />

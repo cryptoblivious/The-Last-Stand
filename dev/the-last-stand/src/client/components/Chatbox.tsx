@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, useRef } from 'react';
-import ChatboxToggler from './ChatboxToggler';
+import ChatboxResizeButton from './ChatboxResizer';
 import ChatboxCloseButton from './ChatboxCloseButton';
 import { ColyseusContext } from './ColyseusProvider';
 import { HOST_URL, HOST_PORT } from '../appConfig';
@@ -18,21 +18,11 @@ const Chatbox = (props: IChatboxProps) => {
   const { appRoom, user } = useContext(ColyseusContext);
   const [conversation, setConversation] = useState<any>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Add this function to scroll to the bottom of the container
-  const scrollToBottom = () => {
-    const container = containerRef.current;
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-    }
-  };
-
-  const toggleChatbox = () => {
+  const resizeChatbox = () => {
     setChatboxOpen((prev) => {
       if (!prev) {
         textareaRef.current?.focus();
-        scrollToBottom();
       }
       return !prev;
     });
@@ -66,8 +56,6 @@ const Chatbox = (props: IChatboxProps) => {
               messages: updatedConversation.messages ?? prevConversation!.username,
             };
           });
-          // Call scrollToBottom after rendering new messages
-          scrollToBottom();
         }
       });
     }
@@ -80,14 +68,13 @@ const Chatbox = (props: IChatboxProps) => {
     <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 py-2 w-full flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-full' : ' h-12 translate-x-full'}`}>
       <div className='flex gap-2 items-center border-b-2 border-pink-600 p-2'>
         <h1 className='text-center text-cyan-500 font-bold grow text-3xl'>Global Chat</h1>
-        <ChatboxToggler
-          onClick={toggleChatbox}
+        <ChatboxResizeButton
+          onClick={resizeChatbox}
           chatboxOpen={chatboxOpen}
         />
         <ChatboxCloseButton conversationId={id} />
       </div>
       <MessageList
-        ref={containerRef}
         messages={conversation.messages}
         user={user}
       />

@@ -1,10 +1,8 @@
 const MessageList = (props: any) => {
-  const { ref, messages, user } = props;
+  const { messages, user } = props;
   console.log(messages);
   return (
-    <div
-      ref={ref}
-      className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-3 grow'>
+    <div className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-3 grow'>
       {messages &&
         messages.map((message: any, index: any) => {
           const date = new Date(message.updatedAt);

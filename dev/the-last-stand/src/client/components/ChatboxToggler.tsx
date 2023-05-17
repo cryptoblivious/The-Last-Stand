@@ -1,39 +1,47 @@
-import Button from './Button';
-import { GiAbstract053, GiNinjaHead } from 'react-icons/gi';
-import { IChatboxTogglerProps } from '../../typescript/interfaces/IChatboxTogglerProps';
+import { GiGlobe } from 'react-icons/gi';
+import { useContext, useState } from 'react';
+import { ColyseusContext } from './ColyseusProvider';
+import { EMessage } from '../../typescript/enumerations/EMessage';
+
+interface IChatboxTogglerProps {
+  id: string;
+  name: string;
+  selfToggle: () => void;
+}
 
 const ChatboxToggler = (props: IChatboxTogglerProps) => {
-  const { onClick, chatboxOpen } = props;
-  const toggleChatbox = onClick;
+  const chatId = props.id;
+  const { selfToggle, name } = props;
+  const { user, appRoom } = useContext(ColyseusContext);
+
+  const checkChatboxState = () => {
+    if (user?.activeConversationsIds) {
+      return user.activeConversationsIds.includes(chatId);
+    } else {
+      return false;
+    }
+  };
+
+  const [chatboxOpen, setChatboxOpen] = useState<boolean>(checkChatboxState());
+
+  const toggleChatbox = () => {
+    setChatboxOpen((prev) => !prev);
+    appRoom!.send(EMessage.ToggleConversation, chatId);
+    selfToggle();
+  };
+
+  if (!user || !appRoom) return <div>Loading...</div>;
 
   return (
-    <>
-      {chatboxOpen ? (
-        <Button
-          onClick={toggleChatbox}
-          classNameAdditions={`p-2 z-50`}
-          icon={
-            <GiNinjaHead
-              aria-label='GiNinjaHead'
-              fontSize='1.69rem'
-              color='rgb(103 232 249)'
-            />
-          }
-        />
-      ) : (
-        <Button
-          onClick={toggleChatbox}
-          classNameAdditions={`absolute -left-14 -top-1 p-2 z-50`}
-          icon={
-            <GiAbstract053
-              aria-label='GiAbstract053'
-              fontSize='1.69rem'
-              color='rgb(103 232 249)'
-            />
-          }
-        />
-      )}
-    </>
+    <div className='absolute z-50 bg-black border-pink-900 border-2 px-1 py-2 rounded-xl min-h-max'>
+      <div
+        className='z-50 bg-black border-pink-900 hover:bg-red-800 hover:cursor-pointer transition duration-500 border-2 p-1 rounded-xl min-h-max'
+        onClick={toggleChatbox}>
+        <p className='text-xs'>
+          {chatboxOpen ? 'Close' : 'Open'} {name}
+        </p>
+      </div>
+    </div>
   );
 };
 
