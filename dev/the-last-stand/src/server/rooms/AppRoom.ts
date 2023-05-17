@@ -47,20 +47,21 @@ export class AppRoom extends Room<AppState> {
 
       this.usersChangeStream.on('change', (change: any) => {
         const data = {
-          _id: change.fullDocument._id,
+          _id: change.fullDocument._id.toString(),
           username: change.fullDocument.username,
           userNo: change.fullDocument.userNo,
           title: change.fullDocument.title,
           lastOnline: change.fullDocument.lastOnline,
           activeConversationsIds: change.fullDocument.activeConversationsIds,
         };
+        console.log('usersChangeStream data : ', data);
         this.broadcast(EMessage.UsersChange, data);
 
         // check for the user in the room state and update it if it exists
         this.state.users.forEach((user: any) => {
-          if (user._id === data._id.toString()) {
+          if (user._id === data._id) {
             const userMapper = new IUserMapper();
-            userMapper._id = data._id.toString();
+            userMapper._id = data._id;
             userMapper.username = data.username;
             userMapper.userNo = data.userNo;
             userMapper.title = data.title;
