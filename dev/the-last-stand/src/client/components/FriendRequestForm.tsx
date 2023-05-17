@@ -10,12 +10,12 @@ const FriendRequestForm = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    //TODO : Implement friend request
     console.log(`Request sent to ${usernameRef.current?.value}${userNo}`);
   };
 
   const handleChange = (e: any) => {
     const { value } = e.target;
-    console.log(value);
 
     setUserNo(value === '#' ? '' : value.length === 1 ? '#' + value : value.length === 6 ? userNo : value); //ref:ChatGPT
   };

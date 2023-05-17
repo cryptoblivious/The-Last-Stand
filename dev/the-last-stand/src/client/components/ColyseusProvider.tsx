@@ -56,11 +56,6 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
       appRoom.onMessage(EMessage.UsersChange, (updatedUser: any) => {
         if (updatedUser._id === userData._id) {
           setUser((prevUser) => {
-            if (prevUser?.activeConversationsIds !== updatedUser.activeConversationsIds) {
-              console.log('activeConversationsIds changed', updatedUser.activeConversationsIds);
-            } else {
-              console.log('activeConversationsIds did not change', updatedUser.activeConversationsIds);
-            }
             return {
               ...prevUser,
               username: updatedUser.username ?? prevUser!.username,

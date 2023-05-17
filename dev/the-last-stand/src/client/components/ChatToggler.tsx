@@ -12,7 +12,6 @@ const ChatToggler = (props: IChatTogglerProps) => {
   const { user, appRoom } = useContext(ColyseusContext);
 
   const toggleChat = () => {
-    console.log('sending toggleConversation');
     appRoom!.send(EMessage.ToggleConversation, chatId);
   };
 

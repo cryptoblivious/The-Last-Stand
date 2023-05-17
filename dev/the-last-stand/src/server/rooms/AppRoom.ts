@@ -51,7 +51,7 @@ export class AppRoom extends Room<AppState> {
           username: change.fullDocument.username,
           userNo: change.fullDocument.userNo,
           title: change.fullDocument.title,
-          lastOnline: change.fullDocument.lastOnline,
+          lastOnline: change.fullDocument.lastOnline.toString(),
           activeConversationsIds: change.fullDocument.activeConversationsIds,
         };
         console.log('usersChangeStream data : ', data);
@@ -65,8 +65,8 @@ export class AppRoom extends Room<AppState> {
             userMapper.username = data.username;
             userMapper.userNo = data.userNo;
             userMapper.title = data.title;
-            userMapper.clientId = user.clientId;
             userMapper.lastOnline = data.lastOnline;
+            userMapper.sessionId = user.sessionId;
             this.state.users.set(data._id, userMapper);
           }
         });
@@ -97,7 +97,7 @@ export class AppRoom extends Room<AppState> {
     this.setState(new AppState());
     this.onMessage('message', (client, message) => {
       this.state.users.forEach((user: any) => {
-        if (user.clientId === client.id) {
+        if (user.sessionId === client.sessionId) {
           if (user.username !== 'guest') {
             this.handleMessage(message, user._id, user.username, user.userNo);
           }
@@ -108,7 +108,7 @@ export class AppRoom extends Room<AppState> {
       console.log('users in the room : ', this.state.users);
       // TODO : Find out why the user is being added multiple times to the room state
       this.state.users.forEach((user: any) => {
-        if (user.clientId === client.id) {
+        if (user.sessionId === client.sessionId) {
           this.handleToggleConversation(user._id, conversationId);
         }
       });
@@ -125,8 +125,8 @@ export class AppRoom extends Room<AppState> {
   }
 
   async onJoin(client: Client, user: any) {
-    const { _id, username, userNo } = user;
-
+    const { _id, username, userNo, title, lastOnline } = user;
+    console.log('user : ', user);
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
@@ -134,12 +134,14 @@ export class AppRoom extends Room<AppState> {
     }
 
     // Create the user's app state data and add it to the app state
-    const userMap = new IUserMapper();
-    userMap._id = _id;
-    userMap.username = username;
-    userMap.userNo = userNo;
-    userMap.clientId = client.id;
-    this.state.users.set(_id, userMap);
+    const userMapper = new IUserMapper();
+    userMapper._id = _id;
+    userMapper.username = username;
+    userMapper.userNo = userNo;
+    userMapper.title = title;
+    userMapper.lastOnline = lastOnline;
+    userMapper.sessionId = client.sessionId;
+    this.state.users.set(_id, userMapper);
   }
 
   updateLastOnline = async (_id: string) => {
@@ -192,9 +194,9 @@ export class AppRoom extends Room<AppState> {
 
   async onLeave(client: Client, consented: boolean) {
     const globalChat = await Conversation.findOne({ isGlobal: true });
-
+    console.log('client', client);
     this.state.users.forEach((user: any) => {
-      if (user.clientId === client.id) {
+      if (user.sessionId === client.sessionId) {
         if (user.username !== 'guest') {
           const { _id, username, userNo } = user;
           //this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');

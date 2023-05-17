@@ -10,7 +10,6 @@ const ChatboxCloseButton = (props: IChatboxCloseButtonProps) => {
   const { appRoom } = useContext(ColyseusContext);
 
   const closeChatbox = () => {
-    console.log('sending closeChatbox');
     appRoom!.send(EMessage.ToggleConversation, conversationId);
   };
 

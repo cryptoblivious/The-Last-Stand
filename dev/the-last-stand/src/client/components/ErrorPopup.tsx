@@ -6,7 +6,6 @@ function ErrorPopup(props: IErrorPopupProps) {
   const { message, onClick } = props;
   let title = '';
   let text;
-  console.log('ErrorPopup: message = ' + message);
 
   if (message === 'Server Error') {
     title = 'Server Error';

@@ -7,10 +7,10 @@ export const fetchLogout = () => {
     method: 'DELETE',
     body: formData,
     credentials: 'include',
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      console.log('Logged out', res);
-      return true;
-    });
+  });
+  // .then((res) => res.json())
+  // .then((res) => {
+  //   console.log('Logged out', res);
+  //   return true;
+  // });
 };
