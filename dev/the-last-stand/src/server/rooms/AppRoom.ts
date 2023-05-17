@@ -54,7 +54,6 @@ export class AppRoom extends Room<AppState> {
           lastOnline: change.fullDocument.lastOnline.toString(),
           activeConversationsIds: change.fullDocument.activeConversationsIds,
         };
-        console.log('usersChangeStream data : ', data);
         this.broadcast(EMessage.UsersChange, data);
 
         // check for the user in the room state and update it if it exists
@@ -105,8 +104,6 @@ export class AppRoom extends Room<AppState> {
       });
     });
     this.onMessage(EMessage.ToggleConversation, (client, conversationId) => {
-      console.log('users in the room : ', this.state.users);
-      // TODO : Find out why the user is being added multiple times to the room state
       this.state.users.forEach((user: any) => {
         if (user.sessionId === client.sessionId) {
           this.handleToggleConversation(user._id, conversationId);
@@ -116,7 +113,6 @@ export class AppRoom extends Room<AppState> {
   }
 
   onAuth(client: Client, user: any) {
-    console.log('user : ', user);
     const { _id } = user;
     if (this.state.users.get(_id)) {
       return false;
@@ -126,7 +122,6 @@ export class AppRoom extends Room<AppState> {
 
   async onJoin(client: Client, user: any) {
     const { _id, username, userNo, title, lastOnline } = user;
-    console.log('user : ', user);
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
@@ -194,7 +189,6 @@ export class AppRoom extends Room<AppState> {
 
   async onLeave(client: Client, consented: boolean) {
     const globalChat = await Conversation.findOne({ isGlobal: true });
-    console.log('client', client);
     this.state.users.forEach((user: any) => {
       if (user.sessionId === client.sessionId) {
         if (user.username !== 'guest') {
