@@ -16,6 +16,7 @@ const FriendInfoCard = (props: IFriendInfoCardProps) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchConversationByUsers([user!._id!, props.friend._id!]);
+      // TODO : User the conversation data to toggle the chatbox properly
       console.log('data', data);
       setConversation(data);
     };
