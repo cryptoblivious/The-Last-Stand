@@ -35,7 +35,8 @@ const ChatboxToggler = (props: IChatboxTogglerProps) => {
   return (
     <div className='absolute z-50 bg-black border-pink-900 border-2 px-1 py-2 rounded-xl min-h-max'>
       <div
-        className='z-50 bg-black border-pink-900 hover:bg-red-800 hover:cursor-pointer transition duration-500 border-2 p-1 rounded-xl min-h-max'
+        //TODO : Find out why only red is working
+        className={`z-50 bg-black border-pink-900 hover:bg-${chatboxOpen ? 'red' : 'green'}-800 hover:cursor-pointer transition duration-500 border-2 p-1 rounded-xl min-h-max`}
         onClick={toggleChatbox}>
         <p className='text-xs'>
           {chatboxOpen ? 'Close' : 'Open'} {name}

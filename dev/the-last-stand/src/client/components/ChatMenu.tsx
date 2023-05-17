@@ -6,7 +6,7 @@ const ChatMenu = () => {
   const { user } = useContext<any>(ColyseusContext);
 
   return (
-    <div className='z-30 flex flex-col w-3/4 relative gap-4 py-8 items-end '>
+    <div className='z-30 flex flex-col relative gap-4 py-8 items-end '>
       {/* <Chatbox name={globalChat} /> */}
 
       {user &&
