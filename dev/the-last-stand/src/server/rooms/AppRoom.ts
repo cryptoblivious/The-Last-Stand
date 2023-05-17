@@ -116,9 +116,9 @@ export class AppRoom extends Room<AppState> {
   }
 
   onAuth(client: Client, user: any) {
-    // Check if the user is already connected
-    const { username, userNo } = user;
-    if (this.state.users.get(username + userNo)) {
+    console.log('user : ', user);
+    const { _id } = user;
+    if (this.state.users.get(_id)) {
       return false;
     }
     return true;
