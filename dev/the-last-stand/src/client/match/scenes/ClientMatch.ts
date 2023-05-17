@@ -11,8 +11,8 @@ import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePer
 import { EMessage } from '../../../typescript/enumerations/EMessage';
 import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMessage';
 import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpriteMessage';
-import { type } from '@colyseus/schema';
 import { ERooms } from '../../../typescript/enumerations/ERooms';
+import HashMap from '../../../utils/data_structures/HashMap';
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -89,7 +89,7 @@ const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', '
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
-  private gameEntities: Map<string, any> = new Map<string, any>();
+  private gameEntities: HashMap<string, any> = new HashMap<string, any>();
   private opponentIds: string[] = [];
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
