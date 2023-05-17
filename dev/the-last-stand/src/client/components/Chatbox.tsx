@@ -3,7 +3,7 @@ import ChatboxResizeButton from './ChatboxResizer';
 import ChatboxCloseButton from './ChatboxCloseButton';
 import { ColyseusContext } from './ColyseusProvider';
 import { HOST_URL, HOST_PORT } from '../appConfig';
-import { fetchConversation } from '../fetches/fetchConversation';
+import { fetchConversationById } from '../fetches/fetchConversation';
 import { EMessage } from '../../typescript/enumerations/EMessage';
 import MessageList from './MessageList';
 
@@ -42,7 +42,7 @@ const Chatbox = (props: IChatboxProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchConversation(id);
+      const data = await fetchConversationById(id);
       setConversation(data);
     };
     fetchData();

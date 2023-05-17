@@ -1,12 +1,12 @@
 import { conversationModel as Conversation } from '../models/conversation';
 import mongoose from 'mongoose';
+import { userModel as User } from '../models/user';
 
-// POST a new conversation
-export const createConversation = async (req: any, res: any) => {
+// POST a new global conversation
+export const createGlobalConversation = async (req: any, res: any) => {
   try {
-    const isGlobal = req.body.isGlobal || false;
-    const userIds = isGlobal ? req.body.userIds?.split(',').map((userId: string) => mongoose.Types.ObjectId(userId)) : [];
-    const conversation = await Conversation.create({ isGlobal, userIds });
+    const name = req.body.name;
+    const conversation = await Conversation.create({ isGlobal: true, name });
     res.status(200).json(conversation);
   } catch (err: any) {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });
@@ -52,10 +52,20 @@ export const readConversationById = async (req: any, res: any) => {
 // GET one conversation depending on the users in the conversation
 export const readConversationByUsers = async (req: any, res: any) => {
   try {
-    const userIds = req.params.userIds.split(',').map((userId: string) => mongoose.Types.ObjectId(userId));
-    const conversation = await Conversation.findOne({ users: { $all: userIds } });
+    const deserializedUserIds = JSON.parse(decodeURIComponent(req.params.userIds));
+    //const userIds = deserializedUserIds.map((userId: string) => mongoose.Types.ObjectId(userId));
+    const conversation = await Conversation.findOne({ userIds: { $all: deserializedUserIds } });
+    console.log('conversation', conversation);
     if (!conversation) {
-      return res.status(404).json({ err: 'Conversation not found' });
+      // Create a new conversation if it doesn't exist
+      const users = deserializedUserIds.map(async (userId: string) => {
+        const user = await User.findById(userId);
+        return user;
+      });
+      const resolvedUsers = await Promise.all(users);
+      const newConversation = await Conversation.create({ userIds: deserializedUserIds, name: `${resolvedUsers.map((user: any) => user.username).join(' and ')}'s Chat ` });
+      await newConversation.save();
+      return res.status(200).json(newConversation);
     }
     res.status(200).json(conversation);
   } catch (err: any) {

@@ -1,8 +1,26 @@
 import { IUser } from '../../typescript/interfaces/IUser';
 import { GiCyberEye, GiAbstract015 } from 'react-icons/gi';
+import { useContext, useState, useEffect } from 'react';
+import { ColyseusContext } from './ColyseusProvider';
+import { fetchConversationByUsers } from '../fetches/fetchConversation';
 
-const FriendInfoCard = ({ user }: { user: IUser }) => {
-  const { username, userNo, title, lastOnline } = user;
+interface IFriendInfoCardProps {
+  friend: IUser;
+}
+
+const FriendInfoCard = (props: IFriendInfoCardProps) => {
+  const { username: friendName, userNo: friendNo, title, lastOnline } = props.friend;
+  const { user, appRoom } = useContext(ColyseusContext);
+  const [conversation, setConversation] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchConversationByUsers([user!._id!, props.friend._id!]);
+      console.log('data', data);
+      setConversation(data);
+    };
+    fetchData();
+  }, []);
 
   const calculateLastOnline = () => {
     const now = new Date();
@@ -51,8 +69,8 @@ const FriendInfoCard = ({ user }: { user: IUser }) => {
       </div>
       <div className='flex flex-col justify-center w-4/5'>
         <h4 className={`${lastOnline === 'now' && 'text-green-600'}`}>
-          {`${username} `}
-          <span className={`${lastOnline === 'now' ? 'text-green-700' : 'text-pink-800'}`}>{`#${userNo} (hacktive ${calculateLastOnline()})`}</span>
+          {`${friendName} `}
+          <span className={`${lastOnline === 'now' ? 'text-green-700' : 'text-pink-800'}`}>{`#${friendNo} (hacktive ${calculateLastOnline()})`}</span>
         </h4>
         <h5 className='text-cyan-300'> - {title}</h5>
       </div>

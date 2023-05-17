@@ -1,5 +1,5 @@
 import express from 'express';
-import { createConversation, readConversations, readGlobalConversation, readConversationById, readConversationByUsers } from '../controllers/conversations';
+import { createGlobalConversation as createGlobalConversation, readConversations, readGlobalConversation, readConversationById, readConversationByUsers as readOrCreateConversationByUsers } from '../controllers/conversations';
 
 const conversationsRouter = express.Router();
 
@@ -13,9 +13,9 @@ conversationsRouter.get('/global', readGlobalConversation);
 conversationsRouter.get('/id/:id', readConversationById);
 
 // GET one Conversation depending on the users in the Conversation
-conversationsRouter.get('/userIds/:userIds', readConversationByUsers);
+conversationsRouter.post('/userIds/:userIds', readOrCreateConversationByUsers);
 
-// POST a new Conversation
-conversationsRouter.post('/', createConversation);
+// POST a new Global Conversation
+conversationsRouter.post('/global', createGlobalConversation);
 
 export default conversationsRouter;

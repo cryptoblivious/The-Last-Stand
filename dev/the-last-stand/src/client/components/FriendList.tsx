@@ -15,7 +15,7 @@ const FriendList = () => {
               user && (
                 <FriendInfoCard
                   key={user._id}
-                  user={user}
+                  friend={user}
                 />
               )
           )}

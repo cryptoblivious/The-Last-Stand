@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import { messageSchema } from './message';
-import { userSchema } from './user';
 
 export const conversationSchema = new Schema(
   {
@@ -8,13 +7,14 @@ export const conversationSchema = new Schema(
       type: String,
       required: true,
     },
-    usersIds: {
-      type: [userSchema],
+    userIds: {
+      type: [String],
       required: true,
     },
     messages: {
       type: [messageSchema],
       required: true,
+      default: [],
     },
     isGlobal: { type: Boolean, default: false },
   },
