@@ -1,5 +1,5 @@
 import { IUser } from '../../typescript/interfaces/IUser';
-import { patchCurrentUser } from '../fetches/users';
+import { patchCurrentUser } from '../fetches/fetchUsers';
 import { useEffect, useRef } from 'react';
 import { ColyseusContext } from './ColyseusProvider';
 import { useContext } from 'react';
