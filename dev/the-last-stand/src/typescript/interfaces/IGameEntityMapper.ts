@@ -8,4 +8,5 @@ export interface IGameEntityMapper {
   position: IPosition;
   anim?: string | undefined;
   direction?: string;
+  staticgroup?: Phaser.Physics.Arcade.StaticGroup[];
 }
