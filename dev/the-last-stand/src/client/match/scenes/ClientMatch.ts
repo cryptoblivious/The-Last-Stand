@@ -304,6 +304,9 @@ export default class ClientMatch extends Phaser.Scene {
       const sprite = new PhaserPlayerEntity(this.physics, this);
       sprite.createSprite;
       console.log(sprite);
+      message.staticgroup = [platforms, walls];
+      sprite.create(message);
+      console.log(sprite);
       this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
       const entity = this.gameEntities.get(message.id);
       this.physics.add.collider(entity, platforms);
