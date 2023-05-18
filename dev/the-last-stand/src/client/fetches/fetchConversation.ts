@@ -14,7 +14,6 @@ export const fetchConversationById = async (id: string) => {
 export const fetchConversationByUsers = async (users: string[]) => {
   try {
     const serializedUserIds = encodeURIComponent(JSON.stringify(users));
-    console.log('serializedUsers', serializedUserIds);
     const response = await fetch(`${HOST_URL}:${HOST_PORT}/conversations/userIds/${serializedUserIds}`, { method: 'POST' });
     const data = await response.json();
     return data;

@@ -63,7 +63,6 @@ const Chatbox = (props: IChatboxProps) => {
 
   if (!conversation || !appRoom) return <div>Loading...</div>;
 
-  console.log('conversation', conversation.messages);
   return (
     <div className={`bg-black border-2 border-pink-600 text-white border-r-0 rounded-tl-3xl transition-all duration-300 py-2 w-full flex flex-col gap-2 ${chatboxOpen ? 'translate-x-0 h-full' : ' h-12 translate-x-full'}`}>
       <div className='flex gap-2 items-center border-b-2 border-pink-600 p-2'>
