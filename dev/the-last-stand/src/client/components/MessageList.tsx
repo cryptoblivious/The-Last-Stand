@@ -6,13 +6,12 @@ const MessageList = (props: any) => {
         messages.map((message: any, index: any) => {
           const date = new Date(message.updatedAt);
 
-          // Convert the date to the local timezone of the client and format it
           const localTimestamp = date.toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'medium' });
 
           return (
             <div
               key={index}
-              className={`${user!.username === message.username && user!.userNo === message.userNo ? 'ml-auto' : ''} ${message.username == 'Server' ? 'border-neon-green bg-green-950' : 'bg-slate-900 border-cyan-500'} w-fit p-4 rounded-3xl border-2 max-w-[75%]`}>
+              className={`${user.username === message.username && user!.userNo === message.userNo ? 'ml-auto' : ''} ${message.username == 'Server' ? 'border-neon-green bg-green-950' : 'bg-slate-900 border-cyan-500'} w-fit p-4 rounded-3xl border-2 max-w-[75%]`}>
               <p className={`italic text-green-500 ${message.username === 'Server' && 'text-sm'}`}>{localTimestamp}</p>
               {message.username === 'Server' ? (
                 <p className='text-xs'>

@@ -1,8 +1,6 @@
 import { conversationModel as Conversation } from '../models/conversation';
-import mongoose from 'mongoose';
 import { userModel as User } from '../models/user';
 
-// POST a new global conversation
 export const createGlobalConversation = async (req: any, res: any) => {
   try {
     const name = req.body.name;
@@ -13,7 +11,6 @@ export const createGlobalConversation = async (req: any, res: any) => {
   }
 };
 
-// GET all conversations
 export const readConversations = async (req: any, res: any) => {
   try {
     const conversations = await Conversation.find({});
@@ -23,7 +20,6 @@ export const readConversations = async (req: any, res: any) => {
   }
 };
 
-// GET the global conversation
 export const readGlobalConversation = async (req: any, res: any) => {
   try {
     const conversation = await Conversation.findOne({ isGlobal: true });
@@ -36,7 +32,6 @@ export const readGlobalConversation = async (req: any, res: any) => {
   }
 };
 
-// Get one conversation by id
 export const readConversationById = async (req: any, res: any) => {
   try {
     const conversation = await Conversation.findById(req.params.id);
@@ -49,7 +44,6 @@ export const readConversationById = async (req: any, res: any) => {
   }
 };
 
-// GET one conversation depending on the users in the conversation
 export const readConversationByUsers = async (req: any, res: any) => {
   try {
     const deserializedUserIds = JSON.parse(decodeURIComponent(req.params.userIds));
@@ -59,7 +53,6 @@ export const readConversationByUsers = async (req: any, res: any) => {
       },
     });
     if (!conversation) {
-      // Create a new conversation if it doesn't exist
       const users = deserializedUserIds.map(async (userId: string) => {
         const user = await User.findById(userId);
         return user;

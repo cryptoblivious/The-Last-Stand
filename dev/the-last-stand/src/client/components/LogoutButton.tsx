@@ -6,7 +6,7 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const logout = async () => {
-    const done = await fetchLogout();
+    await fetchLogout();
     navigate('/login');
   };
 

@@ -7,7 +7,6 @@ import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
 import { EMessage } from '../../typescript/enumerations/EMessage';
-//import cron from 'node-cron';
 dotenv.config();
 const { MONGO_URI } = process.env;
 
@@ -56,7 +55,6 @@ export class AppRoom extends Room<AppState> {
         };
         this.broadcast(EMessage.UsersChange, data);
 
-        // check for the user in the room state and update it if it exists
         this.state.users.forEach((user: any) => {
           if (user._id === data._id) {
             const userMapper = new IUserMapper();
@@ -87,12 +85,11 @@ export class AppRoom extends Room<AppState> {
         this.broadcast('messagesChange', change);
       });
     };
-    // Call the start function to connect to the client and start the change streams
     start();
   }
 
   onCreate(options: any) {
-    this.roomId = 'app'; // set the room ID to "my_room"
+    this.roomId = 'app';
     this.setState(new AppState());
     this.onMessage('message', (client, message) => {
       this.state.users.forEach((user: any) => {
@@ -125,10 +122,9 @@ export class AppRoom extends Room<AppState> {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
-      //this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
+      this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
     }
 
-    // Create the user's app state data and add it to the app state
     const userMapper = new IUserMapper();
     userMapper._id = _id;
     userMapper.username = username;
@@ -169,7 +165,6 @@ export class AppRoom extends Room<AppState> {
 
   handleToggleConversation = async (userId: string, conversationId: string) => {
     try {
-      // get the user's active conversations
       const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
 
       if (!activeConversationsIds.includes(conversationId)) {
@@ -188,7 +183,7 @@ export class AppRoom extends Room<AppState> {
       if (user.sessionId === client.sessionId) {
         if (user.username !== 'guest') {
           const { _id, username, userNo } = user;
-          //this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
+          this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
           this.updateLastOnline(_id);
         }
         this.state.users.delete(user._id);
@@ -197,7 +192,6 @@ export class AppRoom extends Room<AppState> {
   }
 
   async onDispose() {
-    //set all users offline
     this.state.users.forEach((user: any) => {
       this.updateLastOnline(user._id);
     });

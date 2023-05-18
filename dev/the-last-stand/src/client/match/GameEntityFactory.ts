@@ -1,6 +1,3 @@
-// import GameEntity from '../../server/game/GameEntity';
-// import Mover from '../../server/game/game_components/Mover';
-// import Jumper from '../../server/game/game_components/Jumper';
 import CGameEntity from '../../typescript/classes/CGameEntity';
 import { IGameEntityProducer } from '../../typescript/interfaces/IGameEntityProducer';
 
@@ -13,24 +10,8 @@ export default class GameEntityFactory {
 
     this.gameEntityPrefabs = new Map<string, IGameEntityProducer>();
 
-    //this.gameEntityPrefabs.set('solana', this.produceSolana);
     this.gameEntityPrefabs.set('rectangle', this.produceRectangle);
-    // TODO : add more prefabs here
   }
-
-  // produceSolana = (position: { x: number; y: number }): GameEntity => {
-  //   const solana = new GameEntity({
-  //     id: this.idSequencer,
-  //     name: 'solana',
-  //     size: { width: 0, height: 0 },
-  //     position: position,
-  //   });
-
-  //   solana.addComponent('mover', new Mover({ gameEntity: solana, name: 'mover', velocity: 10 }));
-  //   solana.addComponent('jumper', new Jumper({ gameEntity: solana, name: 'jumper', velocity: 20, maxJumps: 2 }));
-  //   // TODO : add more components here
-  //   return solana;
-  // };
 
   produceRectangle = (position: { x: number; y: number }): GameEntity => {
     const rectangle = new CGameEntity({

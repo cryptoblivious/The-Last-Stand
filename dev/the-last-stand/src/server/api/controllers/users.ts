@@ -1,9 +1,6 @@
 import { userModel as User } from '../models/user';
-import { conversationModel as Conversation } from '../models/conversation';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
-import e from 'express';
 
-// Find an available username number
 export const findAvailableUsernameNumber = async (username: string) => {
   const usersWithSameName = await User.find({ username: username }).exec();
   const usedNosStrings = usersWithSameName.map((user: any) => user.userNo);
@@ -12,7 +9,6 @@ export const findAvailableUsernameNumber = async (username: string) => {
   return userNo;
 };
 
-// POST a new user
 export const createUser = async (req: any, res: any) => {
   const { email, username, userNo, title, lastOnline } = req.body;
   try {
@@ -29,7 +25,6 @@ export const createUser = async (req: any, res: any) => {
   }
 };
 
-// GET all users
 export const readUsers = async (req: any, res: any) => {
   try {
     const users = await User.find({}).sort({ username: 1 });
@@ -39,7 +34,6 @@ export const readUsers = async (req: any, res: any) => {
   }
 };
 
-// GET one user
 export const readUserByEmail = async (req: any, res: any) => {
   try {
     const email = req.params.email;
@@ -53,7 +47,6 @@ export const readUserByEmail = async (req: any, res: any) => {
   }
 };
 
-// PATCH the current user
 export const patchCurrentUser = async (req: any, res: any) => {
   const id = req.user?._id;
   if (!id) {
@@ -76,15 +69,12 @@ export const patchCurrentUser = async (req: any, res: any) => {
     if (!user) {
       return res.status(404).json({ err: 'User not found' });
     }
-    //updateUserConversations(user);
-
     res.status(200).json(user);
   } catch (err: any) {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });
   }
 }; // improved by ChatGPT
 
-// DELETE a user
 export const deleteUserByEmail = async (req: any, res: any) => {
   const email = req.params.email;
   try {
@@ -98,7 +88,6 @@ export const deleteUserByEmail = async (req: any, res: any) => {
   }
 };
 
-// GET current user
 export const readCurrentUser = (req: any, res: any) => {
   if (req.user) {
     res.status(200).json(req.user);

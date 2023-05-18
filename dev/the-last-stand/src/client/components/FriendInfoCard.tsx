@@ -42,7 +42,6 @@ const FriendInfoCard = (props: IFriendInfoCardProps) => {
     const now = new Date();
     if (lastOnline !== 'now') {
       const lastOnlineDate = lastOnline ? new Date(lastOnline) : null;
-      // Check if lastOnline is a date
       if (lastOnlineDate && !isNaN(lastOnlineDate.getTime())) {
         const diff = now.getTime() - lastOnlineDate.getTime();
         const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));

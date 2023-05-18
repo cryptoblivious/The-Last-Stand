@@ -26,6 +26,6 @@ export const messageSchema = new Schema(
   }
 );
 
-//messageSchema.index({ userId: 1 }, { unique: false } as any); // create anindex on the userId field
+messageSchema.index({ userId: 1 }, { unique: false } as any);
 
 export const messageModel = model('Message', messageSchema);

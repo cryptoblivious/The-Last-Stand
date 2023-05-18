@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import LoginMenu from './LoginMenu';
 import SignupMenu from './SignupMenu';
 import IMenuSwitcherProps from '../../typescript/interfaces/IMenuSwitcherProps';

@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 /* Scrollbar personnalisée adaptée de https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar2 */
+
 /* width */
 ::-webkit-scrollbar {
   width: 30px;

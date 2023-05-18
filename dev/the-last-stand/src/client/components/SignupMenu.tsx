@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { IStyledClickableCurrentComponent } from '../../typescript/interfaces/IStyledClickableCurrentComponent';
 import SignupForm from './SignupForm';
 

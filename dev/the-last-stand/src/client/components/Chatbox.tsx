@@ -2,7 +2,6 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import ChatboxResizeButton from './ChatboxResizer';
 import ChatboxCloseButton from './ChatboxCloseButton';
 import { ColyseusContext } from './ColyseusProvider';
-import { HOST_URL, HOST_PORT } from '../appConfig';
 import { fetchConversationById } from '../fetches/fetchConversation';
 import { EMessage } from '../../typescript/enumerations/EMessage';
 import MessageList from './MessageList';

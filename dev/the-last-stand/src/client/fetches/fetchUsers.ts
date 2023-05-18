@@ -2,24 +2,19 @@ import { APP_MODE, HOST_URL, HOST_PORT } from '../appConfig';
 
 import avatar from '../assets/heroes/chuck/avatar.png';
 
-// Get the current user from the server through the local cookie
 export const getCurrentUser = async () => {
-  //const avatar = APP_MODE === 'dev' ? './src/client/assets/heroes/chuck/avatar.png' : 'https://picsum.photos/500/600';
-
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
     credentials: 'include',
   });
   let data = await response.json();
 
   if (response.ok) {
-    data.avatar = '/assets/heroes/chuck/avatar.png';
     return data;
   } else {
     return null;
   }
 };
 
-// Get all users from the server
 export const getUsers = async () => {
   const response = await fetch(`${HOST_URL}:${HOST_PORT}/users`, {
     credentials: 'include',
@@ -33,7 +28,6 @@ export const getUsers = async () => {
   }
 };
 
-// Patch the current user
 export const patchCurrentUser = async (input: any) => {
   try {
     const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
@@ -51,7 +45,7 @@ export const patchCurrentUser = async (input: any) => {
     } else {
       throw new Error(`Failed to patch current user: ${response.status} ${response.statusText}`);
     }
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(`Failed to patch current user: ${error.message}`);
   }
 }; // improved by ChatGPT

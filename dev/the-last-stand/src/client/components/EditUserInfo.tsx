@@ -1,8 +1,7 @@
 import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/fetchUsers';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import { ColyseusContext } from './ColyseusProvider';
-import { useContext } from 'react';
 
 const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user: IUser; className?: string; isDoneEditing: boolean; inputFunction: () => void }) => {
   const { avatar, username, title } = user;
@@ -48,9 +47,7 @@ const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user:
         className='border-purple-900 h-24 w-24 border-2 rounded-full'
         src={avatar}
       />
-      <form
-        //onSubmit={handleSubmit}
-        className='flex flex-col gap-2 justify-center w-80'>
+      <form className='flex flex-col gap-2 justify-center w-80'>
         <input
           className='w-full placeholder-green-900 placeholder-opacity-50 bg-green-900 border-green-600 border-2 rounded-xl p-1 text-green-600'
           ref={usernameRef}

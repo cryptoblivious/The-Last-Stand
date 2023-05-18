@@ -7,7 +7,7 @@ import cors from 'cors';
 import session, { Session, SessionData } from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import cron from 'node-cron'; // import cron module
+import cron from 'node-cron';
 import { cleanGlobalChat } from './cron/configs/database';
 import { Server } from '@colyseus/core';
 import { WebSocketTransport } from '@colyseus/ws-transport';
@@ -76,7 +76,7 @@ console.log('✅ Options set.');
 const mongoStore = new MongoStore({
   mongoUrl: MONGO_URI,
   collectionName: 'sessions',
-  ttl: 60 * 300000, // 300 000 minutes
+  ttl: 60 * 300000,
 });
 console.log('✅ Session store created.');
 
@@ -113,7 +113,7 @@ app.use(
     saveUninitialized: false,
     store: mongoStore,
     cookie: {
-      maxAge: 1000 * 60 * 300000, // 300 000 minutes
+      maxAge: 1000 * 60 * 300000,
       secure: APP_MODE === 'prod' ? true : false,
       sameSite: 'strict',
     },
@@ -147,7 +147,6 @@ app.use(function (req, res, next) {
 }); // REF : ChatGPT
 
 app.use(passport.session());
-//app.use(passport.authenticate('session'));
 console.log('✅ Middleware defined.');
 
 // Hello World route
@@ -160,7 +159,6 @@ app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/heroes', heroesRouter);
 app.use('/scenes', scenesRouter);
-//app.use('/messages', messagesRouter);
 app.use('/conversations', conversationsRouter);
 
 /**

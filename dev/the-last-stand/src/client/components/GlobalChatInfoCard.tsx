@@ -12,7 +12,6 @@ const GlobalChatInfoCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchGlobalChat();
-      //console.log('data', data);
       setGlobalChatId(data._id);
       setGlobalChatName(data.name);
     };
@@ -31,7 +30,6 @@ const GlobalChatInfoCard = () => {
 
   const toggleChatboxToggler = () => {
     setChatboxTogglerOpen((prev) => !prev);
-    //appRoom!.send(EMessage.ToggleConversation, globalChatId);
   };
 
   if (!user || !appRoom) return <div>Loading...</div>;

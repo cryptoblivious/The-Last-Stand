@@ -25,7 +25,7 @@ export const userSchema = new Schema(
       type: String,
     },
     lastOnline: {
-      type: Schema.Types.Mixed, // Date or 'now'
+      type: Schema.Types.Mixed,
       required: true,
     },
     activeConversationsIds: {

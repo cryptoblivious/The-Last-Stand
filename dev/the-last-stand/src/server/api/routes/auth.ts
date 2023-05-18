@@ -8,7 +8,6 @@ const { CLIENT_URL, CLIENT_PORT } = process.env;
 const authRouter = express.Router();
 
 authRouter.get('/google', passport.authenticate('google', { accessType: 'offline', prompt: 'consent', scope: ['profile', 'email'] }));
-
 authRouter.get(
   '/google/callback',
   passport.authenticate('google', {
@@ -16,9 +15,7 @@ authRouter.get(
     failureRedirect: `${CLIENT_URL}:${CLIENT_PORT}/login`,
   })
 );
-
 authRouter.get('/check', isAuth);
-
 authRouter.delete('/logout', logoutUser);
 
 export default authRouter;

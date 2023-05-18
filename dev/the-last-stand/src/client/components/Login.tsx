@@ -30,7 +30,6 @@ const Login = (props: any) => {
           onClick={closePopup}
         />
       )}
-      {/* {data && <div>{data.message}</div>} */}
     </main>
   );
 };

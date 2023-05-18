@@ -5,11 +5,8 @@ import { useState, useContext } from 'react';
 import LogoutButton from './LogoutButton';
 import OverlayToggler from './OverlayToggler';
 import ChatMenu from './ChatMenu';
-import ChatboxToggler from './ChatboxToggler';
-import { GiDiscGolfBasket } from 'react-icons/gi';
 import GlobalChatInfoCard from './GlobalChatInfoCard';
 import { ColyseusContext } from './ColyseusProvider';
-//import { fetchGlobalChatId } from '../fetches/fetchGlobalChatId';
 
 const SocialOverlay = () => {
   const [overlaying, setOverlaying] = useState<boolean>(false);
