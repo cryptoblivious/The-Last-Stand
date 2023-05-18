@@ -55,7 +55,6 @@ export const readConversationByUsers = async (req: any, res: any) => {
     const deserializedUserIds = JSON.parse(decodeURIComponent(req.params.userIds));
     //const userIds = deserializedUserIds.map((userId: string) => mongoose.Types.ObjectId(userId));
     const conversation = await Conversation.findOne({ userIds: { $all: deserializedUserIds } });
-    console.log('conversation', conversation);
     if (!conversation) {
       // Create a new conversation if it doesn't exist
       const users = deserializedUserIds.map(async (userId: string) => {
