@@ -53,8 +53,13 @@ export const readConversationById = async (req: any, res: any) => {
 export const readConversationByUsers = async (req: any, res: any) => {
   try {
     const deserializedUserIds = JSON.parse(decodeURIComponent(req.params.userIds));
-    //const userIds = deserializedUserIds.map((userId: string) => mongoose.Types.ObjectId(userId));
-    const conversation = await Conversation.findOne({ userIds: { $all: deserializedUserIds } });
+    console.log('deserializedUserIds', deserializedUserIds);
+    const conversation = await Conversation.findOne({
+      $expr: {
+        $setEquals: ['$userIds', deserializedUserIds],
+      },
+    });
+    console.log('conversation', conversation.userIds);
     if (!conversation) {
       // Create a new conversation if it doesn't exist
       const users = deserializedUserIds.map(async (userId: string) => {

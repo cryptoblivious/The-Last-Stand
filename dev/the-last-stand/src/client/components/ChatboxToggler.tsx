@@ -1,4 +1,3 @@
-import { GiGlobe } from 'react-icons/gi';
 import { useContext, useState } from 'react';
 import { ColyseusContext } from './ColyseusProvider';
 import { EMessage } from '../../typescript/enumerations/EMessage';
