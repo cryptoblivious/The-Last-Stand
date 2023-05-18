@@ -5,7 +5,7 @@ import { EMessage } from '../../typescript/enumerations/EMessage';
 export class MatchmakerRoom extends Room {
     // waitingPlayers: Set<string> = new Set();
     private queue: string[] = [];
-    private maxPlayers: number = 2;
+    private maxPlayers: number = 1;
     private roomIds: Set<string> = new Set();
 
     onCreate(options: any) {
@@ -55,6 +55,4 @@ export class MatchmakerRoom extends Room {
         this.roomIds.add(roomId);
         return roomId;
     }
-
-
 }

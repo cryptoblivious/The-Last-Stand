@@ -13,9 +13,9 @@ export class MatchOrchestrator extends Room<MatchState> {
 
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
-    1: { x: 300, y: 400 },
-    2: { x: 350, y: 400 },
-    3: { x: 300, y: 400 },
+    1: { x: 400, y: 400 },
+    2: { x: 500, y: 400 },
+    3: { x: 600, y: 400 },
   };
 
   private directionHandler: Record<number, string> = {

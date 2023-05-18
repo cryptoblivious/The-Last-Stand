@@ -13,6 +13,8 @@ import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMe
 import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpriteMessage';
 import { ERooms } from '../../../typescript/enumerations/ERooms';
 import HashMap from '../../../utils/data_structures/HashMap';
+import PhaserPlayerEntity from '../PhaserPlayerEntity';
+
 interface MovePlayerMessage {
   x: number;
   y: number;
@@ -299,6 +301,9 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.CreateEntity, (message: IGameEntityMapper) => {
+      const sprite = new PhaserPlayerEntity(this.physics, this);
+      sprite.createSprite
+      console.log(sprite)
       this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
       const entity = this.gameEntities.get(message.id);
       this.physics.add.collider(entity, platforms);
@@ -456,28 +461,20 @@ export default class ClientMatch extends Phaser.Scene {
         }
       }
 
-      // explosion logic
 
-      // Make the sprite appear on the other side of the screen when it goes off screen
       if (entity.isAlive) {
         if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
           let explosionPosition = { x: 0, y: 0 };
           if (entity.x > this.sys.canvas.width * 1.2) {
-            // entity.x = 0 - this.sys.canvas.width * 0.2;
-
-            // get the position of the explosion relative to the player
             explosionPosition = { x: entity.x - (entity.x - this.sys.canvas.width), y: entity.y };
-            // explosionPosition.y = entity.y;
             entity.isAlive = false;
           } else if (entity.x < 0 - this.sys.canvas.width * 0.2) {
             explosionPosition = { x: 0, y: entity.y };
             entity.isAlive = false;
           } else if (entity.y > this.sys.canvas.height * 1.2) {
-            // entity.y = 0 - this.sys.canvas.height * 0.2;
             explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
             entity.isAlive = false;
           } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
-            // entity.y = this.sys.canvas.height * 1.2;
 
             explosionPosition = { x: entity.x, y: 0 };
             entity.isAlive = false;
@@ -567,31 +564,5 @@ export default class ClientMatch extends Phaser.Scene {
         }
       });
     }
-    // Check if the explosions mapschema has explosions in it
-    // if (this.mo?.state.explosions.size > 0) {
-    //   // Render all the explosions
-    //   // trigger the explosion at the position then delete it from the map
-    //   this.mo?.state.explosions.forEach((value: {x:number,y:number}, key: string) => {
-    //     this.particlesEmitter?.explode(10, value.x, value.y);
-    //     // delete the explosion from the map after it has been triggered
-    //     if (this.mo?.state.explosions.has(key)) {
-    //       this.mo?.state.explosions.delete(key);
-
-    //       // also delete the index from the mapSchema
-
-    //     }
-    //   });
-
-    // }
-
-    // if (this.explosionsMap.size > 0) {
-    //   // Render all the explosions
-    //   // trigger the explosion at the position then delete it from the map
-    //   for (const [key, position] of this.explosionsMap.entries()) {
-    //     this.particlesEmitter?.explode(10, position.x, position.y);
-    //     // delete the explosion from the map after it has been triggered
-    //     this.explosionsMap.delete(key);
-    //   }
-    // }
   }
 }
