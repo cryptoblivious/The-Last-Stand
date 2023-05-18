@@ -169,17 +169,12 @@ export class AppRoom extends Room<AppState> {
 
   handleToggleConversation = async (userId: string, conversationId: string) => {
     try {
-      console.log(`handleToggleConversation called with userId: ${userId} and conversationId: ${conversationId}`);
-
       // get the user's active conversations
       const { activeConversationsIds } = await User.findOne({ _id: userId }, { activeConversationsIds: 1, _id: 0 });
-      console.log(`User with userId: ${userId} has activeConversationsIds: ${activeConversationsIds}`);
 
       if (!activeConversationsIds.includes(conversationId)) {
-        console.log("adding conversationId to user's activeConversationsIds");
         await User.findOneAndUpdate({ _id: userId }, { $addToSet: { activeConversationsIds: conversationId } });
       } else {
-        console.log("removing conversationId from user's activeConversationsIds");
         await User.findOneAndUpdate({ _id: userId }, { $pull: { activeConversationsIds: conversationId } });
       }
     } catch (error) {
