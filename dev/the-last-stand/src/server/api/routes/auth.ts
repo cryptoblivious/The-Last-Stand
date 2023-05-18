@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { isAuthFetch, logoutUser } from '../controllers/auth';
+import { isAuth, logoutUser } from '../controllers/auth';
 import dotenv from 'dotenv';
 dotenv.config();
 const { CLIENT_URL, CLIENT_PORT } = process.env;
@@ -17,7 +17,7 @@ authRouter.get(
   })
 );
 
-authRouter.get('/check', isAuthFetch);
+authRouter.get('/check', isAuth);
 
 authRouter.delete('/logout', logoutUser);
 

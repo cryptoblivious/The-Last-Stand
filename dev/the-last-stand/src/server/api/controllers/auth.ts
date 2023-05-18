@@ -5,7 +5,6 @@ import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
 import { formatNumber } from '../../../utils/maths';
 import { findAvailableUsernameNumber } from './users';
-import { conversationModel as Conversation } from '../models/conversation';
 
 dotenv.config();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST_URL, HOST_PORT } = process.env;
@@ -21,12 +20,10 @@ export const initializeGoogleOAuthStrategy = () => {
       },
       async (req, accessToken, refreshToken, profile, done) => {
         try {
-          const email: string = profile.emails[0].value;
+          const email: string = profile.emails![0].value;
           let user = await User.findOne({ email: email });
-          //const globalChat = await Conversation.findOne({ isGlobal: true });
 
           if (user) {
-            // user already exists in the database, return it
             const user = await User.findOneAndUpdate({ email: email }, { lastOnline: 'now' });
             return done(null, user);
           } else {
@@ -42,7 +39,7 @@ export const initializeGoogleOAuthStrategy = () => {
               title: 'N00bzor',
               avatar: null,
               lastOnline: 'now',
-              //activeConversationsIds: [globalChat!._id],
+              activeConversationsIds: [],
             });
             await user.save();
             return done(null, user);
@@ -56,7 +53,7 @@ export const initializeGoogleOAuthStrategy = () => {
   );
 };
 
-export const isAuthFetch = (req: any, res: any, next: any) => {
+export const isAuth = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return res.status(200).json({ message: 'Authorized' });
   } else {
@@ -64,14 +61,7 @@ export const isAuthFetch = (req: any, res: any, next: any) => {
   }
 };
 
-export const isAuthExpress = (req: any, res: any, next: any) => {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    return res.status(401).json({ message: 'Not authenticated' });
-  }
-};
-
+// TODO : Implement admin functionality at the app level
 export const isAdmin = async (req: any, res: any, next: any) => {
   const isAdmin = await Role.findOne({ username: req.user.username, role: 'admin' });
 
@@ -82,10 +72,7 @@ export const isAdmin = async (req: any, res: any, next: any) => {
   }
 };
 
-// Logout user v6
 export const logoutUser = async (req: any, res: any) => {
-  const user = await User.findOneAndUpdate({ email: req.user.email }, { lastOnline: new Date() });
-
   req.logout((err: any) => {
     if (err) {
       return res.status(500).json({ message: err });
