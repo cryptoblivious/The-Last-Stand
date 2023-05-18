@@ -35,9 +35,6 @@ export const getUsers = async () => {
 
 // Patch the current user
 export const patchCurrentUser = async (input: any) => {
-  //console.log('patch current received input', input);
-  //console.log('stringified input', JSON.stringify(input));
-
   try {
     const response = await fetch(`${HOST_URL}:${HOST_PORT}/users/current`, {
       method: 'PATCH',

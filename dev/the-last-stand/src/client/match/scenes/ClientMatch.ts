@@ -190,11 +190,9 @@ export default class ClientMatch extends Phaser.Scene {
 
   // Get the client from the Boostrap scene
   async create(data: any) {
-    // console.log(this.physics.world);
     const client = data.client;
     this.gameClient = client;
     if (!this.gameClient) throw new Error('client not found');
-    //this.scale.startFullscreen();
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { maxClients: 2 });
@@ -438,7 +436,6 @@ export default class ClientMatch extends Phaser.Scene {
             }
             if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
               this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
-              // console.log('checking if running or falling');
             }
           }
           // Attacking logic

@@ -10,12 +10,11 @@ export default class GameEntityFactory {
   constructor() {
     this.idSequencer = 0;
 
-    //console.log('instantiating idSequencer: ' + this.idSequencer);
     this.gameEntityPrefabs = new Map<string, IGameEntityProducer>();
 
     this.gameEntityPrefabs.set('solana', this.produceSolana);
     this.gameEntityPrefabs.set('rectangle', this.produceRectangle);
-    //this.gameEntityPrefabs.set(); // add more prefabs here
+    // TODO : add more prefabs here
   }
 
   produceSolana = (position: { x: number; y: number }): GameEntity => {
@@ -26,11 +25,9 @@ export default class GameEntityFactory {
       position: position,
     });
 
-    //solana.addComponent('renderer', new Renderer({ gameEntity: solana, name: 'renderer', spritesheets: [['moveLeft', 'solanaMoveLeft.png'], ['moveRight', 'solanaMoveRight.png'], ['jump', 'solanaJump']] }));
     solana.addComponent('mover', new Mover({ gameEntity: solana, name: 'mover', velocity: 10 }));
     solana.addComponent('jumper', new Jumper({ gameEntity: solana, name: 'jumper', velocity: 20, maxJumps: 2 }));
-    //solana.addComponent(); // add more components here
-
+    // TODO : add more components here
     return solana;
   };
 
