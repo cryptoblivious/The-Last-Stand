@@ -1,5 +1,5 @@
 import { Room, Client } from 'colyseus';
-import { MatchState, GameEntityMapper, Position } from './states/MatchState';
+import { MatchState, GameEntityMapper } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';
 import { IHitbox } from '../../typescript/interfaces/IHitbox';
 import IUpdatePercentagesMessage from '../../typescript/interfaces/IUpdatePercentagesMessage';
@@ -10,7 +10,6 @@ interface IClient extends Client {
   selectedHero: string;
 }
 export class MatchOrchestrator extends Room<MatchState> {
-
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
     1: { x: 400, y: 400 },
@@ -65,11 +64,9 @@ export class MatchOrchestrator extends Room<MatchState> {
       message.respawnPosition = this.positionHandler[index];
       this.broadcast(EMessage.PlayerDead, message);
     });
-    
+
     this.onMessage(EMessage.RespawnPlayer, (player, message) => {
       const index = this.clients.findIndex((client) => client.id === player.id);
-      
-      
     });
   }
 
@@ -83,11 +80,7 @@ export class MatchOrchestrator extends Room<MatchState> {
     this.state.playerIds.push(client.sessionId);
 
     // Create the new player's hero and broadcast it to all clients
-    const entity: IGameEntityMapper = { id: client.sessionId,
-      gameEntityType: client.selectedHero,
-      position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y}, 
-      direction: this.directionHandler[index]
-     };
+    const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };
     this.broadcast(EMessage.CreateEntity, entity);
 
     // Create an array of every players name(id) and index
@@ -96,7 +89,6 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
     // broadcast the array to all clients
     this.broadcast(EMessage.CreateHud, players);
-
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
@@ -121,7 +113,6 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     // Remove the player's hero game state data from the game state
     this.state.gem.delete(client.sessionId);
-
   }
 
   onDispose() {

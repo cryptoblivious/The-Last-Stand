@@ -56,8 +56,7 @@ export const initializeGoogleOAuthStrategy = () => {
   );
 };
 
-// Verify if user is authenticated for a React Router route
-export const checkAuth = (req: any, res: any, next: any) => {
+export const isAuthFetch = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return res.status(200).json({ message: 'Authorized' });
   } else {
@@ -65,8 +64,7 @@ export const checkAuth = (req: any, res: any, next: any) => {
   }
 };
 
-// Verify if user is authenticated for an Express route
-export const isAuthenticated = (req: any, res: any, next: any) => {
+export const isAuthExpress = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
     return next();
   } else {
@@ -74,7 +72,6 @@ export const isAuthenticated = (req: any, res: any, next: any) => {
   }
 };
 
-// Verify if user is admin for an Express route
 export const isAdmin = async (req: any, res: any, next: any) => {
   const isAdmin = await Role.findOne({ username: req.user.username, role: 'admin' });
 
