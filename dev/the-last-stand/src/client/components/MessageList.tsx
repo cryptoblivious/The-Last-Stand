@@ -1,6 +1,5 @@
 const MessageList = (props: any) => {
   const { messages, user } = props;
-  console.log(messages);
   return (
     <div className='overflow-y-scroll scrollbar-custom p-4 pt-0 flex flex-col gap-3 grow'>
       {messages &&

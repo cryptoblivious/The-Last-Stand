@@ -12,7 +12,7 @@ const GlobalChatInfoCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchGlobalChat();
-      console.log('data', data);
+      //console.log('data', data);
       setGlobalChatId(data._id);
       setGlobalChatName(data.name);
     };
