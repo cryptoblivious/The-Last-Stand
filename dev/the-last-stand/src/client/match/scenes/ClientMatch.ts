@@ -14,6 +14,7 @@ import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpri
 import { ERooms } from '../../../typescript/enumerations/ERooms';
 import HashMap from '../../../utils/data_structures/HashMap';
 import PhaserPlayerEntity from '../PhaserPlayerEntity';
+import PhaserPlayerEntityFactory from '../PhaserPlayerEntityFactory';
 
 interface MovePlayerMessage {
   x: number;
@@ -92,6 +93,7 @@ export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
   private playerId?: string;
   private gameEntities: HashMap<string, any> = new HashMap<string, any>();
+  private hitBoxes: HashMap<string, any> = new HashMap<string, any>();
   private opponentIds: string[] = [];
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
@@ -100,6 +102,7 @@ export default class ClientMatch extends Phaser.Scene {
   private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
   private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitter;
+  private phaserPlayerEntityFactory = new PhaserPlayerEntityFactory(this.physics, this);
 
   // TOUTES LES KEYS
   private keys?: any;
@@ -269,7 +272,7 @@ export default class ClientMatch extends Phaser.Scene {
         const entity = this.gameEntityFactory.produce('rectangle', { x: message.position.x, y: message.position.y });
         const rect = this.add.rectangle(message.position.x, message.position.y, entity.size.width, entity.size.height);
         this.physics.add.existing(rect, true);
-        this.gameEntities.set(entity.id.toString(), rect);
+        this.hitBoxes.set(entity.id.toString(), rect);
         rect.setData('owner', message.owner);
         rect.setData('timer', 0);
         rect.setData('lifespan', 1);
@@ -299,34 +302,31 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.CreateEntity, (message: IGameEntityMapper) => {
-      const sprite = new PhaserPlayerEntity(this.physics, this);
-      sprite.createSprite;
-      console.log(sprite);
-      message.staticgroup = [platforms, walls];
-      sprite.create(message);
-      console.log(sprite);
-      this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
-      const entity = this.gameEntities.get(message.id);
-      this.physics.add.collider(entity, platforms);
-      this.physics.add.collider(entity, walls);
-
-      entity.setName(message.gameEntityType);
-      entity.setBounce(bounceHandler[message.gameEntityType]);
-      entity.setGravityY(weightHandler[message.gameEntityType]);
-      entity.setScale(2);
-      entity.anims.play(`${message.gameEntityType}Idle`, true);
-      entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
-      entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];
-      entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
-      entity.direction = message.direction;
-      entity.id = message.id;
-      entity.jumpCount = 0;
-      entity.airborneCount = 0;
-      entity.maxJump = maxJumpHandler[message.gameEntityType];
-      entity.damagePercentage = 0;
-      entity.frameEvents = {};
-      entity.isAlive = true;
-      entity.lives = 3;
+      // const phaserPlayerEntity = new PhaserPlayerEntity(this.physics, this);
+      message.staticgroup = [platforms, walls]
+      // phaserPlayerEntity.create(message);
+      const phaserPlayerEntity = this.phaserPlayerEntityFactory.createHero(message);
+      this.gameEntities.set(message.id, phaserPlayerEntity);
+      const entity = this.gameEntities.get(message.id).sprite;
+      
+      // entity.setName(message.gameEntityType);
+      // entity.setBounce(bounceHandler[message.gameEntityType]);
+      // entity.setGravityY(weightHandler[message.gameEntityType]);
+      // entity.setScale(2);
+      // entity.anims.play(`${message.gameEntityType}Idle`, true);
+      // console.log(entity.anims)
+      // entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
+      // entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];
+      // entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
+      // entity.direction = message.direction;
+      // entity.id = message.id;
+      // entity.jumpCount = 0;
+      // entity.airborneCount = 0;
+      // entity.maxJump = maxJumpHandler[message.gameEntityType];
+      // entity.damagePercentage = 0;
+      // entity.frameEvents = {};
+      // entity.isAlive = true;
+      // entity.lives = 3;
       this.spriteSheetsLoader
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
         ?.spriteSheets.forEach((spritesheet) => {
@@ -382,7 +382,7 @@ export default class ClientMatch extends Phaser.Scene {
   update() {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
-      const entity = this.gameEntities.get(this.playerId!);
+      const entity = this.gameEntities.get(this.playerId!).sprite;
 
       const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
       const canvasHeight: number = this.game.config.height as number;
@@ -498,7 +498,7 @@ export default class ClientMatch extends Phaser.Scene {
 
       //Render all the sprites
       this.mo.state.gem.forEach((gem: IGameEntityMapper, key: string) => {
-        const entity = this.gameEntities.get(key);
+        const entity = this.gameEntities.get(key).sprite;
         const animKey = gem.anim?.split(gem.gameEntityType)[1];
         let flipX;
 
@@ -546,11 +546,11 @@ export default class ClientMatch extends Phaser.Scene {
             });
           }
           // Remove the attack hitbox as soon as the hitbox is present for an iteration
-          for (let [key, value] of this.gameEntities) {
+          for (let [key, value] of this.hitBoxes) {
             if (value.type.toLowerCase() === 'rectangle') {
               value.setData('timer', value.getData('timer') + 1);
               if (value.getData('timer') > value.getData('lifespan')) {
-                this.mo!.send(EMessage.RemoveAttackHitbox, { id: key });
+                this.mo?.send(EMessage.RemoveAttackHitbox, { id: key });
               }
             }
           }

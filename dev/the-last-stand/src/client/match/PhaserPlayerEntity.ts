@@ -1,22 +1,37 @@
-
+import PlayerSprite from './PlayerSprite';
 
 class PhaserPlayerEntity {
-    private sprite?: Phaser.Physics.Arcade.Sprite;
-    private playerNameText?: Phaser.GameObjects.Text;
+    private _sprite?: PlayerSprite;
+    private _playerNameText?: Phaser.GameObjects.Text;
+    message : any
 
-    constructor(private physics: Phaser.Physics.Arcade.ArcadePhysics, private scene: Phaser.Scene) { }
+    constructor(private physics: Phaser.Physics.Arcade.ArcadePhysics, private scene: Phaser.Scene, message:any) {
+        this.message = message;
+        
+     }
 
-    public create(message: any): void {
-        this.sprite = this.createSprite(message);
-        this.addColliders(message);
-        this.createPlayerNameText(message);
+    protected create(): void {
+        this._sprite = this.createSprite(this.message);
+        this.addColliders(this.message);
+        this.createPlayerNameText(this.message);
         // this.setProperties(message);
     }
+    
+    get sprite (): PlayerSprite | undefined {
+        return this._sprite;
+    }
 
-    private createSprite(message: any): Phaser.Physics.Arcade.Sprite {
+    get playerNameText (): Phaser.GameObjects.Text | undefined {
+        return this._playerNameText;
+    }
+
+    set playerNameText (text: Phaser.GameObjects.Text | undefined) {
+        this._playerNameText = text;
+    }
+
+    private createSprite(message: any): PlayerSprite {
         const spriteKey = `${message.gameEntityType}Idle`;
-        const sprite = this.physics.add.sprite(message.position.x, message.position.y, spriteKey);
-        sprite.setScale(2);
+        const sprite = new PlayerSprite(this.scene, message.position.x, message.position.y, spriteKey);
         return sprite;
     }
 
@@ -29,22 +44,15 @@ class PhaserPlayerEntity {
 
     }
 
-    private setProperties(message: Map<any, any>): void {
-        // Set various properties on the sprite
-        // ...
-        for (let [key, value] of message) {
-            this.sprite?.setData(key, value);
-        }
-
-    }
-
     private createPlayerNameText(message: any): void {
         const playerName = message.id;
         if (!this.sprite) return console.error('Sprite not found');
         const playerNameText = this.scene.add.text(this.sprite?.x, this.sprite.y - 50, playerName, { fontSize: '24px', color: '#000000' });
         playerNameText.setOrigin(0.5, 0.5);
-        this.playerNameText = playerNameText;
+        this._playerNameText = playerNameText;
     }
+
+    
 }
 
 export default PhaserPlayerEntity;
