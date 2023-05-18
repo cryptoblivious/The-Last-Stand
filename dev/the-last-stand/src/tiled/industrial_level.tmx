@@ -1,3 +1,10 @@
+<!-- 
+    Nom du fichier : industrial_level.tmx
+    Contexte du fichier : TODO
+    Nom de l'auteur : Jonathan Robinson Roberge
+    Autres étudiants : Andrzej Wisniowski 
+-->
+
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="31" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="9">
  <tileset firstgid="1" name="objets" tilewidth="32" tileheight="32" tilecount="42" columns="7">
@@ -7,19 +14,19 @@
   <image source="../../../../../../Downloads/Tiles.jpg" width="288" height="288"/>
  </tileset>
  <tileset firstgid="124" name="red_plate" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../public/assets/craftpix/tiles/IndustrialTile_81.png" trans="ffffff" width="32" height="32"/>
+  <image source="../../public/assets/tiles/IndustrialTile_81.png" trans="ffffff" width="32" height="32"/>
  </tileset>
  <tileset firstgid="125" name="roller_1" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../public/assets/craftpix/tiles/IndustrialTile_75.png" trans="ffffff" width="32" height="32"/>
+  <image source="../../public/assets/tiles/IndustrialTile_75.png" trans="ffffff" width="32" height="32"/>
  </tileset>
  <tileset firstgid="126" name="roller_2" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../public/assets/craftpix/tiles/IndustrialTile_76.png" trans="ffffff" width="32" height="32"/>
+  <image source="../../public/assets/tiles/IndustrialTile_76.png" trans="ffffff" width="32" height="32"/>
  </tileset>
  <tileset firstgid="127" name="roller_3" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../public/assets/craftpix/tiles/IndustrialTile_74.png" trans="ffffff" width="32" height="32"/>
+  <image source="../../public/assets/tiles/IndustrialTile_74.png" trans="ffffff" width="32" height="32"/>
  </tileset>
  <imagelayer id="14" name="fixedbackground">
-  <image source="../../public/assets/craftpix/backgrounds/background.png" trans="ffffff" width="1164" height="629"/>
+  <image source="../../public/assets/backgrounds/background.png" trans="ffffff" width="1164" height="629"/>
  </imagelayer>
  <layer id="15" name="tilesbackground" width="31" height="19">
   <data encoding="base64" compression="zlib">

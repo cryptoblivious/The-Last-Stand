@@ -180,8 +180,8 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // Load backgrounds and tiles
-    this.load.image('background', '/assets/craftpix/backgrounds/background.png');
-    this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
+    this.load.image('background', '/assets/backgrounds/background.png');
+    this.load.image('tuile03', '/assets/tiles/IndustrialTile_03.png');
 
     // Load particles
     this.load.atlas('flares', '/assets/particles/flares.png', '/assets/particles/flares.json');
@@ -302,8 +302,8 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage(EMessage.CreateEntity, (message: IGameEntityMapper) => {
       const sprite = new PhaserPlayerEntity(this.physics, this);
-      sprite.createSprite
-      console.log(sprite)
+      sprite.createSprite;
+      console.log(sprite);
       this.gameEntities.set(message.id, this.physics.add.sprite(message.position.x, message.position.y, `${message.gameEntityType}Idle`));
       const entity = this.gameEntities.get(message.id);
       this.physics.add.collider(entity, platforms);
@@ -461,7 +461,6 @@ export default class ClientMatch extends Phaser.Scene {
         }
       }
 
-
       if (entity.isAlive) {
         if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
           let explosionPosition = { x: 0, y: 0 };
@@ -475,7 +474,6 @@ export default class ClientMatch extends Phaser.Scene {
             explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
             entity.isAlive = false;
           } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
-
             explosionPosition = { x: entity.x, y: 0 };
             entity.isAlive = false;
           }
