@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';
 import ClientMatch from '../match/scenes/ClientMatch';
@@ -48,9 +48,6 @@ const Match = () => {
     };
   }, [client]);
 
-  // if (!client || !appRoom || !game) {
-  //   return <div className='bg-black h-screen text-white'>loading...</div>;
-  // }
   return (
     <div
       className='bg-black h-screen flex justify-center '

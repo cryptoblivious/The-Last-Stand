@@ -3,7 +3,7 @@ import { Room, Client } from 'colyseus.js';
 import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from '../appConfig';
 import { IUser } from '../../typescript/interfaces/IUser';
 import { AppState } from '../../server/rooms/states/AppState';
-import { patchCurrentUser, getCurrentUser, getUsers } from '../fetches/users';
+import { patchCurrentUser, getCurrentUser, getUsers } from '../fetches/fetchUsers';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { EMessage } from '../../typescript/enumerations/EMessage';
 

@@ -1,6 +1,5 @@
 import express from 'express';
 import { createUser, deleteUserByEmail, patchCurrentUser, readUsers, readUserByEmail, readCurrentUser } from '../controllers/users';
-import { isAuthenticated } from '../controllers/auth';
 
 const usersRouter = express.Router();
 
@@ -8,7 +7,7 @@ const usersRouter = express.Router();
 usersRouter.delete('/:email', deleteUserByEmail);
 
 // GET current user
-usersRouter.get('/current', isAuthenticated, readCurrentUser);
+usersRouter.get('/current', readCurrentUser);
 
 // GET all players
 usersRouter.get('/', readUsers);
@@ -23,6 +22,6 @@ usersRouter.patch('/:email', patchCurrentUser);
 usersRouter.post('/', createUser);
 
 // PATCH the current user
-usersRouter.patch('/current', isAuthenticated, patchCurrentUser);
+usersRouter.patch('/current', patchCurrentUser);
 
 export default usersRouter;

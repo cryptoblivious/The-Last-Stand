@@ -55,26 +55,6 @@ export const readUserByEmail = async (req: any, res: any) => {
 
 // PATCH the current user
 export const patchCurrentUser = async (req: any, res: any) => {
-  const updateUserConversations = async (user: any) => {
-    const userConversations = await Conversation.find({
-      $or: [{ userIds: user._id }, { isGlobal: true }],
-    });
-    userConversations.forEach(async (conversation: any) => {
-      const updatedMessages = conversation.messages.map((message: any) => {
-        if (message.userId === user._id.toString()) {
-          message.username = user.username;
-          message.userNo = user.userNo;
-        }
-        return message;
-      });
-      try {
-        await Conversation.findByIdAndUpdate(conversation._id, { messages: updatedMessages });
-      } catch (err: any) {
-        console.log('err', err);
-      }
-    });
-  };
-
   const id = req.user?._id;
   if (!id) {
     return res.status(400).json({ err: 'Invalid user ID' });
@@ -96,15 +76,8 @@ export const patchCurrentUser = async (req: any, res: any) => {
     if (!user) {
       return res.status(404).json({ err: 'User not found' });
     }
-    updateUserConversations(user);
-    //   .flat()
-    //   .filter((message: any) => message.userId === user._id.toString());
-    // userMessages.forEach((message: any) => {
-    //   //write code here
-    //   console.log('message', message);
-    //   message.username = user.username;
-    //   message.userNo = user.userNo;
-    // });
+    //updateUserConversations(user);
+
     res.status(200).json(user);
   } catch (err: any) {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });

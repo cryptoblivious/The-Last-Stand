@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-
 import https from 'https';
 import fs from 'fs';
 import express from 'express';
@@ -10,8 +9,6 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import cron from 'node-cron'; // import cron module
 import { cleanGlobalChat } from './cron/configs/database';
-
-// Colyseus
 import { Server } from '@colyseus/core';
 import { WebSocketTransport } from '@colyseus/ws-transport';
 import { MatchOrchestrator } from './rooms/MatchOrchestrator';
@@ -20,7 +17,6 @@ import { monitor } from '@colyseus/monitor';
 import { GameLobbyRoom } from './rooms/GameLobbyRoom';
 import { ERooms } from '../typescript/enumerations/ERooms';
 
-// Homemade models
 import { userModel as User } from './api/models/user';
 
 // Homemade controllers

@@ -183,8 +183,8 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     // Load backgrounds and tiles
-    this.load.image('background', '/assets/craftpix/backgrounds/background.png');
-    this.load.image('tuile03', '/assets/craftpix/tiles/IndustrialTile_03.png');
+    this.load.image('background', '/assets/backgrounds/background.png');
+    this.load.image('tuile03', '/assets/tiles/IndustrialTile_03.png');
 
     // Load particles
     this.load.atlas('flares', '/assets/particles/flares.png', '/assets/particles/flares.json');
@@ -193,11 +193,9 @@ export default class ClientMatch extends Phaser.Scene {
 
   // Get the client from the Boostrap scene
   async create(data: any) {
-    // console.log(this.physics.world);
     const client = data.client;
     this.gameClient = client;
     if (!this.gameClient) throw new Error('client not found');
-    //this.scale.startFullscreen();
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { maxClients: 2 });
@@ -438,7 +436,6 @@ export default class ClientMatch extends Phaser.Scene {
             }
             if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
               this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
-              // console.log('checking if running or falling');
             }
           }
           // Attacking logic
@@ -464,7 +461,6 @@ export default class ClientMatch extends Phaser.Scene {
         }
       }
 
-
       if (entity.isAlive) {
         if (entity.x > this.sys.canvas.width * 1.2 || entity.x < 0 - this.sys.canvas.width * 0.2 || entity.y > this.sys.canvas.height * 1.2 || entity.y < 0 - this.sys.canvas.height * 0.2) {
           let explosionPosition = { x: 0, y: 0 };
@@ -478,7 +474,6 @@ export default class ClientMatch extends Phaser.Scene {
             explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
             entity.isAlive = false;
           } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
-
             explosionPosition = { x: entity.x, y: 0 };
             entity.isAlive = false;
           }
