@@ -59,7 +59,7 @@ const GameLobby = () => {
     const [selectedCharacter, setSelectedCharacter] = useState<gl_GridCardData | null>(null);
     const [selectedScene, setSelectedScene] = useState<gl_GridCardData | null>(null);
     const [characters, setCharacters] = useState<gl_GridCardData[]>([]);
-    const [buttonState, setButtonState] = useState({ text: ' Play', isPlaying: false });
+    const [playButtonState, setPlayButtonState] = useState({ text: ' Play', isPlaying: false });
     const [scenes, setScenes] = useState<gl_GridCardData[]>([]);
     const [gameLobbyRoom, setGameLobbyRoom] = useState<any>(null);
     const [matchMakerRoom, setMatchMakerRoom] = useState<any>(null);
@@ -167,12 +167,12 @@ const GameLobby = () => {
         if (!gameLobbyRoom) return;
         if (!selectedCharacter || !selectedScene) { return console.log('select character and scene') };
 
-        setButtonState((prevState) => ({
+        setPlayButtonState((prevState) => ({
             text: prevState.isPlaying ? 'Play' : 'Cancel',
             isPlaying: !prevState.isPlaying
         }));
 
-        if (!buttonState.isPlaying) {
+        if (!playButtonState.isPlaying) {
             console.log('play clicked');
             // gameLobbyRoom.send(EMessage.JoinQueue, {character: selectedCharacter, scene: selectedScene})
             const matchMakeRoom = await connectToMatchMakerRoom();
@@ -217,7 +217,7 @@ const GameLobby = () => {
                 </div>
                 <div className={gl_PlayLoadingContainerStyle}>
                     <div className={gl_buttonSectionContainerStyle}>
-                        <GameLobbyPlayButton onClick={handlePlayCancelClick} buttonText={buttonState.text} />
+                        <GameLobbyPlayButton onClick={handlePlayCancelClick} buttonText={playButtonState.text} />
                     </div>
                     <div style={isInQueue ? { visibility: 'visible' } : { visibility: 'hidden' }}>
                         <LoadingBox text={gl_LoadingBoxText} isVisibile={isInQueue} />
