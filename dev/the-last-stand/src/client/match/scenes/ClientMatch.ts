@@ -13,7 +13,6 @@ import { IPlayerDeadMessage } from '../../../typescript/interfaces/IPlayerDeadMe
 import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpriteMessage';
 import { ERooms } from '../../../typescript/enumerations/ERooms';
 import HashMap from '../../../utils/data_structures/HashMap';
-import PhaserPlayerEntity from '../PhaserPlayerEntity';
 import PhaserPlayerEntityFactory from '../PhaserPlayerEntityFactory';
 
 interface MovePlayerMessage {
@@ -102,7 +101,7 @@ export default class ClientMatch extends Phaser.Scene {
   private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
   private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitter;
-  private phaserPlayerEntityFactory = new PhaserPlayerEntityFactory(this.physics, this);
+  private phaserPlayerEntityFactory: PhaserPlayerEntityFactory | undefined;
 
   // TOUTES LES KEYS
   private keys?: any;
@@ -199,6 +198,8 @@ export default class ClientMatch extends Phaser.Scene {
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { maxClients: 2 });
+
+    this.phaserPlayerEntityFactory = new PhaserPlayerEntityFactory(this.physics, this);
 
     //  TOUTES LES KEYS DES MOUVEMENTS
     this.keys = this.input.keyboard?.addKeys('W,A,S,D,J,K,L,U,I,O,SPACE,UP,DOWN,LEFT,RIGHT');
@@ -305,15 +306,17 @@ export default class ClientMatch extends Phaser.Scene {
       // const phaserPlayerEntity = new PhaserPlayerEntity(this.physics, this);
       message.staticgroup = [platforms, walls]
       // phaserPlayerEntity.create(message);
-      const phaserPlayerEntity = this.phaserPlayerEntityFactory.createHero(message);
+      const phaserPlayerEntity = this.phaserPlayerEntityFactory?.createHero(message);
       this.gameEntities.set(message.id, phaserPlayerEntity);
       const entity = this.gameEntities.get(message.id).sprite;
-      
+      console.log(this.gameEntities.get(message.id))
+      // this.physics.add.existing(entity, false);
       // entity.setName(message.gameEntityType);
       // entity.setBounce(bounceHandler[message.gameEntityType]);
       // entity.setGravityY(weightHandler[message.gameEntityType]);
       // entity.setScale(2);
-      // entity.anims.play(`${message.gameEntityType}Idle`, true);
+      entity.anims.play(`${message.gameEntityType}Idle`, true);
+      console.log(entity)
       // console.log(entity.anims)
       // entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
       // entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];

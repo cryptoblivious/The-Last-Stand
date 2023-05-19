@@ -2,8 +2,15 @@ import  PhaserPlayerEntity  from './PhaserPlayerEntity';
 import SolanaEntity from './SolanaEntity';
 
 class PhaserPlayerEntityFactory {
-    constructor(private physics: Phaser.Physics.Arcade.ArcadePhysics, private scene: Phaser.Scene) { }
+    private physics!: Phaser.Physics.Arcade.ArcadePhysics;
+    private scene!: Phaser.Scene;
 
+    constructor(physics: Phaser.Physics.Arcade.ArcadePhysics, scene: Phaser.Scene) {
+        this.physics = physics;
+        this.scene = scene;
+        console.log(`physics: ${physics}`);
+     }
+ 
     public createHero(message: any): PhaserPlayerEntity {
         switch(message.gameEntityType) {
             case 'solana':

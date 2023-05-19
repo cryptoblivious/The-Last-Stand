@@ -36,10 +36,10 @@ class PhaserPlayerEntity {
     }
 
     private addColliders(message: any): void {
-
+        
         message.staticgroup.forEach((staticgroup: Phaser.Physics.Arcade.StaticGroup) => {
             if (!this.sprite) return console.error('Sprite not found');
-            this.scene.physics.add.collider(this.sprite, staticgroup);
+            this.physics.add.collider(this.sprite, staticgroup);
         });
 
     }
