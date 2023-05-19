@@ -334,7 +334,27 @@ export default class ClientMatch extends Phaser.Scene {
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
         ?.spriteSheets.forEach((spritesheet) => {
           entity.frameEvents[spritesheet.key] = spritesheet.frameEvents;
+          const animKey = `${message.gameEntityType}${capitalizeFirstLetter(spritesheet.key)}`;
+          entity.anims.create({
+            key: animKey,
+            frames: entity.anims.generateFrameNumbers(animKey, { start: spritesheet.startFrame, end: spritesheet.endFrame  }),
+            frameRate: spritesheet.frameRate,
+            repeat: spritesheet.repeat,
+          });
         });
+
+        // this.spriteSheetsLoader.forEach((spritePaths) => {
+        //   const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
+        //   spriteSheetPaths.forEach((key) => {
+        //     const animKey = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
+        //     this.anims.create({
+        //       key: animKey,
+        //       frames: this.anims.generateFrameNumbers(animKey, { start: key.startFrame, end: key.endFrame }),
+        //       frameRate: key.frameRate,
+        //       repeat: key.repeat,
+        //     });
+        //   });
+        // });
 
       // add player name text and attach it to the player
       entity.playerName = message.id;
@@ -514,7 +534,8 @@ export default class ClientMatch extends Phaser.Scene {
             flipX = false;
           }
           entity.setFlipX(flipX);
-          entity.anims.play(gem.anim, true);
+          // console.log(gem.anim)
+          // entity.anims.play(gem.anim, true);
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {

@@ -8,6 +8,7 @@ class SolanaEntity extends PhaserPlayerEntity {
 
     public create(): void {
         super.create();
+        this.setHeroProperties(this.message);
 
     }
 
@@ -21,6 +22,12 @@ class SolanaEntity extends PhaserPlayerEntity {
         entity.setScale(2);
         entity.direction = message.direction;
         entity.id = message.id;
+        entity.jumpHeight = 800;
+        entity.baseSpeed = 500;
+        entity.airborneSpeed = 1000;
+        entity.weight = 300;
+        entity.maxJump = 2;
+        
 
     }
 }

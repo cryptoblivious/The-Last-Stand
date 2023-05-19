@@ -31,7 +31,10 @@ class PhaserPlayerEntity {
 
     private createSprite(message: any): PlayerSprite {
         const spriteKey = `${message.gameEntityType}Idle`;
-        const sprite = new PlayerSprite(this.scene, message.position.x, message.position.y, spriteKey);
+        const sprite = new PlayerSprite(this.scene, message.x, message.y, spriteKey);
+        this.scene.add.existing(sprite);
+        this.physics.add.existing(sprite);
+        console.log('sprite', sprite);
         return sprite;
     }
 
