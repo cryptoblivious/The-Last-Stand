@@ -176,7 +176,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.spriteSheetsLoader.forEach((spritePaths) => {
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
       spriteSheetPaths.forEach((key) => {
-        const spriteSheetName = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
+        const spriteSheetName = `${spritePaths.heroName}${key.key}`.split(' ').join('');  
         this.load.spritesheet({ key: spriteSheetName, url: key.path, frameConfig: { frameWidth: key.frameWidth, frameHeight: key.frameHeight } });
       });
     });
@@ -208,7 +208,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.spriteSheetsLoader.forEach((spritePaths) => {
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
       spriteSheetPaths.forEach((key) => {
-        const animKey = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
+        const animKey = `${spritePaths.heroName}${key.key}`.toLowerCase();
         this.anims.create({
           key: animKey,
           frames: this.anims.generateFrameNumbers(animKey, { start: key.startFrame, end: key.endFrame }),
@@ -315,7 +315,6 @@ export default class ClientMatch extends Phaser.Scene {
       // entity.setBounce(bounceHandler[message.gameEntityType]);
       // entity.setGravityY(weightHandler[message.gameEntityType]);
       // entity.setScale(2);
-      entity.anims.play(`${message.gameEntityType}Idle`, true);
       console.log(entity)
       // console.log(entity.anims)
       // entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
@@ -334,7 +333,7 @@ export default class ClientMatch extends Phaser.Scene {
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
         ?.spriteSheets.forEach((spritesheet) => {
           entity.frameEvents[spritesheet.key] = spritesheet.frameEvents;
-          const animKey = `${message.gameEntityType}${capitalizeFirstLetter(spritesheet.key)}`;
+          const animKey = `${message.gameEntityType}${spritesheet.key}`.toLowerCase();
           entity.anims.create({
             key: animKey,
             frames: entity.anims.generateFrameNumbers(animKey, { start: spritesheet.startFrame, end: spritesheet.endFrame  }),
@@ -342,6 +341,8 @@ export default class ClientMatch extends Phaser.Scene {
             repeat: spritesheet.repeat,
           });
         });
+        entity.anims.play(`${message.gameEntityType}idle`, true);
+
 
         // this.spriteSheetsLoader.forEach((spritePaths) => {
         //   const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
@@ -422,7 +423,7 @@ export default class ClientMatch extends Phaser.Scene {
         entity.jumpCount = 0;
       }
 
-      if (entity.anim != `${entity.name}Hurt`) {
+      if (entity.anim != `${entity.name}hurt`) {
         // Input logic
         if (keyboardPressed) {
           // Jumping logic
@@ -430,22 +431,22 @@ export default class ClientMatch extends Phaser.Scene {
             if (entity.jumpCount < entity.maxJump) {
               entity.setVelocityY(-entity.jumpHeight);
               if (entity.jumpCount == 0) {
-                entity.anim = `${entity.name}Jump`;
+                entity.anim = `${entity.name}jump`;
               } else if (entity.jumpCount >= 1) {
-                entity.anim = `${entity.name}DoubleJump`;
+                entity.anim = `${entity.name}doublejump`;
               }
               entity.jumpCount += 1;
             } else if (entity.jumpCount >= entity.maxJump) {
-              entity.anim = `${entity.name}Fall`;
+              entity.anim = `${entity.name}fall`;
             }
           }
           // Moving logic
           if (this.keys.D?.isDown || this.keys.RIGHT?.isDown || this.keys.A?.isDown || this.keys.LEFT?.isDown || this.keys.S?.isDown || this.keys.DOWN?.isDown) {
             if ((this.keys.A?.isDown && this.keys.D?.isDown) || (this.keys.LEFT?.isDown && this.keys.RIGHT?.isDown)) {
               if (entity.body.blocked.down) {
-                entity.anim = `${entity.name}Idle`;
+                entity.anim = `${entity.name}idle`;
               } else {
-                entity.anim = `${entity.name}Fall`;
+                entity.anim = `${entity.name}fall`;
               }
               entity.setVelocityX(0);
             } else if (this.keys.D?.isDown || this.keys.RIGHT?.isDown) {
@@ -455,21 +456,21 @@ export default class ClientMatch extends Phaser.Scene {
               entity.body.blocked.down ? entity.setVelocityX(-entity.baseSpeed) : entity.setVelocityX(-entity.airborneSpeed);
               entity.direction = 'left';
             } else if (this.keys.S?.isDown || this.keys.DOWN?.isDown) {
-              entity.setVelocity(0, entity.airborneSpeed + weightHandler[entity.name]);
+              entity.setVelocity(0, entity.airborneSpeed + entity.weight);
             }
-            if (entity.anim !== `${entity.name}Jump` && entity.anim !== `${entity.name}DoubleJump`) {
-              this.applyAirborneAnimCorrection(entity, 'Run', 'Fall');
+            if (entity.anim !== `${entity.name}jump` && entity.anim !== `${entity.name}doubleJump`) {
+              this.applyAirborneAnimCorrection(entity, 'run', 'fall');
             }
           }
           // Attacking logic
           if (attacking && entity.body.blocked.down) {
             if (!fixedAnimations.includes(animKey)) {
               if (this.keys.J?.isDown) {
-                entity.anim = `${entity.name}Attack1`;
+                entity.anim = `${entity.name}attack1`;
               } else if (this.keys.K?.isDown) {
-                entity.anim = `${entity.name}Attack2`;
+                entity.anim = `${entity.name}attack2`;
               } else if (this.keys.L?.isDown) {
-                entity.anim = `${entity.name}Attack3`;
+                entity.anim = `${entity.name}attack3`;
               }
             }
           }
@@ -479,7 +480,7 @@ export default class ClientMatch extends Phaser.Scene {
           if (!fixedAnimations.includes(animKey)) {
             entity.setVelocityX(0);
 
-            this.applyAirborneAnimCorrection(entity, 'Idle', 'Fall');
+            this.applyAirborneAnimCorrection(entity, 'idle', 'fall');
           }
         }
       }
@@ -514,7 +515,7 @@ export default class ClientMatch extends Phaser.Scene {
         x: entity.x,
         y: entity.y,
         direction: entity.direction,
-        anim: entity.anim,
+        anim: entity.anim.toLowerCase(),
       };
 
       this.mo.send(EMessage.UpdateSprite, updateSpriteMessage);
@@ -539,11 +540,11 @@ export default class ClientMatch extends Phaser.Scene {
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
-            if (animKey == 'Hurt') {
+            if (animKey == 'hurt') {
               entity.once('animationcomplete', () => {
                 entity.anim = `${gem.gameEntityType}Idle`;
               });
-            } else if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
+            } else if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
               // Send an attack's information to the server
               entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
                 if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
@@ -562,10 +563,10 @@ export default class ClientMatch extends Phaser.Scene {
 
             // Set the animation to idle or fall after the fixed animation is finished
             entity.once('animationcomplete', () => {
-              if (animKey == 'Attack1' || animKey == 'Attack2' || animKey == 'Attack3') {
-                entity.anim = `${gem.gameEntityType}Idle`;
+              if (animKey == 'Attack1' || animKey == 'attack2' || animKey == 'attack3') {
+                entity.anim = `${gem.gameEntityType}idle`;
               } else {
-                entity.anim = `${gem.gameEntityType}Fall`;
+                entity.anim = `${gem.gameEntityType}iall`;
               }
             });
           }

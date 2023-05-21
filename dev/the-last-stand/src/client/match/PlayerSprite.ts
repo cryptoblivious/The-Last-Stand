@@ -12,6 +12,7 @@ class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
     isAlive: boolean;
     lives: number;
     weight:number;
+    anim:string;
     
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
         super(scene, x, y, texture, frame);
@@ -28,6 +29,7 @@ class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
         this.isAlive = true;
         this.lives = 3;
         this.weight = 0;
+        this.anim = '';
         
     }
 }

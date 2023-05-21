@@ -35,7 +35,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         repeat: 0,
       },
       {
-        key: 'doubleJump',
+        key: 'doublejump',
         path: '/assets/heroes/chuck/spritesheets/chuck_doublejump.png',
         frameWidth: 33,
         frameHeight: 33,
@@ -171,7 +171,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         repeat: 0,
       },
       {
-        key: 'doubleJump',
+        key: 'doublejump',
         path: '/assets/heroes/solana/spritesheets/solana_doublejump.png',
         frameWidth: 33,
         frameHeight: 34,
@@ -307,7 +307,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         repeat: 0,
       },
       {
-        key: 'doubleJump',
+        key: 'doublejump',
         path: '/assets/heroes/logan/spritesheets/logan_doublejump.png',
         frameWidth: 33,
         frameHeight: 33,
