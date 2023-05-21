@@ -536,13 +536,13 @@ export default class ClientMatch extends Phaser.Scene {
           }
           entity.setFlipX(flipX);
           // console.log(gem.anim)
-          // entity.anims.play(gem.anim, true);
+          entity.anims.play(gem.anim, true);
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
             if (animKey == 'hurt') {
               entity.once('animationcomplete', () => {
-                entity.anim = `${gem.gameEntityType}Idle`;
+                entity.anim = `${gem.gameEntityType}idle`;
               });
             } else if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
               // Send an attack's information to the server
