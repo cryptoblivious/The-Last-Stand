@@ -38,7 +38,7 @@ const defenseStat: IStatBarProps = {
 const stats = [powerStat, speedStat, defenseStat]
 
 const GameLobby = () => {
-    const { client, user } = useContext(ColyseusContext)
+    const { client, user, gameOptions, setGameOptions } = useContext(ColyseusContext)
     const [selectedCharacter, setSelectedCharacter] = useState<gl_GridCardData | null>(null);
     const [selectedScene, setSelectedScene] = useState<gl_GridCardData | null>(null);
     const [characters, setCharacters] = useState<gl_GridCardData[]>([]);
@@ -66,7 +66,6 @@ const GameLobby = () => {
             const matchMakerRoom = await client?.joinOrCreate('match_maker_room', { username: user?.username, character: selectedCharacter?.name, scene: selectedScene?.name });
             matchMakerRoom?.onMessage(EMessage.JoinGame, (data) => {
                 // redirect to game room
-                console.log('data: ', data);
                 const { roomId } = data;
                 window.location.href = `/match/${roomId}`;
             });
@@ -139,6 +138,7 @@ const GameLobby = () => {
         if (isInQueue) return;
         setSelectedCharacter(character);
         
+        
     };
 
     const handleSceneSelect = (scene: gl_GridCardData) => {
@@ -157,7 +157,15 @@ const GameLobby = () => {
 
         if (!playButtonState.isPlaying) {
             console.log('play clicked');
-            // gameLobbyRoom.send(EMessage.JoinQueue, {character: selectedCharacter, scene: selectedScene})
+
+            const updatedGameOptions = {
+                selectedCharacter: selectedCharacter.name,
+                selectedScene: selectedScene.name,
+                gameMode: selectedOptions?.gameMode,
+                playerCount: selectedOptions?.playerCount
+            }
+            setGameOptions?.(updatedGameOptions);
+            console.log(gameOptions);
             const matchMakeRoom = await connectToMatchMakerRoom();
             if (matchMakeRoom) {
                 setMatchMakerRoom(matchMakeRoom);

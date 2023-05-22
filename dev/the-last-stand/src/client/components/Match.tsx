@@ -8,12 +8,14 @@ import { ColyseusContext } from './ColyseusProvider';
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Phaser.Game | null>(null);
-  const { client, appRoom, user } = useContext(ColyseusContext);
+  const { client, appRoom, user, gameOptions } = useContext(ColyseusContext);
 
   useEffect(() => {
     if (!client) {
       return;
     }
+    console.log('gameOptions', gameOptions);
+
     const username = user?.username;
     const userNo = user?.userNo;
     const bootstrap = (Bootstrap as any).bind(null, client, {username, userNo} );

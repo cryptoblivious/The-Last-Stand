@@ -6,6 +6,7 @@ import { AppState } from '../../server/rooms/states/AppState';
 import { patchCurrentUser, getCurrentUser, getUsers } from '../fetches/fetchUsers';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
 import { EMessage } from '../../typescript/enumerations/EMessage';
+import IGameOptions from '../../typescript/interfaces/IGameOptions';
 
 interface ColyseusContextProps {
   client: Client | null;
@@ -13,6 +14,8 @@ interface ColyseusContextProps {
   user: IUser | null;
   users: IUser[];
   messages: IMessageMapper[];
+  gameOptions : IGameOptions | null;
+  setGameOptions: (gameOptions: IGameOptions) => void;
 }
 
 export const ColyseusContext = createContext<ColyseusContextProps>({
@@ -21,6 +24,8 @@ export const ColyseusContext = createContext<ColyseusContextProps>({
   user: null,
   users: [],
   messages: [],
+  gameOptions: null,
+  setGameOptions: () => {},
 });
 
 interface ColyseusServerProviderProps {
@@ -33,6 +38,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [users, setUsers] = useState<IUser[]>([]);
   const [messages, setMessages] = useState<IMessageMapper[]>([]);
+  const [gameOptions, setGameOptions] = useState<IGameOptions | null>(null);
 
   const connect = async () => {
     const currentUser = await getCurrentUser();
@@ -116,7 +122,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     };
   }, []);
 
-  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages }), [client, appRoom, user, users, messages]);
+  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages, gameOptions, setGameOptions}), [client, appRoom, user, users, messages, gameOptions, setGameOptions]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 
