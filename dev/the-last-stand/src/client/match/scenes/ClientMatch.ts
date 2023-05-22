@@ -32,47 +32,6 @@ interface GenerateAttackHitboxMessage {
   y: number;
 }
 
-const baseSpeedHandler: Record<string, number> = {
-  chuck: 1000,
-  solana: 500,
-  sirius: 150,
-  logan: 1500,
-};
-
-const airborneSpeedHandler: Record<string, number> = {
-  chuck: 500,
-  solana: 1000,
-  sirius: 150,
-  logan: 300,
-};
-
-const jumpHeightHandler: Record<string, number> = {
-  chuck: 800,
-  solana: 800,
-  sirius: 1500,
-  logan: 1200,
-};
-
-const weightHandler: Record<string, number> = {
-  chuck: 200,
-  solana: 300,
-  sirius: 300,
-  logan: 600,
-};
-
-const maxJumpHandler: Record<string, number> = {
-  chuck: 2,
-  solana: 2,
-  sirius: 2,
-  logan: 2,
-};
-
-const bounceHandler: Record<string, number> = {
-  chuck: 0.1,
-  solana: 0.1,
-  sirius: 0.1,
-  logan: 0.1,
-};
 
 // Create doc for the interface IParticlesEmitterJsonObject
 
@@ -96,7 +55,6 @@ export default class ClientMatch extends Phaser.Scene {
   private opponentIds: string[] = [];
   private mo: Room | undefined;
   private spriteSheetsLoader = spriteSheetsLoader;
-  private updateSpriteMessage?: MovePlayerMessage;
   private background?: Phaser.GameObjects.Image;
   private airborneCorrection: number = 10;
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
@@ -116,7 +74,7 @@ export default class ClientMatch extends Phaser.Scene {
       playerSprite.setPosition(x, y);
       playerSprite.setVisible(false);
       playerSprite.setActive(false);
-      playerSprite.playerNameText.setVisible(false);
+      // playerSprite.playerNameText.setVisible(false);
       // playerSprite.setEnable(false)
     }
   }
@@ -125,7 +83,7 @@ export default class ClientMatch extends Phaser.Scene {
       playerSprite.setVisible(true);
       playerSprite.setActive(true);
       playerSprite.body!.enable = true;
-      playerSprite.playerNameText.setVisible(true);
+      // playerSprite.playerNameText.setVisible(true);
       playerSprite.isAlive = true;
       // playerSprite.setEnable(true)
     }
@@ -154,7 +112,6 @@ export default class ClientMatch extends Phaser.Scene {
         },
         callbackScope: this,
       });
-      // enable player sprite
     }
   }
 
@@ -303,32 +260,10 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.CreateEntity, (message: IGameEntityMapper) => {
-      // const phaserPlayerEntity = new PhaserPlayerEntity(this.physics, this);
       message.staticgroup = [platforms, walls]
-      // phaserPlayerEntity.create(message);
       const phaserPlayerEntity = this.phaserPlayerEntityFactory?.createHero(message);
       this.gameEntities.set(message.id, phaserPlayerEntity);
       const entity = this.gameEntities.get(message.id).sprite;
-      console.log(this.gameEntities.get(message.id))
-      // this.physics.add.existing(entity, false);
-      // entity.setName(message.gameEntityType);
-      // entity.setBounce(bounceHandler[message.gameEntityType]);
-      // entity.setGravityY(weightHandler[message.gameEntityType]);
-      // entity.setScale(2);
-      console.log(entity)
-      // console.log(entity.anims)
-      // entity.baseSpeed = baseSpeedHandler[message.gameEntityType];
-      // entity.airborneSpeed = airborneSpeedHandler[message.gameEntityType];
-      // entity.jumpHeight = jumpHeightHandler[message.gameEntityType];
-      // entity.direction = message.direction;
-      // entity.id = message.id;
-      // entity.jumpCount = 0;
-      // entity.airborneCount = 0;
-      // entity.maxJump = maxJumpHandler[message.gameEntityType];
-      // entity.damagePercentage = 0;
-      // entity.frameEvents = {};
-      // entity.isAlive = true;
-      // entity.lives = 3;
       this.spriteSheetsLoader
         .find((spritePaths) => spritePaths.heroName === message.gameEntityType)
         ?.spriteSheets.forEach((spritesheet) => {
@@ -342,31 +277,11 @@ export default class ClientMatch extends Phaser.Scene {
           });
         });
         entity.anims.play(`${message.gameEntityType}idle`, true);
-
-
-        // this.spriteSheetsLoader.forEach((spritePaths) => {
-        //   const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
-        //   spriteSheetPaths.forEach((key) => {
-        //     const animKey = `${spritePaths.heroName}${capitalizeFirstLetter(key.key)}`;
-        //     this.anims.create({
-        //       key: animKey,
-        //       frames: this.anims.generateFrameNumbers(animKey, { start: key.startFrame, end: key.endFrame }),
-        //       frameRate: key.frameRate,
-        //       repeat: key.repeat,
-        //     });
-        //   });
-        // });
-
-      // add player name text and attach it to the player
-      // entity.playerName = message.id;
-      // const playerNameText = this.add.text(entity.x, entity.y - 50, entity.playerName, { fontSize: '24px', color: '#000000' });
-      // playerNameText.setOrigin(0.5, 0.5);
-      // entity.playerNameText = playerNameText;
     });
 
     this.mo.onMessage(EMessage.RemoveEntity, (message: { id: string }) => {
-      this.gameEntities.get(message.id)?.destroy();
-      this.gameEntities.delete(message.id);
+      this.hitBoxes.get(message.id)?.destroy();
+      this.hitBoxes.delete(message.id);
     });
 
     this.mo.onMessage(EMessage.CreateHud, (players: { name: string; index: number }[]) => {
@@ -389,7 +304,7 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.PlayerDead, (message: IPlayerDeadMessage) => {
-      const entity = this.gameEntities.get(message.id);
+      const entity = this.gameEntities.get(message.id).sprite;
       // set the entity to invisible and remove it from the physics world
       if (entity) {
         this.particlesEmitter?.explode(75, message.explosionPosition.x, message.explosionPosition.y);
@@ -404,11 +319,9 @@ export default class ClientMatch extends Phaser.Scene {
   }
 
   update() {
-    // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       const entity = this.gameEntities.get(this.playerId!).sprite;
       const playerNameText = this.gameEntities.get(this.playerId!).playerNameText;
-
       const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
       const canvasHeight: number = this.game.config.height as number;
       const spriteBottom = entity.y + entity.height;
@@ -498,7 +411,7 @@ export default class ClientMatch extends Phaser.Scene {
           } else if (entity.y > this.sys.canvas.height * 1.2) {
             explosionPosition = { x: entity.x, y: entity.y - (entity.y - this.sys.canvas.height) };
             entity.isAlive = false;
-          } else if (entity.y < 0 - this.sys.canvas.height * 0.2) {
+          } else if (entity.y < 0 - this.sys.canvas.height * 0.4) {
             explosionPosition = { x: entity.x, y: 0 };
             entity.isAlive = false;
           }

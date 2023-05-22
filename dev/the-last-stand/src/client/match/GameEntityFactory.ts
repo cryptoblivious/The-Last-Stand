@@ -13,7 +13,7 @@ export default class GameEntityFactory {
     this.gameEntityPrefabs.set('rectangle', this.produceRectangle);
   }
 
-  produceRectangle = (position: { x: number; y: number }): GameEntity => {
+  produceRectangle = (position: { x: number; y: number }): CGameEntity => {
     const rectangle = new CGameEntity({
       id: this.idSequencer,
       name: 'rectangle',

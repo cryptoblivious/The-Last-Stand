@@ -78,7 +78,6 @@ export class MatchOrchestrator extends Room<MatchState> {
     const index = this.clients.indexOf(client);
     client.selectedHero = this.heroHandler[index];
     client.send(EMessage.AssignPlayerID, { id: client.sessionId });
-    this.state.playerIds.push(client.sessionId);
 
     // Create the new player's hero and broadcast it to all clients
     const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };

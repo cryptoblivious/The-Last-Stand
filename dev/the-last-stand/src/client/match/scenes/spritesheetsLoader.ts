@@ -199,6 +199,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 5,
         frameRate: 8,
         repeat: 0,
+        frameEvents: [4],
       },
       {
         key: 'attack2',
@@ -220,6 +221,7 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 7,
         frameRate: 8,
         repeat: 0,
+        frameEvents: [5,]
       },
       // {
       //   key: 'climb',
