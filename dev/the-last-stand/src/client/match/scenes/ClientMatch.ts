@@ -86,7 +86,7 @@ interface IParticlesEmitterJsonObject {
   emitting: boolean;
 }
 
-const fixedAnimations: string[] = ['Jump', 'DoubleJump', 'Attack1', 'Attack2', 'Attack3', 'Hurt', 'Death'];
+const fixedAnimations: string[] = ['jump', 'doubleJump', 'attack1', 'attack2', 'attack3', 'hurt', 'death'];
 
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
@@ -564,10 +564,10 @@ export default class ClientMatch extends Phaser.Scene {
 
             // Set the animation to idle or fall after the fixed animation is finished
             entity.once('animationcomplete', () => {
-              if (animKey == 'Attack1' || animKey == 'attack2' || animKey == 'attack3') {
+              if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
                 entity.anim = `${gem.gameEntityType}idle`;
               } else {
-                entity.anim = `${gem.gameEntityType}iall`;
+                entity.anim = `${gem.gameEntityType}fall`;
               }
             });
           }
