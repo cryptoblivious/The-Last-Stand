@@ -16,9 +16,9 @@ interface IHandleMessageKwargs {
 }
 export class AppRoom extends Room<AppState> {
   private client: MongoClient;
-  private conversationsChangeStream: ChangeStream;
-  private usersChangeStream: ChangeStream;
-  private messagesChangeStream: ChangeStream;
+  private conversationsChangeStream?: ChangeStream;
+  private usersChangeStream?: ChangeStream;
+  private messagesChangeStream?: ChangeStream;
 
   constructor() {
     super();
@@ -195,9 +195,9 @@ export class AppRoom extends Room<AppState> {
     this.state.users.forEach((user: any) => {
       this.updateLastOnline(user._id);
     });
-    await this.usersChangeStream.close();
-    await this.messagesChangeStream.close();
-    await this.conversationsChangeStream.close();
+    await this.usersChangeStream?.close();
+    await this.messagesChangeStream?.close();
+    await this.conversationsChangeStream?.close();
     await this.client.close();
   }
 }

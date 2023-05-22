@@ -10,6 +10,9 @@ interface IClient extends Client {
   selectedHero: string;
 }
 export class MatchOrchestrator extends Room<MatchState> {
+
+  private userUID : string = '';
+
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
     1: { x: 400, y: 400 },
@@ -70,9 +73,9 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
   }
 
-  onJoin(client: IClient, options: any) {
-    console.log(client.id, 'joined');
-    console.log('options', options);
+  onJoin(client: IClient, options: {user:{username:string, userNo:string}}) {
+
+    const user = options.user;
 
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
@@ -80,12 +83,12 @@ export class MatchOrchestrator extends Room<MatchState> {
     client.send(EMessage.AssignPlayerID, { id: client.sessionId });
 
     // Create the new player's hero and broadcast it to all clients
-    const entity: IGameEntityMapper = { id: client.sessionId, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };
+    const entity: IGameEntityMapper = { id: client.sessionId, playerName : user.username, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };
     this.broadcast(EMessage.CreateEntity, entity);
 
     // Create an array of every players name(id) and index
     const players = this.clients.map((client) => {
-      return { name: client.sessionId, index: this.clients.indexOf(client) };
+      return { name: user.username, index: this.clients.indexOf(client) };
     });
     // broadcast the array to all clients
     this.broadcast(EMessage.CreateHud, players);
@@ -98,6 +101,7 @@ export class MatchOrchestrator extends Room<MatchState> {
     // Create the new player's hero game state data and add it to the game state
     const entityMap = new GameEntityMapper();
     entityMap.id = client.sessionId;
+    entity.playerName = user.username;
     entityMap.gameEntityType = client.selectedHero;
     entityMap.position.x = this.positionHandler[index].x;
     entityMap.position.y = this.positionHandler[index].y;

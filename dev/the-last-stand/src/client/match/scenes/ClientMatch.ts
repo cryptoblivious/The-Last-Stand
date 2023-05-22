@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import { Client, Room } from 'colyseus.js';
 import { MatchState } from '../../../server/rooms/states/MatchState';
 import spriteSheetsLoader from './spritesheetsLoader';
-import { capitalizeFirstLetter } from '../../../utils/text_format';
 import { IGameEntityMapper } from '../../../typescript/interfaces/IGameEntityMapper';
 import GameEntityFactory from '../GameEntityFactory';
 import { IHitbox } from '../../../typescript/interfaces/IHitbox';
@@ -15,25 +14,7 @@ import { ERooms } from '../../../typescript/enumerations/ERooms';
 import HashMap from '../../../utils/data_structures/HashMap';
 import PhaserPlayerEntityFactory from '../PhaserPlayerEntityFactory';
 
-interface MovePlayerMessage {
-  x: number;
-  y: number;
-  anim?: string;
-  flipX?: boolean;
-  direction?: string;
-}
 
-interface GenerateAttackHitboxMessage {
-  attackType: string;
-  attackerWidth: number;
-  attackerHeight: number;
-  direction: string;
-  x: number;
-  y: number;
-}
-
-
-// Create doc for the interface IParticlesEmitterJsonObject
 
 interface IParticlesEmitterJsonObject {
   frame: string[];
@@ -60,8 +41,6 @@ export default class ClientMatch extends Phaser.Scene {
   private gameEntityFactory: GameEntityFactory = new GameEntityFactory();
   private particlesEmitter?: Phaser.GameObjects.Particles.ParticleEmitter;
   private phaserPlayerEntityFactory: PhaserPlayerEntityFactory | undefined;
-
-  // TOUTES LES KEYS
   private keys?: any;
 
   constructor() {
@@ -150,11 +129,13 @@ export default class ClientMatch extends Phaser.Scene {
   // Get the client from the Boostrap scene
   async create(data: any) {
     const client = data.client;
+    const user = data.user;
+    console.log('user', user);
     this.gameClient = client;
     if (!this.gameClient) throw new Error('client not found');
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
-    this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { maxClients: 2 });
+    this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { user : user });
 
     this.phaserPlayerEntityFactory = new PhaserPlayerEntityFactory(this.physics, this);
 
@@ -250,12 +231,10 @@ export default class ClientMatch extends Phaser.Scene {
     this.mo.onMessage(EMessage.PlayerHurt, (message) => {
       const { attackForce } = message;
       const hero = this.gameEntities.get(this.playerId!);
-      hero.anim = hero.name + 'Hurt';
+      hero.anim = `${hero.name}hurt`.toLowerCase();
       hero.setVelocity(attackForce.x, attackForce.y);
-
       hero.damagePercentage += 1;
       const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
-
       this.mo?.send(EMessage.ServerUpdateHudDamage, updatePlayerDamage);
     });
 
@@ -322,7 +301,7 @@ export default class ClientMatch extends Phaser.Scene {
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       const entity = this.gameEntities.get(this.playerId!).sprite;
       const playerNameText = this.gameEntities.get(this.playerId!).playerNameText;
-      const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
+      const animKey = entity.anims.currentAnim.key.split(entity.name.toLowerCase())[1];
       const canvasHeight: number = this.game.config.height as number;
       const spriteBottom = entity.y + entity.height;
       const bounceCorrection = 10;
@@ -450,7 +429,6 @@ export default class ClientMatch extends Phaser.Scene {
           }
           entity.setFlipX(flipX);
           // console.log(gem.anim)
-          entity.anims.play(gem.anim, true);
 
           // wait for fixed animations do be finished before playing other animations
           if (fixedAnimations.includes(animKey!)) {
@@ -497,6 +475,8 @@ export default class ClientMatch extends Phaser.Scene {
           if (playerNameText) {
             playerNameText.setPosition(entity.x, entity.y - 50);
           }
+          entity.anims.play(gem.anim, true);
+
         }
       });
     }

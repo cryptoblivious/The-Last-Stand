@@ -9,4 +9,5 @@ export interface IGameEntityMapper {
   anim?: string | undefined;
   direction?: string;
   staticgroup?: Phaser.Physics.Arcade.StaticGroup[];
+  playerName ? : string;
 }

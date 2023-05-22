@@ -8,13 +8,15 @@ import { ColyseusContext } from './ColyseusProvider';
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Phaser.Game | null>(null);
-  const { client, appRoom } = useContext(ColyseusContext);
+  const { client, appRoom, user } = useContext(ColyseusContext);
 
   useEffect(() => {
     if (!client) {
       return;
     }
-    const bootstrap = (Bootstrap as any).bind(null, client);
+    const username = user?.username;
+    const userNo = user?.userNo;
+    const bootstrap = (Bootstrap as any).bind(null, client, {username, userNo} );
     const matchCanvas = document.createElement('div');
     matchCanvas.id = 'match-canvas';
     gameRef.current?.appendChild(matchCanvas);

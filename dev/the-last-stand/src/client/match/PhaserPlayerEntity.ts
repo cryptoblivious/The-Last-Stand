@@ -48,7 +48,7 @@ class PhaserPlayerEntity {
     }
 
     private createPlayerNameText(message: any): void {
-        const playerName = message.id;
+        const playerName = message.playerName;
         if (!this.sprite) return console.error('Sprite not found');
         const playerNameText = this.scene.add.text(this.sprite?.x, this.sprite.y - 50, playerName, { fontSize: '24px', color: '#000000' });
         playerNameText.setOrigin(0.5, 0.5);
