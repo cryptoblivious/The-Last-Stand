@@ -27,13 +27,6 @@ export class MatchOrchestrator extends Room<MatchState> {
     3: 'left',
   };
 
-  private heroHandler: Record<number, string> = {
-    0: 'solana',
-    1: 'solana',
-    2: 'solana',
-    3: 'solana',
-  };
-
   onCreate(options: any) {
     this.setState(new MatchState());
 
@@ -73,13 +66,13 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
   }
 
-  onJoin(client: IClient, options: {user:{username:string, userNo:string}}) {
+  onJoin(client: IClient, options: {user:{username:string, userNo:string, selectedCharacter:string, selectedScene:string}}) {
 
     const user = options.user;
 
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
-    client.selectedHero = this.heroHandler[index];
+    client.selectedHero = user.selectedCharacter.toLowerCase();
     client.send(EMessage.AssignPlayerID, { id: client.sessionId });
 
     // Create the new player's hero and broadcast it to all clients

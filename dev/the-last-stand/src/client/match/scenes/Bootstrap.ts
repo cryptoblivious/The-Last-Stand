@@ -15,8 +15,6 @@ export default class Bootstrap extends Phaser.Scene {
   }
 
   init() {
-    //this.client = new Client(`ws://${HOST_NAME}:${HOST_PORT}`);
-    //this.client = new Client('ws://localhost:9001')
     if (!this.client) {
       this.client = new Client(`${WS_PROTOCOL}://${HOST_NAME}:${HOST_PORT}`);
     }

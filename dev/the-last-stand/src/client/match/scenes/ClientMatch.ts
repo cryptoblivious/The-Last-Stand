@@ -26,7 +26,7 @@ interface IParticlesEmitterJsonObject {
   emitting: boolean;
 }
 
-const fixedAnimations: string[] = ['jump', 'doubleJump', 'attack1', 'attack2', 'attack3', 'hurt', 'death'];
+const fixedAnimations: string[] = ['jump', 'doublejump', 'attack1', 'attack2', 'attack3', 'hurt', 'death'];
 
 export default class ClientMatch extends Phaser.Scene {
   private gameClient?: Client;
@@ -130,7 +130,6 @@ export default class ClientMatch extends Phaser.Scene {
   async create(data: any) {
     const client = data.client;
     const user = data.user;
-    console.log('user', user);
     this.gameClient = client;
     if (!this.gameClient) throw new Error('client not found');
 

@@ -1,7 +1,5 @@
 export default interface IGameOptions {
-    selectedCharacter: string;
-    selectedMap?: string;
-    gameMode?: string;
-    playerCount?: number;
+    selectedCharacter?: string;
+    selectedScene?: string;
 }
 

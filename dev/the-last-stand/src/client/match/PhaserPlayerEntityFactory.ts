@@ -1,5 +1,7 @@
 import  PhaserPlayerEntity  from './PhaserPlayerEntity';
 import SolanaEntity from './SolanaEntity';
+import ChuckEntity from './ChuckEntity';
+import LoganEntity from './LoganEntity';
 
 class PhaserPlayerEntityFactory {
     private physics!: Phaser.Physics.Arcade.ArcadePhysics;
@@ -15,10 +17,10 @@ class PhaserPlayerEntityFactory {
         switch(message.gameEntityType) {
             case 'solana':
                 return new SolanaEntity(this.physics, this.scene, message);
-            // case 'chuck':
-            //     return new ChuckEntity(this.physics, this.scene, message);
-            // case 'logan':
-            //     return new LoganEntity(this.physics, this.scene, message);
+            case 'chuck':
+                return new ChuckEntity(this.physics, this.scene, message);
+            case 'logan':
+                return new LoganEntity(this.physics, this.scene, message);
             default:
                 throw new Error(`Unknown hero type: ${message.gameEntityType}`);
         }

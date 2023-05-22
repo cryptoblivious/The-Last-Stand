@@ -13,7 +13,7 @@ import { IStatBarProps } from './StatBar';
 import StatsWrapper from './StatsWrapper';
 import AnimatedSpriteCanvas from './AnimatedSpriteCanvas';
 import GameLobbyOptionsBox from './GameLobbyOptionsBox';
-
+import {useNavigate} from 'react-router-dom';
 
 
 const powerStat: IStatBarProps = {
@@ -38,7 +38,7 @@ const defenseStat: IStatBarProps = {
 const stats = [powerStat, speedStat, defenseStat]
 
 const GameLobby = () => {
-    const { client, user, gameOptions, setGameOptions } = useContext(ColyseusContext)
+    const { client, user, userGameOptions, setUserGameOptions } = useContext(ColyseusContext)
     const [selectedCharacter, setSelectedCharacter] = useState<gl_GridCardData | null>(null);
     const [selectedScene, setSelectedScene] = useState<gl_GridCardData | null>(null);
     const [characters, setCharacters] = useState<gl_GridCardData[]>([]);
@@ -50,6 +50,8 @@ const GameLobby = () => {
     const backgroundRef1 = useRef<HTMLDivElement>(null);
     const backgroundRef2 = useRef<HTMLDivElement>(null);
     const [selectedOptions, setSelectedOptions] = useState<{gameMode:string, playerCount:number}>();
+    const navigate = useNavigate();
+
 
     const connectToGameLobbyRoom = async () => {
         try {
@@ -67,7 +69,7 @@ const GameLobby = () => {
             matchMakerRoom?.onMessage(EMessage.JoinGame, (data) => {
                 // redirect to game room
                 const { roomId } = data;
-                window.location.href = `/match/${roomId}`;
+                navigate(`/match/${roomId}`);
             });
             return matchMakerRoom;
         }
@@ -75,6 +77,8 @@ const GameLobby = () => {
             console.log(error);
         }
     }
+
+    
 
     useEffect(() => {
         if (!client) return;
@@ -88,6 +92,11 @@ const GameLobby = () => {
             matchMakerRoom?.leave();
         }
     }, [client]);
+
+    useEffect(() => {
+        if (!selectedCharacter || !selectedScene) return;
+        setUserGameOptions({...userGameOptions, selectedCharacter: selectedCharacter.name, selectedScene: selectedScene.name});
+    }, [selectedCharacter, selectedScene]);
 
     useEffect(() => {
         fetchHeroesNames().then(({ heroes }) => {
@@ -137,8 +146,6 @@ const GameLobby = () => {
     const handleCharacterSelect = (character: gl_GridCardData) => {
         if (isInQueue) return;
         setSelectedCharacter(character);
-        
-        
     };
 
     const handleSceneSelect = (scene: gl_GridCardData) => {
@@ -148,7 +155,7 @@ const GameLobby = () => {
 
     const handlePlayCancelClick = async () => {
         if (!gameLobbyRoom) return;
-        if (!selectedCharacter || !selectedScene) { return console.log('select character and scene') };
+        if (!selectedCharacter || !selectedScene || !userGameOptions) { return console.log('select character and scene') };
 
         setPlayButtonState((prevState) => ({
             text: prevState.isPlaying ? 'Play' : 'Cancel',
@@ -157,15 +164,8 @@ const GameLobby = () => {
 
         if (!playButtonState.isPlaying) {
             console.log('play clicked');
-
-            const updatedGameOptions = {
-                selectedCharacter: selectedCharacter.name,
-                selectedScene: selectedScene.name,
-                gameMode: selectedOptions?.gameMode,
-                playerCount: selectedOptions?.playerCount
-            }
-            setGameOptions?.(updatedGameOptions);
-            console.log(gameOptions);
+            console.log(userGameOptions);
+           
             const matchMakeRoom = await connectToMatchMakerRoom();
             if (matchMakeRoom) {
                 setMatchMakerRoom(matchMakeRoom);
