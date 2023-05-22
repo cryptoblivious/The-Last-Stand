@@ -358,10 +358,10 @@ export default class ClientMatch extends Phaser.Scene {
         // });
 
       // add player name text and attach it to the player
-      entity.playerName = message.id;
-      const playerNameText = this.add.text(entity.x, entity.y - 50, entity.playerName, { fontSize: '24px', color: '#000000' });
-      playerNameText.setOrigin(0.5, 0.5);
-      entity.playerNameText = playerNameText;
+      // entity.playerName = message.id;
+      // const playerNameText = this.add.text(entity.x, entity.y - 50, entity.playerName, { fontSize: '24px', color: '#000000' });
+      // playerNameText.setOrigin(0.5, 0.5);
+      // entity.playerNameText = playerNameText;
     });
 
     this.mo.onMessage(EMessage.RemoveEntity, (message: { id: string }) => {
@@ -407,6 +407,7 @@ export default class ClientMatch extends Phaser.Scene {
     // le key down qui envoie l action pour le set velocity
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
       const entity = this.gameEntities.get(this.playerId!).sprite;
+      const playerNameText = this.gameEntities.get(this.playerId!).playerNameText;
 
       const animKey = entity.anims.currentAnim.key.split(entity.name)[1];
       const canvasHeight: number = this.game.config.height as number;
@@ -580,9 +581,8 @@ export default class ClientMatch extends Phaser.Scene {
             }
           }
           // update the player name text position
-          const playerName = entity.playerNameText;
-          if (playerName) {
-            playerName.setPosition(entity.x, entity.y - 50);
+          if (playerNameText) {
+            playerNameText.setPosition(entity.x, entity.y - 50);
           }
         }
       });

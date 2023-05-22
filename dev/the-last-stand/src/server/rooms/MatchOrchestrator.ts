@@ -72,6 +72,7 @@ export class MatchOrchestrator extends Room<MatchState> {
 
   onJoin(client: IClient, options: any) {
     console.log(client.id, 'joined');
+    console.log('options', options);
 
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);

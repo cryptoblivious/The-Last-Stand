@@ -14,24 +14,7 @@ import StatsWrapper from './StatsWrapper';
 import AnimatedSpriteCanvas from './AnimatedSpriteCanvas';
 import GameLobbyOptionsBox from './GameLobbyOptionsBox';
 
-const gl_mainContainerStyle = "relative grid grid-rows-[minmax(100px,0.1fr)_1fr_minmax(200px,0.2fr)] h-screen p-4  bg-cover bg-center bg-repeat-x "
-const gl_panBackgroundStyle = "absolute inset-0 -z-50 bg-[url('/assets/wallpapers/pixel_city_lights_off.jpg')] bg-repeat-x w-screen h-screen bg-scroll"
 
-const gl_gridsContainerStyle = 'flex mb-4 items-center justify-around grow shrink-0 h-full '
-const gl_characterSelectionGridContainerStyle = 'w-1/3 h-1/2 mr-2'
-const gl_sceneSelectionGridContainerStyle = 'w-1/3 h-1/2 ml-2'
-const gl_buttonSectionContainerStyle = ' flex justify-center'
-const gl_BottomContainer = 'grid grid-cols-3 gap-4 h-full grow shrink'
-const gl_titleStyle = 'text-4xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center grow-0 mt-10';
-const gl_SubtitleStyle = 'text-2xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center bg-black bg-opacity-50 rounded-lg shadow-lg p-2';
-const gl_CharacterPreviewContainerStyle = 'grid grid-cols-2 gap-4'
-const gl_PlayLoadingContainerStyle = 'flex flex-col items-center justify-center p-2'
-const gl_GameOptionsContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg'
-const gl_CharPreviewCanvasContainerStyle = 'w-full h-full bg-transparent rounded-lg shadow-lg'
-const gl_CharPreviewStatsContainer = 'w-full h-full bg-transparent border-4 border-neon-green rounded-lg shadow-lg'
-const gl_TitleContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg shrink'
-
-const gl_LoadingBoxText = 'Looking for players...'
 
 const powerStat: IStatBarProps = {
     statName: 'Power',
@@ -83,7 +66,7 @@ const GameLobby = () => {
             const matchMakerRoom = await client?.joinOrCreate('match_maker_room', { username: user?.username, character: selectedCharacter?.name, scene: selectedScene?.name });
             matchMakerRoom?.onMessage(EMessage.JoinGame, (data) => {
                 // redirect to game room
-                console.log(data);
+                console.log('data: ', data);
                 const { roomId } = data;
                 window.location.href = `/match/${roomId}`;
             });
@@ -232,3 +215,22 @@ const GameLobby = () => {
 };
 
 export default GameLobby;
+
+const gl_mainContainerStyle = "relative grid grid-rows-[minmax(100px,0.1fr)_1fr_minmax(200px,0.2fr)] h-screen p-4  bg-cover bg-center bg-repeat-x "
+const gl_panBackgroundStyle = "absolute inset-0 -z-50 bg-[url('/assets/wallpapers/pixel_city_lights_off.jpg')] bg-repeat-x w-screen h-screen bg-scroll"
+
+const gl_gridsContainerStyle = 'flex mb-4 items-center justify-around grow shrink-0 h-full '
+const gl_characterSelectionGridContainerStyle = 'w-1/3 h-1/2 mr-2'
+const gl_sceneSelectionGridContainerStyle = 'w-1/3 h-1/2 ml-2'
+const gl_buttonSectionContainerStyle = ' flex justify-center'
+const gl_BottomContainer = 'grid grid-cols-3 gap-4 h-full grow shrink'
+const gl_titleStyle = 'text-4xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center grow-0 mt-10';
+const gl_SubtitleStyle = 'text-2xl mb-4 font-bold text-center text-shadow-md text-neon-green flex justify-center items-center bg-black bg-opacity-50 rounded-lg shadow-lg p-2';
+const gl_CharacterPreviewContainerStyle = 'grid grid-cols-2 gap-4'
+const gl_PlayLoadingContainerStyle = 'flex flex-col items-center justify-center p-2'
+const gl_GameOptionsContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg'
+const gl_CharPreviewCanvasContainerStyle = 'w-full h-full bg-transparent rounded-lg shadow-lg'
+const gl_CharPreviewStatsContainer = 'w-full h-full bg-transparent border-4 border-neon-green rounded-lg shadow-lg'
+const gl_TitleContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg shrink'
+
+const gl_LoadingBoxText = 'Looking for players...'
