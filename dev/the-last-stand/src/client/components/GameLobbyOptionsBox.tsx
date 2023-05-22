@@ -1,17 +1,22 @@
 import ButtonLayer from './ButtonLayer';
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
+import { useState } from 'react';
 
-const buttonsStyle = `w-fit bg-purple-900 rounded-xl p-1 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110`;
+const buttonsStyle = `w-fit bg-purple-900 rounded-xl p-1 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110 text-white`;
+const selectedButtonStyle = `w-fit bg-purple-900 rounded-xl p-1 border-4 border-neon-green text-neon-green`;
 const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
     const { setSelectionOptions } = props;
+    const [gameMode, setGameMode] = useState('casual');
+    const [playerCount, setPlayerCount] = useState(2);
     const firstLayer: IButtonProps[] = [
         {
             onClick: () => {
                 console.log('casual!')
                 setSelectionOptions((prevOptions:any) => ({...prevOptions, gameMode: 'casual'}) );
+                setGameMode('casual');
             },
             text: 'Casual',
-            className: buttonsStyle,
+            className: gameMode === 'casual' ? selectedButtonStyle : buttonsStyle,
             classNameAdditions: 'text-2xl ',
             icon: null,
             disabled: false,
@@ -21,9 +26,10 @@ const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
             onClick: () => {
                 console.log('ranked!')
                 setSelectionOptions((prevOptions:any) => ({...prevOptions, gameMode: 'ranked'}) );
+                setGameMode('ranked');
             },
             text: 'Ranked',
-            className: buttonsStyle,
+            className: gameMode === 'ranked' ? selectedButtonStyle : buttonsStyle,
             classNameAdditions: 'text-2xl ',
             icon: null,
             disabled: false,
@@ -36,9 +42,10 @@ const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
             onClick: () => {
                 console.log('2 players!')
                 setSelectionOptions((prevOptions:any) => ({...prevOptions, playerCount: 2}) );
+                setPlayerCount(2);
             },
             text: '2',
-            className: buttonsStyle,
+            className: playerCount === 2 ? selectedButtonStyle : buttonsStyle,
             classNameAdditions: 'text-2xl p-3',
             icon: null,
             disabled: false,
@@ -48,9 +55,10 @@ const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
             onClick: () => {
                 console.log('3 players!')
                 setSelectionOptions((prevOptions:any) => ({...prevOptions, playerCount: 3}) );
+                setPlayerCount(3);
             },
             text: '3',
-            className: buttonsStyle,
+            className: playerCount === 3 ? selectedButtonStyle : buttonsStyle,
             classNameAdditions: 'text-2xl p-3',
             icon: null,
             disabled: false,
@@ -60,9 +68,10 @@ const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
             onClick: () => {
                 console.log('4 players!')
                 setSelectionOptions((prevOptions:any) => ({...prevOptions, playerCount: 4}) );
+                setPlayerCount(4);
             },
             text: '4',
-            className: buttonsStyle,
+            className: playerCount === 4 ? selectedButtonStyle : buttonsStyle,
             classNameAdditions: 'text-2xl p-3',
             icon: null,
             disabled: false,

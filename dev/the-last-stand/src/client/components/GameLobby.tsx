@@ -78,7 +78,10 @@ const GameLobby = () => {
         }
     }
 
-    
+    useEffect(() => {
+        if (!selectedOptions) return;
+        setSelectedOptions({...userGameOptions, gameMode: selectedOptions.gameMode, playerCount: selectedOptions.playerCount});
+    }, [selectedOptions]);
 
     useEffect(() => {
         if (!client) return;
@@ -164,7 +167,7 @@ const GameLobby = () => {
 
         if (!playButtonState.isPlaying) {
             console.log('play clicked');
-            console.log(userGameOptions);
+            console.log(selectedOptions);
            
             const matchMakeRoom = await connectToMatchMakerRoom();
             if (matchMakeRoom) {

@@ -5,7 +5,7 @@ import { EMessage } from '../../typescript/enumerations/EMessage';
 export class MatchmakerRoom extends Room {
     // waitingPlayers: Set<string> = new Set();
     private queue: string[] = [];
-    private maxPlayers: number = 1;
+    private maxPlayers: number = 2;
     private roomIds: Set<string> = new Set();
 
     onCreate(options: any) {
@@ -13,7 +13,7 @@ export class MatchmakerRoom extends Room {
     }
 
     onJoin(client: Client, options: any) {
-        console.log("Client joined MatchmakerRoom" + client.id + "with options" + options.username);
+        console.log(options);
         if (!this.queue.includes(client.id)) {
             this.queue.push(client.id);
         }
