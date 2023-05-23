@@ -80,7 +80,6 @@ const GameLobbyOptionsBox = (props:{setSelectionOptions: (prev:any)=>void}) => {
     ];
 
    
-
     return (
         <div className="flex flex-col justify-center items-center w-full h-full border-l-2 border-neon-green">
             <div className='flex flex-row justify-around w-full h-full items-center border-b-2 border-neon-green'>

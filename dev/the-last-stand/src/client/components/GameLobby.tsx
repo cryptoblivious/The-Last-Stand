@@ -16,8 +16,6 @@ import GameLobbyOptionsBox from './GameLobbyOptionsBox';
 import {useNavigate} from 'react-router-dom';
 
 
-
-
 const GameLobby = () => {
     const { client, user, userGameOptions, setUserGameOptions } = useContext(ColyseusContext)
     const [selectedCharacter, setSelectedCharacter] = useState<gl_GridCardData | null>(null);

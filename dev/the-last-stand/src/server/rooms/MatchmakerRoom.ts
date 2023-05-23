@@ -18,7 +18,7 @@ export class MatchmakerRoom extends Room {
     private queues: Record<string, QueuePlayer[]> = {};
     private maxPlayers: Record<string, number> = { '2': 2, '3': 3, '4': 4 }
     private roomIds: Set<string> = new Set();
-    private debugMode = true; //toggle this to enter the game alone for testing
+    private debugMode = false; //toggle this to enter the game alone for testing
 
     onCreate(options: any) {
         console.log("MatchmakerRoom created!");
@@ -31,7 +31,6 @@ export class MatchmakerRoom extends Room {
             return;
         }
 
-
         const queueKey = `${options.gameMode}-${options.playerCount}`;
         if (!this.queues[queueKey]) {
             this.queues[queueKey] = [];
@@ -41,9 +40,7 @@ export class MatchmakerRoom extends Room {
             mmr: options.mmr ?? 0,
             joinTime: Date.now(),
         });
-
         this.tryMatchmake(queueKey);
-
     }
 
     onLeave(client: Client, consented: boolean) {
