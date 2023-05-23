@@ -1,8 +1,8 @@
 //  Nom du fichier : auth.ts
-//  Contexte : Un fichier de type TypeScript qui 
+//  Contexte : Un fichier de type TypeScript qui permet de gérer l'authentification des utilisateurs et leur connexion à l'application à l'aide de Google OAuth 2.0
 //  Nom de l'auteur : Andrzej Wisniowski
 //  Autres étudiants : Jonathan Robinson-Roberge
-//  Références : https://chat.openai.com/, https://vitejs.dev/guide/
+//  Références : https://chat.openai.com/, https://www.passportjs.org/tutorials/google/
 
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';

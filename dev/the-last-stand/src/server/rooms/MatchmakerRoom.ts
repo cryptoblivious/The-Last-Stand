@@ -71,7 +71,7 @@ export class MatchmakerRoom extends Room {
                     const roomID = this.generateRandomUID();
                     players.forEach((player) => {
                         const index = this.clients.findIndex((client) => client.id === player.id);
-                        this.clients[index].send(EMessage.JoinQueue, { roomID });
+                        this.clients[index].send(EMessage.JoinGame, { roomID });
                     });
                     return;
                 }

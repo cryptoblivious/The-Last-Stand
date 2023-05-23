@@ -1,3 +1,9 @@
+//  Nom du fichier : conversations.ts
+//  Contexte : Un fichier de type TypeScript qui permet de gérer la logique des conversations dans la base de données
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/, https://www.youtube.com/watch?v=98BzS5Oz5E4
+
 import { conversationModel as Conversation } from '../models/conversation';
 import { userModel as User } from '../models/user';
 

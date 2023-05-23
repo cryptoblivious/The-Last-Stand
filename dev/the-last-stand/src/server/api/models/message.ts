@@ -1,3 +1,9 @@
+//  Nom du fichier : message.ts
+//  Contexte : Un fichier de type TypeScript qui permet de définir le schéma d'un objet de type Message dans la base de données MongoDB
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import { Schema, model } from 'mongoose';
 
 export const messageSchema = new Schema(
