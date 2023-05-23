@@ -220,8 +220,8 @@ export default class ClientMatch extends Phaser.Scene {
         this.mo?.state.playerIds.forEach((playerId: string) => {
           if (playerId !== rect.getData('owner')) {
             const sprite = this.gameEntities.get(playerId)?.sprite
-            this.physics.add.overlap(rect, this.gameEntities.get(playerId).sprite, () => {
-              const attackVector = new Phaser.Math.Vector2(this.gameEntities.get(playerId)?.x! - rect.x, this.gameEntities.get(playerId)?.y! - rect.y).normalize();
+            this.physics.add.overlap(rect, sprite, () => {
+              const attackVector = new Phaser.Math.Vector2(sprite.x - rect.x, sprite.y - rect.y).normalize();
               const attackForce = attackVector.scale(1000);
               this.mo?.send(EMessage.PlayerHurt, { victim: playerId, attackForce: { x: attackForce.x, y: attackForce.y } });
               return true;

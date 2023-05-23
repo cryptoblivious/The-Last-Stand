@@ -1,3 +1,8 @@
+//  Nom du fichier : IMessage.ts
+//  Contexte : Un fichier de type TypeScript qui définit une interface pour les messages mapés
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson
+
 import { Schema, type } from '@colyseus/schema';
 
 export class IMessageMapper extends Schema {
