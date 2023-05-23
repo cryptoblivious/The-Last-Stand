@@ -1,3 +1,9 @@
+//  Nom du fichier : ChatMenu.tsx
+//  Contexte : Un composant React qui contient la liste des chatbox actives de l'utilisateur
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import Chatbox from './Chatbox';
 import { useContext } from 'react';
 import { ColyseusContext } from './ColyseusProvider';

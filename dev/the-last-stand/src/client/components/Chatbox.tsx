@@ -1,3 +1,9 @@
+//  Nom du fichier : Chatbox.tsx
+//  Contexte : Un composant React qui représente une boîte de chat
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { useState, useContext, useEffect, useRef } from 'react';
 import ChatboxResizeButton from './ChatboxResizer';
 import ChatboxCloseButton from './ChatboxCloseButton';
@@ -32,7 +38,6 @@ const Chatbox = (props: IChatboxProps) => {
   };
 
   const sendMessage = () => {
-    //check if the textarea is empty or only contains whitespaces or newlines
     if (!textareaRef.current?.value.trim()) return;
     appRoom!.send('message', { conversationId: id, content: textareaRef.current?.value });
     textareaRef.current!.value = '';

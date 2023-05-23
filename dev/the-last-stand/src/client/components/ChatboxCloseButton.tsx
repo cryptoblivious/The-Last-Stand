@@ -1,3 +1,8 @@
+//  Nom du fichier : ChatboxCloseButton.tsx
+//  Contexte : Un composant React qui permet de fermer une conversation
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+
 import Button from './Button';
 import { GiAzulFlake } from 'react-icons/gi';
 import { useContext } from 'react';

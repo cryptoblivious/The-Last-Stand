@@ -1,3 +1,8 @@
+//  Nom du fichier : ChatboxResizer.tsx
+//  Contexte : Un composant React qui permet de redimensionner la boîte de clavardage
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+
 import Button from './Button';
 import { GiAbstract053, GiNinjaHead } from 'react-icons/gi';
 import { IChatboxResizerProps } from '../../typescript/interfaces/IChatboxResizerProps';

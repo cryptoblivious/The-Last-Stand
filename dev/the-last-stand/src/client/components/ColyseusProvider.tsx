@@ -1,3 +1,9 @@
+//  Nom du fichier : ColyseusProvider.tsx
+//  Contexte : Un composant React qui créé un contexte global pour les variables partagées entre les composants de l'application
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { Room, Client } from 'colyseus.js';
 import { WS_PROTOCOL, HOST_NAME, HOST_PORT } from '../appConfig';
@@ -73,7 +79,6 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
             };
           });
         }
-        // check in the users array and update the user if it exists
         setUsers((prevUsers) => {
           const updatedUsers = prevUsers.map((prevUser) => {
             if (prevUser) {

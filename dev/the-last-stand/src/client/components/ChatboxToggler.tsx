@@ -1,3 +1,8 @@
+//  Nom du fichier : ChatboxToggler.tsx
+//  Contexte : Un composant React qui permet d'ouvrir ou de fermer une conversation
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+
 import { useContext, useState } from 'react';
 import { ColyseusContext } from './ColyseusProvider';
 import { EMessage } from '../../typescript/enumerations/EMessage';
