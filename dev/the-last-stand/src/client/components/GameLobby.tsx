@@ -55,8 +55,8 @@ const GameLobby = () => {
             const matchMakerRoom = await client?.joinOrCreate('match_maker_room', { username: user?.username, userNo: user?.userNo, gameMode: selectedGameType?.gameMode, playerCount: selectedGameType?.playerCount });
             matchMakerRoom?.onMessage(EMessage.JoinGame, (data) => {
                 // redirect to game room
-                const { roomId } = data;
-                navigate(`/match/${roomId}`);
+                const { roomID } = data;
+                navigate(`/match/${roomID}`);
             });
             return matchMakerRoom;
         }

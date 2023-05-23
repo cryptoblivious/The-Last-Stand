@@ -1,3 +1,10 @@
+//  Nom du fichier : HeroMapCard.tsx
+//  Contexte : Composant fonctionnel React servant de boîte de chargement utilisée dans le GameLobby
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import { RingLoader } from "react-spinners";
 
 const l_ContainerStyle = 'flex flex-col items-center justify-center transition duration-500 ease-in-out'
