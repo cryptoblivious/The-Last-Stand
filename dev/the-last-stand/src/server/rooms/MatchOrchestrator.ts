@@ -70,6 +70,9 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     const user = options.user;
 
+    this.state.playerIds.push(client.sessionId);
+    console.log(this.state.playerIds)
+
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
     client.selectedHero = user.selectedCharacter.toLowerCase();
@@ -79,11 +82,10 @@ export class MatchOrchestrator extends Room<MatchState> {
     const entity: IGameEntityMapper = { id: client.sessionId, playerName : user.username, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };
     this.broadcast(EMessage.CreateEntity, entity);
 
-    // Create an array of every players name(id) and index
+    // Create a map of every players name(id) and index
     const players = this.clients.map((client) => {
       return { name: user.username, index: this.clients.indexOf(client) };
     });
-    // broadcast the array to all clients
     this.broadcast(EMessage.CreateHud, players);
 
     // Tell the new player to create all the other game entities

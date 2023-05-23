@@ -188,19 +188,12 @@ export default class ClientMatch extends Phaser.Scene {
     const platform1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.36, this.sys.canvas.width * 0.26, 32, 'tuile03');
     const platform2 = this.add.tileSprite(this.sys.canvas.width * 0.3, this.sys.canvas.height * 0.75, this.sys.canvas.width * 0.22, 32, 'tuile03');
     const platform3 = this.add.tileSprite(this.sys.canvas.width * 0.75, this.sys.canvas.height * 0.75, this.sys.canvas.width * 0.22, 32, 'tuile03');
-    //const wall1 = this.add.tileSprite(this.sys.canvas.width * 0.51, this.sys.canvas.height * 0.185, 36, this.sys.canvas.height * 0.3, 'tuile03');
     this.physics.add.existing(platform1, true);
     this.physics.add.existing(platform2, true);
     this.physics.add.existing(platform3, true);
-    //this.physics.add.existing(wall1, true);
-
     platforms.add(platform1);
     platforms.add(platform2);
     platforms.add(platform3);
-
-    //walls.add(wall1);
-    // adjust the scale of the platform
-    //platform.setScale(2);
 
     this.mo.onMessage(EMessage.AssignPlayerID, (message: { id: string }) => {
       this.playerId = message.id;
@@ -220,8 +213,9 @@ export default class ClientMatch extends Phaser.Scene {
         rect.setData('timer', 0);
         rect.setData('lifespan', 1);
         this.mo?.state.playerIds.forEach((playerId: string) => {
-          if (playerId !== rect.getData('owner')) {
-            this.physics.add.overlap(rect, this.gameEntities.get(playerId), () => {
+          if (playerId === rect.getData('owner')) {
+            const sprite = this.gameEntities.get(playerId)?.sprite
+            this.physics.add.overlap(rect, this.gameEntities.get(playerId).sprite, () => {
               const attackVector = new Phaser.Math.Vector2(this.gameEntities.get(playerId)?.x! - rect.x, this.gameEntities.get(playerId)?.y! - rect.y).normalize();
               const attackForce = attackVector.scale(1000);
               this.mo?.send(EMessage.PlayerHurt, { victim: playerId, attackForce: { x: attackForce.x, y: attackForce.y } });
