@@ -42,7 +42,7 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
 
     this.onMessage(EMessage.RemoveAttackHitbox, (player, message: { id: string }) => {
-      this.broadcast(EMessage.RemoveEntity, { id: message.id });
+      this.broadcast(EMessage.RemoveAttackHitbox, { id: message.id });
     });
 
     this.onMessage(EMessage.PlayerHurt, (player, message: { victim: string; attackForce: { x: string; y: string } }) => {
@@ -102,7 +102,7 @@ export class MatchOrchestrator extends Room<MatchState> {
   }
 
   onLeave(client: Client, consented: boolean) {
-    console.log(client.sessionId, 'left');
+    console.log(client.sessionId, 'left matchorchestrator');
 
     // Tell all clients to remove the player's hero
     this.broadcast(EMessage.RemoveEntity, { id: client.sessionId });

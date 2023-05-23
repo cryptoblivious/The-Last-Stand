@@ -25,4 +25,5 @@ export enum EMessage {
   ToggleConversation,
   ConversationsChange,
   UsersChange,
+  RemoveHitbox,
 }

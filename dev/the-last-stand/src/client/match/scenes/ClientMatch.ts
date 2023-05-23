@@ -112,7 +112,7 @@ export default class ClientMatch extends Phaser.Scene {
     this.spriteSheetsLoader.forEach((spritePaths) => {
       const spriteSheetPaths = Object.values(spritePaths.spriteSheets);
       spriteSheetPaths.forEach((key) => {
-        const spriteSheetName = `${spritePaths.heroName}${key.key}`.split(' ').join('');  
+        const spriteSheetName = `${spritePaths.heroName}${key.key}`.split(' ').join('');
         this.load.spritesheet({ key: spriteSheetName, url: key.path, frameConfig: { frameWidth: key.frameWidth, frameHeight: key.frameHeight } });
       });
     });
@@ -134,7 +134,12 @@ export default class ClientMatch extends Phaser.Scene {
     if (!this.gameClient) throw new Error('client not found');
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
-    this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { user : user });
+    this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { user: user });
+    
+    // make sure the client leaves the room when pressing back
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.mo?.leave();
+    });
 
     this.phaserPlayerEntityFactory = new PhaserPlayerEntityFactory(this.physics, this);
 
@@ -249,17 +254,22 @@ export default class ClientMatch extends Phaser.Scene {
           const animKey = `${message.gameEntityType}${spritesheet.key}`.toLowerCase();
           entity.anims.create({
             key: animKey,
-            frames: entity.anims.generateFrameNumbers(animKey, { start: spritesheet.startFrame, end: spritesheet.endFrame  }),
+            frames: entity.anims.generateFrameNumbers(animKey, { start: spritesheet.startFrame, end: spritesheet.endFrame }),
             frameRate: spritesheet.frameRate,
             repeat: spritesheet.repeat,
           });
         });
-        entity.anims.play(`${message.gameEntityType}idle`, true);
+      entity.anims.play(`${message.gameEntityType}idle`, true);
+    });
+
+    this.mo.onMessage(EMessage.RemoveAttackHitbox, (message: { id: string }) => {
+      this.hitBoxes.get(message.id)?.destroy();
+      this.hitBoxes.delete(message.id);
     });
 
     this.mo.onMessage(EMessage.RemoveEntity, (message: { id: string }) => {
-      this.hitBoxes.get(message.id)?.destroy();
-      this.hitBoxes.delete(message.id);
+      this.gameEntities.get(message.id)?.sprite.destroy();
+      this.gameEntities.delete(message.id);
     });
 
     this.mo.onMessage(EMessage.CreateHud, (players: { name: string; index: number }[]) => {
