@@ -107,6 +107,6 @@ Bienvenue dans le code source du projet [The Last Stand](https://tls.woodchuckga
 [tailwind-url]: https://tailwindcss.com/
 
 
-[placeholder-img]: https://img.shields.io/badge/placeholder-FAB040?style=for-the-badge&logo=precommit&logoColor=red
+[placeholder-img]: https://img.shields.io/badge/et_plus_encore-FAB040?style=for-the-badge&logo=precommit&logoColor=red
 [placeholder-url]: https://perdu.com/
 
