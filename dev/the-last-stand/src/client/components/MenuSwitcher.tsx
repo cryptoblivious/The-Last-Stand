@@ -1,3 +1,9 @@
+//  Nom du fichier : MenuSwitcher.tsx
+//  Contexte : Un composant React qui permet de switcher entre le menu de connexion et le menu d'inscription
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import LoginMenu from './LoginMenu';
 import SignupMenu from './SignupMenu';
 import IMenuSwitcherProps from '../../typescript/interfaces/IMenuSwitcherProps';

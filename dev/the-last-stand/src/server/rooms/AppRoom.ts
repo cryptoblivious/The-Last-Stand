@@ -3,7 +3,7 @@ import { AppState } from './states/AppState';
 import { userModel as User } from '../api/models/user';
 import { conversationModel as Conversation } from '../api/models/conversation';
 import { IMessageMapper } from '../../typescript/interfaces/IMessageMapper';
-import { IUserMapper } from '../../typescript/interfaces/IUserMapper';
+import { CUserMapper } from '../../typescript/classes/CUserMapper';
 import { MongoClient, ChangeStream } from 'mongodb';
 import dotenv from 'dotenv';
 import { EMessage } from '../../typescript/enumerations/EMessage';
@@ -57,7 +57,7 @@ export class AppRoom extends Room<AppState> {
 
         this.state.users.forEach((user: any) => {
           if (user._id === data._id) {
-            const userMapper = new IUserMapper();
+            const userMapper = new CUserMapper();
             userMapper._id = data._id;
             userMapper.username = data.username;
             userMapper.userNo = data.userNo;
@@ -125,7 +125,7 @@ export class AppRoom extends Room<AppState> {
       this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
     }
 
-    const userMapper = new IUserMapper();
+    const userMapper = new CUserMapper();
     userMapper._id = _id;
     userMapper.username = username;
     userMapper.userNo = userNo;

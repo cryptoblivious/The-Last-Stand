@@ -1,3 +1,9 @@
+//  Nom du fichier : SignupMenu.tsx
+//  Contexte : Un composant React qui permet d'afficher le menu d'inscription
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { IStyledClickableCurrentComponent } from '../../typescript/interfaces/IStyledClickableCurrentComponent';
 import SignupForm from './SignupForm';
 

@@ -1,22 +1,17 @@
+//  Nom du fichier : MatchOrchestrator.ts
+//  Contexte : Classe héritant de la classe Room de colyseus pour gérer les connections au matchmaker à partir du gameLobby
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
 import { Room , Client, matchMaker} from "colyseus";
 import { GameLobbyState } from "./states/GameLobbyState";
-import { EMessage } from '../../typescript/enumerations/EMessage';
-import { ERooms } from '../../typescript/enumerations/ERooms';
-
 export class GameLobbyRoom extends Room {
     
     onCreate (options: any) {
         this.setState(new GameLobbyState());
         console.log("GameLobbyRoom created!", options);
-        
-
-        // messages
-        // this.onMessage(EMessage.JoinQueue, async (client, message) => {
-        //     // console.log("JoinQueue", message);
-        //     // const room = await this.joinMatchMakerRoom();
-        //     // console.log("MatchMakerRoom joined!", room);
-        //     this.broadcast(EMessage.JoinQueue, {client, message});
-        // });
     }
 
     async joinMatchMakerRoom() {

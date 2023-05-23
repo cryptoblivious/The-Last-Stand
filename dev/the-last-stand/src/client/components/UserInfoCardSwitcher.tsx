@@ -1,3 +1,9 @@
+//  Nom du fichier : UserInfoCardSwitcher.tsx
+//  Contexte : Un composant React qui permet de basculer entre l'affichage des informations de l'utilisateur et l'édition de celles-ci.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import EditButton from './EditButton';
 import ShowUserInfo from './ShowUserInfo';
 import EditUserInfo from './EditUserInfo';

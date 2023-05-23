@@ -1,3 +1,9 @@
+//  Nom du fichier : LoginNavbar.tsx
+//  Contexte : Un composant React qui affiche le menu de navigation de la page de connexion
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { useState } from 'react';
 import MenuSwitcher from './MenuSwitcher';
 import Button from './Button';

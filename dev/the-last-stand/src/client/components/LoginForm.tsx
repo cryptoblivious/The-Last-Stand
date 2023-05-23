@@ -1,3 +1,9 @@
+//  Nom du fichier : LoginForm.tsx
+//  Contexte : Un composant React qui permet de se connecter à l'application avec un courriel et un mot de passe.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { Link } from 'react-router-dom';
 import BigRoundedInput from './BigRoundedInput';
 import UpcomingOverlay from './UpcomingOverlay';
@@ -8,7 +14,7 @@ const LoginForm = () => {
       <UpcomingOverlay />
       <BigRoundedInput
         type='text'
-        placeholder='Username'
+        placeholder='Email'
       />
       <BigRoundedInput
         type='password'

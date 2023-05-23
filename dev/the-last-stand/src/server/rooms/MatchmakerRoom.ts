@@ -1,4 +1,11 @@
-// MatchmakerRoom.ts
+//  Nom du fichier : MatchMakerRoom.ts
+//  Contexte : Classe héritant de la classe Room de colyseus pour gérer la file d'attente des joueurs. 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
+
 import { Room, Client } from "colyseus";
 import { EMessage } from '../../typescript/enumerations/EMessage';
 

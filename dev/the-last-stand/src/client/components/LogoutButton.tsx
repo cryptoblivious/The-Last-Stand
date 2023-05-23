@@ -1,3 +1,8 @@
+//  Nom du fichier : LogoutButton.tsx
+//  Contexte : Un composant React qui permet de se déconnecter de l'application
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+
 import Button from './Button';
 import { fetchLogout } from '../fetches/fetchLogout';
 import { useNavigate } from 'react-router-dom';

@@ -1,3 +1,11 @@
+//  Nom du fichier : MatchOrchestrator.ts
+//  Contexte : Classe héritant de la classe Room de colyseus pour gérer la partie et la communication entre les clients et le serveur. Selon les principes
+//              du patron de conception "Mediator" et template method.
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
 import { Room, Client } from 'colyseus';
 import { MatchState, GameEntityMapper } from './states/MatchState';
 import { IGameEntityMapper } from '../../typescript/interfaces/IGameEntityMapper';

@@ -1,3 +1,9 @@
+//  Nom du fichier : SocialLoginForm.tsx
+//  Contexte : Un composant React qui permet à l'utilisateur de se connecter avec son compte Google ou Facebook.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { HOST_URL, HOST_PORT } from '../appConfig';
 import UpcomingOverlay from './UpcomingOverlay';
 

@@ -1,6 +1,6 @@
 import { Schema, type, MapSchema } from '@colyseus/schema';
-import { IUserMapper } from '../../../typescript/interfaces/IUserMapper';
+import { CUserMapper } from '../../../typescript/classes/CUserMapper';
 
 export class AppState extends Schema {
-  @type({ map: IUserMapper }) users: MapSchema<IUserMapper> = new MapSchema<IUserMapper>();
+  @type({ map: CUserMapper }) users: MapSchema<CUserMapper> = new MapSchema<CUserMapper>();
 }
