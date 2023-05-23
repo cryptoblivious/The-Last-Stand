@@ -16,26 +16,7 @@ import GameLobbyOptionsBox from './GameLobbyOptionsBox';
 import {useNavigate} from 'react-router-dom';
 
 
-const powerStat: IStatBarProps = {
-    statName: 'Power',
-    value: 5,
-    maxValue: 10,
-}
 
-const speedStat: IStatBarProps = {
-    statName: 'Speed',
-    value: 10,
-    maxValue: 10,
-}
-
-const defenseStat: IStatBarProps = {
-    statName: 'Defense',
-    value: 3,
-    maxValue: 10,
-}
-
-
-const stats = [powerStat, speedStat, defenseStat]
 
 const GameLobby = () => {
     const { client, user, userGameOptions, setUserGameOptions } = useContext(ColyseusContext)
@@ -49,7 +30,7 @@ const GameLobby = () => {
     const [isInQueue, setIsInQueue] = useState(false);
     const backgroundRef1 = useRef<HTMLDivElement>(null);
     const backgroundRef2 = useRef<HTMLDivElement>(null);
-    const [selectedOptions, setSelectedOptions] = useState<{gameMode:string, playerCount:number}>();
+    const [selectedGameType, setSelectedGameType] = useState<{gameMode:string, playerCount:number}>({gameMode: 'casual', playerCount: 2});
     const navigate = useNavigate();
 
 
@@ -65,7 +46,7 @@ const GameLobby = () => {
 
     const connectToMatchMakerRoom = async () => {
         try {
-            const matchMakerRoom = await client?.joinOrCreate('match_maker_room', { username: user?.username, character: selectedCharacter?.name, scene: selectedScene?.name });
+            const matchMakerRoom = await client?.joinOrCreate('match_maker_room', { username: user?.username, userNo: user?.userNo, gameMode: selectedGameType?.gameMode, playerCount: selectedGameType?.playerCount });
             matchMakerRoom?.onMessage(EMessage.JoinGame, (data) => {
                 // redirect to game room
                 const { roomId } = data;
@@ -78,10 +59,7 @@ const GameLobby = () => {
         }
     }
 
-    useEffect(() => {
-        if (!selectedOptions) return;
-        setSelectedOptions({...userGameOptions, gameMode: selectedOptions.gameMode, playerCount: selectedOptions.playerCount});
-    }, [selectedOptions]);
+    
 
     useEffect(() => {
         if (!client) return;
@@ -145,6 +123,9 @@ const GameLobby = () => {
 
     }, []);
 
+    const handleGameTpyeSelect = (gameType: {gameMode:string, playerCount:number}) => {
+        setSelectedGameType(gameType);
+    }
 
     const handleCharacterSelect = (character: gl_GridCardData) => {
         if (isInQueue) return;
@@ -167,7 +148,7 @@ const GameLobby = () => {
 
         if (!playButtonState.isPlaying) {
             console.log('play clicked');
-            console.log(selectedOptions);
+            console.log(selectedGameType);
            
             const matchMakeRoom = await connectToMatchMakerRoom();
             if (matchMakeRoom) {
@@ -218,7 +199,7 @@ const GameLobby = () => {
                     </div>
                 </div>
                 <div className={`${gl_GameOptionsContainerStyle} text-neon-green`}>
-                    <GameLobbyOptionsBox setSelectionOptions={setSelectedOptions}/>
+                    <GameLobbyOptionsBox setSelectionOptions={handleGameTpyeSelect}/>
                 </div>
             </div>
         </div>
@@ -245,3 +226,24 @@ const gl_CharPreviewStatsContainer = 'w-full h-full bg-transparent border-4 bord
 const gl_TitleContainerStyle = 'flex flex-col items-center justify-center p-2 w-full h-full rounded-lg shadow-lg shrink'
 
 const gl_LoadingBoxText = 'Looking for players...'
+
+const powerStat: IStatBarProps = {
+    statName: 'Power',
+    value: 5,
+    maxValue: 10,
+}
+
+const speedStat: IStatBarProps = {
+    statName: 'Speed',
+    value: 10,
+    maxValue: 10,
+}
+
+const defenseStat: IStatBarProps = {
+    statName: 'Defense',
+    value: 3,
+    maxValue: 10,
+}
+
+
+const stats = [powerStat, speedStat, defenseStat]

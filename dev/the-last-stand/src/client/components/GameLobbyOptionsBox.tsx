@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const buttonsStyle = `w-fit bg-purple-900 rounded-xl p-1 border-4 border-fuchsia-700 hover:bg-fuchsia-700 hover:border-purple-900 transition ease-in-out duration-300 hover:scale-110 text-white`;
 const selectedButtonStyle = `w-fit bg-purple-900 rounded-xl p-1 border-4 border-neon-green text-neon-green`;
-const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
+const GameLobbyOptionsBox = (props:{setSelectionOptions: (prev:any)=>void}) => {
     const { setSelectionOptions } = props;
     const [gameMode, setGameMode] = useState('casual');
     const [playerCount, setPlayerCount] = useState(2);
@@ -79,13 +79,7 @@ const GameLobbyOptionsBox = (props:{setSelectionOptions: any}) => {
         },
     ];
 
-    useEffect(() => {
-        setGameMode(setSelectionOptions.gameMode);
-      }, [setSelectionOptions.gameMode]);
-    
-      useEffect(() => {
-        setPlayerCount(setSelectionOptions.playerCount);
-      }, [setSelectionOptions.playerCount]);
+   
 
     return (
         <div className="flex flex-col justify-center items-center w-full h-full border-l-2 border-neon-green">
