@@ -1,3 +1,9 @@
+//  Nom du fichier : EditButton.tsx
+//  Contexte : Un composant React qui affiche un bouton d'édition
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/fetchUsers';
 import { useEffect, useRef, useContext } from 'react';
