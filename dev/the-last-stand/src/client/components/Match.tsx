@@ -4,12 +4,14 @@ import Bootstrap from '../match/scenes/Bootstrap';
 import ClientMatch from '../match/scenes/ClientMatch';
 import Hud from '../match/scenes/Hud';
 import { ColyseusContext } from './ColyseusProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Phaser.Game | null>(null);
   const { client, user, userGameOptions } = useContext(ColyseusContext);
-  
+  const navigate = useNavigate()
+  const [inGame, setInGame] = useState(false)
   
   useEffect(() => {
     if (!client)  {
@@ -48,40 +50,36 @@ const Match = () => {
 
     const newGame = new Phaser.Game(config);
     setGame(newGame);
+    setInGame(true)
     return () => {
       newGame.destroy(true);
       setGame(null);
+      setInGame(false)
     };
   }, [client]);
 
   useEffect(() => {
+    const wasInGame = localStorage.getItem('wasInGame')
+
+    if (wasInGame) {
+      navigate('/gameLobby')
+      localStorage.removeItem('wasInGame')
+    }
+  }, [])
+
+  useEffect(() => {
     const handleBeforeUnload = (event:any) => {
-      event.preventDefault();
-      event.returnValue = ''; // This empty string is necessary for modern browsers
-    };
-
-    const handlePopstate = (event:any) => {
-      event.preventDefault();
-      const confirmationMessage = 'Are you sure you want to leave the game?';
-      event.returnValue = confirmationMessage; // Display the confirmation message
-
-      // Optionally, you can show a custom confirmation dialog using `window.confirm()`
-      // const confirmed = window.confirm(confirmationMessage);
-      // if (!confirmed) {
-      //   history.pushState(null, null, window.location.pathname); // Restore the current state
-      // }
-    };
-
-    // Attach the event listeners when the component mounts
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('popstate', handlePopstate);
-
-    // Remove the event listeners when the component unmounts
+      if (inGame) {
+        localStorage.setItem('wasInGame', 'true')
+      }
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('popstate', handlePopstate);
-    };
-  }, []);
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [inGame])
 
   return (
     <div

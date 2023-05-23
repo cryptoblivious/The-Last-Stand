@@ -30,6 +30,7 @@ const GameLobby = () => {
     const backgroundRef2 = useRef<HTMLDivElement>(null);
     const [selectedGameType, setSelectedGameType] = useState<{gameMode:string, playerCount:number}>({gameMode: 'casual', playerCount: 2});
     const navigate = useNavigate();
+    
 
 
     const connectToGameLobbyRoom = async () => {
