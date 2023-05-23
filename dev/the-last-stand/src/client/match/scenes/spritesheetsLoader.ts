@@ -1,6 +1,6 @@
 import { IHeroesSpritePaths } from '../../../typescript/interfaces/IHeroesSpritesPaths';
 
-const spriteSheetsLoader: IHeroesSpritePaths[] = [
+const spsiteSheetsLoader: IHeroesSpritePaths[] = [
   {
     heroName: 'chuck',
     spriteSheets: [
@@ -412,4 +412,4 @@ const spriteSheetsLoader: IHeroesSpritePaths[] = [
     ],
   },
 ];
-export default spriteSheetsLoader;
+export default spsiteSheetsLoader;

@@ -1,4 +1,8 @@
-
+//  Nom du fichier : ButtonLayer.tsx
+//  Contexte : Composant fonctionnel React gérant le bouton du gamelobby
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
 
 interface gl_PlayButtonProps {
     onClick: () => void;

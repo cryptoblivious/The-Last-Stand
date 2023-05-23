@@ -1,3 +1,10 @@
+
+//  Nom du fichier : AnimatedSpriteCanvas.tsx
+//  Contexte : Composant fonctionnel React qui permet de créer une fleche SVG
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
 const arrowContainerCSS = 'cursor-pointer transform transition-transform duration-300 ease-in-out flex justify-center items-center';
 const arrowCSS = 'text-cyan-500 stroke-current fill-none stroke-3 rounded stroke-linecap-round stroke-linejoin-round filter drop-shadow-md hover:scale-125';
 

@@ -1,3 +1,10 @@
+//  Nom du fichier : ButtonLayer.tsx
+//  Contexte : Composant fonctionnel React servant à placer des cartes de personnages dans un grid css 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import GameLobbyCharacterCard, { gl_GridCardData } from './GameLobbyCard';
 
 const gl_characterSelectionGridStyle = 'flex w-full h-full bg-black rounded-lg shadow-lg  bg-opacity-30 p-4 gap-4';

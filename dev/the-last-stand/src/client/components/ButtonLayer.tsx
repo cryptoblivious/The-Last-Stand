@@ -1,3 +1,10 @@
+//  Nom du fichier : ButtonLayer.tsx
+//  Contexte : Composant fonctionnel React servant à placer des boutons dans une rangée
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import Button from "./Button";
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 
