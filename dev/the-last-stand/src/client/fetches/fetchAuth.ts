@@ -1,3 +1,9 @@
+//  Nom du fichier : fetchAuth.ts
+//  Contexte : Un fichier TypeScript qui permet d'envoyer une requête au serveur pour vérifier si l'utilisateur est authentifié
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { HOST_URL, HOST_PORT } from '../appConfig';
 
 export const fetchAuth = async () => {

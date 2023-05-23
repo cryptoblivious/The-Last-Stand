@@ -1,3 +1,10 @@
+//  Nom du fichier : PhaserPlayerEntityFactory.ts
+//  Contexte : Classe implémentant le pattern Factory pour les entités des joueurs
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
 import  PhaserPlayerEntity  from './PhaserPlayerEntity';
 import SolanaEntity from './SolanaEntity';
 import ChuckEntity from './ChuckEntity';

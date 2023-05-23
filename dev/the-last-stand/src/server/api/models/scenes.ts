@@ -1,5 +1,10 @@
-import { Document, Schema, model } from 'mongoose';
+//  Nom du fichier : scene.ts   
+//  Contexte : Shema servant de structure pour aller chercher les scenes dans la base de données
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
 
+
+import { Document, Schema, model } from 'mongoose';
 
 interface IScene extends Document {
     name: string;
