@@ -1,3 +1,9 @@
+//  Nom du fichier : PhaserPlayerEntity.ts
+//  Contexte : Classe ayant les attributs nécéssaires pour créer un jouer dans le jeu avec ses propriétés spécifiques. 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
 import PlayerSprite from './PlayerSprite';
 
 class PhaserPlayerEntity {
@@ -30,7 +36,7 @@ class PhaserPlayerEntity {
     }
 
     private createSprite(message: any): PlayerSprite {
-        const spriteKey = `${message.gameEntityType}Idle`;
+        const spriteKey = `${message.gameEntityType}idle`;
         const sprite = new PlayerSprite(this.scene, message.x, message.y, spriteKey);
         this.scene.add.existing(sprite);
         this.physics.add.existing(sprite);
@@ -44,7 +50,6 @@ class PhaserPlayerEntity {
             if (!this.sprite) return console.error('Sprite not found');
             this.physics.add.collider(this.sprite, staticgroup);
         });
-
     }
 
     private createPlayerNameText(message: any): void {
@@ -54,8 +59,6 @@ class PhaserPlayerEntity {
         playerNameText.setOrigin(0.5, 0.5);
         this._playerNameText = playerNameText;
     }
-
-    
 }
 
 export default PhaserPlayerEntity;

@@ -1,3 +1,11 @@
+//  Nom du fichier : MatchOrchestrator.ts
+//  Contexte : Classe servant de structure de données partagée entre les clients et le serveur pour le game Lobby, peu utilisée dans le projet final mais 
+              // laissée pour des fins de d'évolutivité
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
 import { Schema, type, MapSchema, ArraySchema, DataChange } from '@colyseus/schema';
 
 export class Position extends Schema {

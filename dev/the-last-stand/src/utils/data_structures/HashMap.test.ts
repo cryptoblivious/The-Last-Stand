@@ -1,5 +1,5 @@
 //  Nom du fichier : HashMap.test.ts
-//  Contexte : un fichier de test pour la structure de données HashMap
+//  Contexte : un fichier de test pour la structure de données HashMap 
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski
 //  Références : https://chat.openai.com/ - https://vitest.dev/

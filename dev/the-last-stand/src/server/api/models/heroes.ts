@@ -1,3 +1,8 @@
+//  Nom du fichier : scene.ts   
+//  Contexte : Shema servant de structure pour aller chercher les heros et leurs backstories dans la base de données
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+
 import { Document, Schema, model } from 'mongoose';
 
 

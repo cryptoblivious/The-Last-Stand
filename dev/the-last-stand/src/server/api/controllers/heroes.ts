@@ -1,3 +1,8 @@
+//  Nom du fichier : scene.ts   
+//  Contexte : Fonction servant de controleur dans la route pour aller chercher le nom et les backstories des heros dans la base de données
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+
 import { HeroModel } from '../models/heroes';
 
 export const getHeroesNamesAndBackstories = async (req: any, res: any) => {

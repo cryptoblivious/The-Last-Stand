@@ -1,5 +1,10 @@
-import PhaserPlayerEntity from "./PhaserPlayerEntity";
+//  Nom du fichier : SolanaEntity.ts
+//  Contexte : Classe héritant de la classe PhaserPlayerEntity pour créer le personnage Solana, utilisé dans le factory 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
 
+import PhaserPlayerEntity from "./PhaserPlayerEntity";
 class SolanaEntity extends PhaserPlayerEntity {
     constructor(physics: Phaser.Physics.Arcade.ArcadePhysics, scene: Phaser.Scene, message: any) {
         super(physics, scene, message);

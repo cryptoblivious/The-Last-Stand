@@ -1,3 +1,9 @@
+//  Nom du fichier : ChuckEntity.ts
+//  Contexte : Classe héritant de la classe PhaserPlayerEntity pour créer le personnage Chcuck, utilisé dans le factory 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
 import PhaserPlayerEntity from "./PhaserPlayerEntity";
 
 class ChuckEntity extends PhaserPlayerEntity {

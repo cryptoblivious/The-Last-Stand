@@ -1,3 +1,12 @@
+//  Nom du fichier : PlayerSprite.ts
+//  Contexte : Classe héritant de la classe Phaser.Physics.Arcade.Sprite pour créer les sprite des joueurs dans le match canvas et gérer leurs propriétés
+//              fait partit du pattern de Factory
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
+
 class PlayerSprite extends Phaser.Physics.Arcade.Sprite {
     baseSpeed: number;
     airborneSpeed: number;
