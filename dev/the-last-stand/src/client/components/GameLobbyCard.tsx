@@ -1,4 +1,9 @@
-import React from 'react';
+//  Nom du fichier : GameLobbyCard.tsx
+//  Contexte : Composant fonctionnel React servant à créer des cartes de personnages ou de scenes
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
 
 const gl_characterCardStyle = 'relative min-w-[50px] min-h-[50px] max-w-[200px] max-h-[200px] w-full h-full bg-cover bg-center bg-no-repeat rounded-lg shadow-lg cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-xl';
 const gl_characterCardTextContainerStyle = 'absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black to-transparent rounded-b-lg';

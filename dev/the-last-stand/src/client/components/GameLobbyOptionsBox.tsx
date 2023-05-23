@@ -1,3 +1,10 @@
+//  Nom du fichier : GameLobbyOptions.tsx
+//  Contexte : Composant fonctionnel React servant de conteneur pour les boutons d'options dans le lobby
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import ButtonLayer from './ButtonLayer';
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 import { useEffect, useState } from 'react';

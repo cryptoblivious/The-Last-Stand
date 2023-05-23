@@ -1,3 +1,9 @@
+//  Nom du fichier : AnimatedSpriteCanvas.tsx
+//  Contexte : Composant fonctionnel React servant à afficher un sprite animé sur un canvas. 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
 import { useEffect, useRef, useState } from "react";
 import spriteSheetsLoader from '../match/scenes/spritesheetsLoader';
 import { IHeroesSpritePaths } from '../../typescript/interfaces/IHeroesSpritesPaths';

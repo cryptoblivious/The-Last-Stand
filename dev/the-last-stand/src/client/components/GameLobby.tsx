@@ -1,3 +1,10 @@
+//  Nom du fichier : GameLobby.tsx
+//  Contexte : Composant fonctionnel React qui gère tous les éléments du lobby de jeu et les options de jeu de l'utilisateur
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import GameLobbySelectionGrid from './GameLobbySelectionGrid';
 import GameLobbyPlayButton from './GameLobbyPlayButton';
 import { gl_GridCardData } from './GameLobbyCard';

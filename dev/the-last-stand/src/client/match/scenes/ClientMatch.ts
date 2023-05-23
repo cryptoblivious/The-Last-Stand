@@ -1,3 +1,8 @@
+//  Nom du fichier : fetchUsers.ts
+//  Contexte : Un fichier TypeScript qui permet de gérer la partie du côté client
+//  Nom des auteurs : Jonathan Robinson-Roberge et Andrzej Wisniowski
+//  Référence : https://chat.openai.com/, https://phaser.io/
+
 import Phaser from 'phaser';
 import { Client, Room } from 'colyseus.js';
 import { MatchState } from '../../../server/rooms/states/MatchState';

@@ -1,3 +1,10 @@
+//  Nom du fichier : Heroes.tsx
+//  Contexte : Composant fonctionnel React servant de page principale de la page héro 
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import HeroMapCardMenu from './HeroMapCardMenu';
 import { useState, useEffect } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';

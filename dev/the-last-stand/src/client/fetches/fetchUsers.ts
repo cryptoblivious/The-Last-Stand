@@ -1,3 +1,9 @@
+//  Nom du fichier : fetchUsers.ts
+//  Contexte : Un fichier TypeScript qui permet d'envoyer une requête au serveur pour récupérer ou modifier l'utilisateur courant
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/, https://www.youtube.com/watch?v=98BzS5Oz5E4
+
 import { APP_MODE, HOST_URL, HOST_PORT } from '../appConfig';
 
 import avatar from '../assets/heroes/chuck/avatar.png';
@@ -48,4 +54,4 @@ export const patchCurrentUser = async (input: any) => {
   } catch (error: any) {
     throw new Error(`Failed to patch current user: ${error.message}`);
   }
-}; // improved by ChatGPT
+};
