@@ -1,3 +1,9 @@
+//  Nom du fichier : ShowUserInfo.tsx
+//  Contexte : Un composant React qui permet d'afficher les informations de l'utilisateur
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { IUser } from '../../typescript/interfaces/IUser';
 
 const ShowUserInfo = ({ user, className }: { user: IUser; className?: string }) => {

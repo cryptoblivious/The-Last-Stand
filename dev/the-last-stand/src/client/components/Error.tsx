@@ -1,3 +1,9 @@
+//  Nom du fichier : Error.tsx
+//  Contexte : Un composant React qui permet d'afficher une page d'erreur lorsqu'une erreur se produit
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://reactrouter.com/en/main/start/tutorial
+
 import { useRouteError } from 'react-router-dom';
 
 export default function Error() {

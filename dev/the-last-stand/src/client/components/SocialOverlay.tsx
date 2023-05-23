@@ -1,3 +1,9 @@
+//  Nom du fichier : SocialOverlay.tsx
+//  Contexte : Un composant React qui permet d'afficher l'overlay social
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import FriendRequestForm from './FriendRequestForm';
 import UserInfoCardSwitcher from './UserInfoCardSwitcher';
 import FriendList from './FriendList';

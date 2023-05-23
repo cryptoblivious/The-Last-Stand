@@ -1,3 +1,9 @@
+//  Nom du fichier : OverlayToggler.tsx
+//  Contexte : Un composant React qui permet d'activer ou de désactiver l'overlay
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { useState } from 'react';
 import Button from './Button';
 import { GiNinjaHead, GiBellShield } from 'react-icons/gi';

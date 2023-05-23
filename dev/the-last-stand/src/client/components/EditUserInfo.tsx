@@ -1,8 +1,8 @@
-//  Nom du fichier : EditButton.tsx
-//  Contexte : Un composant React qui affiche un bouton d'édition
+//  Nom du fichier : EditUserInfo.tsx
+//  Contexte : Un composant React qui permet à l'utilisateur de modifier son nom d'utilisateur et son titre.
 //  Nom de l'auteur : Andrzej Wisniowski
 //  Autres étudiants : Jonathan Robinson-Roberge
-//  Référence : https://chat.openai.com/
+//  Références : https://chat.openai.com/, https://www.youtube.com/watch?v=GGo3MVBFr1A
 
 import { IUser } from '../../typescript/interfaces/IUser';
 import { patchCurrentUser } from '../fetches/fetchUsers';
@@ -12,8 +12,8 @@ import { ColyseusContext } from './ColyseusProvider';
 const EditUserInfo = ({ user, className, isDoneEditing, inputFunction }: { user: IUser; className?: string; isDoneEditing: boolean; inputFunction: () => void }) => {
   const { avatar, username, title } = user;
   const { appRoom } = useContext(ColyseusContext);
-  const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
-  const titleRef = useRef<HTMLSelectElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLSelectElement>(null);
   const titleToValueMap = {
     No0bZoR: 'title-1',
     'Bounty Hunter': 'title-2',

@@ -1,3 +1,8 @@
+//  Nom du fichier : Match.tsx
+//  Contexte : Un composant React qui permet d'afficher le canevas du jeu Phaser
+//  Nom des auteurs : Jonathan Robinson-Roberge et Andrzej Wisniowski
+//  Référence : https://chat.openai.com/
+
 import { useEffect, useRef, useState, useContext } from 'react';
 import Phaser from 'phaser';
 import Bootstrap from '../match/scenes/Bootstrap';

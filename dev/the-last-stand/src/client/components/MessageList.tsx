@@ -1,3 +1,9 @@
+//  Nom du fichier : MessageList.tsx
+//  Contexte : Un composant React qui permet d'afficher les messages dans le chat
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 const MessageList = (props: any) => {
   const { messages, user } = props;
   return (

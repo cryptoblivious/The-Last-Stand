@@ -1,3 +1,9 @@
+//  Nom du fichier : FriendList.tsx
+//  Contexte : Un composant React qui affiche la liste des amis de l'utilisateur
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import { useContext } from 'react';
 import FriendInfoCard from './FriendInfoCard';
 import { ColyseusContext } from './ColyseusProvider';

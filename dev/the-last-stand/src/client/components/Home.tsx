@@ -1,3 +1,9 @@
+//  Nom du fichier : Home.tsx
+//  Contexte : Un composant React qui affiche une page d'accueil avec des liens vers les différentes sections du site.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import SocialOverlay from './SocialOverlay';
 import HomeSection from './HomeSection';
 import UpcomingOverlay from './UpcomingOverlay';

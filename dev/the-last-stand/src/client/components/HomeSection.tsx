@@ -1,3 +1,9 @@
+//  Nom du fichier : HomeSection.tsx
+//  Contexte : Un composant React réutilisable qui affiche une section de la page d'accueil
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import IHomeSectionProps from '../../typescript/interfaces/IHomeSectionProps';
 import { Link } from 'react-router-dom';
 import Button from './Button';

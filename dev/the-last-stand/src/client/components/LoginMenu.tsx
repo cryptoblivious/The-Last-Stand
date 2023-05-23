@@ -1,3 +1,9 @@
+//  Nom du fichier : LoginMenu.tsx
+//  Contexte : Un composant React qui affiche le menu de connexion
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { IStyledClickableCurrentComponent } from '../../typescript/interfaces/IStyledClickableCurrentComponent';
 import LoginForm from './LoginForm';
 import SocialLoginForm from './SocialLoginForm';

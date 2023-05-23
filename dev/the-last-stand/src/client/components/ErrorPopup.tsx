@@ -1,3 +1,9 @@
+//  Nom du fichier : ErrorPopup.tsx
+//  Contexte : Un composant React qui permet d'afficher à l'écran un message d'erreur personnalisé en fonction de la situation.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import { IErrorPopupProps } from '../../typescript/interfaces/IErrorPopupProps';
 import Button from './Button';
 import { GiAzulFlake } from 'react-icons/gi';
@@ -47,4 +53,4 @@ function ErrorPopup(props: IErrorPopupProps) {
   );
 }
 
-export default ErrorPopup; //ref: ChatGPT
+export default ErrorPopup;

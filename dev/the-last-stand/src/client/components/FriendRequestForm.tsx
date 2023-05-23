@@ -1,9 +1,15 @@
+//  Nom du fichier : FriendRequestForm.tsx
+//  Contexte : Un composant React qui permet d'envoyer une demande d'ami à un autre joueur.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/, https://www.youtube.com/watch?v=GGo3MVBFr1A, https://blog.logrocket.com/usestate-vs-useref/
+
 import { useEffect, useRef, useState } from 'react';
 import Button from './Button';
 import UpcomingOverlay from './UpcomingOverlay';
 
 const FriendRequestForm = () => {
-  const usernameRef = useRef<HTMLInputElement>(null); //ref:https://www.youtube.com/watch?v=GGo3MVBFr1A
+  const usernameRef = useRef<HTMLInputElement>(null);
   const [userNo, setUserNo] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -17,12 +23,12 @@ const FriendRequestForm = () => {
   const handleChange = (e: any) => {
     const { value } = e.target;
 
-    setUserNo(value === '#' ? '' : value.length === 1 ? '#' + value : value.length === 6 ? userNo : value); //ref:ChatGPT
+    setUserNo(value === '#' ? '' : value.length === 1 ? '#' + value : value.length === 6 ? userNo : value);
   };
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
-    isOpen && usernameRef.current?.focus(); //ref:https://blog.logrocket.com/usestate-vs-useref/
+    isOpen && usernameRef.current?.focus();
   };
 
   const handleMouseEnter = () => {

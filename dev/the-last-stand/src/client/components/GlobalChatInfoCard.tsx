@@ -1,3 +1,9 @@
+//  Nom du fichier : GlobalChatInfoCard.tsx
+//  Contexte : Un composant React qui affiche un bouton pour ouvrir le chat global
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { GiGlobe } from 'react-icons/gi';
 import { useContext, useState, useEffect } from 'react';
 import { ColyseusContext } from './ColyseusProvider';

@@ -1,3 +1,9 @@
+//  Nom du fichier : Login.tsx
+//  Contexte : Un composant React qui affiche la page de connexion
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import LoginNavbar from './LoginNavbar';
 import ErrorPopup from './ErrorPopup';
 import '../styles/index.css';

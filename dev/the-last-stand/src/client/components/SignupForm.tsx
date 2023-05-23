@@ -1,3 +1,9 @@
+//  Nom du fichier : SignupForm.tsx
+//  Contexte : Un composant React qui permet de créer un formulaire d'inscription
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { Link } from 'react-router-dom';
 import BigRoundedInput from './BigRoundedInput';
 import UpcomingOverlay from './UpcomingOverlay';

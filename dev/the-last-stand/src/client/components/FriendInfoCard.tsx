@@ -1,3 +1,9 @@
+//  Nom du fichier : FriendInfoCard.tsx
+//  Contexte : Un composant React qui permet d'afficher les informations d'un ami et de lancer une conversation avec lui.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import { IUser } from '../../typescript/interfaces/IUser';
 import { GiCyberEye, GiAbstract015 } from 'react-icons/gi';
 import { useContext, useState, useEffect } from 'react';
