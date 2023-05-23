@@ -1,3 +1,8 @@
+//  Nom du fichier : .eslintrc.js
+//  Contexte : Un fichier de type JavaScript qui contient les règles de linting pour le projet
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson
+
 module.exports = {
   parserOptions: {
     project: './tsconfig.json',

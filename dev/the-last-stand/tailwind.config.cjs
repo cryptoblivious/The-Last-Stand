@@ -1,3 +1,8 @@
+// Nom du fichier : tailwind.config.cjs
+// Contexte : Un fichier de type cjs qui permet de configurer tailwind
+// Nom des auteurs : Jonathan Robinson et Andrzej Wisniowski
+// Références : https://chat.openai.com/
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}', './index.html'],
@@ -23,11 +28,11 @@ module.exports = {
         'neon-red': '#ff3838',
       },
       width: {
-        '150': '150%',
-        '200': '200%',
+        150: '150%',
+        200: '200%',
       },
-      backgroundImage: theme => ({
-        'panning': "url('./public/assets/wallpapers/pixel_city_lights_off.jpg'), url('./public/assets/wallpapers/pixel_city_lights_off.jpg')",
+      backgroundImage: (theme) => ({
+        panning: "url('./public/assets/wallpapers/pixel_city_lights_off.jpg'), url('./public/assets/wallpapers/pixel_city_lights_off.jpg')",
       }),
       keyframes: {
         'gradient-x': {
@@ -38,25 +43,18 @@ module.exports = {
           '50%': {
             'background-size': '200% 200%',
             'background-position': 'right bottom',
-          }
+          },
         },
-        'panning': {
-          '0%': {backgroundPosition: '0% 0%',
-                  backgroundSize: '125% 100%'
-                },
-          '50%': {backgroundPosition: '-100% 0%',
-                  backgroundSize: '125% 100%'
-                },
-          '100%': {backgroundPosition: '-200% 0%',
-                  backgroundSize: '125% 100%'
-                },
-          
-        }
+        panning: {
+          '0%': { backgroundPosition: '0% 0%', backgroundSize: '125% 100%' },
+          '50%': { backgroundPosition: '-100% 0%', backgroundSize: '125% 100%' },
+          '100%': { backgroundPosition: '-200% 0%', backgroundSize: '125% 100%' },
+        },
       },
       animation: {
         'gradient-x': 'gradient-x 15s ease infinite',
-        'panning' : 'panning 40s linear infinite',
-      }
+        panning: 'panning 40s linear infinite',
+      },
     },
   },
   plugins: [],

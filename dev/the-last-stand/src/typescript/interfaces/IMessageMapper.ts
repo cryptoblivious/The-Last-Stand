@@ -1,4 +1,4 @@
-//  Nom du fichier : IMessage.ts
+//  Nom du fichier : IMessageMapper.ts
 //  Contexte : Un fichier de type TypeScript qui définit une interface pour les messages mapés
 //  Nom de l'auteur : Andrzej Wisniowski
 //  Autres étudiants : Jonathan Robinson

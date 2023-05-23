@@ -3,10 +3,9 @@
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski
 
-
 export interface IUpdateSpriteMessage {
-    x: number;
-    y: number;
-    direction?: string;
-    anim?: string;
+  x: number;
+  y: number;
+  direction?: string;
+  anim?: string;
 }

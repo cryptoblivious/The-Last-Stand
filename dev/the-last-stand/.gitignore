@@ -1,3 +1,8 @@
+# Nom du fichier : .gitignore
+# Contexte : Un fichier de type .gitignore qui permet d'ignorer les fichiers et dossiers à ne pas prendre en compte lors de la mise en ligne sur le serveur
+# Nom de l'auteur : Github
+# Autres étudiants : Jonathan Robinson,Andrzej Wisniowski
+
 # Logs
 logs
 *.log
