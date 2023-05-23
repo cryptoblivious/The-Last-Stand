@@ -1,11 +1,7 @@
 //  Nom du fichier : CGameEntity.ts
 //  Contexte : classe servant à stocker les données des entités du jeu devant être sérialisées par colyseus dans le shared state 
-//  Nom de l'auteur : Jonathan Robinson
-//  Autres étudiants : Andrzej Wisniowski
+//  Nom des auteurs : Jonathan Robinson et Andrzej Wisniowski
 //  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
-
-
-
 
 import { Schema, type } from '@colyseus/schema';
 export default class CGameEntity extends Schema {

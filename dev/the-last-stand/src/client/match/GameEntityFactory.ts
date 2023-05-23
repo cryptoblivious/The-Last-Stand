@@ -1,3 +1,8 @@
+//  Nom du fichier : GameEntityFactory.ts
+//  Contexte : Un fichier de type TypeScript qui permet de créer des entités de jeu à partir de fonctions de production
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+
 import CGameEntity from '../../typescript/classes/CGameEntity';
 import { IGameEntityProducer } from '../../typescript/interfaces/IGameEntityProducer';
 

@@ -1,4 +1,4 @@
-//  Nom du fichier : ButtonLayer.tsx
+//  Nom du fichier : GameLobbyPlayButton.tsx
 //  Contexte : Composant fonctionnel React gérant le bouton du gamelobby
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski

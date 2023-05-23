@@ -1,3 +1,9 @@
+//  Nom du fichier : users.ts
+//  Contexte : Un fichier de type TypeScript qui permet de gérer la logique des usagers dans la base de données
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/, https://www.youtube.com/watch?v=98BzS5Oz5E4
+
 import { userModel as User } from '../models/user';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
 
@@ -73,7 +79,7 @@ export const patchCurrentUser = async (req: any, res: any) => {
   } catch (err: any) {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });
   }
-}; // improved by ChatGPT
+};
 
 export const deleteUserByEmail = async (req: any, res: any) => {
   const email = req.params.email;

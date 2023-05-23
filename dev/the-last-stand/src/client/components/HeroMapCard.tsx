@@ -1,3 +1,9 @@
+//  Nom du fichier : HeroMapCard.tsx
+//  Contexte : Composant fonctionnel React servant de carte pour les héros et les scenes à afficher dans la page Heroes
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 
 const heroMapCardCSS = 'bg-cover bg-center bg-no-repeat rounded-lg cursor-pointer overflow-hidden shadow-md flex justify-center items-center hover:scale-110 transition-all durantion-500 ease-in-out';

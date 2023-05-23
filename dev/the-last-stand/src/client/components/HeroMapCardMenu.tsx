@@ -1,3 +1,10 @@
+//  Nom du fichier : HeroMapCard.tsx
+//  Contexte : Composant fonctionnel React servant de menu carroussel pour les héros et les scenes à afficher dans la page Heroes
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
+
+
 import HeroMapCard from './HeroMapCard';
 import Arrow from './Arrow';
 import { useEffect, useState } from 'react';

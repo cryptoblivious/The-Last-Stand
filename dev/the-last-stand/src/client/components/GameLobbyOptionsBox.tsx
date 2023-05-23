@@ -1,4 +1,4 @@
-//  Nom du fichier : GameLobbyOptions.tsx
+//  Nom du fichier : GameLobbyOptionsBox.tsx
 //  Contexte : Composant fonctionnel React servant de conteneur pour les boutons d'options dans le lobby
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski

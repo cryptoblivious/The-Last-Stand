@@ -1,3 +1,9 @@
+//  Nom du fichier : AppRoom.ts
+//  Contexte : Un fichier de type TypeScript qui permet de gérer la communication entre le serveur et le client au niveau de l'application.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import { Room, Client } from 'colyseus';
 import { AppState } from './states/AppState';
 import { userModel as User } from '../api/models/user';

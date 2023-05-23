@@ -3,7 +3,6 @@
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski
 
-
 import express from 'express';
 import { getScenesNames } from '../controllers/scenes';
 

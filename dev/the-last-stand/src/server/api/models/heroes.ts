@@ -1,4 +1,4 @@
-//  Nom du fichier : scene.ts   
+//  Nom du fichier : heroes.ts
 //  Contexte : Shema servant de structure pour aller chercher les heros et leurs backstories dans la base de données
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski

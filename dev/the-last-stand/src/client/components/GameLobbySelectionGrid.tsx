@@ -1,4 +1,4 @@
-//  Nom du fichier : ButtonLayer.tsx
+//  Nom du fichier : GameLobbySelectionGrid.tsx
 //  Contexte : Composant fonctionnel React servant à placer des cartes de personnages dans un grid css 
 //  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski

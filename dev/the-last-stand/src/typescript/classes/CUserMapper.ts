@@ -3,7 +3,6 @@
 //  Nom de l'auteur : Andrzej Wisniowski
 //  Autres étudiants : Jonathan Robinson
 
-
 import { Schema, type } from '@colyseus/schema';
 
 export class CUserMapper extends Schema {

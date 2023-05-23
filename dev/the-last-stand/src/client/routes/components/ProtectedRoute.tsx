@@ -1,3 +1,9 @@
+//  Nom du fichier : ProtectedRoute.tsx
+//  Contexte : Un composant React qui permet de protéger les routes du côté client de l'application.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { fetchAuth } from '../../fetches/fetchAuth';
