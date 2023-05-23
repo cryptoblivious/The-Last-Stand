@@ -1,3 +1,8 @@
+//  Nom du fichier : StatBar.tsx
+//  Contexte : Composant fonctionnel React servant de barre de statistiques colorée pour afficher les statistiques des personnages dans la page GameLobby
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://react.dev/
 
 const sb_ContainerStyle = 'flex justify-start items-center p-2 bg-black bg-opacity-50  rounded-md w-full '
 

@@ -1,3 +1,9 @@
+//  Nom du fichier : fetchScenes.ts
+//  Contexte : fichier servant pour les fetches du component GameLobby
+//  Nom des auteurs : Jonathan Robinson-Roberge et Andrzej Wisniowski
+//  Références : https://chat.openai.com/ 
+
+
 import { HOST_URL, HOST_PORT } from '../appConfig';
 import { gl_GridCardData } from '../components/GameLobbyCard';
 

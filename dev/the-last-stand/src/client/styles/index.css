@@ -1,32 +1,31 @@
+/* Nom du fichier : index.css
+Contexte : Un fichier de type css qui permet d'importer les styles de tailwind et de personnaliser la scrollbar
+Nom de l'auteur : Andrzej Wisniowski
+Autres étudiants : Jonathan Robinson-Roberge
+Référence : https://chat.openai.com/, https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar2 */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Scrollbar personnalisée adaptée de https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar2 */
-
-/* width */
 ::-webkit-scrollbar {
   width: 30px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px purple;
   background: black;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: purple;
   border-radius: 10px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #b300b3;
 }
 
-/* For other browsers */
 .scrollbar-custom {
   scrollbar-color: purple transparent;
   scrollbar-width: 30px;

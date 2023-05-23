@@ -1,3 +1,9 @@
+//  Nom du fichier : auth.ts
+//  Contexte : Un fichier de type TypeScript qui 
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/, https://vitejs.dev/guide/
+
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';

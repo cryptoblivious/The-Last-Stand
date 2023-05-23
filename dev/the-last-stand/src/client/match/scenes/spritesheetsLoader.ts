@@ -1,3 +1,9 @@
+//  Nom du fichier : spriteSheetLoader.ts
+//  Contexte : Structure de données servant à retenir les informations des spritesheets des héros
+//  Nom de l'auteur : Jonathan Robinson 
+//  Autres étudiants : Andrzej Wisniowski
+
+
 import { IHeroesSpritePaths } from '../../../typescript/interfaces/IHeroesSpritesPaths';
 
 const spsiteSheetsLoader: IHeroesSpritePaths[] = [

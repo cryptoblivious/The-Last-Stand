@@ -1,3 +1,8 @@
+//  Nom du fichier : fetchHeroes.ts
+//  Contexte : fichier qui gere du coté client les fetches pour les heroes et leurs backstories
+//  Nom des auteurs : Jonathan Robinson-Roberge et Andrzej Wisniowski
+//  Références : https://chat.openai.com/ 
+
 import { HOST_URL, HOST_PORT } from '../appConfig';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
 import { capitalizeFirstLetter } from '../../utils/text_format';

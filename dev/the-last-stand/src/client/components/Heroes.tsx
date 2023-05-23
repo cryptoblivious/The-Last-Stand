@@ -8,7 +8,7 @@
 import HeroMapCardMenu from './HeroMapCardMenu';
 import { useState, useEffect } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
-import { fetchHeroesNamesAndBackstories } from '../fetches/heroes';
+import { fetchHeroesNamesAndBackstories } from '../fetches/fetchHeroes';
 
 const heroesPageContainerStyle = 'h-screen grid gap-4 grid-cols-3 grid-rows-5 bg-cover bg-center bg-no-repeat';
 const heroesPageTitleContainerStyle = 'col-start-2 col-span-2 row-span-2 flex justify-center items-center w-full h-full bg-opacity-0';

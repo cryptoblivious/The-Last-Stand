@@ -1,3 +1,9 @@
+//  Nom du fichier : Router.tsx
+//  Contexte : Un composant React qui permet de gérer les routes du côté client de l'application
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import MainPageSwitcher from '../../components/MainPageSwitcher';

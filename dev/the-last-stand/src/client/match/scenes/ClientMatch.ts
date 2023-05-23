@@ -1,7 +1,7 @@
-//  Nom du fichier : fetchUsers.ts
-//  Contexte : Un fichier TypeScript qui permet de gérer la partie du côté client
+//  Nom du fichier : ClientMatch.ts
+//  Contexte : Classe héritant de Phaser.Scene pour la scène de jeu côté client et les comminucations avec le serveur (this.mo)
 //  Nom des auteurs : Jonathan Robinson-Roberge et Andrzej Wisniowski
-//  Référence : https://chat.openai.com/, https://phaser.io/
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
 
 import Phaser from 'phaser';
 import { Client, Room } from 'colyseus.js';

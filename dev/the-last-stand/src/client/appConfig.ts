@@ -1,3 +1,9 @@
+//  Nom du fichier : appConfig.ts
+//  Contexte : Un fichier TypeScript qui contient les configurations de l'application en fonction de l'environnement de développement ou de production.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import { TAppConfig } from '../typescript/types/TAppConfig';
 
 const defaultConfig: TAppConfig = {
@@ -52,5 +58,3 @@ export const CLIENT_NAME = domainConfig.CLIENT_NAME;
 export const CLIENT_URL = domainConfig.CLIENT_URL;
 export const CLIENT_PORT = domainConfig.CLIENT_PORT;
 export const WS_PROTOCOL = domainConfig.WS_PROTOCOL;
-
-//ref : ChatGPT & CoPilot
