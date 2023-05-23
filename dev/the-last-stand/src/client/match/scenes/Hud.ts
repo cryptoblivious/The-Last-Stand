@@ -1,3 +1,10 @@
+//  Nom du fichier : Hud.ts
+//  Contexte : Classe héritant de Phaser.Scene pour la gestion du hud du jeu
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+
+
 import Phaser from 'phaser';
 import INewhudplayer from '../../../typescript/interfaces/INewHudPlayer';
 import IUpdatePercentagesMessage from '../../../typescript/interfaces/IUpdatePercentagesMessage';
@@ -29,11 +36,13 @@ export default class Hud extends Phaser.Scene {
 
         // Manage the signals from the main canvas scene
         clientMatch.events.on(EMessage.NewHudPlayer.toString(), (data: INewhudplayer) => {
+            console.log('player added to hud' + data)
+            console.log('playerList' + this.playerList)
             const { name: playerName, index: playerIndex, damagePercentage: playerDamage, lives: playerLives } = data;
-            if (this.playerList.includes(playerName)) {
+            if (this.playerList.includes(playerName + playerIndex)) {
                 return;
             }
-            this.playerList.push(playerName);
+            this.playerList.push(playerName + playerIndex);
             this.createNewPlayer(playerName, getHudXPosition(playerIndex) , hudElementYpos, bgRadius, hudYpos, playerDamage, playerLives,  bgPadding);
         });
 

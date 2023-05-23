@@ -1,8 +1,7 @@
 //  Nom du fichier : MatchOrchestrator.ts
 //  Contexte : Classe héritant de la classe Room de colyseus pour gérer la partie et la communication entre les clients et le serveur. Selon les principes
 //              du patron de conception "Mediator" et template method.
-//  Nom de l'auteur : Jonathan Robinson
-//  Autres étudiants : Andrzej Wisniowski
+//  Nom des auteurs : Jonathan Robinson et Andrzej Wisniowski
 //  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
 
 
@@ -94,7 +93,9 @@ export class MatchOrchestrator extends Room<MatchState> {
     const players = this.clients.map((client) => {
       return { name: user.username, index: this.clients.indexOf(client) };
     });
+    console.log(players)
     this.broadcast(EMessage.CreateHud, players);
+
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {

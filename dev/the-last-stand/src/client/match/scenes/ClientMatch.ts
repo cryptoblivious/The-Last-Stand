@@ -218,7 +218,7 @@ export default class ClientMatch extends Phaser.Scene {
         rect.setData('timer', 0);
         rect.setData('lifespan', 1);
         this.mo?.state.playerIds.forEach((playerId: string) => {
-          if (playerId === rect.getData('owner')) {
+          if (playerId !== rect.getData('owner')) {
             const sprite = this.gameEntities.get(playerId)?.sprite
             this.physics.add.overlap(rect, this.gameEntities.get(playerId).sprite, () => {
               const attackVector = new Phaser.Math.Vector2(this.gameEntities.get(playerId)?.x! - rect.x, this.gameEntities.get(playerId)?.y! - rect.y).normalize();
@@ -233,7 +233,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage(EMessage.PlayerHurt, (message) => {
       const { attackForce } = message;
-      const hero = this.gameEntities.get(this.playerId!);
+      const hero = this.gameEntities.get(this.playerId!).sprite;
       hero.anim = `${hero.name}hurt`.toLowerCase();
       hero.setVelocity(attackForce.x, attackForce.y);
       hero.damagePercentage += 1;
@@ -272,6 +272,7 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.CreateHud, (players: { name: string; index: number }[]) => {
+      console.log('players :>> ', players);
       players.forEach((player: { name: string; index: number }) => {
         const hudNewPlayerMessage: INewhudplayer = {
           name: player.name,

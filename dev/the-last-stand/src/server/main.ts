@@ -1,3 +1,9 @@
+//  Nom du fichier : main.ts
+//  Contexte : Un fichier de type TypeScript qui permet de démarrer le serveur Node.js et de mettre en place diverses configurations de middleware et de routes.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 import dotenv from 'dotenv';
 import https from 'https';
 import fs from 'fs';
@@ -70,7 +76,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-}; // REF : ChatGPT
+};
 console.log('✅ Options set.');
 
 const mongoStore = new MongoStore({
@@ -133,18 +139,18 @@ passport.deserializeUser((id, done) => {
 
 initializeGoogleOAuthStrategy();
 
-// Add middleware to update the session timestamp in order to keep the serverside session alive
-app.use(function (req, res, next) {
-  interface ISession extends Session, SessionData {
-    lastAccess: Date;
-  }
-  const reqSession: ISession = req.session as ISession;
-  // Update the session timestamp
-  reqSession.lastAccess = new Date();
+// // Add middleware to update the session timestamp in order to keep the serverside session alive
+// app.use(function (req, res, next) {
+//   interface ISession extends Session, SessionData {
+//     lastAccess: Date;
+//   }
+//   const reqSession: ISession = req.session as ISession;
+//   // Update the session timestamp
+//   reqSession.lastAccess = new Date();
 
-  // Call the next middleware function in the chain
-  next();
-}); // REF : ChatGPT
+//   // Call the next middleware function in the chain
+//   next();
+// });
 
 app.use(passport.session());
 console.log('✅ Middleware defined.');
