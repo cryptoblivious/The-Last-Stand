@@ -1,3 +1,8 @@
+//  Nom du fichier : Button.tsx
+//  Contexte : Un composant React qui permet de créer un bouton générique qui peut être utilisé dans plusieurs contextes.
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 
 function Button(props: IButtonProps) {
@@ -22,4 +27,4 @@ function Button(props: IButtonProps) {
   );
 }
 
-export default Button; //ref: ChatGPT
+export default Button;

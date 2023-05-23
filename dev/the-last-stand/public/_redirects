@@ -1,1 +1,7 @@
+//  Nom du fichier : _redirects
+//  Contexte : Sert à indiquer que tous les urls doivent mener à index.html
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Références : https://chat.openai.com/
+
 /*  /index.html  200

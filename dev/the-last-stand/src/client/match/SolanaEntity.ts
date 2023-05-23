@@ -27,7 +27,6 @@ class SolanaEntity extends PhaserPlayerEntity {
         entity.airborneSpeed = 1000;
         entity.weight = 300;
         entity.maxJump = 2;
-        
 
     }
 }

@@ -1,3 +1,11 @@
+//  Nom du fichier : DoublyLinkedListNode.ts
+//  Contexte : Un node spécifique pour une doublelinkedlist.
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/
+
+
+
 /**
  * Represents a node in a doubly linked list.
  */

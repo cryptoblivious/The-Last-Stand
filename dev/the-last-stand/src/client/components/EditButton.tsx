@@ -1,3 +1,9 @@
+//  Nom du fichier : EditButton.tsx
+//  Contexte : Un composant React qui affiche un bouton d'édition
+//  Nom de l'auteur : Andrzej Wisniowski
+//  Autres étudiants : Jonathan Robinson-Roberge
+//  Référence : https://chat.openai.com/
+
 import { IButtonProps } from '../../typescript/interfaces/IButtonProps';
 import Button from './Button';
 import { GiFeather, GiBookmarklet } from 'react-icons/gi';

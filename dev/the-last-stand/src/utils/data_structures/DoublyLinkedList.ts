@@ -1,3 +1,10 @@
+//  Nom du fichier : DoublyLinkedList.ts
+//  Contexte : Une liste chainée doublement liée utilisée spécifiquement dans la hashmap de ce projet.
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - 
+
+
 import DoublyLinkedListNode from "./DoublyLinkedListNode";
 
 

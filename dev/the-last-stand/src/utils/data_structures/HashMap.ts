@@ -1,3 +1,9 @@
+//  Nom du fichier : HashMap.ts
+//  Contexte : Une structure de données qui permet de stocker des paires clé-valeur.
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/
+
 import DoublyLinkedList from "./DoublyLinkedList";
 
 

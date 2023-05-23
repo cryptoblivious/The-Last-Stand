@@ -1,5 +1,11 @@
-import {test, expect } from 'vitest'
+//  Nom du fichier : DoublyLinkedList.test.ts
+//  Contexte : Un fichier de test pour DoublyLinkedList.ts
+//  Nom de l'auteur : Jonathan Robinson
+//  Autres étudiants : Andrzej Wisniowski
+//  Références : https://chat.openai.com/ - https://vitest.dev/
 
+
+import {test, expect } from 'vitest'
 import DoublyLinkedList from './DoublyLinkedList'
 import DoublyLinkedListNode from './DoublyLinkedListNode'
 
