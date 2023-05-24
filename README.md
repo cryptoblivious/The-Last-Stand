@@ -156,7 +156,7 @@ Il est également possible de visiter le site web de production du projet à l'a
 Nous tenons à exprimer notre gratitude envers les personnes suivantes pour leur contribution à ce projet :
 
 - Nos professeurs, pour leur soutien et leurs conseils tout au long du projet.
-- Nos collègues, pour leurs encouragements et leurs solidarité;
+- Nos collègues, pour leurs encouragements et leur solidarité;
 - Nos amis et nos familles, pour leur soutien et leur amour;
 - Nos cafés, pour leur caféine.
 
