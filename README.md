@@ -92,6 +92,12 @@ yarn
 
 Une fois les dépendances installées, il est nécessaire de renommer le fichier .env_example pour .env afin que l'application soit en mesure de reconnaître les variables d'environnement pour configurer correctement les ports, chemins d'accès à la base de données et secrets. Les informations présentées dans ce fichier sont modifiables au besoin; les informations concernant Google et MongoDB Atlas dirigent vers des ressources mises en place à titre d'exemple.
 
+
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Utilisation
 - Lorsque le .env a été renommé correctement, il suffit d'ouvrir deux fenêtres côtes à côtes de terminal dans VS Code et d'exécuter les commandes suivantes (une dans chaque fenêtre) pour démarrer les serveur et client locaux du projet:
 
 - Version NPM
@@ -114,12 +120,41 @@ yarn server
 yarn client
 ```
 
-Il est également possible de visiter le site web de production du projet à l'adresse suivante: [https://tls.woodchuckgames.com/](https://tls.woodchuckgames.com/)
+Ensuite cliquer sur le lien fournit par vite pour aller sur la page hébergée localement:  
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+![Console Vite][console-vite]
 
-## Utilisation
+Il est également possible de visiter le site web de production du projet à l'adresse suivante: [https://tls.woodchuckgames.com/](https://tls.woodchuckgames.com/)  
 
+Une fois sur la page de login, on peut se connecter à l'aide d'un compte google  
+![logingoogle][login]  
+
+On arrive ensuite sur la page principale de l'application  
+![home][home]  
+
+En utilisant l'icone dans le haut à droite, on peut faire glisser le menu de chat et de joueurs en ligne  
+![onlinebox][onlinebox]
+
+On peut ensuite ouvrir et écrire dans le chat global en cliquant sur l'icone appropriée  
+![globalchat][globalchat]  
+
+On peut également ouvrir et écrire dans des conversations avec les autres joueurs, en ligne ou non  
+![privatechat][privatechat]
+
+De la page principale, on peut également décider d'aller consulter la liste des héros  
+![heroespage][heroespage]
+
+De la page principale, on peut également aller dans le salon de partie pour choisir le type de partie, le nombre de joueurs et le héro et la carte désiré  
+![gamelobby][gamelobby]
+
+Après avoir sélectionné les paramètres (ou garder ceux par défaut), le jeu se met à la recherche de joueurs ayant choisi les mêmes paramètres  
+![matchmaking][matchmaking]
+
+Pour entrer dans le jeu en mode solo, pour des fins de déboguage, changer la booléene 'debugMode' dans le fichier MatchMakerRoom.ts:  
+![debugvariable][matchmakerdebug]  
+
+On entre ensuite dans une partie  
+![ingame][ingame]
 (Insérez ici des instructions sur comment démarrer et utiliser votre projet. Vous pouvez également ajouter des captures d'écran pour illustrer l'utilisation de votre projet.)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -149,7 +184,17 @@ Il est également possible de visiter le site web de production du projet à l'a
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-
+[login]: ./C61/doc/imagesreadme/login.png
+[console-vite]: ./C61/doc/imagesreadme/consolevite.png
+[home]: ./C61/doc/imagesreadme/home.png
+[onlinebox]: ./C61/doc/imagesreadme/onlinebox.png
+[privatechat]: ./C61/doc/imagesreadme/privatechat.png
+[globalchat]: ./C61/doc/imagesreadme/globalchat.png
+[heroespage]: ./C61/doc/imagesreadme/herospage.png
+[gamelobby]: ./C61/doc/imagesreadme/gamelobby.png
+[matchmakerdebug]: ./C61/doc/imagesreadme/matchmakerdebug.png
+[ingame]: ./C61/doc/imagesreadme/ingame.png
+[matchmaking]: ./C61/doc/imagesreadme/matchmaking.png
 [colyseus-img]: https://img.shields.io/badge/colyseus-A100FF?style=for-the-badge&logo=c&logoColor=white
 [colyseus-url]: https://colyseus.io/
 [vscode-img]: https://img.shields.io/badge/vs%20code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white

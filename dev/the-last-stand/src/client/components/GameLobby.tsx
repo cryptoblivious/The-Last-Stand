@@ -175,7 +175,7 @@ const GameLobby = () => {
                 <div ref={backgroundRef2} className={gl_panBackgroundStyle}></div>
                 <h1 className={gl_titleStyle}> Game Lobby</h1>
             </div>
-            <SocialOverlay />
+            {/* <SocialOverlay /> */}
             <div className={gl_gridsContainerStyle}>
                 <div className={gl_characterSelectionGridContainerStyle}>
                     <h2 className={gl_SubtitleStyle}>Character Selection</h2>
