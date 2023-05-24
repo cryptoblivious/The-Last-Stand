@@ -107,25 +107,65 @@ Il est également possible de visiter le site web de production du projet à l'a
 
 ## Références
 
-(Insérez ici la liste des références utilisées pour la réalisation de votre projet avec des liens hypertextes le cas échéant.)
+- [Beginning Multiplayer Game Development with Tic-Tac-Toe using Colyseus](https://www.youtube.com/watch?v=5HESa0Ibq8E)
+- [Top 6 React Hook Mistakes Beginners Make](https://www.youtube.com/watch?v=GGo3MVBFr1A)
+- [MERN Stack Tutorial #1 - What is the MERN Stack?](https://www.youtube.com/watch?v=98BzS5Oz5E4)
+- [ChatGPT](https://chat.openai.com/)
+- [Copilot](https://copilot.github.com/)
+- [Colyseus](https://docs.colyseus.io/)
+- [Express](https://expressjs.com/fr/)
+- [Git](https://git-scm.com/)
+- [Github](https://github.com/)
+- [Insomnia](https://insomnia.rest/)
+- [MongoDB](https://www.mongodb.com/)
+- [NodeJS](https://nodejs.org/en/)
+- [Passport](http://www.passportjs.org/)
+- [Phaser3](https://phaser.io/phaser3)
+- [React](https://react.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Yarn](https://yarnpkg.com/)
+- [React-Router](https://reactrouter.com/)
+- [Vitest](https://vitest.dev/)
+- [StackBlitz](https://stackblitz.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 
-(Insérez ici vos informations de contact. Cette section est optionnelle.)
+- Andrzej Wisniowski - [Github](https://github.com/cryptoblivious) - [LinkedIn](https://www.linkedin.com/in/andrzej-wisniowski-77234376/) - [Portfolio](https://andrzejw.com/) - [Messenger](https://m.me/andrzej.wisniowski.33) - [Twitter](https://twitter.com/cryptoblivious) - [Email](mailto:andrzej.wis123@gmail.com)
+- Jonathan Robinson-Roberge - [Github](https://github.com/Jon-Robb)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Remerciements
 
-(Insérez ici vos remerciements à ceux qui vous ont aidé dans la réalisation de votre projet, par exemple un enseignant autre que celui du cours qui vous a aidé. Cette section est optionnelle.)
+Nous tenons à exprimer notre gratitude envers les personnes suivantes pour leur contribution à ce projet :
+
+- Nos professeurs, pour leur soutien et leurs conseils tout au long du projet.
+- Nos collègues, pour leurs encouragements et leurs solidarité;
+- Nos amis et nos familles, pour leur soutien et leur amour;
+- Nos cafés, pour leur caféine.
+
+Merci à tous ceux qui ont contribué de quelque manière que ce soit à ce projet. Votre soutien et votre participation sont grandement appréciés !
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Licence
 
-(Insérez ici des informations sur la licence de votre projet, si applicable. Cette section est optionnelle.)
+Ce projet est distribué sous les termes de la [Licence Publique Générale GNU (GNU GPL)](https://www.gnu.org/licenses/gpl-3.0.html), version 3.0.
+
+> [Texte intégral de la Licence Publique Générale GNU (GNU GPL)](https://www.gnu.org/licenses/gpl-3.0.html)
+
+La Licence Publique Générale GNU est une licence libre et open source qui garantit aux utilisateurs les libertés suivantes :
+
+1. La liberté d'utiliser le logiciel à des fins personnelles ou commerciales.
+2. La liberté d'étudier le fonctionnement du logiciel et de l'adapter à ses besoins.
+3. La liberté de distribuer des copies du logiciel.
+4. La liberté d'améliorer et de distribuer publiquement les versions modifiées du logiciel.
+
+Veuillez consulter le texte intégral de la licence pour obtenir tous les détails et les conditions spécifiques de la Licence Publique Générale GNU.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -161,7 +201,3 @@ Il est également possible de visiter le site web de production du projet à l'a
 [react-url]: https://reactjs.org/
 [placeholder-img]: https://img.shields.io/badge/et_plus_encore-FAB040?style=for-the-badge&logo=precommit&logoColor=red
 [placeholder-url]: https://perdu.com/
-
-```
-
-```
