@@ -32,3 +32,6 @@ dist-ssr
 
 # Environment variables
 .env
+
+# Mac OS DS Store
+**/*/.DS_Store
