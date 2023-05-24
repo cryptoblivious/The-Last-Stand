@@ -10,7 +10,7 @@ import fs from 'fs';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import session, { Session, SessionData } from 'express-session';
+import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import cron from 'node-cron';

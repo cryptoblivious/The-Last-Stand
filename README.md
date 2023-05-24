@@ -55,13 +55,15 @@ Bienvenue dans le code source du projet [The Last Stand](https://tls.woodchuckga
 
 ## Construit avec
 
-[![Vite][vite-img]][vite-url] [![Typescript][typescript-img]][typescript-url] [![MongoDb][mongodb-img]][mongodb-url] [![Passport][passport-img]][passport-url] [![Express][express-img]][express-url] [![React][react-img]][react-url] [![Colyseus][colyseus-img]][colyseus-url] [![Phaser3][phaser-img]][phaser-url] [![NodeJS][nodedotjs-img]][nodedotjs-url] [![Insomnia][insomnia-img]][insomnia-url] [![TailwindCSS][tailwind-img]][tailwind-url] [![Yarn][yarn-img]][yarn-url] [![Git][git-img]][git-url] [![Title][placeholder-img]][placeholder-url]
+[![VSCode][vscode-img]][vscode-url] [![Vite][vite-img]][vite-url] [![Typescript][typescript-img]][typescript-url] [![MongoDb][mongodb-img]][mongodb-url] [![Passport][passport-img]][passport-url] [![Express][express-img]][express-url] [![React][react-img]][react-url] [![Colyseus][colyseus-img]][colyseus-url] [![Phaser3][phaser-img]][phaser-url] [![NodeJS][nodedotjs-img]][nodedotjs-url] [![Insomnia][insomnia-img]][insomnia-url] [![TailwindCSS][tailwind-img]][tailwind-url] [![Yarn][yarn-img]][yarn-url] [![Git][git-img]][git-url] [![Title][placeholder-img]][placeholder-url]
 
 ## Installation
 
 Afin de démarrer le projet, vous devez d'abord installer les logiciels suivants sur votre machine:
 
 - [NodeJS][nodedotjs-url] est un environnement d'exécution JavaScript qui permet d'exécuter du code JavaScript en dehors d'un navigateur web. Il est nécessaire pour exécuter le serveur de jeu. Pour installer NodeJS, vous pouvez suivre les instructions sur le site officiel;
+
+- [VSCode][vscode-url] est un éditeur de code source. Il est nécessaire pour ouvrir le projet. Pour installer VSCode, vous pouvez suivre les instructions sur le site officiel;
 - [NPM][nodedotjs-url] est un gestionnaire de paquets pour NodeJS. Il est nécessaire pour installer les dépendances du projet. Il est installé automatiquement avec NodeJS;
 
 - [Git][git-url] est un logiciel de gestion de versions décentralisé. Il est nécessaire pour cloner le projet. Pour installer Git, vous pouvez suivre les instructions sur le site officiel;
@@ -74,7 +76,7 @@ Une fois les logiciels prérequis installés, vous pouvez cloner le projet en ut
 git clone https://github.com/cryptoblivious/The-Last-Stand.git
 ```
 
-Une fois le projet cloné, vous pouvez installer les dépendances du projet avec la commande suivante:
+Une fois le projet cloné, vous pouvez installer les dépendances du projet avec la commande suivante dans VS Code à l'aide d'une fenêtre de terminal ouverte à la racine du projet (dev\the-last-stand):
 
 - Version NPM
 
@@ -85,7 +87,29 @@ npm install
 - Version Yarn
 
 ```sh
-yarn install
+yarn
+```
+
+Une fois les dépendances installées, il suffit d'ouvrir une seconde fenêtre séparée de terminal dans VS Code et d'exécuter les commandes suivantes (une dans chaque fenêtre) pour démarrer les serveur et client locaux du projet:
+
+- Version NPM
+
+```sh
+npm run server
+```
+
+```sh
+npm run client
+```
+
+- Version Yarn
+
+```sh
+yarn server
+```
+
+```sh
+yarn client
 ```
 
 Il est également possible de visiter le site web de production du projet à l'adresse suivante: [https://tls.woodchuckgames.com/](https://tls.woodchuckgames.com/)
@@ -126,7 +150,9 @@ Il est également possible de visiter le site web de production du projet à l'a
 
 [colyseus-img]: https://img.shields.io/badge/colyseus-A100FF?style=for-the-badge&logo=c&logoColor=white
 [colyseus-url]: https://colyseus.io/
-[phaser-img]: https://img.shields.io/badge/phaser3-CEFF00?style=for-the-badge&logo=phaser&logoColor=white
+[vscode-img]: https://img.shields.io/badge/vs%20code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white
+[vscode-url]: https://code.visualstudio.com/
+[phaser-img]: https://img.shields.io/badge/phaser%203-CEFF00?style=for-the-badge&logo=phaser&logoColor=white
 [phaser-url]: https://phaser.io/
 [nodedotjs-img]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
 [nodedotjs-url]: https://nodejs.org/
