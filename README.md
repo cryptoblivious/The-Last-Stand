@@ -90,7 +90,9 @@ npm install
 yarn
 ```
 
-Une fois les dépendances installées, il suffit d'ouvrir une seconde fenêtre séparée de terminal dans VS Code et d'exécuter les commandes suivantes (une dans chaque fenêtre) pour démarrer les serveur et client locaux du projet:
+Une fois les dépendances installées, il est nécessaire de renommer le fichier .env_example pour .env afin que l'application soit en mesure de reconnaître les variables d'environnement pour configurer correctement les ports, chemins d'accès à la base de données et secrets. Les informations présentées dans ce fichier sont modifiables au besoin; les informations concernant Google et MongoDB Atlas dirigent vers des ressources mises en place à titre d'exemple.
+
+- Lorsque le .env a été renommé correctement, il suffit d'ouvrir deux fenêtres côtes à côtes de terminal dans VS Code et d'exécuter les commandes suivantes (une dans chaque fenêtre) pour démarrer les serveur et client locaux du projet:
 
 - Version NPM
 
@@ -114,7 +116,7 @@ yarn client
 
 Il est également possible de visiter le site web de production du projet à l'adresse suivante: [https://tls.woodchuckgames.com/](https://tls.woodchuckgames.com/)
 
-(Insérez ici les instructions nécessaires à la mise en place de l’infrastructure de développement (langage, librairie, IDE …). Cette section doit être détaillée et précise pour permettre à un programmeur de mettre en place votre projet rapidement et sans encombre.)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Utilisation
 
