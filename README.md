@@ -64,11 +64,10 @@ Afin de démarrer le projet, vous devez d'abord installer les logiciels suivants
 - [NodeJS][nodedotjs-url] est un environnement d'exécution JavaScript qui permet d'exécuter du code JavaScript en dehors d'un navigateur web. Il est nécessaire pour exécuter le serveur de jeu. Pour installer NodeJS, vous pouvez suivre les instructions sur le site officiel;
 
 - [VSCode][vscode-url] est un éditeur de code source. Il est nécessaire pour ouvrir le projet. Pour installer VSCode, vous pouvez suivre les instructions sur le site officiel;
-- [NPM][nodedotjs-url] est un gestionnaire de paquets pour NodeJS. Il est nécessaire pour installer les dépendances du projet. Il est installé automatiquement avec NodeJS;
+
+- [Yarn][yarn-url] est un gestionnaire de paquets. Il est nécessaire pour installer les dépendances du projet. Pour installer Yarn, vous pouvez suivre les instructions sur le site officiel;
 
 - [Git][git-url] est un logiciel de gestion de versions décentralisé. Il est nécessaire pour cloner le projet. Pour installer Git, vous pouvez suivre les instructions sur le site officiel;
-
-- \* [Yarn][yarn-url] est un gestionnaire de paquets alternatif pour NodeJS. Il est optionnel, mais recommandé pour installer les dépendances du projet. Pour installer Yarn, vous pouvez suivre les instructions sur le site officiel;
 
 Une fois les logiciels prérequis installés, vous pouvez cloner le projet en utilisant la commande suivante à l'emplacement fichier de votre choix avec la commande git suivante:
 
@@ -78,14 +77,6 @@ git clone https://github.com/cryptoblivious/The-Last-Stand.git
 
 Une fois le projet cloné, vous pouvez installer les dépendances du projet avec la commande suivante dans VS Code à l'aide d'une fenêtre de terminal ouverte à la racine du projet (dev\the-last-stand):
 
-- Version NPM
-
-```sh
-npm install
-```
-
-- Version Yarn
-
 ```sh
 yarn
 ```
@@ -93,16 +84,6 @@ yarn
 Une fois les dépendances installées, il est nécessaire de renommer le fichier .env_example pour .env afin que l'application soit en mesure de reconnaître les variables d'environnement pour configurer correctement les ports, chemins d'accès à la base de données et secrets. Les informations présentées dans ce fichier sont modifiables au besoin; les informations concernant Google et MongoDB Atlas dirigent vers des ressources mises en place à titre d'exemple.
 
 - Lorsque le .env a été renommé correctement, il suffit d'ouvrir deux fenêtres côtes à côtes de terminal dans VS Code et d'exécuter les commandes suivantes (une dans chaque fenêtre) pour démarrer les serveur et client locaux du projet:
-
-- Version NPM
-
-```sh
-npm run server
-```
-
-```sh
-npm run client
-```
 
 - Version Yarn
 
