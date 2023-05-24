@@ -13,7 +13,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-*.yarn/cache
+**/*.yarn/cache
 
 dist
 dist-ssr
