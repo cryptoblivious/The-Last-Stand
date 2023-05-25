@@ -28,7 +28,11 @@ const FriendInfoCard = (props: IFriendInfoCardProps) => {
       setConversationName(data.name);
     };
     fetchData();
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    console.log('FriendInfoCard reloaded', user);
+  }, [user]);
 
   const checkChatboxState = () => {
     if (user?.activeConversationsIds) {

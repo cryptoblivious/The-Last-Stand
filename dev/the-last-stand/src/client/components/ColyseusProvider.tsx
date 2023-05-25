@@ -21,7 +21,7 @@ interface ColyseusContextProps {
   user: IUser | null;
   users: IUser[];
   messages: IMessageMapper[];
-  userGameOptions : IGameOptions | null;
+  userGameOptions: IGameOptions | null;
   setUserGameOptions: (userGameOptions: IGameOptions) => void;
 }
 
@@ -128,11 +128,7 @@ const ColyseusServerProvider = ({ children }: ColyseusServerProviderProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('userGameOptions has change', userGameOptions);
-  }, [userGameOptions]);
-
-  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages, userGameOptions, setUserGameOptions}), [client, appRoom, user, users, messages, userGameOptions, setUserGameOptions]);
+  const contextValue = useMemo(() => ({ client, appRoom, user, users, messages, userGameOptions, setUserGameOptions }), [client, appRoom, user, users, messages, userGameOptions, setUserGameOptions]);
   return <ColyseusContext.Provider value={contextValue}>{children}</ColyseusContext.Provider>;
 };
 
