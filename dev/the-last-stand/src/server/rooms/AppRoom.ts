@@ -128,7 +128,8 @@ export class AppRoom extends Room<AppState> {
     const globalChat = await Conversation.findOne({ isGlobal: true });
 
     if (username !== 'guest') {
-      this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
+      // TODO : Find a clean way to manage this message without polluting global chat.
+      //this.handleMessage({ conversationId: globalChat._id, content: `${username}#${userNo} joined the global chat.` }, _id, username, userNo, 'Server');
     }
 
     const userMapper = new CUserMapper();
@@ -189,7 +190,8 @@ export class AppRoom extends Room<AppState> {
       if (user.sessionId === client.sessionId) {
         if (user.username !== 'guest') {
           const { _id, username, userNo } = user;
-          this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
+          // TODO : Find a clean way to manage this message without polluting global chat.
+          // this.handleMessage({ conversationId: globalChat._id, content: `${username + userNo} left the global chat.` }, _id, username, userNo, 'Server');
           this.updateLastOnline(_id);
         }
         this.state.users.delete(user._id);

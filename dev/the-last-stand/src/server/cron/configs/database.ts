@@ -7,7 +7,7 @@
 import { emptyGlobalChatMessages } from '../controllers/database';
 
 export const cleanGlobalChat = {
-  cronTime: '0 40 12 * * *',
+  cronTime: '0 0 11 * * *',
   onTick: emptyGlobalChatMessages,
   timeZone: 'America/New_York',
   start: true,
