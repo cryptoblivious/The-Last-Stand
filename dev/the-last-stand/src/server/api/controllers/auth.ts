@@ -9,7 +9,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import { userModel as User } from '../models/user';
 import { roleModel as Role } from '../models/role';
-import { formatNumber } from '../../../utils/maths';
+import { formatNumber } from '../../../utils/maths/maths';
 import { findAvailableUsernameNumber } from './users';
 
 dotenv.config();

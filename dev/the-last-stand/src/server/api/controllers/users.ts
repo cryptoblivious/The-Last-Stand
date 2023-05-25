@@ -5,7 +5,7 @@
 //  Références : https://chat.openai.com/, https://www.youtube.com/watch?v=98BzS5Oz5E4
 
 import { userModel as User } from '../models/user';
-import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths';
+import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths/maths';
 
 export const findAvailableUsernameNumber = async (username: string) => {
   const usersWithSameName = await User.find({ username: username }).exec();

@@ -9,7 +9,7 @@ import HeroMapCard from './HeroMapCard';
 import Arrow from './Arrow';
 import { useEffect, useState } from 'react';
 import IHeroMapCard from '../../typescript/interfaces/IHeroMapCard';
-import { getUpperOddNumber } from '../../utils/maths';
+import { getUpperOddNumber } from '../../utils/maths/maths';
 
 const cardMenuContainerCSS = 'flex-col justify-center items-center gap-4 space-y-4 transition-all duration-300 ease-in-out transform-gpu';
 
