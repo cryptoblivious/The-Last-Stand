@@ -50,65 +50,7 @@ export default class ClientMatch extends Phaser.Scene {
     super('canvas');
   }
 
-  disablePlayerSprite(playerSprite: any, x: number, y: number) {
-    if (playerSprite) {
-      playerSprite.body!.enable = false;
-      playerSprite.setPosition(x, y);
-      playerSprite.setVisible(false);
-      playerSprite.setActive(false);
-      // playerSprite.playerNameText.setVisible(false);
-      // playerSprite.setEnable(false)
-    }
-  }
-  enablePlayerSprite(playerSprite: any) {
-    if (playerSprite) {
-      playerSprite.setVisible(true);
-      playerSprite.setActive(true);
-      playerSprite.body!.enable = true;
-      // playerSprite.playerNameText.setVisible(true);
-      playerSprite.isAlive = true;
-      // playerSprite.setEnable(true)
-    }
-  }
 
-  respawnPlayerSprite(playerSprite: any) {
-    if (playerSprite) {
-      playerSprite.alpha = 0.5;
-      playerSprite.setVisible(true);
-
-      let flashTimer = this.time.addEvent({
-        delay: 100,
-        callback: () => {
-          playerSprite.alpha = playerSprite.alpha === 0.5 ? 1 : 0.5; //toggle alpha
-        },
-        callbackScope: this,
-        loop: true,
-      });
-
-      this.time.addEvent({
-        delay: 3000,
-        callback: () => {
-          playerSprite.alpha = 1;
-          flashTimer.remove();
-          this.enablePlayerSprite(playerSprite);
-        },
-        callbackScope: this,
-      });
-    }
-  }
-
-  applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
-    if (!entity.body.blocked.down) {
-      entity.airborneCount += 1;
-      if (entity.airborneCount >= this.airborneCorrection) {
-        entity.anim = `${entity.name}${airborneAnim}`;
-      } else {
-        entity.anim = `${entity.name}${groundedAnim}`;
-      }
-    } else {
-      entity.airborneCount = 0;
-    }
-  }
 
   preload() {
     // LOAD DES SPRITESHEETS AVEC LE SPRITESHEETLOADER
@@ -275,7 +217,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage(EMessage.CreateHud, (players: INewhudplayer[]) => {
       console.log('players :>> ', players);
-      players.forEach((player:INewhudplayer) => {
+      players.forEach((player: INewhudplayer) => {
         player.lives = 3;
         player.damagePercentage = 0;
         this.events.emit(EMessage.NewHudPlayer.toString(), player);
@@ -304,37 +246,7 @@ export default class ClientMatch extends Phaser.Scene {
     });
   }
 
-  handleAnimationComplete(animation: any, frame: any, sprite: any) {
-    // handle animation complete event
-    const gem = this.mo!.state.gem.get(sprite.id);
-    const animKey = gem.anim?.split(gem.gameEntityType)[1];
 
-    if (animKey == 'hurt' || animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
-      sprite.anim = `${gem.gameEntityType}idle`;
-    } else {
-      sprite.anim = `${gem.gameEntityType}fall`;
-    }
-  }
-
-  handleAnimationUpdate(anim: any, frame: any, sprite: any, frameKey: any) {
-    // handle animation update event
-    const gem = this.mo!.state.gem.get(sprite.id);
-    const animKey = anim.key.split(gem.gameEntityType)[1];
-
-    if (animKey === 'attack1' || animKey === 'attack2' || animKey === 'attack3') {
-      if (sprite.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
-        if (sprite.id == this.playerId) {
-          const createAttackHitboxMessage = {
-            entityType: 'rectangle',
-            attackerWidth: sprite.width,
-            attackerHeight: sprite.height,
-            position: { x: sprite.x, y: sprite.y },
-          };
-          this.mo!.send(EMessage.CreateHitbox, createAttackHitboxMessage);
-        }
-      }
-    }
-  }
 
   update() {
     if (this.keys && this.mo?.state.gem.get(this.playerId)) {
@@ -467,40 +379,7 @@ export default class ClientMatch extends Phaser.Scene {
             flipX = false;
           }
           entity.setFlipX(flipX);
-          // console.log(gem.anim)
 
-          // Commented to check if defining the listeners on creation is better
-          // // wait for fixed animations do be finished before playing other animations
-          // if (fixedAnimations.includes(animKey!)) {
-          //   if (animKey == 'hurt') {
-          //     entity.once('animationcomplete', () => {
-          //       entity.anim = `${gem.gameEntityType}idle`;
-          //     });
-          //   } else if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
-          //     // Send an attack's information to the server
-          //     entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
-          //       if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
-          //         if (entity.id == this.playerId) {
-          //           const createAttackHitboxMessage = {
-          //             entityType: 'rectangle',
-          //             attackerWidth: entity.width,
-          //             attackerHeight: entity.height,
-          //             position: { x: entity.x, y: entity.y },
-          //           };
-          //           this.mo?.send(EMessage.CreateHitbox, createAttackHitboxMessage);
-          //         }
-          //       }
-          //     });
-          //   }
-          //   // Set the animation to idle or fall after the fixed animation is finished
-          //   entity.once('animationcomplete', () => {
-          //     if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
-          //       entity.anim = `${gem.gameEntityType}idle`;
-          //     } else {
-          //       entity.anim = `${gem.gameEntityType}fall`;
-          //     }
-          //   });
-          // }
 
           // Remove the attack hitbox as soon as the hitbox is present for an iteration
           for (let [key, value] of this.hitBoxes) {
@@ -518,6 +397,97 @@ export default class ClientMatch extends Phaser.Scene {
           entity.anims.play(gem.anim, true);
         }
       });
+    }
+  }
+  handleAnimationComplete(animation: any, frame: any, sprite: any) {
+    // handle animation complete event
+    const gem = this.mo!.state.gem.get(sprite.id);
+    const animKey = gem.anim?.split(gem.gameEntityType)[1];
+
+    if (animKey == 'hurt' || animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
+      sprite.anim = `${gem.gameEntityType}idle`;
+    } else {
+      sprite.anim = `${gem.gameEntityType}fall`;
+    }
+  }
+
+  handleAnimationUpdate(anim: any, frame: any, sprite: any, frameKey: any) {
+    // handle animation update event
+    const gem = this.mo!.state.gem.get(sprite.id);
+    const animKey = anim.key.split(gem.gameEntityType)[1];
+
+    if (animKey === 'attack1' || animKey === 'attack2' || animKey === 'attack3') {
+      if (sprite.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
+        if (sprite.id == this.playerId) {
+          const createAttackHitboxMessage = {
+            entityType: 'rectangle',
+            attackerWidth: sprite.width,
+            attackerHeight: sprite.height,
+            position: { x: sprite.x, y: sprite.y },
+          };
+          this.mo!.send(EMessage.CreateHitbox, createAttackHitboxMessage);
+        }
+      }
+    }
+  }
+
+  disablePlayerSprite(playerSprite: any, x: number, y: number) {
+    if (playerSprite) {
+      playerSprite.body!.enable = false;
+      playerSprite.setPosition(x, y);
+      playerSprite.setVisible(false);
+      playerSprite.setActive(false);
+      // playerSprite.playerNameText.setVisible(false);
+      // playerSprite.setEnable(false)
+    }
+  }
+  enablePlayerSprite(playerSprite: any) {
+    if (playerSprite) {
+      playerSprite.setVisible(true);
+      playerSprite.setActive(true);
+      playerSprite.body!.enable = true;
+      // playerSprite.playerNameText.setVisible(true);
+      playerSprite.isAlive = true;
+      // playerSprite.setEnable(true)
+    }
+  }
+
+  respawnPlayerSprite(playerSprite: any) {
+    if (playerSprite) {
+      playerSprite.alpha = 0.5;
+      playerSprite.setVisible(true);
+
+      let flashTimer = this.time.addEvent({
+        delay: 100,
+        callback: () => {
+          playerSprite.alpha = playerSprite.alpha === 0.5 ? 1 : 0.5; //toggle alpha
+        },
+        callbackScope: this,
+        loop: true,
+      });
+
+      this.time.addEvent({
+        delay: 3000,
+        callback: () => {
+          playerSprite.alpha = 1;
+          flashTimer.remove();
+          this.enablePlayerSprite(playerSprite);
+        },
+        callbackScope: this,
+      });
+    }
+  }
+
+  applyAirborneAnimCorrection(entity: any, groundedAnim: string, airborneAnim: string) {
+    if (!entity.body.blocked.down) {
+      entity.airborneCount += 1;
+      if (entity.airborneCount >= this.airborneCorrection) {
+        entity.anim = `${entity.name}${airborneAnim}`;
+      } else {
+        entity.anim = `${entity.name}${groundedAnim}`;
+      }
+    } else {
+      entity.airborneCount = 0;
     }
   }
 }
