@@ -73,3 +73,36 @@ export const readConversationByUsers = async (req: any, res: any) => {
     res.status(err.status || 500).json({ err: err.message || 'Unknown error' });
   }
 };
+
+export const updateUserConversations = async (user: any) => {
+  const userConversations = await Conversation.find({
+    $or: [{ userIds: user._id }, { isGlobal: true }],
+  });
+  userConversations.forEach(async (conversation: any) => {
+    const users = conversation.userIds.map(async (userId: string) => {
+      const user = await User.findById(userId);
+      return user;
+    });
+    const resolvedUsers = await Promise.all(users);
+    const updatedNames: string[] = resolvedUsers.map((resolvedUser: any) => {
+      if (resolvedUser._id.toString() === user._id.toString()) {
+        return user.username;
+      } else {
+        return resolvedUser.username;
+      }
+    });
+    const updatedName = !conversation.isGlobal ? `${updatedNames.join(' and ')}'s Chat` : conversation.name;
+    const updatedMessages = conversation.messages.map((message: any) => {
+      if (message.userId === user._id.toString()) {
+        message.username = user.username;
+        message.userNo = user.userNo;
+      }
+      return message;
+    });
+    try {
+      await Conversation.findByIdAndUpdate(conversation._id, { messages: updatedMessages, name: updatedName });
+    } catch (err: any) {
+      console.log('err', err);
+    }
+  });
+};

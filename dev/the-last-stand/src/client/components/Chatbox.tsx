@@ -58,6 +58,7 @@ const Chatbox = (props: IChatboxProps) => {
             return {
               ...prevConversation,
               messages: updatedConversation.messages ?? prevConversation!.username,
+              name: updatedConversation.name ?? prevConversation!.name,
             };
           });
         }

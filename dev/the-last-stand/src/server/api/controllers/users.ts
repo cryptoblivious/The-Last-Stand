@@ -7,6 +7,7 @@
 import { userModel as User } from '../models/user';
 import { conversationModel as Conversation } from '../models/conversation';
 import { findUniqueNumber, formatNumber, unformatNumbers } from '../../../utils/maths/maths';
+import { updateUserConversations } from './conversations';
 
 export const findAvailableUsernameNumber = async (username: string) => {
   const usersWithSameName = await User.find({ username: username }).exec();
@@ -55,39 +56,6 @@ export const readUserByEmail = async (req: any, res: any) => {
 };
 
 export const patchCurrentUser = async (req: any, res: any) => {
-  const updateUserConversations = async (user: any) => {
-    const userConversations = await Conversation.find({
-      $or: [{ userIds: user._id }, { isGlobal: true }],
-    });
-    userConversations.forEach(async (conversation: any) => {
-      const users = conversation.userIds.map(async (userId: string) => {
-        const user = await User.findById(userId);
-        return user;
-      });
-      const resolvedUsers = await Promise.all(users);
-      const updatedNames: string[] = resolvedUsers.map((resolvedUser: any) => {
-        if (resolvedUser._id.toString() === user._id.toString()) {
-          return user.username;
-        } else {
-          return resolvedUser.username;
-        }
-      });
-      const updatedName = !conversation.isGlobal ? `${updatedNames.join(' and ')}'s Chat` : conversation.name;
-      const updatedMessages = conversation.messages.map((message: any) => {
-        if (message.userId === user._id.toString()) {
-          message.username = user.username;
-          message.userNo = user.userNo;
-        }
-        return message;
-      });
-      try {
-        await Conversation.findByIdAndUpdate(conversation._id, { messages: updatedMessages, name: updatedName });
-      } catch (err: any) {
-        console.log('err', err);
-      }
-    });
-  };
-
   const id = req.user?._id;
   if (!id) {
     return res.status(400).json({ err: 'Invalid user ID' });
