@@ -1,7 +1,7 @@
 //  Nom du fichier : ClientMatch.ts
 //  Contexte : Classe héritant de Phaser.Scene pour la scène de jeu côté client et les comminucations avec le serveur (this.mo)
 //  Nom des auteurs : Jonathan Robinson-Roberge et Andrzej Wisniowski
-//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
+//  Références : https://chat.openai.com/ - https://phaser.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E
 
 import Phaser from 'phaser';
 import { Client, Room } from 'colyseus.js';
@@ -18,8 +18,6 @@ import { IUpdateSpriteMessage } from '../../../typescript/interfaces/IUpdateSpri
 import { ERooms } from '../../../typescript/enumerations/ERooms';
 import HashMap from '../../../utils/data_structures/HashMap';
 import PhaserPlayerEntityFactory from '../PhaserPlayerEntityFactory';
-
-
 
 interface IParticlesEmitterJsonObject {
   frame: string[];
@@ -140,7 +138,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     // if there is no one in the room, use joinOrCreate or it will throw an error
     this.mo = await this.gameClient.joinOrCreate<MatchState>(ERooms.GameRoom.toString(), { user: user });
-    
+
     // make sure the client leaves the room when pressing back
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.mo?.leave();
@@ -219,7 +217,7 @@ export default class ClientMatch extends Phaser.Scene {
         rect.setData('lifespan', 1);
         this.mo?.state.playerIds.forEach((playerId: string) => {
           if (playerId !== rect.getData('owner')) {
-            const sprite = this.gameEntities.get(playerId)?.sprite
+            const sprite = this.gameEntities.get(playerId)?.sprite;
             this.physics.add.overlap(rect, sprite, () => {
               const attackVector = new Phaser.Math.Vector2(sprite.x - rect.x, sprite.y - rect.y).normalize();
               const attackForce = attackVector.scale(1000);
@@ -242,8 +240,12 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.CreateEntity, (message: IGameEntityMapper) => {
-      message.staticgroup = [platforms, walls]
+      message.staticgroup = [platforms, walls];
       const phaserPlayerEntity = this.phaserPlayerEntityFactory?.createHero(message);
+      if (phaserPlayerEntity?.sprite) {
+        phaserPlayerEntity.sprite.on('animationcomplete', this.handleAnimationComplete, this);
+        phaserPlayerEntity.sprite.on('animationupdate', this.handleAnimationUpdate, this);
+      }
       this.gameEntities.set(message.id, phaserPlayerEntity);
       const entity = this.gameEntities.get(message.id).sprite;
       this.spriteSheetsLoader
@@ -304,6 +306,38 @@ export default class ClientMatch extends Phaser.Scene {
         this.respawnPlayerSprite(entity);
       }
     });
+  }
+
+  handleAnimationComplete(animation: any, frame: any, sprite: any) {
+    // handle animation complete event
+    const gem = this.mo!.state.gem.get(sprite.id);
+    const animKey = gem.anim?.split(gem.gameEntityType)[1];
+
+    if (animKey == 'hurt' || animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
+      sprite.anim = `${gem.gameEntityType}idle`;
+    } else {
+      sprite.anim = `${gem.gameEntityType}fall`;
+    }
+  }
+
+  handleAnimationUpdate(anim: any, frame: any, sprite: any, frameKey: any) {
+    // handle animation update event
+    const gem = this.mo!.state.gem.get(sprite.id);
+    const animKey = anim.key.split(gem.gameEntityType)[1];
+
+    if (animKey === 'attack1' || animKey === 'attack2' || animKey === 'attack3') {
+      if (sprite.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
+        if (sprite.id == this.playerId) {
+          const createAttackHitboxMessage = {
+            entityType: 'rectangle',
+            attackerWidth: sprite.width,
+            attackerHeight: sprite.height,
+            position: { x: sprite.x, y: sprite.y },
+          };
+          this.mo!.send(EMessage.CreateHitbox, createAttackHitboxMessage);
+        }
+      }
+    }
   }
 
   update() {
@@ -439,38 +473,39 @@ export default class ClientMatch extends Phaser.Scene {
           entity.setFlipX(flipX);
           // console.log(gem.anim)
 
-          // wait for fixed animations do be finished before playing other animations
-          if (fixedAnimations.includes(animKey!)) {
-            if (animKey == 'hurt') {
-              entity.once('animationcomplete', () => {
-                entity.anim = `${gem.gameEntityType}idle`;
-              });
-            } else if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
-              // Send an attack's information to the server
-              entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
-                if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
-                  if (entity.id == this.playerId) {
-                    const createAttackHitboxMessage = {
-                      entityType: 'rectangle',
-                      attackerWidth: entity.width,
-                      attackerHeight: entity.height,
-                      position: { x: entity.x, y: entity.y },
-                    };
-                    this.mo?.send(EMessage.CreateHitbox, createAttackHitboxMessage);
-                  }
-                }
-              });
-            }
+          // Commented to check if defining the listeners on creation is better
+          // // wait for fixed animations do be finished before playing other animations
+          // if (fixedAnimations.includes(animKey!)) {
+          //   if (animKey == 'hurt') {
+          //     entity.once('animationcomplete', () => {
+          //       entity.anim = `${gem.gameEntityType}idle`;
+          //     });
+          //   } else if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
+          //     // Send an attack's information to the server
+          //     entity.on('animationupdate', (anim: any, frame: any, sprite: any, frameKey: any) => {
+          //       if (anim.key.split(gem.gameEntityType)[1] === animKey && entity.frameEvents[animKey.toLowerCase()]?.includes(frame.index)) {
+          //         if (entity.id == this.playerId) {
+          //           const createAttackHitboxMessage = {
+          //             entityType: 'rectangle',
+          //             attackerWidth: entity.width,
+          //             attackerHeight: entity.height,
+          //             position: { x: entity.x, y: entity.y },
+          //           };
+          //           this.mo?.send(EMessage.CreateHitbox, createAttackHitboxMessage);
+          //         }
+          //       }
+          //     });
+          //   }
+          //   // Set the animation to idle or fall after the fixed animation is finished
+          //   entity.once('animationcomplete', () => {
+          //     if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
+          //       entity.anim = `${gem.gameEntityType}idle`;
+          //     } else {
+          //       entity.anim = `${gem.gameEntityType}fall`;
+          //     }
+          //   });
+          // }
 
-            // Set the animation to idle or fall after the fixed animation is finished
-            entity.once('animationcomplete', () => {
-              if (animKey == 'attack1' || animKey == 'attack2' || animKey == 'attack3') {
-                entity.anim = `${gem.gameEntityType}idle`;
-              } else {
-                entity.anim = `${gem.gameEntityType}fall`;
-              }
-            });
-          }
           // Remove the attack hitbox as soon as the hitbox is present for an iteration
           for (let [key, value] of this.hitBoxes) {
             if (value.type.toLowerCase() === 'rectangle') {
@@ -485,7 +520,6 @@ export default class ClientMatch extends Phaser.Scene {
             playerNameText.setPosition(entity.x, entity.y - 50);
           }
           entity.anims.play(gem.anim, true);
-
         }
       });
     }
