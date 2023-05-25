@@ -38,22 +38,24 @@ export default class Hud extends Phaser.Scene {
         clientMatch.events.on(EMessage.NewHudPlayer.toString(), (data: INewhudplayer) => {
             console.log('player added to hud' + data)
             console.log('playerList' + this.playerList)
-            const { name: playerName, index: playerIndex, damagePercentage: playerDamage, lives: playerLives } = data;
-            if (this.playerList.includes(playerName + playerIndex)) {
+            const player : INewhudplayer = data;
+            
+            if (this.playerList.includes(player.id)) {
                 return;
             }
-            this.playerList.push(playerName + playerIndex);
-            this.createNewPlayer(playerName, getHudXPosition(playerIndex) , hudElementYpos, bgRadius, hudYpos, playerDamage, playerLives,  bgPadding);
+        
+            this.playerList.push(player.id);
+            this.createNewPlayer(player.id, player.name, getHudXPosition(player.index) , hudElementYpos, bgRadius, hudYpos, player.damagePercentage!, player.lives!,  bgPadding);
         });
 
         // TODO -> Break down the signals logic into functions and use binds and callbacks
         clientMatch.events.on(EMessage.UpdateHudDamage.toString(), (data: IUpdatePercentagesMessage) => {
             
-            const elementNames = {
-                player: `nameText-${data.playerNameOrID}`,
-                hud: `hudBackground-${data.playerNameOrID}`,
-                percentage: `percentageText-${data.playerNameOrID}`,
-                container: `hudContainer-${data.playerNameOrID}`
+            const elementNames = { 
+                player: `nameText-${data.containerKey}`,
+                hud: `hudBackground-${data.containerKey}`,
+                percentage: `percentageText-${data.containerKey}`,
+                container: `hudContainer-${data.containerKey}`
             }
 
             // Get the right player's container and its elements from the scene
@@ -99,18 +101,18 @@ export default class Hud extends Phaser.Scene {
 
     }
     
-    createNewPlayer(playerName: string, hudXpos: number, hudElementYpos: number, bgRadius: number, hudYpos: number, playerDamage: number, playerLives:number, padding:number = 20) {
+    createNewPlayer(containerKey: string, name:string,  hudXpos: number, hudElementYpos: number, bgRadius: number, hudYpos: number, playerDamage: number, playerLives:number, padding:number = 20) {
         
         const elementNames = {
-            player: `nameText-${playerName}`,
-            hud: `hudBackground-${playerName}`,
-            percentage: `percentageText-${playerName}`,
-            lives : `livesText-${playerName}`,
-            container: `hudContainer-${playerName}`
+            player: `nameText-${containerKey}`,
+            hud: `hudBackground-${containerKey}`,
+            percentage: `percentageText-${containerKey}`,
+            lives : `livesText-${containerKey}`,
+            container: `hudContainer-${containerKey}`
         }
 
         // Player name in the hud
-        const playerNameText = this.add.text(hudXpos, hudElementYpos, playerName, { font: '16px Courier', color: '#00ff00' });
+        const playerNameText = this.add.text(hudXpos, hudElementYpos, name, { font: '16px Courier', color: '#00ff00' });
         playerNameText.setPosition(hudXpos - playerNameText.width / 2, hudElementYpos);
         playerNameText.name = elementNames.player;
 

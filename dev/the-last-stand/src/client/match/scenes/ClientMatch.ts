@@ -235,7 +235,7 @@ export default class ClientMatch extends Phaser.Scene {
       hero.anim = `${hero.name}hurt`.toLowerCase();
       hero.setVelocity(attackForce.x, attackForce.y);
       hero.damagePercentage += 1;
-      const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: victim, damagePercentage: hero.damagePercentage };
+      const updatePlayerDamage: IUpdatePercentagesMessage = { containerKey: victim, damagePercentage: hero.damagePercentage };
       this.mo?.send(EMessage.ServerUpdateHudDamage, updatePlayerDamage);
     });
 
@@ -273,16 +273,12 @@ export default class ClientMatch extends Phaser.Scene {
       this.gameEntities.delete(message.id);
     });
 
-    this.mo.onMessage(EMessage.CreateHud, (players: { name: string; index: number }[]) => {
+    this.mo.onMessage(EMessage.CreateHud, (players: INewhudplayer[]) => {
       console.log('players :>> ', players);
-      players.forEach((player: { name: string; index: number }) => {
-        const hudNewPlayerMessage: INewhudplayer = {
-          name: player.name,
-          index: player.index,
-          damagePercentage: 0,
-          lives: 3,
-        };
-        this.events.emit(EMessage.NewHudPlayer.toString(), hudNewPlayerMessage);
+      players.forEach((player:INewhudplayer) => {
+        player.lives = 3;
+        player.damagePercentage = 0;
+        this.events.emit(EMessage.NewHudPlayer.toString(), player);
       });
     });
 
