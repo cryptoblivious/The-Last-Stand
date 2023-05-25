@@ -1,8 +1,7 @@
 //  Nom du fichier : spriteSheetLoader.ts
 //  Contexte : Structure de données servant à retenir les informations des spritesheets des héros
-//  Nom de l'auteur : Jonathan Robinson 
+//  Nom de l'auteur : Jonathan Robinson
 //  Autres étudiants : Andrzej Wisniowski
-
 
 import { IHeroesSpritePaths } from '../../../typescript/interfaces/IHeroesSpritesPaths';
 
@@ -69,6 +68,7 @@ const spsiteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 5,
         frameRate: 16,
         repeat: 0,
+        frameEvents: [4],
       },
       {
         key: 'attack2',
@@ -90,6 +90,7 @@ const spsiteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 7,
         frameRate: 16,
         repeat: 0,
+        frameEvents: [4, 5, 6],
       },
       // {
       //   key: 'climb',
@@ -227,7 +228,7 @@ const spsiteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 7,
         frameRate: 8,
         repeat: 0,
-        frameEvents: [5,]
+        frameEvents: [5, 6],
       },
       // {
       //   key: 'climb',
@@ -343,6 +344,7 @@ const spsiteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 5,
         frameRate: 8,
         repeat: 0,
+        frameEvents: [4],
       },
       {
         key: 'attack2',
@@ -364,6 +366,7 @@ const spsiteSheetsLoader: IHeroesSpritePaths[] = [
         endFrame: 7,
         frameRate: 8,
         repeat: 0,
+        frameEvents: [4, 6],
       },
       {
         key: 'climb',
