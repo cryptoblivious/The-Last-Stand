@@ -148,7 +148,6 @@ Pour entrer dans le jeu en mode solo, pour des fins de déboguage, changer la bo
 
 On entre ensuite dans une partie  
 ![ingame][ingame]
-(Insérez ici des instructions sur comment démarrer et utiliser votre projet. Vous pouvez également ajouter des captures d'écran pour illustrer l'utilisation de votre projet.)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -182,7 +181,7 @@ On entre ensuite dans une partie
 ## Contact
 
 - Andrzej Wisniowski - [Github](https://github.com/cryptoblivious) - [LinkedIn](https://www.linkedin.com/in/andrzej-wisniowski-77234376/) - [Portfolio](https://andrzejw.com/) - [Messenger](https://m.me/andrzej.wisniowski.33) - [Twitter](https://twitter.com/cryptoblivious) - [Email](mailto:andrzej.wis123@gmail.com)
-- Jonathan Robinson-Roberge - [Github](https://github.com/Jon-Robb)
+- Jonathan Robinson-Roberge - [Github](https://github.com/Jon-Robb) - [LinkedIn](https://www.linkedin.com/in/jonathan-robinson-187716274/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
