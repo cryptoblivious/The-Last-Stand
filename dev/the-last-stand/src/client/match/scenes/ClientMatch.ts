@@ -230,13 +230,12 @@ export default class ClientMatch extends Phaser.Scene {
     });
 
     this.mo.onMessage(EMessage.PlayerHurt, (message) => {
-      const { attackForce } = message;
-      const hero = this.gameEntities.get(this.playerId!).sprite;
+      const { attackForce, victim } = message;
+      const hero = this.gameEntities.get(victim).sprite;
       hero.anim = `${hero.name}hurt`.toLowerCase();
-      // TODO : send the new hero anim to the server
       hero.setVelocity(attackForce.x, attackForce.y);
       hero.damagePercentage += 1;
-      const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: this.playerId!, damagePercentage: hero.damagePercentage };
+      const updatePlayerDamage: IUpdatePercentagesMessage = { playerNameOrID: victim, damagePercentage: hero.damagePercentage };
       this.mo?.send(EMessage.ServerUpdateHudDamage, updatePlayerDamage);
     });
 
