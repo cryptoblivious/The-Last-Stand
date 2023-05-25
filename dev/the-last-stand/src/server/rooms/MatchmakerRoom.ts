@@ -8,6 +8,7 @@
 
 import { Room, Client } from "colyseus";
 import { EMessage } from '../../typescript/enumerations/EMessage';
+import HashMap from "../../utils/data_structures/HashMap";
 
 interface QueuePlayer {
     id: string;
@@ -22,7 +23,7 @@ interface IMatchMakerOptions {
     mmr?: number;
 }
 export class MatchmakerRoom extends Room {
-    private queues: Record<string, QueuePlayer[]> = {};
+    private queues: HashMap<string, QueuePlayer[]> = new HashMap();
     private maxPlayers: Record<string, number> = { '2': 2, '3': 3, '4': 4 }
     private roomIds: Set<string> = new Set();
     private debugMode = false; //toggle this to enter the game alone for testing
@@ -39,10 +40,10 @@ export class MatchmakerRoom extends Room {
         }
 
         const queueKey = `${options.gameMode}-${options.playerCount}`;
-        if (!this.queues[queueKey]) {
-            this.queues[queueKey] = [];
+        if (!this.queues.get(queueKey)) {
+            this.queues.set(queueKey, []);
         }
-        this.queues[queueKey].push({
+        this.queues.get(queueKey)?.push({
             id: client.id,
             mmr: options.mmr ?? 0,
             joinTime: Date.now(),
@@ -51,15 +52,25 @@ export class MatchmakerRoom extends Room {
     }
 
     onLeave(client: Client, consented: boolean) {
-        console.log("Client left MatchmakerRoom");
+        for (const [key, queuePlayer] of this.queues){
+            const index = queuePlayer.findIndex((player) => player.id === client.id);
+            if (index !== -1) {
+                queuePlayer.splice(index, 1);
+                if (queuePlayer.length === 0) {
+                    this.queues.delete(key);
+                    console.log(`Player ${client.id} left queue ${key}`)
+                }
+                return;
+            }
+        }
         // this.waitingPlayers.delete(client.id);
 
     }
 
     private tryMatchmake(queueKey: string) {
-        const queue = this.queues[queueKey];
+        const queue = this.queues.get(queueKey);
         const maxPlayers = this.maxPlayers[queueKey.split('-')[1]];
-
+        if (!queue) return;
         queue.sort((a, b) => a.mmr! - b.mmr! || a.joinTime - b.joinTime);
 
         let mmrRange = 10
