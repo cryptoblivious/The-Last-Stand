@@ -64,7 +64,7 @@ const Chatbox = (props: IChatboxProps) => {
         }
       });
     }
-  }, [appRoom]);
+  }, [appRoom, user]);
 
   if (!conversation || !appRoom) return <div>Loading...</div>;
 
