@@ -2,8 +2,7 @@
 //  Contexte : Classe héritant de la classe Room de colyseus pour gérer la partie et la communication entre les clients et le serveur. Selon les principes
 //              du patron de conception "Mediator" et template method.
 //  Nom des auteurs : Jonathan Robinson et Andrzej Wisniowski
-//  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E 
-
+//  Références : https://chat.openai.com/ - https://colyseus.io/ - https://www.youtube.com/watch?v=5HESa0Ibq8E
 
 import { Room, Client } from 'colyseus';
 import { MatchState, GameEntityMapper } from './states/MatchState';
@@ -17,8 +16,7 @@ interface IClient extends Client {
   selectedHero: string;
 }
 export class MatchOrchestrator extends Room<MatchState> {
-
-  private userUID : string = '';
+  private userUID: string = '';
 
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
@@ -53,8 +51,9 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
 
     this.onMessage(EMessage.PlayerHurt, (player, message: { victim: string; attackForce: { x: string; y: string } }) => {
-      const index = this.clients.findIndex((client) => client.id === message.victim);
-      this.clients[index].send(EMessage.PlayerHurt, { attackForce: message.attackForce });
+      //const index = this.clients.findIndex((client) => client.id === message.victim);
+      this.broadcast(EMessage.PlayerHurt, { victim: message.victim, attackForce: message.attackForce });
+      //this.clients[index].send(EMessage.PlayerHurt, { attackForce: message.attackForce });
     });
 
     this.onMessage(EMessage.ServerUpdateHudDamage, (player, data: IUpdatePercentagesMessage) => {
@@ -73,12 +72,11 @@ export class MatchOrchestrator extends Room<MatchState> {
     });
   }
 
-  onJoin(client: IClient, options: {user:{username:string, userNo:string, selectedCharacter:string, selectedScene:string}}) {
-
+  onJoin(client: IClient, options: { user: { username: string; userNo: string; selectedCharacter: string; selectedScene: string } }) {
     const user = options.user;
 
     this.state.playerIds.push(client.sessionId);
-    console.log(this.state.playerIds)
+    console.log(this.state.playerIds);
 
     // Assign a unique ID to the client and find his position in the array
     const index = this.clients.indexOf(client);
@@ -86,16 +84,15 @@ export class MatchOrchestrator extends Room<MatchState> {
     client.send(EMessage.AssignPlayerID, { id: client.sessionId });
 
     // Create the new player's hero and broadcast it to all clients
-    const entity: IGameEntityMapper = { id: client.sessionId, playerName : user.username, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };
+    const entity: IGameEntityMapper = { id: client.sessionId, playerName: user.username, gameEntityType: client.selectedHero, position: { x: this.positionHandler[index].x, y: this.positionHandler[index].y }, direction: this.directionHandler[index] };
     this.broadcast(EMessage.CreateEntity, entity);
 
     // Create a map of every players name(id) and index
     const players = this.clients.map((client) => {
       return { name: user.username, index: this.clients.indexOf(client) };
     });
-    console.log(players)
+    console.log(players);
     this.broadcast(EMessage.CreateHud, players);
-
 
     // Tell the new player to create all the other game entities
     this.state.gem.forEach((ge: GameEntityMapper) => {
