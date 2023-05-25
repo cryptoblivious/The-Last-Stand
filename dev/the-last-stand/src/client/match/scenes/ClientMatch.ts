@@ -231,6 +231,7 @@ export default class ClientMatch extends Phaser.Scene {
 
     this.mo.onMessage(EMessage.PlayerHurt, (message) => {
       const { attackForce, victim } = message;
+      console.log('victim', victim);
       const hero = this.gameEntities.get(victim).sprite;
       hero.anim = `${hero.name}hurt`.toLowerCase();
       hero.setVelocity(attackForce.x, attackForce.y);
