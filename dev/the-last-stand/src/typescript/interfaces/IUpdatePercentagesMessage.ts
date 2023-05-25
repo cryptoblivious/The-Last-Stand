@@ -4,6 +4,6 @@
 //  Autres étudiants : Andrzej Wisniowski
 
 export default interface IUpdatePercentagesMessage {
-    playerNameOrID: string;
+    containerKey: string;
     damagePercentage: number;
 }

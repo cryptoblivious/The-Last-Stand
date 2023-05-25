@@ -11,12 +11,15 @@ import { IHitbox } from '../../typescript/interfaces/IHitbox';
 import IUpdatePercentagesMessage from '../../typescript/interfaces/IUpdatePercentagesMessage';
 import { EMessage } from '../../typescript/enumerations/EMessage';
 import { IPlayerDeadMessage } from '../../typescript/interfaces/IPlayerDeadMessage';
+import INewhudplayer from '../../typescript/interfaces/INewHudPlayer';
+import HashMap from '../../utils/data_structures/HashMap';
 
 interface IClient extends Client {
   selectedHero: string;
 }
 export class MatchOrchestrator extends Room<MatchState> {
   private userUID: string = '';
+  private containerKeys : HashMap<string, string> = new HashMap();
 
   private positionHandler: Record<number, { x: number; y: number }> = {
     0: { x: 300, y: 400 },
@@ -89,7 +92,8 @@ export class MatchOrchestrator extends Room<MatchState> {
 
     // Create a map of every players name(id) and index
     const players = this.clients.map((client) => {
-      return { name: user.username, index: this.clients.indexOf(client) };
+      const newHudPlayer : INewhudplayer = { name: user.username, id: client.id, index: this.clients.indexOf(client)}
+      return newHudPlayer;
     });
     console.log(players);
     this.broadcast(EMessage.CreateHud, players);
@@ -98,6 +102,10 @@ export class MatchOrchestrator extends Room<MatchState> {
     this.state.gem.forEach((ge: GameEntityMapper) => {
       client.send(EMessage.CreateEntity, ge);
     });
+
+    // Set the player's container key
+    const containerKey = user.username + client.id + this.clients.indexOf(client)
+    this.containerKeys.set(client.id, containerKey);
 
     // Create the new player's hero game state data and add it to the game state
     const entityMap = new GameEntityMapper();
