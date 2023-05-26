@@ -115,13 +115,13 @@ export class AppRoom extends Room<AppState> {
     });
   }
 
-  onAuth(client: Client, user: any) {
-    const { _id } = user;
-    if (this.state.users.get(_id)) {
-      return false;
-    }
-    return true;
-  }
+  // onAuth(client: Client, user: any) {
+  //   const { _id } = user;
+  //   if (this.state.users.get(_id)) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   async onJoin(client: Client, user: any) {
     const { _id, username, userNo, title, lastOnline } = user;
