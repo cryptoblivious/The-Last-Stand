@@ -15,19 +15,19 @@ const Match = () => {
   const gameRef = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Phaser.Game | null>(null);
   const { client, user, userGameOptions } = useContext(ColyseusContext);
-  const navigate = useNavigate()
-  const [inGame, setInGame] = useState(false)
-  
+  const navigate = useNavigate();
+  const [inGame, setInGame] = useState(false);
+
   useEffect(() => {
-    if (!client)  {
+    if (!client) {
       return;
     }
     const username = user?.username;
     const userNo = user?.userNo;
     const selectedCharacter = userGameOptions?.selectedCharacter;
     const selectedScene = userGameOptions?.selectedScene;
-    
-    const bootstrap = (Bootstrap as any).bind(null, client, {username, userNo, selectedCharacter, selectedScene} );
+
+    const bootstrap = (Bootstrap as any).bind(null, client, { username, userNo, selectedCharacter, selectedScene });
     const matchCanvas = document.createElement('div');
     matchCanvas.id = 'match-canvas';
     gameRef.current?.appendChild(matchCanvas);
@@ -40,7 +40,7 @@ const Match = () => {
         default: 'arcade',
         arcade: {
           gravity: { y: 200 },
-          debug: true,
+          debug: false,
           debugShowBody: true,
           debugShowStaticBody: true,
           debugShowVelocity: true,
@@ -55,36 +55,36 @@ const Match = () => {
 
     const newGame = new Phaser.Game(config);
     setGame(newGame);
-    setInGame(true)
+    setInGame(true);
     return () => {
       newGame.destroy(true);
       setGame(null);
-      setInGame(false)
+      setInGame(false);
     };
   }, [client]);
 
   useEffect(() => {
-    const wasInGame = localStorage.getItem('wasInGame')
+    const wasInGame = localStorage.getItem('wasInGame');
 
     if (wasInGame) {
-      navigate('/gameLobby')
-      localStorage.removeItem('wasInGame')
+      navigate('/gameLobby');
+      localStorage.removeItem('wasInGame');
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = (event:any) => {
+    const handleBeforeUnload = (event: any) => {
       if (inGame) {
-        localStorage.setItem('wasInGame', 'true')
+        localStorage.setItem('wasInGame', 'true');
       }
-      event.preventDefault()
-      event.returnValue = ''
-    }
-    window.addEventListener('beforeunload', handleBeforeUnload)
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [inGame])
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [inGame]);
 
   return (
     <div
