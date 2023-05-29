@@ -7,3 +7,9 @@ Design Pattern,Component-based Architecture,dev\the-last-stand\src\client\compon
 Design Pattern,Listener,dev\the-last-stand\src\client\match\scenes\ClientMatch.ts,143
 Design Pattern,Strategy,dev\the-last-stand\src\server\api\controllers\auth.ts,18
 Design Pattern,Factory,dev\the-last-stand\src\client\match\PhaserPlayerEntityFactory.ts,13
+Intrant/Extrant,Users,dev\the-last-stand\src\server\api\models\user.ts,9
+Intrant/Extrant,Conversations,dev\the-last-stand\src\server\api\models\conversation.ts,10
+Intrant/Extrant,Heroes,dev\the-last-stand\src\server\api\models\heroes.ts,14
+Database,MongoDB,dev\the-last-stand\src\server\main.ts,179
+Maths,ELO Calculation,dev\the-last-stand\src\utils\maths\EloCalculator.ts,55
+Regex,Username,dev\the-last-stand\src\server\api\models\user.ts,20
