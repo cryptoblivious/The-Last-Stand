@@ -253,7 +253,7 @@ Veuillez consulter le texte intégral de la licence pour obtenir tous les détai
 [mongodb-url]: https://www.mongodb.com/
 [express-img]: https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white
 [express-url]: https://expressjs.com/
-[react-img]: https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white
+[react-img]: https://img.shields.io/badge/react-000000?style=for-the-badge&logo=react&logoColor=white
 [react-url]: https://reactjs.org/
 [placeholder-img]: https://img.shields.io/badge/et_plus_encore-FAB040?style=for-the-badge&logo=precommit&logoColor=red
 [placeholder-url]: https://perdu.com/
