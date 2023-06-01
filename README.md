@@ -251,7 +251,7 @@ Veuillez consulter le texte intégral de la licence pour obtenir tous les détai
 [typescript-url]: https://www.typescriptlang.org/
 [mongodb-img]: https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white
 [mongodb-url]: https://www.mongodb.com/
-[express-img]: https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white
+[express-img]: https://img.shields.io/badge/express-61DAFB?style=for-the-badge&logo=express&logoColor=white
 [express-url]: https://expressjs.com/
 [react-img]: https://img.shields.io/badge/react-000000?style=for-the-badge&logo=react&logoColor=white
 [react-url]: https://reactjs.org/
