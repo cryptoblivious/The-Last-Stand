@@ -44,6 +44,19 @@ const configMap: Map<string, TAppConfig> = new Map([
       WS_PROTOCOL: 'wss',
     },
   ],
+  [
+    'https://tls.andrzejw.com',
+    {
+      APP_MODE: 'prod',
+      HOST_NAME: 'stls.andrzejw.com',
+      HOST_URL: 'https://stls.andrzejw.com',
+      HOST_PORT: '443',
+      CLIENT_NAME: 'tls.andrzejw.com',
+      CLIENT_URL: 'https://tls.andrzejw.com',
+      CLIENT_PORT: '5173',
+      WS_PROTOCOL: 'wss',
+    },
+  ],
 ]);
 
 const currentOrigin = window.location.origin;
