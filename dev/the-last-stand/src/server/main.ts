@@ -61,8 +61,8 @@ let sslOptions: any = {};
 if (APP_MODE === 'prod') {
   sslOptions = {
     wsEngine: 'uws',
-    key: fs.readFileSync('/etc/letsencrypt/live/stls.woodchuckgames.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/stls.woodchuckgames.com/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/stls.andrzejw.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/stls.andrzejw.com/fullchain.pem'),
   };
   console.log('✅ SSL certificates loaded.');
 }
