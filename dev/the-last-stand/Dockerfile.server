@@ -1,0 +1,9 @@
+FROM node:alpine3.17
+
+WORKDIR /app
+
+COPY . .
+
+RUN yarn
+
+CMD ["yarn", "ts-node-dev","--respawn", "--transpile-only", "--project", "tsconfig.server.json", "src/server/main.ts"]
